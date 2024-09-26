@@ -22,6 +22,10 @@ const typeDefs = `
     bookings: [Booking!]!
   }
 
+  type Token {
+    value: String!
+  }
+
   type Room {
     id: ID!
     location: Location!
@@ -29,6 +33,8 @@ const typeDefs = `
     type: String!
     size: Int!
     equipment: [String!]!
+    pictureUrl: String
+    isBookable: Boolean!
   }
 
   type Location {
@@ -61,6 +67,46 @@ const typeDefs = `
 
     allBookings: [Booking]!
   }
+
+  type Mutation {
+    createUser(
+      name: String!
+      username: String!
+      email: String!
+      password: String!
+    ): User
+
+    login(
+      username: String!
+      password: String!
+    ): Token
+
+    createBooking(
+      userId: ID!
+      roomId: ID!
+      startDate: Date!
+      endDate: Date!
+    ): Booking
+
+    updateBooking(
+      bookingId: ID!
+      startDate: Date
+      endDate: Date
+    ): Booking
+
+    deleteBooking(
+      bookingId: ID!
+    ): Boolean!
+
+    updateUser(
+      userId: ID!
+      name: String
+      password: String
+    ): User
+
+  }
 `
 
 module.exports = typeDefs
+
+
