@@ -1,4 +1,4 @@
-const typeDefs = `
+export const typeDefs = `
 
   enum Role {
     ADMIN
@@ -105,8 +105,6 @@ const typeDefs = `
     ): User
 
   }
-`
-
-module.exports = typeDefs
+`;
 
 
