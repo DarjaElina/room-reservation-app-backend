@@ -1,5 +1,3 @@
-const { users, locations, rooms, bookings } = require('./db/data')
-
 const resolvers = {
   Query: {
     allUsers: () => users,
@@ -24,8 +22,18 @@ const resolvers = {
   Location: {
     rooms: (root) => rooms.filter(room => room.location.id === root.id)
   },
-
   
+
+  Mutation: {
+    createUser: (root, args) => {
+      const id = +users[users.length - 1].id + 1
+      const user = { ...args, id }
+      users.push(user)
+      return user
+    }
+
+  }
 }
+
 
 module.exports = resolvers
