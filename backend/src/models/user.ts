@@ -1,14 +1,18 @@
 import { Optional, DataTypes } from 'sequelize';
-import { Table, Model, Column, HasMany, AllowNull, Default, PrimaryKey } from 'sequelize-typescript';
-import { Role, Responsibility } from '../types/user.types';
+import { Table, Model, Column, HasMany, AllowNull, Default, PrimaryKey, Length, IsEmail, Unique, Validate } from 'sequelize-typescript';
+import { Role, Responsibility, Status } from '../types/user.types';
 import Booking from './booking';
 
 interface UserAttributes {
   id: string;
-  name: string;
+  givenName: string;
+  middleName?: string;
+  familyName: string;
   username: string;
+  passwordHash: string;
   email: string;
   role: Role;
+  status: Status;
   responsibility: Responsibility;
 }
 
@@ -27,20 +31,50 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   id!: string;
 
   @AllowNull(false)
+  @Length({ min: 2, max: 40 })
+  @Validate({
+    is: /^[a-zA-ZÀ-ÿ\s'-]+$/i
+  })
   @Column
-  name!: string;
+  givenName!: string;
 
   @AllowNull(false)
+  @Length({ min: 2, max: 40 })
+  @Validate({
+    is: /^[a-zA-ZÀ-ÿ\s'-]+$/i
+  })
+  @Column
+  familyName!: string;
+
+  @Length({ min: 2, max: 40 })
+  @Validate({
+    is: /^[a-zA-ZÀ-ÿ\s'-]+$/i
+  })
+  @Column
+  middleName!: string;
+
+  @AllowNull(false)
+  @Unique
   @Column
   username!: string;
 
   @AllowNull(false)
+  @Column
+  passwordHash!: string;
+
+  @AllowNull(false)
+  @IsEmail
+  @Unique
   @Column
   email!: string;
 
   @AllowNull(false)
   @Column(DataTypes.ENUM(...Object.values(Role)))
   role!: Role;
+
+  @AllowNull(false)
+  @Column(DataTypes.ENUM(...Object.values(Status)))
+  status!: Status;
 
   @AllowNull(false)
   @Column(DataTypes.ENUM(...Object.values(Responsibility)))
