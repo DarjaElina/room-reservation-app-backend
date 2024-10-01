@@ -2,14 +2,20 @@ import { Table, Model, Column, PrimaryKey, AllowNull, Default, ForeignKey, Belon
 import User from './user';
 import Room from './room';
 import { Optional, DataTypes } from 'sequelize';
+import { BookingStatus } from '../types/booking.types';
 
 interface BookingAttributes {
   id: string;
   startDate: Date;
   endDate: Date;
+  userId: string;
+  roomId: string;
+  status: BookingStatus;
 }
 
 type BookingCreationAttributes = Optional<BookingAttributes, 'id'>;
+
+const bookingStatuses: string[] = Object.values(BookingStatus);
 
 @Table({
   underscored: true,
@@ -31,7 +37,17 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
   @Column(DataTypes.DATE)
   endDate!: Date;
 
+  @AllowNull(false)
+  @Column({
+    type: DataTypes.ENUM(...bookingStatuses),
+    validate: {
+      isIn: [bookingStatuses],
+    }
+  })
+  status!: BookingStatus;
+
   @ForeignKey(() => User)
+  @AllowNull(false)
   @Column
   userId!: string;
 
@@ -39,6 +55,7 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
   user!: User;
 
   @ForeignKey(() => Room)
+  @AllowNull(false)
   @Column
   roomId!: string;
 

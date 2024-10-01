@@ -1,5 +1,6 @@
 import { DataTypes, Optional } from 'sequelize';
-import { Table, Model, Column, PrimaryKey, AllowNull, Default } from 'sequelize-typescript';
+import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, Length, Validate } from 'sequelize-typescript';
+import Department from './department';
 
 interface FacultyAttributes {
   id: number;
@@ -20,9 +21,15 @@ class Faculty extends Model<FacultyAttributes, FacultyCreationAttributes> {
   @Column(DataTypes.UUID)
   id!: string;
 
-  @AllowNull(false)
+  @Length({ min: 5, max: 50 })
+  @Validate({
+    is: /^[A-Z0-9-]+$/
+  })
   @Column
   name!: string;
+
+  @HasMany(() => Department)
+  departments!: Department[];
 }
 
 export default Faculty;

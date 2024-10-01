@@ -1,7 +1,8 @@
 import { Optional, DataTypes } from 'sequelize';
-import { Table, Model, Column, HasMany, AllowNull, Default, PrimaryKey, Length, IsEmail, Unique, Validate } from 'sequelize-typescript';
+import { Table, Model, Column, HasMany, AllowNull, Default, PrimaryKey, Length, IsEmail, Unique, Validate, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { Role, Responsibility, Status } from '../types/user.types';
 import Booking from './booking';
+import Department from './department';
 
 interface UserAttributes {
   id: string;
@@ -17,6 +18,10 @@ interface UserAttributes {
 }
 
 type UserCreationAttributes = Optional<UserAttributes, 'id'>;
+
+const roles: string[] = Object.values(Role);
+const userStatuses: string[] = Object.values(Status);
+const responsibilities: string[] = Object.values(Responsibility);
 
 @Table({
   underscored: true,
@@ -69,19 +74,42 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   email!: string;
 
   @AllowNull(false)
-  @Column(DataTypes.ENUM(...Object.values(Role)))
+  @Column({
+    type: DataTypes.ENUM(...roles),
+    validate: {
+      isIn: [roles]
+    }
+  })
   role!: Role;
 
   @AllowNull(false)
-  @Column(DataTypes.ENUM(...Object.values(Status)))
+  @Column({
+    type: DataTypes.ENUM(...userStatuses),
+    validate: {
+      isIn: [userStatuses]
+    }
+  })
   status!: Status;
 
   @AllowNull(false)
-  @Column(DataTypes.ENUM(...Object.values(Responsibility)))
+  @Column({
+    type: DataTypes.ENUM(...responsibilities),
+    validate: {
+      isIn: [responsibilities]
+    }
+  })
   responsibility!: Responsibility;
 
   @HasMany(() => Booking)
   bookings!: Booking[];
+
+  @ForeignKey(() => Department)
+  @AllowNull(false)
+  @Column
+  departmentId!: string;
+
+  @BelongsTo(() => Department)
+  department!: Department;
 }
 
 

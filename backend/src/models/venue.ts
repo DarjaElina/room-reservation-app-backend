@@ -1,5 +1,5 @@
 import { Optional, DataTypes } from 'sequelize';
-import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany } from 'sequelize-typescript';
+import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, Unique, Length, Validate } from 'sequelize-typescript';
 import Room from './room';
 
 interface VenueAttributes {
@@ -23,10 +23,19 @@ class Venue extends Model<VenueAttributes, VenueCreationAttributes> {
   id!: string;
 
   @AllowNull(false)
+  @Unique
+  @Length({ min: 3, max: 10 })
+  @Validate({
+    is: /^[A-Z0-9-]+$/
+  })
   @Column
   code!: string;
 
   @AllowNull(false)
+  @Length({ min: 5, max: 50 })
+  @Validate({
+    is: /^[a-zA-ZÀ-ÿ\s'-]+$/
+  })
   @Column
   name!: string;
 
