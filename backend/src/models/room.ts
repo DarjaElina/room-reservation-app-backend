@@ -1,10 +1,12 @@
-import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, ForeignKey, BelongsTo, Unique, Length, Validate, IsUrl } from 'sequelize-typescript';
+import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, ForeignKey, BelongsTo, Unique, Length, Validate, IsUrl, BelongsToMany } from 'sequelize-typescript';
 import { Optional, DataTypes } from 'sequelize';
 import { RoomType } from '../types/room/room.enums';
 import { roomTypes } from '../types/room/room.constants';
 import Venue from './venue';
 import Booking from './booking';
 import Department from './department';
+import Equipment from './equipment';
+import RoomEquipment from './room_equipment';
 
 interface RoomAttributes {
   id: string;
@@ -12,8 +14,7 @@ interface RoomAttributes {
   type: RoomType;
   size: number;
   venueId: string;
-  equipment: string[];
-  pictureUrl: string;
+  pictureUrl?: string;
   isBookable: boolean;
   departmentId: string;
 }
@@ -58,12 +59,9 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
   @Column
   size!: number;
 
-  @Column(DataTypes.ARRAY(DataTypes.STRING))
-  equipment!: string[];
-
   @IsUrl
   @Column(DataTypes.STRING)
-  pictureUrl!: string;
+  pictureUrl?: string;
 
   @AllowNull(false)
   @Column
@@ -87,6 +85,9 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
 
   @BelongsTo(() => Department)
   department!: Department;
+
+  @BelongsToMany(() => Equipment, () => RoomEquipment)
+  equipments!: Equipment[];
 }
 
 export default Room;

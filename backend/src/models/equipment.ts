@@ -1,0 +1,38 @@
+import { Table, Model, Column, PrimaryKey, AllowNull, Default, Unique, Length, Validate, BelongsToMany } from 'sequelize-typescript';
+import { Optional, DataTypes } from 'sequelize';
+import { EquipmentTypes } from '../types/equipment/equipment.constants';
+import Room from './room';
+import RoomEquipment from './room_equipment';
+
+interface EquipmentAttributes {
+  id: string;
+  name: string;
+}
+
+type EquipmentCreationAttributes = Optional<EquipmentAttributes, 'id'>;
+
+@Table({
+  underscored: true,
+  modelName: 'equipment'
+})
+
+class Equipment extends Model<EquipmentAttributes, EquipmentCreationAttributes> {
+  @PrimaryKey
+  @AllowNull(false)
+  @Default(() => DataTypes.UUIDV4)
+  @Column(DataTypes.UUID)
+  id!: string;
+
+  @Unique
+  @Length({ min: 5, max: 100 })
+  @Validate({
+    isIn: [EquipmentTypes]
+  })
+  @Column
+  name!: string;
+
+  @BelongsToMany(() => Room, () => RoomEquipment)
+  rooms!: Room[];
+}
+
+export default Equipment;
