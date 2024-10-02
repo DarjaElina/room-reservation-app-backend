@@ -1,4 +1,4 @@
-import { Room } from './room.types';
+import { Room } from '../room/room.types';
 
 export interface Venue {
   id: string;
