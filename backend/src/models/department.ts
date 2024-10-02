@@ -1,6 +1,7 @@
 import { Table, Model, Column, ForeignKey, BelongsTo, PrimaryKey, AllowNull, Default, Unique, Length, Validate } from 'sequelize-typescript';
 import Faculty from './faculty';
 import { Optional, DataTypes } from 'sequelize';
+import { Departments } from '../types/department/department.constants';
 
 interface DepartmentAttributes {
   id: number;
@@ -23,16 +24,16 @@ class Department extends Model<DepartmentAttributes, DepartmentCreationAttribute
   id!: string;
 
   @Unique
-  @Length({ min: 5, max: 50 })
+  @Length({ min: 5, max: 100 })
   @Validate({
-    is: /^[A-Z0-9-]+$/
+    isIn: [Departments]
   })
   @Column
   name!: string;
 
   @ForeignKey(() => Faculty)
   @AllowNull(false)
-  @Column
+  @Column(DataTypes.UUID)
   facultyId!: number;
 
   @BelongsTo(() => Faculty)

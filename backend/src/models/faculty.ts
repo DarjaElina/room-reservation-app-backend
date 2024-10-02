@@ -1,10 +1,12 @@
 import { DataTypes, Optional } from 'sequelize';
-import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, Length, Validate } from 'sequelize-typescript';
+import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany } from 'sequelize-typescript';
 import Department from './department';
+import { FacultyName } from '../types/faculty/faculty.enums';
+import { faculties } from '../types/faculty/faculty.constants';
 
 interface FacultyAttributes {
   id: number;
-  name: string;
+  name: FacultyName;
 }
 
 type FacultyCreationAttributes = Optional<FacultyAttributes, 'id'>;
@@ -21,12 +23,14 @@ class Faculty extends Model<FacultyAttributes, FacultyCreationAttributes> {
   @Column(DataTypes.UUID)
   id!: string;
 
-  @Length({ min: 5, max: 50 })
-  @Validate({
-    is: /^[A-Z0-9-]+$/
+  @AllowNull(false)
+  @Column({
+    type: DataTypes.ENUM(...faculties),
+    validate: {
+      isIn: [faculties],
+    }
   })
-  @Column
-  name!: string;
+  name!: FacultyName;
 
   @HasMany(() => Department)
   departments!: Department[];

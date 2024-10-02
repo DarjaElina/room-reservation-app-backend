@@ -1,8 +1,9 @@
-import { Table, Model, Column, PrimaryKey, AllowNull, Default, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Table, Model, Column, PrimaryKey, AllowNull, Default, ForeignKey, BelongsTo, BeforeSave } from 'sequelize-typescript';
 import User from './user';
 import Room from './room';
 import { Optional, DataTypes } from 'sequelize';
-import { BookingStatus } from '../types/booking.types';
+import { BookingStatus } from '../types/booking/booking.enums';
+import { bookingStatuses } from '../types/booking/booking.constants';
 
 interface BookingAttributes {
   id: string;
@@ -14,8 +15,6 @@ interface BookingAttributes {
 }
 
 type BookingCreationAttributes = Optional<BookingAttributes, 'id'>;
-
-const bookingStatuses: string[] = Object.values(BookingStatus);
 
 @Table({
   underscored: true,
@@ -37,6 +36,13 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
   @Column(DataTypes.DATE)
   endDate!: Date;
 
+  @BeforeSave
+  static validateDates(instance: Booking) {
+    if (instance.endDate <= instance.startDate) {
+      throw new Error('endDate must be after startDate');
+    }
+  }
+
   @AllowNull(false)
   @Column({
     type: DataTypes.ENUM(...bookingStatuses),
@@ -48,7 +54,7 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
 
   @ForeignKey(() => User)
   @AllowNull(false)
-  @Column
+  @Column(DataTypes.UUID)
   userId!: string;
 
   @BelongsTo(() => User)
@@ -56,7 +62,7 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
 
   @ForeignKey(() => Room)
   @AllowNull(false)
-  @Column
+  @Column(DataTypes.UUID)
   roomId!: string;
 
   @BelongsTo(() => Room)

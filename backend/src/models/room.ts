@@ -1,6 +1,7 @@
 import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, ForeignKey, BelongsTo, Unique, Length, Validate, IsUrl } from 'sequelize-typescript';
 import { Optional, DataTypes } from 'sequelize';
-import { RoomType } from '../types/room.types';
+import { RoomType } from '../types/room/room.enums';
+import { roomTypes } from '../types/room/room.constants';
 import Venue from './venue';
 import Booking from './booking';
 import Department from './department';
@@ -18,8 +19,6 @@ interface RoomAttributes {
 }
 
 type RoomCreationAttributes = Optional<RoomAttributes, 'id'>;
-
-const roomTypes: string[] = Object.values(RoomType);
 
 @Table({
   underscored: true,
@@ -72,7 +71,7 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
 
   @ForeignKey(() => Venue)
   @AllowNull(false)
-  @Column
+  @Column(DataTypes.UUID)
   venueId!: string;
 
   @BelongsTo(() => Venue)
@@ -83,7 +82,7 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
 
   @ForeignKey(() => Department)
   @AllowNull(false)
-  @Column
+  @Column(DataTypes.UUID)
   departmentId!: string;
 
   @BelongsTo(() => Department)
