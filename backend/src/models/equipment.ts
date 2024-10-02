@@ -13,7 +13,8 @@ type EquipmentCreationAttributes = Optional<EquipmentAttributes, 'id'>;
 
 @Table({
   underscored: true,
-  modelName: 'equipment'
+  modelName: 'equipment',
+  tableName: 'equipment'
 })
 
 class Equipment extends Model<EquipmentAttributes, EquipmentCreationAttributes> {
