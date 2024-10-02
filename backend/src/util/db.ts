@@ -6,6 +6,8 @@ import Venue from '../models/venue';
 import Room from '../models/room';
 import Department from '../models/department';
 import Faculty from '../models/faculty';
+import Equipment from '../models/equipment';
+import RoomEquipment from '../models/room_equipment';
 
 import { Umzug, SequelizeStorage } from 'umzug';
 
@@ -14,7 +16,7 @@ if (!DATABASE_URL) {
 }
 
 export const sequelize = new Sequelize(DATABASE_URL, {
-  models: [User, Booking, Venue, Room, Department, Faculty],
+  models: [User, Booking, Venue, Room, Department, Faculty, Equipment, RoomEquipment],
 });
 
 const migrationConf = {
