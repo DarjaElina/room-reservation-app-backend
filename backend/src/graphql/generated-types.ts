@@ -1,0 +1,804 @@
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+export type Maybe<T> = T;
+export type InputMaybe<T> = T;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
+/** All built-in and custom scalars, mapped to their actual values */
+export type Scalars = {
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  Date: { input: any; output: any; }
+};
+
+export type Booking = {
+  __typename?: 'Booking';
+  endDate: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  room: Room;
+  startDate: Scalars['Date']['output'];
+  status: BookingStatus;
+  user: User;
+};
+
+export enum BookingStatus {
+  Active = 'ACTIVE',
+  Cancelled = 'CANCELLED',
+  CancelledLate = 'CANCELLED_LATE',
+  Past = 'PAST'
+}
+
+export type Department = {
+  __typename?: 'Department';
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type Equipment = {
+  __typename?: 'Equipment';
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type Faculty = {
+  __typename?: 'Faculty';
+  departments: Array<Department>;
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  activateUser?: Maybe<User>;
+  addDepartmentToFaculty: Faculty;
+  addEquipmentToRoom: Room;
+  addUserToDepartment: Department;
+  assignRole?: Maybe<User>;
+  cancelBooking: Scalars['Boolean']['output'];
+  changePassword: Scalars['Boolean']['output'];
+  createBooking?: Maybe<Booking>;
+  createDepartment: Department;
+  createEquipment: Equipment;
+  createFaculty: Faculty;
+  createRoom: Room;
+  createUser?: Maybe<User>;
+  createVenue: Venue;
+  deleteEquipment: Scalars['Boolean']['output'];
+  deleteFaculty: Scalars['Boolean']['output'];
+  deleteRoom: Scalars['Boolean']['output'];
+  deleteUser: Scalars['Boolean']['output'];
+  deleteVenue: Scalars['Boolean']['output'];
+  login?: Maybe<Token>;
+  removeDepartmentFromFaculty: Faculty;
+  removeEquipmentFromRoom: Room;
+  removeUserFromDepartment: Department;
+  setRoomBookableStatus: Room;
+  updateBooking?: Maybe<Booking>;
+  updateDepartment: Department;
+  updateEquipment: Equipment;
+  updateFaculty: Faculty;
+  updateRoom: Room;
+  updateUser?: Maybe<User>;
+  updateUserStatus?: Maybe<User>;
+  updateVenue: Venue;
+};
+
+
+export type MutationActivateUserArgs = {
+  activationToken: Scalars['String']['input'];
+  newPassword: Scalars['String']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type MutationAddDepartmentToFacultyArgs = {
+  departmentId: Scalars['ID']['input'];
+  facultyId: Scalars['ID']['input'];
+};
+
+
+export type MutationAddEquipmentToRoomArgs = {
+  equipmentIds: Array<Scalars['ID']['input']>;
+  roomId: Scalars['ID']['input'];
+};
+
+
+export type MutationAddUserToDepartmentArgs = {
+  departmentId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type MutationAssignRoleArgs = {
+  role: UserRole;
+  userId: Scalars['ID']['input'];
+};
+
+
+export type MutationCancelBookingArgs = {
+  bookingId: Scalars['ID']['input'];
+};
+
+
+export type MutationChangePasswordArgs = {
+  newPassword: Scalars['String']['input'];
+  oldPassword: Scalars['String']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type MutationCreateBookingArgs = {
+  endDate: Scalars['Date']['input'];
+  roomId: Scalars['ID']['input'];
+  startDate: Scalars['Date']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type MutationCreateDepartmentArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationCreateEquipmentArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationCreateFacultyArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationCreateRoomArgs = {
+  code: Scalars['String']['input'];
+  departmentId: Scalars['ID']['input'];
+  equipmentIds: Array<Scalars['ID']['input']>;
+  isBookable: Scalars['Boolean']['input'];
+  pictureUrl?: InputMaybe<Scalars['String']['input']>;
+  size: Scalars['Int']['input'];
+  type: RoomType;
+  venueId: Scalars['ID']['input'];
+};
+
+
+export type MutationCreateUserArgs = {
+  departmentId: Scalars['ID']['input'];
+  email: Scalars['String']['input'];
+  familyName: Scalars['String']['input'];
+  givenName: Scalars['String']['input'];
+  middleName?: InputMaybe<Scalars['String']['input']>;
+  role: UserRole;
+  status: UserStatus;
+  username: Scalars['String']['input'];
+};
+
+
+export type MutationCreateVenueArgs = {
+  code: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteEquipmentArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteFacultyArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteRoomArgs = {
+  roomId: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteUserArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteVenueArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationLoginArgs = {
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
+
+export type MutationRemoveDepartmentFromFacultyArgs = {
+  departmentId: Scalars['ID']['input'];
+  facultyId: Scalars['ID']['input'];
+};
+
+
+export type MutationRemoveEquipmentFromRoomArgs = {
+  equipmentIds: Array<Scalars['ID']['input']>;
+  roomId: Scalars['ID']['input'];
+};
+
+
+export type MutationRemoveUserFromDepartmentArgs = {
+  departmentId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type MutationSetRoomBookableStatusArgs = {
+  isBookable: Scalars['Boolean']['input'];
+  roomId: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateBookingArgs = {
+  bookingId: Scalars['ID']['input'];
+  endDate?: InputMaybe<Scalars['Date']['input']>;
+  startDate?: InputMaybe<Scalars['Date']['input']>;
+};
+
+
+export type MutationUpdateDepartmentArgs = {
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationUpdateEquipmentArgs = {
+  id: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateFacultyArgs = {
+  id: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateRoomArgs = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  departmentId?: InputMaybe<Scalars['ID']['input']>;
+  equipmentIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  isBookable?: InputMaybe<Scalars['Boolean']['input']>;
+  pictureUrl?: InputMaybe<Scalars['String']['input']>;
+  roomId: Scalars['ID']['input'];
+  size?: InputMaybe<Scalars['Int']['input']>;
+  type?: InputMaybe<RoomType>;
+};
+
+
+export type MutationUpdateUserArgs = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  familyName?: InputMaybe<Scalars['String']['input']>;
+  givenName?: InputMaybe<Scalars['String']['input']>;
+  middleName?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  userId: Scalars['ID']['input'];
+  username?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationUpdateUserStatusArgs = {
+  status: UserStatus;
+  userId: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateVenueArgs = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type Query = {
+  __typename?: 'Query';
+  allBookings: Array<Maybe<Booking>>;
+  allDepartments: Array<Department>;
+  allEquipment: Array<Equipment>;
+  allFaculties: Array<Faculty>;
+  allRooms: Array<Maybe<Room>>;
+  allUsers: Array<User>;
+  allVenues: Array<Venue>;
+  bookingsByDateRange: Array<Booking>;
+  bookingsByRoom: Array<Booking>;
+  bookingsByUser: Array<Booking>;
+  findAvailableRoomsByTime: Array<Room>;
+  findDepartment?: Maybe<Department>;
+  findDepartmentByName: Array<Department>;
+  findDepartmentsByFaculty: Array<Department>;
+  findEquipment?: Maybe<Equipment>;
+  findEquipmentByName: Array<Equipment>;
+  findFaculty?: Maybe<Faculty>;
+  findFacultyByName: Array<Faculty>;
+  findRoom: Room;
+  findRooms: Array<Room>;
+  findRoomsByAccessories: Array<Room>;
+  findRoomsByDepartment: Array<Room>;
+  findRoomsBySizeRange: Array<Room>;
+  findRoomsByType: Array<Room>;
+  findRoomsByVenueId: Array<Room>;
+  findUser?: Maybe<User>;
+  findUserByName?: Maybe<User>;
+  findUsersByDepartment: Array<User>;
+  findUsersByRole: Array<User>;
+  findVenue?: Maybe<Venue>;
+  findVenueByName: Array<Venue>;
+  findVenuesByDepartment: Array<Venue>;
+  me?: Maybe<User>;
+};
+
+
+export type QueryBookingsByDateRangeArgs = {
+  endDate: Scalars['Date']['input'];
+  startDate: Scalars['Date']['input'];
+};
+
+
+export type QueryBookingsByRoomArgs = {
+  roomId: Scalars['ID']['input'];
+};
+
+
+export type QueryBookingsByUserArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryFindAvailableRoomsByTimeArgs = {
+  endsAt?: InputMaybe<Scalars['Date']['input']>;
+  startsAt: Scalars['Date']['input'];
+};
+
+
+export type QueryFindDepartmentArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryFindDepartmentByNameArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type QueryFindDepartmentsByFacultyArgs = {
+  facultyId: Scalars['ID']['input'];
+};
+
+
+export type QueryFindEquipmentArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryFindEquipmentByNameArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type QueryFindFacultyArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryFindFacultyByNameArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type QueryFindRoomArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryFindRoomsArgs = {
+  accessoriesIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  isBookable?: InputMaybe<Scalars['Boolean']['input']>;
+  maxSize?: InputMaybe<Scalars['Int']['input']>;
+  minSize?: InputMaybe<Scalars['Int']['input']>;
+  roomType?: InputMaybe<RoomType>;
+  venueId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryFindRoomsByAccessoriesArgs = {
+  accessoriesIds: Array<Scalars['ID']['input']>;
+};
+
+
+export type QueryFindRoomsByDepartmentArgs = {
+  departmentId: Scalars['ID']['input'];
+};
+
+
+export type QueryFindRoomsBySizeRangeArgs = {
+  maxSize: Scalars['Int']['input'];
+  minSize: Scalars['Int']['input'];
+};
+
+
+export type QueryFindRoomsByTypeArgs = {
+  roomType: Scalars['String']['input'];
+};
+
+
+export type QueryFindRoomsByVenueIdArgs = {
+  venueId: Scalars['ID']['input'];
+};
+
+
+export type QueryFindUserArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryFindUserByNameArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type QueryFindUsersByDepartmentArgs = {
+  departmentId: Scalars['ID']['input'];
+};
+
+
+export type QueryFindUsersByRoleArgs = {
+  role: UserRole;
+};
+
+
+export type QueryFindVenueArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryFindVenueByNameArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type QueryFindVenuesByDepartmentArgs = {
+  departmentId: Scalars['ID']['input'];
+};
+
+export type Room = {
+  __typename?: 'Room';
+  code: Scalars['String']['output'];
+  department: Department;
+  equipment: Array<Equipment>;
+  id: Scalars['ID']['output'];
+  isBookable: Scalars['Boolean']['output'];
+  pictureUrl?: Maybe<Scalars['String']['output']>;
+  size: Scalars['Int']['output'];
+  type: RoomType;
+  venue: Venue;
+};
+
+export enum RoomType {
+  AdministrativeSpace = 'ADMINISTRATIVE_SPACE',
+  Classroom = 'CLASSROOM',
+  ConcertHall = 'CONCERT_HALL',
+  Library = 'LIBRARY',
+  MeetingRoom = 'MEETING_ROOM',
+  PracticeRoom = 'PRACTICE_ROOM',
+  Studio = 'STUDIO',
+  Theater = 'THEATER'
+}
+
+export type Token = {
+  __typename?: 'Token';
+  value: Scalars['String']['output'];
+};
+
+export type User = {
+  __typename?: 'User';
+  department: Department;
+  email: Scalars['String']['output'];
+  familyName: Scalars['String']['output'];
+  givenName: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  middleName?: Maybe<Scalars['String']['output']>;
+  role: UserRole;
+  status: UserStatus;
+  username: Scalars['String']['output'];
+};
+
+export enum UserRole {
+  Admin = 'ADMIN',
+  Manager = 'MANAGER',
+  Student = 'STUDENT',
+  Teacher = 'TEACHER'
+}
+
+export enum UserStatus {
+  Active = 'ACTIVE',
+  Disabled = 'DISABLED',
+  Pending = 'PENDING'
+}
+
+export type Venue = {
+  __typename?: 'Venue';
+  code: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  rooms: Array<Room>;
+};
+
+
+
+export type ResolverTypeWrapper<T> = Promise<T> | T;
+
+
+export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
+  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
+};
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
+
+export type ResolverFn<TResult, TParent, TContext, TArgs> = (
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => Promise<TResult> | TResult;
+
+export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
+
+export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => TResult | Promise<TResult>;
+
+export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
+  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
+  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
+}
+
+export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
+  subscribe: SubscriptionSubscribeFn<any, TParent, TContext, TArgs>;
+  resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
+}
+
+export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
+  | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
+  | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
+
+export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
+  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+  | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
+
+export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
+  parent: TParent,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
+
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
+
+export type NextResolverFn<T> = () => Promise<T>;
+
+export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
+  next: NextResolverFn<TResult>,
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => TResult | Promise<TResult>;
+
+
+
+/** Mapping between all available schema types and the resolvers types */
+export type ResolversTypes = {
+  Booking: ResolverTypeWrapper<Booking>;
+  BookingStatus: BookingStatus;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  Date: ResolverTypeWrapper<Scalars['Date']['output']>;
+  Department: ResolverTypeWrapper<Department>;
+  Equipment: ResolverTypeWrapper<Equipment>;
+  Faculty: ResolverTypeWrapper<Faculty>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  Mutation: ResolverTypeWrapper<{}>;
+  Query: ResolverTypeWrapper<{}>;
+  Room: ResolverTypeWrapper<Room>;
+  RoomType: RoomType;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
+  Token: ResolverTypeWrapper<Token>;
+  User: ResolverTypeWrapper<User>;
+  UserRole: UserRole;
+  UserStatus: UserStatus;
+  Venue: ResolverTypeWrapper<Venue>;
+};
+
+/** Mapping between all available schema types and the resolvers parents */
+export type ResolversParentTypes = {
+  Booking: Booking;
+  Boolean: Scalars['Boolean']['output'];
+  Date: Scalars['Date']['output'];
+  Department: Department;
+  Equipment: Equipment;
+  Faculty: Faculty;
+  ID: Scalars['ID']['output'];
+  Int: Scalars['Int']['output'];
+  Mutation: {};
+  Query: {};
+  Room: Room;
+  String: Scalars['String']['output'];
+  Token: Token;
+  User: User;
+  Venue: Venue;
+};
+
+export type BookingResolvers<ContextType = any, ParentType extends ResolversParentTypes['Booking'] = ResolversParentTypes['Booking']> = {
+  endDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  room?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
+  startDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['BookingStatus'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date';
+}
+
+export type DepartmentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Department'] = ResolversParentTypes['Department']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type EquipmentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Equipment'] = ResolversParentTypes['Equipment']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type FacultyResolvers<ContextType = any, ParentType extends ResolversParentTypes['Faculty'] = ResolversParentTypes['Faculty']> = {
+  departments?: Resolver<Array<ResolversTypes['Department']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  activateUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationActivateUserArgs, 'activationToken' | 'newPassword' | 'userId'>>;
+  addDepartmentToFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationAddDepartmentToFacultyArgs, 'departmentId' | 'facultyId'>>;
+  addEquipmentToRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationAddEquipmentToRoomArgs, 'equipmentIds' | 'roomId'>>;
+  addUserToDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationAddUserToDepartmentArgs, 'departmentId' | 'userId'>>;
+  assignRole?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationAssignRoleArgs, 'role' | 'userId'>>;
+  cancelBooking?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationCancelBookingArgs, 'bookingId'>>;
+  changePassword?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'newPassword' | 'oldPassword' | 'userId'>>;
+  createBooking?: Resolver<Maybe<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'endDate' | 'roomId' | 'startDate' | 'userId'>>;
+  createDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationCreateDepartmentArgs, 'name'>>;
+  createEquipment?: Resolver<ResolversTypes['Equipment'], ParentType, ContextType, RequireFields<MutationCreateEquipmentArgs, 'name'>>;
+  createFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationCreateFacultyArgs, 'name'>>;
+  createRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationCreateRoomArgs, 'code' | 'departmentId' | 'equipmentIds' | 'isBookable' | 'size' | 'type' | 'venueId'>>;
+  createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'departmentId' | 'email' | 'familyName' | 'givenName' | 'role' | 'status' | 'username'>>;
+  createVenue?: Resolver<ResolversTypes['Venue'], ParentType, ContextType, RequireFields<MutationCreateVenueArgs, 'code' | 'name'>>;
+  deleteEquipment?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteEquipmentArgs, 'id'>>;
+  deleteFaculty?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteFacultyArgs, 'id'>>;
+  deleteRoom?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteRoomArgs, 'roomId'>>;
+  deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'userId'>>;
+  deleteVenue?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteVenueArgs, 'id'>>;
+  login?: Resolver<Maybe<ResolversTypes['Token']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'password' | 'username'>>;
+  removeDepartmentFromFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationRemoveDepartmentFromFacultyArgs, 'departmentId' | 'facultyId'>>;
+  removeEquipmentFromRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationRemoveEquipmentFromRoomArgs, 'equipmentIds' | 'roomId'>>;
+  removeUserFromDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationRemoveUserFromDepartmentArgs, 'departmentId' | 'userId'>>;
+  setRoomBookableStatus?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationSetRoomBookableStatusArgs, 'isBookable' | 'roomId'>>;
+  updateBooking?: Resolver<Maybe<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<MutationUpdateBookingArgs, 'bookingId'>>;
+  updateDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationUpdateDepartmentArgs, 'id'>>;
+  updateEquipment?: Resolver<ResolversTypes['Equipment'], ParentType, ContextType, RequireFields<MutationUpdateEquipmentArgs, 'id' | 'name'>>;
+  updateFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationUpdateFacultyArgs, 'id' | 'name'>>;
+  updateRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationUpdateRoomArgs, 'roomId'>>;
+  updateUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'userId'>>;
+  updateUserStatus?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserStatusArgs, 'status' | 'userId'>>;
+  updateVenue?: Resolver<ResolversTypes['Venue'], ParentType, ContextType, RequireFields<MutationUpdateVenueArgs, 'id'>>;
+};
+
+export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  allBookings?: Resolver<Array<Maybe<ResolversTypes['Booking']>>, ParentType, ContextType>;
+  allDepartments?: Resolver<Array<ResolversTypes['Department']>, ParentType, ContextType>;
+  allEquipment?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType>;
+  allFaculties?: Resolver<Array<ResolversTypes['Faculty']>, ParentType, ContextType>;
+  allRooms?: Resolver<Array<Maybe<ResolversTypes['Room']>>, ParentType, ContextType>;
+  allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
+  allVenues?: Resolver<Array<ResolversTypes['Venue']>, ParentType, ContextType>;
+  bookingsByDateRange?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByDateRangeArgs, 'endDate' | 'startDate'>>;
+  bookingsByRoom?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByRoomArgs, 'roomId'>>;
+  bookingsByUser?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByUserArgs, 'userId'>>;
+  findAvailableRoomsByTime?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindAvailableRoomsByTimeArgs, 'startsAt'>>;
+  findDepartment?: Resolver<Maybe<ResolversTypes['Department']>, ParentType, ContextType, RequireFields<QueryFindDepartmentArgs, 'id'>>;
+  findDepartmentByName?: Resolver<Array<ResolversTypes['Department']>, ParentType, ContextType, RequireFields<QueryFindDepartmentByNameArgs, 'name'>>;
+  findDepartmentsByFaculty?: Resolver<Array<ResolversTypes['Department']>, ParentType, ContextType, RequireFields<QueryFindDepartmentsByFacultyArgs, 'facultyId'>>;
+  findEquipment?: Resolver<Maybe<ResolversTypes['Equipment']>, ParentType, ContextType, RequireFields<QueryFindEquipmentArgs, 'id'>>;
+  findEquipmentByName?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType, RequireFields<QueryFindEquipmentByNameArgs, 'name'>>;
+  findFaculty?: Resolver<Maybe<ResolversTypes['Faculty']>, ParentType, ContextType, RequireFields<QueryFindFacultyArgs, 'id'>>;
+  findFacultyByName?: Resolver<Array<ResolversTypes['Faculty']>, ParentType, ContextType, RequireFields<QueryFindFacultyByNameArgs, 'name'>>;
+  findRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<QueryFindRoomArgs, 'id'>>;
+  findRooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, Partial<QueryFindRoomsArgs>>;
+  findRoomsByAccessories?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsByAccessoriesArgs, 'accessoriesIds'>>;
+  findRoomsByDepartment?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsByDepartmentArgs, 'departmentId'>>;
+  findRoomsBySizeRange?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsBySizeRangeArgs, 'maxSize' | 'minSize'>>;
+  findRoomsByType?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsByTypeArgs, 'roomType'>>;
+  findRoomsByVenueId?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsByVenueIdArgs, 'venueId'>>;
+  findUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUserArgs, 'id'>>;
+  findUserByName?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUserByNameArgs, 'name'>>;
+  findUsersByDepartment?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUsersByDepartmentArgs, 'departmentId'>>;
+  findUsersByRole?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUsersByRoleArgs, 'role'>>;
+  findVenue?: Resolver<Maybe<ResolversTypes['Venue']>, ParentType, ContextType, RequireFields<QueryFindVenueArgs, 'id'>>;
+  findVenueByName?: Resolver<Array<ResolversTypes['Venue']>, ParentType, ContextType, RequireFields<QueryFindVenueByNameArgs, 'name'>>;
+  findVenuesByDepartment?: Resolver<Array<ResolversTypes['Venue']>, ParentType, ContextType, RequireFields<QueryFindVenuesByDepartmentArgs, 'departmentId'>>;
+  me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+};
+
+export type RoomResolvers<ContextType = any, ParentType extends ResolversParentTypes['Room'] = ResolversParentTypes['Room']> = {
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  department?: Resolver<ResolversTypes['Department'], ParentType, ContextType>;
+  equipment?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  isBookable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  pictureUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  size?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['RoomType'], ParentType, ContextType>;
+  venue?: Resolver<ResolversTypes['Venue'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
+  value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  department?: Resolver<ResolversTypes['Department'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  familyName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  givenName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  middleName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['UserRole'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['UserStatus'], ParentType, ContextType>;
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type VenueResolvers<ContextType = any, ParentType extends ResolversParentTypes['Venue'] = ResolversParentTypes['Venue']> = {
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type Resolvers<ContextType = any> = {
+  Booking?: BookingResolvers<ContextType>;
+  Date?: GraphQLScalarType;
+  Department?: DepartmentResolvers<ContextType>;
+  Equipment?: EquipmentResolvers<ContextType>;
+  Faculty?: FacultyResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
+  Query?: QueryResolvers<ContextType>;
+  Room?: RoomResolvers<ContextType>;
+  Token?: TokenResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
+  Venue?: VenueResolvers<ContextType>;
+};
+

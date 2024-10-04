@@ -1,0 +1,70 @@
+scalar Date
+
+enum RoomType {
+  PRACTICE_ROOM
+  CONCERT_HALL
+  ADMINISTRATIVE_SPACE
+  CLASSROOM
+  STUDIO
+  LIBRARY
+  MEETING_ROOM
+  THEATER
+}
+
+type Room {
+  id: ID!
+  venue: Venue!
+  code: String!
+  type: RoomType!
+  size: Int!
+  equipment: [Equipment!]!
+  pictureUrl: String
+  isBookable: Boolean!
+  department: Department!
+}
+
+type Query {
+  allRooms: [Room]!
+  findRoom(id: ID!): Room!
+  findAvailableRoomsByTime(startsAt: Date!, endsAt: Date): [Room!]!
+  findRoomsByVenueId(venueId: ID!): [Room!]!
+  findRoomsByAccessories(accessoriesIds: [ID!]!): [Room!]!
+  findRoomsByType(roomType: String!): [Room!]!
+  findRoomsByDepartment(departmentId: ID!): [Room!]!
+  findRoomsBySizeRange(minSize: Int!, maxSize: Int!): [Room!]!
+  findRooms(
+    venueId: ID,
+    roomType: RoomType,
+    accessoriesIds: [ID!],
+    minSize: Int,
+    maxSize: Int,
+    isBookable: Boolean
+  ): [Room!]!
+}
+
+type Mutation {
+  setRoomBookableStatus(roomId: ID!, isBookable: Boolean!): Room!
+  createRoom(
+    venueId: ID!,
+    code: String!,
+    type: RoomType!,
+    size: Int!,
+    equipmentIds: [ID!]!,
+    pictureUrl: String,
+    isBookable: Boolean!,
+    departmentId: ID!
+  ): Room!
+  updateRoom(
+    roomId: ID!,
+    code: String,
+    type: RoomType,
+    size: Int,
+    equipmentIds: [ID!],
+    pictureUrl: String,
+    isBookable: Boolean,
+    departmentId: ID
+  ): Room!
+  deleteRoom(roomId: ID!): Boolean!
+  addEquipmentToRoom(roomId: ID!, equipmentIds: [ID!]!): Room!
+  removeEquipmentFromRoom(roomId: ID!, equipmentIds: [ID!]!): Room!
+}

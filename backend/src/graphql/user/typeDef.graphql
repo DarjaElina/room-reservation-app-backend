@@ -1,0 +1,76 @@
+enum UserRole {
+  ADMIN
+  STUDENT
+  TEACHER
+  MANAGER
+}
+
+enum UserStatus {
+  ACTIVE
+  PENDING
+  DISABLED
+}
+
+type User {
+  id: ID!
+  givenName: String!
+  middleName: String
+  familyName: String!
+  username: String!
+  email: String!
+  role: UserRole!
+  status: UserStatus!
+  department: Department!
+}
+
+type Token {
+  value: String!
+}
+
+type Query {
+  allUsers: [User!]!
+  findUser(id: ID!): User
+  findUserByName(name: String!): User
+  findUsersByRole(role: UserRole!): [User!]!
+  findUsersByDepartment(departmentId: ID!): [User!]!
+  me: User
+}
+
+type Mutation {
+  createUser(
+    givenName: String!
+    familyName: String!
+    middleName: String
+    username: String!
+    email: String!
+    role: UserRole!
+    status: UserStatus!
+    departmentId: ID!
+  ): User
+
+  login(
+    username: String!
+    password: String!
+  ): Token
+
+  updateUser(
+    userId: ID!
+    givenName: String
+    familyName: String
+    middleName: String
+    username: String
+    email: String
+    password: String
+  ): User
+
+  activateUser(
+      userId: ID!
+      activationToken: String!
+      newPassword: String!
+  ): User
+
+  deleteUser(userId: ID!): Boolean!
+  updateUserStatus(userId: ID!, status: UserStatus!): User
+  changePassword(userId: ID!, oldPassword: String!, newPassword: String!): Boolean!
+  assignRole(userId: ID!, role: UserRole!): User
+}

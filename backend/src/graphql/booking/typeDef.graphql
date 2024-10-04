@@ -1,0 +1,43 @@
+scalar Date
+
+enum BookingStatus {
+  ACTIVE
+  PAST
+  CANCELLED
+  CANCELLED_LATE
+}
+
+type Booking {
+  id: ID!
+  startDate: Date!
+  endDate: Date!
+  room: Room!
+  user: User!
+  status: BookingStatus!
+}
+
+type Query {
+  allBookings: [Booking]!
+  bookingsByRoom(roomId: ID!): [Booking!]!
+  bookingsByDateRange(startDate: Date!, endDate: Date!): [Booking!]!
+  bookingsByUser(userId: ID!): [Booking!]!
+}
+
+type Mutation {
+  createBooking(
+    userId: ID!
+    roomId: ID!
+    startDate: Date!
+    endDate: Date!
+  ): Booking
+
+  updateBooking(
+    bookingId: ID!
+    startDate: Date
+    endDate: Date
+  ): Booking
+
+  cancelBooking(
+    bookingId: ID!
+  ): Boolean!
+}
