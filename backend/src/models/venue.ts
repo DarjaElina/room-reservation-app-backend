@@ -1,14 +1,17 @@
-import { Optional, DataTypes } from 'sequelize';
-import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, Unique, Length, Validate } from 'sequelize-typescript';
+import { DataType } from 'sequelize-typescript';
+import { Optional } from 'sequelize';
+import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, Unique, Length, Validate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 import Room from './room';
 
 interface VenueAttributes {
   id: string;
   code: string;
   name: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-type VenueCreationAttributes = Optional<VenueAttributes, 'id'>;
+type VenueCreationAttributes = Optional<VenueAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({
   underscored: true,
@@ -18,8 +21,8 @@ type VenueCreationAttributes = Optional<VenueAttributes, 'id'>;
 class Venue extends Model<VenueAttributes, VenueCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
-  @Default(() => DataTypes.UUIDV4)
-  @Column(DataTypes.UUID)
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   id!: string;
 
   @AllowNull(false)
@@ -41,6 +44,20 @@ class Venue extends Model<VenueAttributes, VenueCreationAttributes> {
 
   @HasMany(() => Room)
   rooms!: Room[];
+
+  @CreatedAt
+  @Column({
+      type: DataType.DATE,
+      defaultValue: DataType.NOW
+  })
+  createdAt!: Date;
+
+  @UpdatedAt
+  @Column({
+      type: DataType.DATE,
+      defaultValue: DataType.NOW
+  })
+  updatedAt!: Date;
 }
 
 export default Venue;

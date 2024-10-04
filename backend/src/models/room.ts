@@ -1,5 +1,6 @@
-import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, ForeignKey, BelongsTo, Unique, Length, Validate, IsUrl, BelongsToMany } from 'sequelize-typescript';
-import { Optional, DataTypes } from 'sequelize';
+import { DataType } from 'sequelize-typescript';
+import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, ForeignKey, BelongsTo, Unique, Length, Validate, IsUrl, BelongsToMany, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { Optional } from 'sequelize';
 import { RoomType } from '../types/room/room.enums';
 import { roomTypes } from '../types/room/room.constants';
 import Venue from './venue';
@@ -17,9 +18,11 @@ interface RoomAttributes {
   pictureUrl?: string;
   isBookable: boolean;
   departmentId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-type RoomCreationAttributes = Optional<RoomAttributes, 'id'>;
+type RoomCreationAttributes = Optional<RoomAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({
   underscored: true,
@@ -29,8 +32,8 @@ type RoomCreationAttributes = Optional<RoomAttributes, 'id'>;
 class Room extends Model<RoomAttributes, RoomCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
-  @Default(() => DataTypes.UUIDV4)
-  @Column(DataTypes.UUID)
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   id!: string;
 
   @AllowNull(false)
@@ -44,7 +47,7 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
 
   @AllowNull(false)
   @Column({
-    type: DataTypes.ENUM(...roomTypes),
+    type: DataType.ENUM(...roomTypes),
     validate: {
       isIn: [roomTypes]
     }
@@ -60,7 +63,7 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
   size!: number;
 
   @IsUrl
-  @Column(DataTypes.STRING)
+  @Column(DataType.STRING)
   pictureUrl?: string;
 
   @AllowNull(false)
@@ -69,7 +72,7 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
 
   @ForeignKey(() => Venue)
   @AllowNull(false)
-  @Column(DataTypes.UUID)
+  @Column(DataType.UUID)
   venueId!: string;
 
   @BelongsTo(() => Venue)
@@ -80,7 +83,7 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
 
   @ForeignKey(() => Department)
   @AllowNull(false)
-  @Column(DataTypes.UUID)
+  @Column(DataType.UUID)
   departmentId!: string;
 
   @BelongsTo(() => Department)
@@ -88,6 +91,20 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
 
   @BelongsToMany(() => Equipment, () => RoomEquipment)
   equipments!: Equipment[];
+
+  @CreatedAt
+  @Column({
+      type: DataType.DATE,
+      defaultValue: DataType.NOW
+  })
+  createdAt!: Date;
+
+  @UpdatedAt
+  @Column({
+      type: DataType.DATE,
+      defaultValue: DataType.NOW
+  })
+  updatedAt!: Date;
 }
 
 export default Room;

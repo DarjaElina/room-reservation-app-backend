@@ -1,5 +1,6 @@
+import { DataType } from 'sequelize-typescript';
 import { Table, Model, Column, PrimaryKey, AllowNull, Default, ForeignKey } from 'sequelize-typescript';
-import { Optional, DataTypes } from 'sequelize';
+import { Optional } from 'sequelize';
 import Room from './room';
 import Equipment from './equipment';
 
@@ -13,22 +14,23 @@ type RoomEquipmentCreationAttributes = Optional<RoomEquipmentAttributes, 'id'>;
 
 @Table({
   underscored: true,
-  modelName: 'room_equipment'
+  modelName: 'room_equipment',
+  tableName: 'room_equipment'
 })
 
 class RoomEquipment extends Model<RoomEquipmentAttributes, RoomEquipmentCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
-  @Default(() => DataTypes.UUIDV4)
-  @Column(DataTypes.UUID)
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   id!: string;
 
   @ForeignKey(() => Room)
-  @Column(DataTypes.UUID)
+  @Column(DataType.UUID)
   roomId!: string;
 
   @ForeignKey(() => Equipment)
-  @Column(DataTypes.UUID)
+  @Column(DataType.UUID)
   equipmentId!: string;
 }
 

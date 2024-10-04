@@ -1,15 +1,18 @@
-import { Table, Model, Column, ForeignKey, BelongsTo, PrimaryKey, AllowNull, Default, Unique, Length, Validate } from 'sequelize-typescript';
+import { DataType } from 'sequelize-typescript';
+import { Table, Model, Column, ForeignKey, BelongsTo, PrimaryKey, AllowNull, Default, Unique, Length, Validate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 import Faculty from './faculty';
-import { Optional, DataTypes } from 'sequelize';
+import { Optional } from 'sequelize';
 import { Departments } from '../types/department/department.constants';
 
 interface DepartmentAttributes {
   id: number;
   name: string;
   facultyId: number;
+  created_at: Date;
+  updated_at: Date;
 }
 
-type DepartmentCreationAttributes = Optional<DepartmentAttributes, 'id'>;
+type DepartmentCreationAttributes = Optional<DepartmentAttributes, 'id' | 'created_at' | 'updated_at'>;
 
 @Table({
   underscored: true,
@@ -19,8 +22,8 @@ type DepartmentCreationAttributes = Optional<DepartmentAttributes, 'id'>;
 class Department extends Model<DepartmentAttributes, DepartmentCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
-  @Default(() => DataTypes.UUIDV4)
-  @Column(DataTypes.UUID)
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   id!: string;
 
   @Unique
@@ -33,11 +36,25 @@ class Department extends Model<DepartmentAttributes, DepartmentCreationAttribute
 
   @ForeignKey(() => Faculty)
   @AllowNull(false)
-  @Column(DataTypes.UUID)
+  @Column(DataType.UUID)
   facultyId!: number;
 
   @BelongsTo(() => Faculty)
   faculty!: Faculty;
+
+  @CreatedAt
+  @Column({
+      type: DataType.DATE,
+      defaultValue: DataType.NOW
+  })
+  createdAt!: Date;
+
+  @UpdatedAt
+  @Column({
+      type: DataType.DATE,
+      defaultValue: DataType.NOW
+  })
+  updatedAt!: Date;
 }
 
 export default Department;

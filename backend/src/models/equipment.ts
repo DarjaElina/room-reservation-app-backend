@@ -1,5 +1,6 @@
+import { DataType } from 'sequelize-typescript';
 import { Table, Model, Column, PrimaryKey, AllowNull, Default, Unique, Length, Validate, BelongsToMany } from 'sequelize-typescript';
-import { Optional, DataTypes } from 'sequelize';
+import { Optional } from 'sequelize';
 import { EquipmentTypes } from '../types/equipment/equipment.constants';
 import Room from './room';
 import RoomEquipment from './room_equipment';
@@ -20,8 +21,8 @@ type EquipmentCreationAttributes = Optional<EquipmentAttributes, 'id'>;
 class Equipment extends Model<EquipmentAttributes, EquipmentCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
-  @Default(() => DataTypes.UUIDV4)
-  @Column(DataTypes.UUID)
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   id!: string;
 
   @Unique

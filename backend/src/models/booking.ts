@@ -1,7 +1,8 @@
-import { Table, Model, Column, PrimaryKey, AllowNull, Default, ForeignKey, BelongsTo, BeforeSave } from 'sequelize-typescript';
+import { DataType } from 'sequelize-typescript';
+import { Table, Model, Column, PrimaryKey, AllowNull, Default, ForeignKey, BelongsTo, BeforeSave, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 import User from './user';
 import Room from './room';
-import { Optional, DataTypes } from 'sequelize';
+import { Optional } from 'sequelize';
 import { BookingStatus } from '../types/booking/booking.enums';
 import { bookingStatuses } from '../types/booking/booking.constants';
 
@@ -12,9 +13,11 @@ interface BookingAttributes {
   userId: string;
   roomId: string;
   status: BookingStatus;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-type BookingCreationAttributes = Optional<BookingAttributes, 'id'>;
+type BookingCreationAttributes = Optional<BookingAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({
   underscored: true,
@@ -24,16 +27,16 @@ type BookingCreationAttributes = Optional<BookingAttributes, 'id'>;
 class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
-  @Default(() => DataTypes.UUIDV4)
-  @Column(DataTypes.UUID)
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   id!: string;
 
   @AllowNull(false)
-  @Column(DataTypes.DATE)
+  @Column(DataType.DATE)
   startDate!: Date;
 
   @AllowNull(false)
-  @Column(DataTypes.DATE)
+  @Column(DataType.DATE)
   endDate!: Date;
 
   @BeforeSave
@@ -45,7 +48,7 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
 
   @AllowNull(false)
   @Column({
-    type: DataTypes.ENUM(...bookingStatuses),
+    type: DataType.ENUM(...bookingStatuses),
     validate: {
       isIn: [bookingStatuses],
     }
@@ -54,7 +57,7 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
 
   @ForeignKey(() => User)
   @AllowNull(false)
-  @Column(DataTypes.UUID)
+  @Column(DataType.UUID)
   userId!: string;
 
   @BelongsTo(() => User)
@@ -62,11 +65,25 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
 
   @ForeignKey(() => Room)
   @AllowNull(false)
-  @Column(DataTypes.UUID)
+  @Column(DataType.UUID)
   roomId!: string;
 
   @BelongsTo(() => Room)
   room!: Room;
+
+  @CreatedAt
+  @Column({
+      type: DataType.DATE,
+      defaultValue: DataType.NOW
+  })
+  createdAt!: Date;
+
+  @UpdatedAt
+  @Column({
+      type: DataType.DATE,
+      defaultValue: DataType.NOW
+  })
+  updatedAt!: Date;
 }
 
 export default Booking;

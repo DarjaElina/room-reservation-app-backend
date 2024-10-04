@@ -1,7 +1,8 @@
-import { Optional, DataTypes } from 'sequelize';
-import { Table, Model, Column, HasMany, AllowNull, Default, PrimaryKey, Length, IsEmail, Unique, Validate, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { Role, Responsibility, Status } from '../types/user/user.enums';
-import { roles, responsibilities, userStatuses } from '../types/user/user.constants';
+import { DataType } from 'sequelize-typescript';
+import { Optional } from 'sequelize';
+import { Table, Model, Column, HasMany, AllowNull, Default, PrimaryKey, Length, IsEmail, Unique, Validate, ForeignKey, BelongsTo, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { UserRole, UserStatus } from '../types/user/user.enums';
+import { roles, userStatuses } from '../types/user/user.constants';
 import Booking from './booking';
 import Department from './department';
 
@@ -11,15 +12,17 @@ interface UserAttributes {
   middleName?: string;
   familyName: string;
   username: string;
-  passwordHash: string;
+  passwordHash?: string;
   email: string;
-  role: Role;
-  status: Status;
-  responsibility: Responsibility;
+  role: UserRole;
+  status: UserStatus;
   departmentId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-type UserCreationAttributes = Optional<UserAttributes, 'id'>;
+
+type UserCreationAttributes = Optional<UserAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({
   underscored: true,
@@ -29,8 +32,8 @@ type UserCreationAttributes = Optional<UserAttributes, 'id'>;
 class User extends Model<UserAttributes, UserCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
-  @Default(() => DataTypes.UUIDV4)
-  @Column(DataTypes.UUID)
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
   id!: string;
 
   @AllowNull(false)
@@ -57,7 +60,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
     notEmpty: true
   })
   @Column
-  middleName!: string;
+  middleName?: string;
 
   @AllowNull(false)
   @Validate({
@@ -68,9 +71,8 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   @Column
   username!: string;
 
-  @AllowNull(false)
   @Column
-  passwordHash!: string;
+  passwordHash?: string;
 
   @AllowNull(false)
   @IsEmail
@@ -80,41 +82,47 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
 
   @AllowNull(false)
   @Column({
-    type: DataTypes.ENUM(...roles),
+    type: DataType.ENUM(...roles),
     validate: {
       isIn: [roles]
     }
   })
-  role!: Role;
+  role!: UserRole;
 
   @AllowNull(false)
   @Column({
-    type: DataTypes.ENUM(...userStatuses),
+    type: DataType.ENUM(...userStatuses),
     validate: {
       isIn: [userStatuses]
     }
   })
-  status!: Status;
-
-  @AllowNull(false)
-  @Column({
-    type: DataTypes.ENUM(...responsibilities),
-    validate: {
-      isIn: [responsibilities]
-    }
-  })
-  responsibility!: Responsibility;
+  status!: UserStatus;
 
   @HasMany(() => Booking)
   bookings!: Booking[];
 
   @ForeignKey(() => Department)
   @AllowNull(false)
-  @Column(DataTypes.UUID)
+  @Column(DataType.UUID)
   departmentId!: string;
 
   @BelongsTo(() => Department)
   department!: Department;
+
+  @CreatedAt
+  @Column({
+      type: DataType.DATE,
+      defaultValue: DataType.NOW
+  })
+  createdAt!: Date;
+
+  @UpdatedAt
+  @Column({
+      type: DataType.DATE,
+      defaultValue: DataType.NOW
+  })
+  updatedAt!: Date;
+
 }
 
 
