@@ -1,10 +1,10 @@
 export enum RoomType {
-  PRACTICE_ROOM = "practice room",
-  CONCERT_HALL = "concert hall",
-  ADMINISTRATIVE_SPACE = "administrative space",
-  CLASSROOM = "classroom",
-  STUDIO = "studio",
-  LIBRARY = "library",
-  MEETING_ROOM = "meeting room",
-  THEATER = "theater",
+  Practice_room = "practice room",
+  Concert_hall = "concert hall",
+  Administrtative_space = "administrative space",
+  Classrom = "classroom",
+  Studio = "studio",
+  Library = "library",
+  Meeting_room = "meeting room",
+  Theater = "theater",
 }

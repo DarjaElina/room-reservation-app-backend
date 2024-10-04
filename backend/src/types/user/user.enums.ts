@@ -1,17 +1,12 @@
-export enum Role {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-  MANAGER = 'MANAGER',
+export enum UserRole {
+  Admin = 'ADMIN',
+  Student = 'STUDENT',
+  Teacher = 'TEACHER',
+  Manager = 'MANAGER',
 }
 
-export enum Responsibility {
-  STUDENT = 'STUDENT',
-  TEACHER = 'TEACHER',
-  BOOKING_AGENT = 'BOOKING_AGENT',
-}
-
-export enum Status {
-  ACTIVE = 'ACTIVE',
-  PENDING = 'PENDING',
-  DISABLED = 'DISABLED'
+export enum UserStatus {
+  Active = 'ACTIVE',
+  Pending = 'PENDING',
+  Disabled = 'DISABLED'
 }

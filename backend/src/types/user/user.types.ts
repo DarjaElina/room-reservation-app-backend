@@ -1,12 +1,17 @@
 import { Booking } from '../booking/booking.types';
-import { Role, Responsibility } from './user.enums';
+import { UserRole } from './user.enums';
+import { UserStatus } from './user.enums';
+import { Department } from '../department/department.types';
 
 export interface User {
   id: string;
-  fullName: string;
+  givenName: string;
+  familyName: string;
+  middleName?: string;
   username: string;
   email: string;
-  role: Role;
-  responsibility: Responsibility;
+  role: UserRole;
+  status: UserStatus;
   bookings: Booking[];
+  department: Department;
 }
