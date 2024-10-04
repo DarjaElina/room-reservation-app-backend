@@ -2,31 +2,26 @@ import { DataTypes } from 'sequelize';
 import type { Migration } from '../util/db';
 
 export const up: Migration = async ({ context: queryInterface }) => {
-  await queryInterface.createTable('faculties', {
+  await queryInterface.createTable('room_equipment', {
     id: {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    name: {
-      type: DataTypes.STRING,
+    roomId: {
+      type: DataTypes.UUID,
       allowNull: false,
-      unique: true
+      references: { model: 'rooms', key: 'id' },
     },
-    created_at: {
-      type: DataTypes.DATE,
+    equipmentId: {
+      type: DataTypes.UUID,
       allowNull: false,
-      defaultValue: DataTypes.NOW
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW
+      references: { model: 'equipment', key: 'id' },
     }
   });
 };
 
 export const down: Migration = async ({ context: queryInterface }) => {
-  await queryInterface.dropTable('faculties', {});
+  await queryInterface.dropTable('room_equipment');
 };
