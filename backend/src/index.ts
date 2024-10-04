@@ -6,8 +6,7 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 
-import { typeDefs } from './schema';
-import { resolvers } from './resolvers';
+import { typeDefs, resolvers } from './graphql/schema';
 
 import { PORT } from './util/config';
 import { connectToDatabase } from './util/db';

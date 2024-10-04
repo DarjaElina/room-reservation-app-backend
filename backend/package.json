@@ -6,13 +6,16 @@
     "tsc": "tsc",
     "dev": "ts-node-dev src/index.ts",
     "lint": "eslint .",
-    "migration:down": "ts-node src/util/rollback.ts"
+    "migration:down": "ts-node src/util/rollback.ts",
+    "generate": "graphql-codegen"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "@apollo/server": "^4.11.0",
+    "@graphql-tools/load-files": "^7.0.0",
+    "@graphql-tools/merge": "^9.0.7",
     "@types/umzug": "^2.3.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -26,6 +29,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript": "^4.0.9",
+    "@graphql-codegen/typescript-resolvers": "^4.2.1",
     "@stylistic/eslint-plugin": "^2.8.0",
     "@types/cors": "^2.8.17",
     "@types/eslint__js": "^8.42.3",
