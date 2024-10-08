@@ -60,6 +60,7 @@ export type Mutation = {
   addEquipmentToRoom: Room;
   addUserToDepartment: Department;
   assignRole?: Maybe<User>;
+  bulkCreateUsers?: Maybe<Array<Maybe<User>>>;
   cancelBooking: Scalars['Boolean']['output'];
   changePassword: Scalars['Boolean']['output'];
   createBooking?: Maybe<Booking>;
@@ -121,6 +122,11 @@ export type MutationAssignRoleArgs = {
 };
 
 
+export type MutationBulkCreateUsersArgs = {
+  users: Array<UserInput>;
+};
+
+
 export type MutationCancelBookingArgs = {
   bookingId: Scalars['ID']['input'];
 };
@@ -169,14 +175,7 @@ export type MutationCreateRoomArgs = {
 
 
 export type MutationCreateUserArgs = {
-  departmentId: Scalars['ID']['input'];
-  email: Scalars['String']['input'];
-  familyName: Scalars['String']['input'];
-  givenName: Scalars['String']['input'];
-  middleName?: InputMaybe<Scalars['String']['input']>;
-  role: UserRole;
-  status: UserStatus;
-  username: Scalars['String']['input'];
+  user: UserInput;
 };
 
 
@@ -510,7 +509,18 @@ export type User = {
   middleName?: Maybe<Scalars['String']['output']>;
   role: UserRole;
   status: UserStatus;
+  userNumber: Scalars['Int']['output'];
   username: Scalars['String']['output'];
+};
+
+export type UserInput = {
+  departmentId: Scalars['ID']['input'];
+  email: Scalars['String']['input'];
+  familyName: Scalars['String']['input'];
+  givenName: Scalars['String']['input'];
+  middleName?: InputMaybe<Scalars['String']['input']>;
+  role: UserRole;
+  status: UserStatus;
 };
 
 export enum UserRole {
@@ -621,6 +631,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Token: ResolverTypeWrapper<Token>;
   User: ResolverTypeWrapper<User>;
+  UserInput: UserInput;
   UserRole: UserRole;
   UserStatus: UserStatus;
   Venue: ResolverTypeWrapper<Venue>;
@@ -642,6 +653,7 @@ export type ResolversParentTypes = {
   String: Scalars['String']['output'];
   Token: Token;
   User: User;
+  UserInput: UserInput;
   Venue: Venue;
 };
 
@@ -684,6 +696,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addEquipmentToRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationAddEquipmentToRoomArgs, 'equipmentIds' | 'roomId'>>;
   addUserToDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationAddUserToDepartmentArgs, 'departmentId' | 'userId'>>;
   assignRole?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationAssignRoleArgs, 'role' | 'userId'>>;
+  bulkCreateUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<MutationBulkCreateUsersArgs, 'users'>>;
   cancelBooking?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationCancelBookingArgs, 'bookingId'>>;
   changePassword?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'newPassword' | 'oldPassword' | 'userId'>>;
   createBooking?: Resolver<Maybe<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'endDate' | 'roomId' | 'startDate' | 'userId'>>;
@@ -691,7 +704,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createEquipment?: Resolver<ResolversTypes['Equipment'], ParentType, ContextType, RequireFields<MutationCreateEquipmentArgs, 'name'>>;
   createFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationCreateFacultyArgs, 'name'>>;
   createRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationCreateRoomArgs, 'code' | 'departmentId' | 'equipmentIds' | 'isBookable' | 'size' | 'type' | 'venueId'>>;
-  createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'departmentId' | 'email' | 'familyName' | 'givenName' | 'role' | 'status' | 'username'>>;
+  createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'user'>>;
   createVenue?: Resolver<ResolversTypes['Venue'], ParentType, ContextType, RequireFields<MutationCreateVenueArgs, 'code' | 'name'>>;
   deleteEquipment?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteEquipmentArgs, 'id'>>;
   deleteFaculty?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteFacultyArgs, 'id'>>;
@@ -776,6 +789,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   middleName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   role?: Resolver<ResolversTypes['UserRole'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['UserStatus'], ParentType, ContextType>;
+  userNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

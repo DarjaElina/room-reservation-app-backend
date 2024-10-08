@@ -14,4 +14,5 @@ export interface User {
   status: UserStatus;
   bookings: Booking[];
   department: Department;
+  userNumber: number;
 }

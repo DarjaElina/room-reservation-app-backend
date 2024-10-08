@@ -21,6 +21,17 @@ type User {
   role: UserRole!
   status: UserStatus!
   department: Department!
+  userNumber: Int!
+}
+
+input UserInput {
+  givenName: String!
+  middleName: String
+  familyName: String!
+  email: String!
+  role: UserRole!
+  status: UserStatus!
+  departmentId: ID!
 }
 
 type Token {
@@ -37,16 +48,9 @@ type Query {
 }
 
 type Mutation {
-  createUser(
-    givenName: String!
-    familyName: String!
-    middleName: String
-    username: String!
-    email: String!
-    role: UserRole!
-    status: UserStatus!
-    departmentId: ID!
-  ): User
+  createUser(user: UserInput!): User
+
+  bulkCreateUsers(users: [UserInput!]!): [User]
 
   login(
     username: String!
