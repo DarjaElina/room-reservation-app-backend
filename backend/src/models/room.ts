@@ -17,7 +17,7 @@ interface RoomAttributes {
   venueId: string;
   pictureUrl?: string;
   isBookable: boolean;
-  departmentId: string;
+  departmentId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -82,12 +82,11 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
   bookings!: Booking[];
 
   @ForeignKey(() => Department)
-  @AllowNull(false)
   @Column(DataType.UUID)
-  departmentId!: string;
+  departmentId?: string;
 
   @BelongsTo(() => Department)
-  department!: Department;
+  department?: Department;
 
   @BelongsToMany(() => Equipment, () => RoomEquipment)
   equipments!: Equipment[];

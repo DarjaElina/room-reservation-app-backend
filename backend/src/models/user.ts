@@ -4,7 +4,8 @@ import { UserRole, UserStatus } from '../types/user/user.enums';
 import { roles, userStatuses } from '../types/user/user.constants';
 import Booking from './booking';
 import Department from './department';
-import { generateUsername } from '../util/helper';
+import { generateUsername } from '../helpers/helpers';
+import UserToken from './user_token';
 
 interface UserAttributes {
   id: string;
@@ -135,6 +136,9 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
     const username = generateUsername(instance.givenName, instance.familyName, instance.userNumber);
     await instance.update({ username });
   }
+
+  @HasMany(() => UserToken)
+  userTokens!: UserToken[];
 }
 
 

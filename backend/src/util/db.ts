@@ -8,6 +8,7 @@ import Department from '../models/department';
 import Faculty from '../models/faculty';
 import Equipment from '../models/equipment';
 import RoomEquipment from '../models/room_equipment';
+import UserToken from '../models/user_token';
 
 import { Umzug, SequelizeStorage } from 'umzug';
 
@@ -16,7 +17,7 @@ if (!DATABASE_URL) {
 }
 
 export const sequelize = new Sequelize(DATABASE_URL, {
-  models: [User, Booking, Venue, Room, Department, Faculty, Equipment, RoomEquipment],
+  models: [User, Booking, Venue, Room, Department, Faculty, Equipment, RoomEquipment, UserToken],
 });
 
 const migrationConf = {

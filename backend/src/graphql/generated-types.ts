@@ -14,7 +14,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  Date: { input: any; output: any; }
+  Date: { input: Date; output: Date; }
 };
 
 export type Booking = {
@@ -55,14 +55,13 @@ export type Faculty = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  activateUser?: Maybe<User>;
+  activateUser: UserResponse;
   addDepartmentToFaculty: Faculty;
   addEquipmentToRoom: Room;
   addUserToDepartment: Department;
-  assignRole?: Maybe<User>;
   bulkCreateUsers?: Maybe<Array<Maybe<User>>>;
-  cancelBooking: Scalars['Boolean']['output'];
-  changePassword: Scalars['Boolean']['output'];
+  cancelBooking: UserResponse;
+  changePassword: UserResponse;
   createBooking?: Maybe<Booking>;
   createDepartment: Department;
   createEquipment: Equipment;
@@ -73,17 +72,20 @@ export type Mutation = {
   deleteEquipment: Scalars['Boolean']['output'];
   deleteFaculty: Scalars['Boolean']['output'];
   deleteRoom: Scalars['Boolean']['output'];
-  deleteUser: Scalars['Boolean']['output'];
+  deleteUser: UserResponse;
   deleteVenue: Scalars['Boolean']['output'];
   login?: Maybe<Token>;
   removeDepartmentFromFaculty: Faculty;
   removeEquipmentFromRoom: Room;
   removeUserFromDepartment: Department;
+  requestPasswordReset: UserResponse;
+  resetPassword: UserResponse;
   setRoomBookableStatus: Room;
   updateBooking?: Maybe<Booking>;
   updateDepartment: Department;
   updateEquipment: Equipment;
   updateFaculty: Faculty;
+  updatePastBookings: UserResponse;
   updateRoom: Room;
   updateUser?: Maybe<User>;
   updateUserStatus?: Maybe<User>;
@@ -94,7 +96,6 @@ export type Mutation = {
 export type MutationActivateUserArgs = {
   activationToken: Scalars['String']['input'];
   newPassword: Scalars['String']['input'];
-  userId: Scalars['ID']['input'];
 };
 
 
@@ -116,12 +117,6 @@ export type MutationAddUserToDepartmentArgs = {
 };
 
 
-export type MutationAssignRoleArgs = {
-  role: UserRole;
-  userId: Scalars['ID']['input'];
-};
-
-
 export type MutationBulkCreateUsersArgs = {
   users: Array<UserInput>;
 };
@@ -135,7 +130,6 @@ export type MutationCancelBookingArgs = {
 export type MutationChangePasswordArgs = {
   newPassword: Scalars['String']['input'];
   oldPassword: Scalars['String']['input'];
-  userId: Scalars['ID']['input'];
 };
 
 
@@ -143,7 +137,6 @@ export type MutationCreateBookingArgs = {
   endDate: Scalars['Date']['input'];
   roomId: Scalars['ID']['input'];
   startDate: Scalars['Date']['input'];
-  userId: Scalars['ID']['input'];
 };
 
 
@@ -175,7 +168,7 @@ export type MutationCreateRoomArgs = {
 
 
 export type MutationCreateUserArgs = {
-  user: UserInput;
+  userInput: UserInput;
 };
 
 
@@ -234,6 +227,18 @@ export type MutationRemoveUserFromDepartmentArgs = {
 };
 
 
+export type MutationRequestPasswordResetArgs = {
+  email: Scalars['String']['input'];
+};
+
+
+export type MutationResetPasswordArgs = {
+  newPassword: Scalars['String']['input'];
+  oldPassword: Scalars['String']['input'];
+  token: Scalars['String']['input'];
+};
+
+
 export type MutationSetRoomBookableStatusArgs = {
   isBookable: Scalars['Boolean']['input'];
   roomId: Scalars['ID']['input'];
@@ -242,8 +247,8 @@ export type MutationSetRoomBookableStatusArgs = {
 
 export type MutationUpdateBookingArgs = {
   bookingId: Scalars['ID']['input'];
-  endDate?: InputMaybe<Scalars['Date']['input']>;
-  startDate?: InputMaybe<Scalars['Date']['input']>;
+  endDate: Scalars['Date']['input'];
+  startDate: Scalars['Date']['input'];
 };
 
 
@@ -473,8 +478,8 @@ export type QueryFindVenuesByDepartmentArgs = {
 export type Room = {
   __typename?: 'Room';
   code: Scalars['String']['output'];
-  department: Department;
-  equipment: Array<Equipment>;
+  department?: Maybe<Department>;
+  equipment?: Maybe<Array<Equipment>>;
   id: Scalars['ID']['output'];
   isBookable: Scalars['Boolean']['output'];
   pictureUrl?: Maybe<Scalars['String']['output']>;
@@ -499,6 +504,11 @@ export type Token = {
   value: Scalars['String']['output'];
 };
 
+export enum TokenType {
+  Activation = 'ACTIVATION',
+  PasswordReset = 'PASSWORD_RESET'
+}
+
 export type User = {
   __typename?: 'User';
   department: Department;
@@ -521,6 +531,12 @@ export type UserInput = {
   middleName?: InputMaybe<Scalars['String']['input']>;
   role: UserRole;
   status: UserStatus;
+};
+
+export type UserResponse = {
+  __typename?: 'UserResponse';
+  message?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
 };
 
 export enum UserRole {
@@ -630,8 +646,10 @@ export type ResolversTypes = {
   RoomType: RoomType;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Token: ResolverTypeWrapper<Token>;
+  TokenType: TokenType;
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
+  UserResponse: ResolverTypeWrapper<UserResponse>;
   UserRole: UserRole;
   UserStatus: UserStatus;
   Venue: ResolverTypeWrapper<Venue>;
@@ -654,6 +672,7 @@ export type ResolversParentTypes = {
   Token: Token;
   User: User;
   UserInput: UserInput;
+  UserResponse: UserResponse;
   Venue: Venue;
 };
 
@@ -691,35 +710,37 @@ export type FacultyResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  activateUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationActivateUserArgs, 'activationToken' | 'newPassword' | 'userId'>>;
+  activateUser?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationActivateUserArgs, 'activationToken' | 'newPassword'>>;
   addDepartmentToFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationAddDepartmentToFacultyArgs, 'departmentId' | 'facultyId'>>;
   addEquipmentToRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationAddEquipmentToRoomArgs, 'equipmentIds' | 'roomId'>>;
   addUserToDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationAddUserToDepartmentArgs, 'departmentId' | 'userId'>>;
-  assignRole?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationAssignRoleArgs, 'role' | 'userId'>>;
   bulkCreateUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<MutationBulkCreateUsersArgs, 'users'>>;
-  cancelBooking?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationCancelBookingArgs, 'bookingId'>>;
-  changePassword?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'newPassword' | 'oldPassword' | 'userId'>>;
-  createBooking?: Resolver<Maybe<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'endDate' | 'roomId' | 'startDate' | 'userId'>>;
+  cancelBooking?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationCancelBookingArgs, 'bookingId'>>;
+  changePassword?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'newPassword' | 'oldPassword'>>;
+  createBooking?: Resolver<Maybe<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'endDate' | 'roomId' | 'startDate'>>;
   createDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationCreateDepartmentArgs, 'name'>>;
   createEquipment?: Resolver<ResolversTypes['Equipment'], ParentType, ContextType, RequireFields<MutationCreateEquipmentArgs, 'name'>>;
   createFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationCreateFacultyArgs, 'name'>>;
   createRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationCreateRoomArgs, 'code' | 'departmentId' | 'equipmentIds' | 'isBookable' | 'size' | 'type' | 'venueId'>>;
-  createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'user'>>;
+  createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'userInput'>>;
   createVenue?: Resolver<ResolversTypes['Venue'], ParentType, ContextType, RequireFields<MutationCreateVenueArgs, 'code' | 'name'>>;
   deleteEquipment?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteEquipmentArgs, 'id'>>;
   deleteFaculty?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteFacultyArgs, 'id'>>;
   deleteRoom?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteRoomArgs, 'roomId'>>;
-  deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'userId'>>;
+  deleteUser?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'userId'>>;
   deleteVenue?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteVenueArgs, 'id'>>;
   login?: Resolver<Maybe<ResolversTypes['Token']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'password' | 'username'>>;
   removeDepartmentFromFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationRemoveDepartmentFromFacultyArgs, 'departmentId' | 'facultyId'>>;
   removeEquipmentFromRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationRemoveEquipmentFromRoomArgs, 'equipmentIds' | 'roomId'>>;
   removeUserFromDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationRemoveUserFromDepartmentArgs, 'departmentId' | 'userId'>>;
+  requestPasswordReset?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationRequestPasswordResetArgs, 'email'>>;
+  resetPassword?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'newPassword' | 'oldPassword' | 'token'>>;
   setRoomBookableStatus?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationSetRoomBookableStatusArgs, 'isBookable' | 'roomId'>>;
-  updateBooking?: Resolver<Maybe<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<MutationUpdateBookingArgs, 'bookingId'>>;
+  updateBooking?: Resolver<Maybe<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<MutationUpdateBookingArgs, 'bookingId' | 'endDate' | 'startDate'>>;
   updateDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationUpdateDepartmentArgs, 'id'>>;
   updateEquipment?: Resolver<ResolversTypes['Equipment'], ParentType, ContextType, RequireFields<MutationUpdateEquipmentArgs, 'id' | 'name'>>;
   updateFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationUpdateFacultyArgs, 'id' | 'name'>>;
+  updatePastBookings?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>;
   updateRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationUpdateRoomArgs, 'roomId'>>;
   updateUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'userId'>>;
   updateUserStatus?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserStatusArgs, 'status' | 'userId'>>;
@@ -764,8 +785,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type RoomResolvers<ContextType = any, ParentType extends ResolversParentTypes['Room'] = ResolversParentTypes['Room']> = {
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  department?: Resolver<ResolversTypes['Department'], ParentType, ContextType>;
-  equipment?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType>;
+  department?: Resolver<Maybe<ResolversTypes['Department']>, ParentType, ContextType>;
+  equipment?: Resolver<Maybe<Array<ResolversTypes['Equipment']>>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   isBookable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   pictureUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -794,6 +815,12 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserResponse'] = ResolversParentTypes['UserResponse']> = {
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type VenueResolvers<ContextType = any, ParentType extends ResolversParentTypes['Venue'] = ResolversParentTypes['Venue']> = {
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -813,6 +840,7 @@ export type Resolvers<ContextType = any> = {
   Room?: RoomResolvers<ContextType>;
   Token?: TokenResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  UserResponse?: UserResponseResolvers<ContextType>;
   Venue?: VenueResolvers<ContextType>;
 };
 

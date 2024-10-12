@@ -37,7 +37,7 @@ class Department extends Model<DepartmentAttributes, DepartmentCreationAttribute
   @ForeignKey(() => Faculty)
   @AllowNull(false)
   @Column(DataType.UUID)
-  facultyId!: number;
+  facultyId!: string;
 
   @BelongsTo(() => Faculty)
   faculty!: Faculty;

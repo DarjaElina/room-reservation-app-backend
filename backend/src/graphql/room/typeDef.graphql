@@ -17,10 +17,10 @@ type Room {
   code: String!
   type: RoomType!
   size: Int!
-  equipment: [Equipment!]!
+  equipment: [Equipment!]
   pictureUrl: String
   isBookable: Boolean!
-  department: Department!
+  department: Department
 }
 
 type Query {
@@ -54,6 +54,7 @@ type Mutation {
     isBookable: Boolean!,
     departmentId: ID!
   ): Room!
+
   updateRoom(
     roomId: ID!,
     code: String,

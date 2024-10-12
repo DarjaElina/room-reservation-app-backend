@@ -6,8 +6,11 @@ const config: CodegenConfig = {
     "./src/graphql/generated-types.ts": {
       plugins: ["typescript", "typescript-resolvers"],
       "config": {
-                "maybeValue": "T"
-              }
+          "maybeValue": "T",
+          scalars: {
+            Date: "Date"
+        }
+      },
     },
   },
 };
