@@ -34,7 +34,6 @@ export const up: Migration = async ({ context: queryInterface }) => {
 
   await queryInterface.addColumn('rooms', 'department_id', {
     type: DataTypes.UUID,
-    allowNull: false,
     references: { model: 'departments', key: 'id' },
   });
 };
