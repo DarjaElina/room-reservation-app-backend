@@ -10,6 +10,12 @@ import User from '../models/user';
 import { Request } from 'express';
 import { JWT_SECRET } from '../util/config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { BookingStatus } from '../types/booking/booking.enums';
+import { startOfWeek, endOfWeek } from 'date-fns';
+import Sequelize from 'sequelize';
+import { BookingAttributes } from '../models/booking';
+import Room from '../models/room';
+import { User as UserType}  from '../graphql/generated-types';
 
 export const generateUsername = (firstName: string, lastName: string, userNumber: number): string => {
   const firstLetter = firstName.toLowerCase().slice(0, 1);
@@ -101,4 +107,57 @@ export const getUserFromReq = async (req: Request): Promise<{ user: User | null;
   }
 
   return { user, isAdmin };
+};
+
+interface BookingWithTotalHours extends BookingAttributes {
+  totalHours: number;
+}
+
+export const getTotalBookedHoursForWeek = async (userId: string): Promise<number> => {
+  const now = new Date();
+  const startOfWeekDate = startOfWeek(now);
+  const endOfWeekDate = endOfWeek(now);
+  const result = await Booking.findOne({
+    where: {
+      userId,
+      startDate: { [Op.between]: [startOfWeekDate, endOfWeekDate] },
+      status: {
+        [Op.or]: [BookingStatus.Past, BookingStatus.CancelledLate],
+      }
+    },
+    attributes: [
+      [Sequelize.fn('SUM', Sequelize.literal(`(EXTRACT(EPOCH FROM end_date - start_date) / 3600)`)), 'totalHours']
+    ]
+  }) as BookingWithTotalHours | null;
+
+  const totalHours = result?.totalHours || 0;
+  return totalHours;
+};
+
+
+export const checkBookingLimit = (userRole: UserRole, totalBookedHours: number, newBookingHours: number) => {
+  const maxLimit = userRole === UserRole.Student ? 12 : 30;
+  
+  if (totalBookedHours + newBookingHours > maxLimit) {
+    throw new GraphQLError(`You cannot make more bookings this week. Limit of ${maxLimit} hours exceeded.`);
+  }
+};
+
+export const checkRoomDepartmentRestriction = async (user: UserType, roomId: string): Promise<void> => {
+  const room = await Room.findByPk(roomId);
+  if (room?.department && user.department.id !== room.departmentId) {
+    throw new GraphQLError(`This room can be booked only from students from ${room.department.name}`);
+  }
+};
+
+
+export const validateBooking = async (user: User, roomId: string, startDate: Date, endDate: Date) => {
+  validateSingleBooking(user.role, startDate, endDate);
+  await checkOverlappingBookings(roomId, startDate, endDate);
+
+  const totalBookedHours = await getTotalBookedHoursForWeek(user.id);
+
+  const newBookingHours = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60);
+
+  checkBookingLimit(user.role, totalBookedHours, newBookingHours);
 };
