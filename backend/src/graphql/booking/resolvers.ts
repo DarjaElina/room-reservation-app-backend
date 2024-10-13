@@ -3,7 +3,7 @@ import Booking from "../../models/booking";
 import Room from "../../models/room";
 import { GraphQLError } from "graphql";
 import { handleResolverErrors } from "../../util/errorHandler";
-import { validateSingleBooking, checkOverlappingBookings } from "../../helpers/helpers";
+import { validateSingleBooking, checkOverlappingBookings, getTotalBookedHoursForWeek, checkBookingLimit, checkRoomDepartmentRestriction } from "../../helpers/helpers";
 
 
 
@@ -82,6 +82,14 @@ const bookingResolvers: Resolvers = {
       }
       validateSingleBooking(user.role, startDate, endDate);
       await checkOverlappingBookings(roomId, startDate, endDate);
+
+      const totalBookedHours = await getTotalBookedHoursForWeek(user.id);
+
+      const newBookingHours = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60);
+
+      checkBookingLimit(user.role, totalBookedHours, newBookingHours);
+
+      await checkRoomDepartmentRestriction(user, roomId);
 
       try {
         const booking = await Booking.create({ userId: user.id, roomId, startDate, endDate, status: BookingStatus.Active });
