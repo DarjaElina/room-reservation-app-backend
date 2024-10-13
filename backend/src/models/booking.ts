@@ -6,7 +6,7 @@ import { Optional } from 'sequelize';
 import { BookingStatus } from '../types/booking/booking.enums';
 import { bookingStatuses } from '../types/booking/booking.constants';
 
-interface BookingAttributes {
+export interface BookingAttributes {
   id: string;
   startDate: Date;
   endDate: Date;
