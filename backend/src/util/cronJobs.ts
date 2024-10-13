@@ -40,13 +40,13 @@ const deleteOldBookings = async () => {
 };
 
 export const startCronJobs = () => {
-  cron.schedule('0 0 * * *', () => {
+  cron.schedule('0 * * * *', () => {
     updateBookingStatuses().catch((error) => {
       console.error('Cron job failed (update bookings):', error);
     });
   });
 
-  cron.schedule('0 0 * * *', () => {
+  cron.schedule('0 0 * * 0', () => {
     deleteOldBookings().catch((error) => {
       console.error('Cron job failed (delete old bookings):', error);
     });
