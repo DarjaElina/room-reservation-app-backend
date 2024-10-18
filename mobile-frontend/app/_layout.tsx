@@ -1,4 +1,4 @@
-import { Slot } from 'expo-router';
+import { Slot, Stack } from 'expo-router';
 import { ApolloProvider } from '@apollo/client';
 import apolloClient from '../utils/apolloClient';
 import AuthStorageContext from '../context/AuthStorageContext';

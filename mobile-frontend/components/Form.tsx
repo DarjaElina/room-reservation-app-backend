@@ -33,6 +33,7 @@ export default function Form({ control, errors, fields }: FormProps) {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                autoCapitalize="none"
                 activeOutlineColor={error ? 'red' : 'black'}
               />
             )}
