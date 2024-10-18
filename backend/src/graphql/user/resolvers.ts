@@ -25,6 +25,9 @@ const userResolvers: Resolvers = {
       });
       
       return users;
+    },
+    currentUser: (_, __, { user }: { user: User }) => {
+      return user;
     }
   },
   
@@ -154,7 +157,7 @@ const userResolvers: Resolvers = {
       }
     },
 
-    login: async (_, { username, password } ) => {
+    authenticate: async (_, { username, password } ) => {
       try {
         const user = await User.findOne({ where: { username } });
         if (!user) {
@@ -277,7 +280,7 @@ const userResolvers: Resolvers = {
       } catch (error) {
         return handleResolverErrors(error);
       }
-    }
+    },
   }
 };
 

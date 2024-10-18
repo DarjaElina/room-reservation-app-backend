@@ -101,9 +101,14 @@ export const getUserFromReq = async (req: Request): Promise<{ user: User | null;
     if (!JWT_SECRET) {
       throw new Error('JWT secret is not defined');
     }
-    const { userId } = jwt.verify(auth.substring(7), JWT_SECRET) as IJwtPayload;
-    user = await User.findByPk(userId);
-    isAdmin = user?.role === UserRole.Admin;
+    try {
+      const { userId } = jwt.verify(auth.substring(7), JWT_SECRET) as IJwtPayload;
+      user = await User.findByPk(userId);
+      isAdmin = user?.role === UserRole.Admin;
+    } catch (error) {
+      console.log('JWT verification error:', error);
+      return { user: null, isAdmin: false };
+    }
   }
 
   return { user, isAdmin };
@@ -161,3 +166,4 @@ export const validateBooking = async (user: User, roomId: string, startDate: Dat
 
   checkBookingLimit(user.role, totalBookedHours, newBookingHours);
 };
+
