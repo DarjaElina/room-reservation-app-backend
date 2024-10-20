@@ -20,12 +20,14 @@ type Room {
   equipment: [Equipment!]
   pictureUrl: String
   isBookable: Boolean!
-  department: Department
+  department: Department,
+  isFree: Boolean
+  description: String!
 }
 
 type Query {
-  allRooms: [Room]!
-  findRoom(id: ID!): Room!
+  allRooms(isBookable: Boolean): [Room]!
+  findRoom(roomId: ID!): Room
   findAvailableRoomsByTime(startsAt: Date!, endsAt: Date): [Room!]!
   findRoomsByVenueId(venueId: ID!): [Room!]!
   findRoomsByAccessories(accessoriesIds: [ID!]!): [Room!]!

@@ -20,6 +20,7 @@ interface RoomAttributes {
   departmentId?: string;
   createdAt: Date;
   updatedAt: Date;
+  description: string;
 }
 
 type RoomCreationAttributes = Optional<RoomAttributes, 'id' | 'createdAt' | 'updatedAt'>;
@@ -104,6 +105,10 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
       defaultValue: DataType.NOW
   })
   updatedAt!: Date;
+
+  @AllowNull(false)
+  @Column
+  description!: string;
 }
 
 export default Room;
