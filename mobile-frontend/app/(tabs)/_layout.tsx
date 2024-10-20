@@ -31,7 +31,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="(home)/index"
         options={{
           title: 'Search',
           tabBarIcon: ({ color, focused }) => (
@@ -44,7 +44,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="calendar"
+        name="(home)/calendar"
         options={{
           title: 'My Calendar',
           tabBarIcon: ({ color, focused }) => (
@@ -67,6 +67,12 @@ export default function TabLayout() {
               size={24}
             />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="rooms/[id]"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

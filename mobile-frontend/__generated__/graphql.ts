@@ -94,6 +94,42 @@ export type CurrentUserQuery = {
   currentUser?: { __typename?: 'User'; username: string } | null;
 };
 
+export type AllRoomsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AllRoomsQuery = {
+  __typename?: 'Query';
+  allRooms: Array<{
+    __typename?: 'Room';
+    id: string;
+    isFree?: boolean | null;
+    code: string;
+    pictureUrl?: string | null;
+    isBookable: boolean;
+    size: number;
+    equipment?: Array<{ __typename?: 'Equipment'; name: string }> | null;
+    venue: { __typename?: 'Venue'; name: string };
+  } | null>;
+};
+
+export type FindRoomQueryVariables = Exact<{
+  roomId: Scalars['ID']['input'];
+}>;
+
+export type FindRoomQuery = {
+  __typename?: 'Query';
+  findRoom?: {
+    __typename?: 'Room';
+    isFree?: boolean | null;
+    code: string;
+    pictureUrl?: string | null;
+    isBookable: boolean;
+    size: number;
+    description: string;
+    equipment?: Array<{ __typename?: 'Equipment'; name: string }> | null;
+    venue: { __typename?: 'Venue'; name: string };
+  } | null;
+};
+
 export const AuthenticateDocument = {
   kind: 'Document',
   definitions: [
@@ -195,3 +231,126 @@ export const CurrentUserDocument = {
     },
   ],
 } as unknown as DocumentNode<CurrentUserQuery, CurrentUserQueryVariables>;
+export const AllRoomsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'AllRooms' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'allRooms' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'isFree' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'equipment' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'pictureUrl' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'isBookable' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'venue' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AllRoomsQuery, AllRoomsQueryVariables>;
+export const FindRoomDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'FindRoom' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'roomId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'findRoom' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'roomId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'roomId' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'isFree' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'code' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'equipment' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'pictureUrl' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'isBookable' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'venue' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FindRoomQuery, FindRoomQueryVariables>;

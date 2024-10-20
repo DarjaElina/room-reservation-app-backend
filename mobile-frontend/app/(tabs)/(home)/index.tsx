@@ -1,13 +1,19 @@
 import { Text, View, StyleSheet } from 'react-native';
-import useSignOut from '../../hooks/useSignOut';
+import useSignOut from '../../../hooks/useSignOut';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
-import theme from '../../theme';
+import theme from '../../../theme';
+import useRooms from '../../../hooks/useRooms';
+import RoomList from '../../../components/RoomList';
 
 export default function Index() {
+  const { rooms, loading, error } = useRooms();
+  if (loading) {
+    return <Text>Loading rooms...</Text>;
+  }
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.text}>Rooms.....</Text>
+      <RoomList rooms={rooms} />
     </SafeAreaView>
   );
 }

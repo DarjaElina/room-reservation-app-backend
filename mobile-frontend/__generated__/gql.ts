@@ -18,6 +18,10 @@ const documents = {
     types.AuthenticateDocument,
   '\n  query CurrentUser {\n    currentUser {\n      username\n    }\n  }\n':
     types.CurrentUserDocument,
+  ' \n  query AllRooms {\n    allRooms {\n      id\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n    }\n  }\n':
+    types.AllRoomsDocument,
+  '\n  query FindRoom($roomId: ID!) {\n    findRoom(roomId: $roomId) {\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n      description\n    }\n  }\n':
+    types.FindRoomDocument,
 };
 
 /**
@@ -46,6 +50,18 @@ export function gql(
 export function gql(
   source: '\n  query CurrentUser {\n    currentUser {\n      username\n    }\n  }\n'
 ): (typeof documents)['\n  query CurrentUser {\n    currentUser {\n      username\n    }\n  }\n'];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: ' \n  query AllRooms {\n    allRooms {\n      id\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n    }\n  }\n'
+): (typeof documents)[' \n  query AllRooms {\n    allRooms {\n      id\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n    }\n  }\n'];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: '\n  query FindRoom($roomId: ID!) {\n    findRoom(roomId: $roomId) {\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n      description\n    }\n  }\n'
+): (typeof documents)['\n  query FindRoom($roomId: ID!) {\n    findRoom(roomId: $roomId) {\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n      description\n    }\n  }\n'];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

@@ -2,7 +2,6 @@ type Venue {
   id: ID!
   code: String!
   name: String!
-  rooms: [Room!]!
 }
 
 type Query {

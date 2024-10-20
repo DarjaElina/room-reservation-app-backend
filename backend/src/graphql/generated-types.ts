@@ -331,7 +331,7 @@ export type Query = {
   findEquipmentByName: Array<Equipment>;
   findFaculty?: Maybe<Faculty>;
   findFacultyByName: Array<Faculty>;
-  findRoom: Room;
+  findRoom?: Maybe<Room>;
   findRooms: Array<Room>;
   findRoomsByAccessories: Array<Room>;
   findRoomsByDepartment: Array<Room>;
@@ -345,6 +345,11 @@ export type Query = {
   findVenue?: Maybe<Venue>;
   findVenueByName: Array<Venue>;
   findVenuesByDepartment: Array<Venue>;
+};
+
+
+export type QueryAllRoomsArgs = {
+  isBookable?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -406,7 +411,7 @@ export type QueryFindFacultyByNameArgs = {
 
 
 export type QueryFindRoomArgs = {
-  id: Scalars['ID']['input'];
+  roomId: Scalars['ID']['input'];
 };
 
 
@@ -484,9 +489,11 @@ export type Room = {
   __typename?: 'Room';
   code: Scalars['String']['output'];
   department?: Maybe<Department>;
+  description: Scalars['String']['output'];
   equipment?: Maybe<Array<Equipment>>;
   id: Scalars['ID']['output'];
   isBookable: Scalars['Boolean']['output'];
+  isFree?: Maybe<Scalars['Boolean']['output']>;
   pictureUrl?: Maybe<Scalars['String']['output']>;
   size: Scalars['Int']['output'];
   type: RoomType;
@@ -557,7 +564,6 @@ export type Venue = {
   code: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  rooms: Array<Room>;
 };
 
 
@@ -757,7 +763,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   allDepartments?: Resolver<Array<ResolversTypes['Department']>, ParentType, ContextType>;
   allEquipment?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType>;
   allFaculties?: Resolver<Array<ResolversTypes['Faculty']>, ParentType, ContextType>;
-  allRooms?: Resolver<Array<Maybe<ResolversTypes['Room']>>, ParentType, ContextType>;
+  allRooms?: Resolver<Array<Maybe<ResolversTypes['Room']>>, ParentType, ContextType, Partial<QueryAllRoomsArgs>>;
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   allVenues?: Resolver<Array<ResolversTypes['Venue']>, ParentType, ContextType>;
   bookingsByDateRange?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByDateRangeArgs, 'endDate' | 'startDate'>>;
@@ -772,7 +778,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   findEquipmentByName?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType, RequireFields<QueryFindEquipmentByNameArgs, 'name'>>;
   findFaculty?: Resolver<Maybe<ResolversTypes['Faculty']>, ParentType, ContextType, RequireFields<QueryFindFacultyArgs, 'id'>>;
   findFacultyByName?: Resolver<Array<ResolversTypes['Faculty']>, ParentType, ContextType, RequireFields<QueryFindFacultyByNameArgs, 'name'>>;
-  findRoom?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<QueryFindRoomArgs, 'id'>>;
+  findRoom?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomArgs, 'roomId'>>;
   findRooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, Partial<QueryFindRoomsArgs>>;
   findRoomsByAccessories?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsByAccessoriesArgs, 'accessoriesIds'>>;
   findRoomsByDepartment?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsByDepartmentArgs, 'departmentId'>>;
@@ -791,9 +797,11 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 export type RoomResolvers<ContextType = any, ParentType extends ResolversParentTypes['Room'] = ResolversParentTypes['Room']> = {
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   department?: Resolver<Maybe<ResolversTypes['Department']>, ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   equipment?: Resolver<Maybe<Array<ResolversTypes['Equipment']>>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   isBookable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isFree?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   pictureUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   size?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['RoomType'], ParentType, ContextType>;
@@ -825,7 +833,6 @@ export type VenueResolvers<ContextType = any, ParentType extends ResolversParent
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
