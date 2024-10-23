@@ -27,27 +27,28 @@ export default function Room({
         contentFit="cover"
         transition={1000}
       />
-      <Text style={styles.title}>{code}</Text>
-      <Text>{venue}</Text>
-      <Text>{isFree ? 'currently available' : 'occupied'}</Text>
+      <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{code}</Text>
+      <Text style={{ fontSize: 12 }}>{venue}</Text>
+      <Text>{isFree ? 'Available' : 'Occupied'}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: 300,
+    width: 170,
+    minHeight: 200,
     backgroundColor: theme.colors.textPrimary,
-    borderRadius: 10,
     display: 'flex',
     gap: 5,
-    marginBottom: 15,
-    padding: 15,
+    padding: 5,
+    borderRadius: 10,
   },
   image: {
     width: '100%',
-    height: 200,
+    height: 100,
     backgroundColor: '#0553',
+    borderRadius: 10,
   },
   title: {
     fontSize: 25,

@@ -1,4 +1,5 @@
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import theme from '../theme';
 
 interface EquipmentProp {
   name: string;
@@ -6,8 +7,21 @@ interface EquipmentProp {
 
 export default function EquipmentItem({ name }: EquipmentProp) {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>{name}</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.textSecondary,
+    padding: 2,
+    margin: 2,
+    backgroundColor: theme.colors.textPrimary,
+  },
+});

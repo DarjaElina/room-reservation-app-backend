@@ -1,36 +1,42 @@
-import { StyleSheet, View, Pressable, Text } from 'react-native';
+import { StyleSheet, Pressable, Text } from 'react-native';
 import theme from '../theme';
 
 type Props = {
+  isBig?: boolean;
+  isSmall?: boolean;
   label: string;
   onSubmit: () => void;
 };
 
-export default function Button({ label, onSubmit }: Props) {
+export default function Button({ isBig, isSmall, label, onSubmit }: Props) {
+  const buttonStyles = [
+    styles.button,
+    isBig && styles.bigButton,
+    isSmall && styles.smallButton,
+  ];
   return (
-    <View style={styles.buttonContainer}>
-      <Pressable style={styles.button} onPress={onSubmit}>
-        <Text style={styles.buttonLabel}>{label}</Text>
-      </Pressable>
-    </View>
+    <Pressable style={buttonStyles} onPress={onSubmit}>
+      <Text style={styles.buttonLabel}>{label}</Text>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    height: 68,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 3,
-  },
   button: {
-    borderRadius: 30,
-    width: '100%',
-    height: '100%',
+    borderRadius: 15,
+    backgroundColor: theme.colors.buttons,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    backgroundColor: theme.colors.buttons,
+    padding: 5,
+  },
+  bigButton: {
+    width: '100%',
+    height: 68,
+  },
+  smallButton: {
+    width: 100,
+    height: 35,
   },
   buttonLabel: {
     color: theme.colors.textPrimary,

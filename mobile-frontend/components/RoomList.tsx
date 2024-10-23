@@ -2,14 +2,21 @@ import { View, FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import Room from './RoomItem';
 import { Link } from 'expo-router';
 
-
 export default function RoomList({ rooms }) {
   return (
-    <SafeAreaView style={styles.container}>
+    <View>
       <FlatList
+        contentContainerStyle={{
+          padding: 5,
+          display: 'flex',
+        }}
+        showsVerticalScrollIndicator={false}
+        horizontal={false}
+        numColumns={2}
         data={rooms}
         renderItem={({ item }) => (
           <Link
+            style={{ margin: 5 }}
             href={{
               pathname: '/rooms/[id]',
               params: { id: item.id },
@@ -24,12 +31,6 @@ export default function RoomList({ rooms }) {
         )}
         keyExtractor={(item) => item.id}
       />
-    </SafeAreaView>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

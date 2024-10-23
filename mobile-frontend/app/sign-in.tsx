@@ -63,7 +63,7 @@ export default function Login() {
           { name: 'password', label: 'Password', isPassword: true },
         ]}
       />
-      <Button label="Login" onSubmit={handleSubmit(onSubmit)} />
+      <Button isBig label="Login" onSubmit={handleSubmit(onSubmit)} />
     </SafeAreaView>
   );
 }

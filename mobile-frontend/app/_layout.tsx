@@ -6,6 +6,7 @@ import AuthStorage from '../utils/authStorage';
 import { View } from 'react-native';
 import theme from '../theme';
 import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const authStorage = new AuthStorage();
 
@@ -13,9 +14,9 @@ export default function RootLayout() {
   return (
     <ApolloProvider client={apolloClient}>
       <AuthStorageContext.Provider value={authStorage}>
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <Slot />
-        </View>
+        </SafeAreaView>
       </AuthStorageContext.Provider>
     </ApolloProvider>
   );
@@ -23,9 +24,10 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexGrow: 1,
     flexShrink: 1,
     backgroundColor: theme.colors.backgroundPrimary,
-    padding: 20,
+    padding: 5,
   },
 });

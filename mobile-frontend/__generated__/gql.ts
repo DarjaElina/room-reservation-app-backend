@@ -16,12 +16,14 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
   '\n  mutation Authenticate($username: String!, $password: String!) {\n    authenticate(username: $username, password: $password) {\n      value\n    }\n  }\n':
     types.AuthenticateDocument,
-  '\n  query CurrentUser {\n    currentUser {\n      username\n    }\n  }\n':
+  '\n  query CurrentUser {\n    currentUser {\n      username\n      id\n    }\n  }\n':
     types.CurrentUserDocument,
   ' \n  query AllRooms {\n    allRooms {\n      id\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n    }\n  }\n':
     types.AllRoomsDocument,
-  '\n  query FindRoom($roomId: ID!) {\n    findRoom(roomId: $roomId) {\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n      description\n    }\n  }\n':
+  '\n  query FindRoom($roomId: ID!) {\n    findRoom(roomId: $roomId) {\n      id\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n      description\n    }\n  }\n':
     types.FindRoomDocument,
+  '\n  query BookingsByRoomAndUser($roomId: ID!, $userId: ID!) {\n    bookingsByRoomAndUser(roomId: $roomId, userId: $userId) {\n      startDate\n      endDate\n      id\n    }\n  }\n':
+    types.BookingsByRoomAndUserDocument,
 };
 
 /**
@@ -48,8 +50,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: '\n  query CurrentUser {\n    currentUser {\n      username\n    }\n  }\n'
-): (typeof documents)['\n  query CurrentUser {\n    currentUser {\n      username\n    }\n  }\n'];
+  source: '\n  query CurrentUser {\n    currentUser {\n      username\n      id\n    }\n  }\n'
+): (typeof documents)['\n  query CurrentUser {\n    currentUser {\n      username\n      id\n    }\n  }\n'];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -60,8 +62,14 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: '\n  query FindRoom($roomId: ID!) {\n    findRoom(roomId: $roomId) {\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n      description\n    }\n  }\n'
-): (typeof documents)['\n  query FindRoom($roomId: ID!) {\n    findRoom(roomId: $roomId) {\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n      description\n    }\n  }\n'];
+  source: '\n  query FindRoom($roomId: ID!) {\n    findRoom(roomId: $roomId) {\n      id\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n      description\n    }\n  }\n'
+): (typeof documents)['\n  query FindRoom($roomId: ID!) {\n    findRoom(roomId: $roomId) {\n      id\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n      description\n    }\n  }\n'];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: '\n  query BookingsByRoomAndUser($roomId: ID!, $userId: ID!) {\n    bookingsByRoomAndUser(roomId: $roomId, userId: $userId) {\n      startDate\n      endDate\n      id\n    }\n  }\n'
+): (typeof documents)['\n  query BookingsByRoomAndUser($roomId: ID!, $userId: ID!) {\n    bookingsByRoomAndUser(roomId: $roomId, userId: $userId) {\n      startDate\n      endDate\n      id\n    }\n  }\n'];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

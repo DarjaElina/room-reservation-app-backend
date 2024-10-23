@@ -12,9 +12,9 @@ export default function Index() {
     return <Text>Loading rooms...</Text>;
   }
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <RoomList rooms={rooms} />
-    </SafeAreaView>
+    </View>
   );
 }
 

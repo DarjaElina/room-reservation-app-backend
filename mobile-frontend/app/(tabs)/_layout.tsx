@@ -19,19 +19,15 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        headerShown: false,
         tabBarActiveTintColor: '#ffd33d',
-        headerStyle: {
-          backgroundColor: theme.colors.backgroundPrimary,
-        },
-        headerShadowVisible: false,
-        headerTintColor: '#fff',
         tabBarStyle: {
           backgroundColor: theme.colors.backgroundPrimary,
         },
       }}
     >
       <Tabs.Screen
-        name="(home)/index"
+        name="(home)"
         options={{
           title: 'Search',
           tabBarIcon: ({ color, focused }) => (
@@ -44,7 +40,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="(home)/calendar"
+        name="calendar"
         options={{
           title: 'My Calendar',
           tabBarIcon: ({ color, focused }) => (
@@ -67,12 +63,6 @@ export default function TabLayout() {
               size={24}
             />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="rooms/[id]"
-        options={{
-          href: null,
         }}
       />
     </Tabs>

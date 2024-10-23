@@ -1,7 +1,8 @@
 import { useLocalSearchParams } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
-import useRoom from '../../../hooks/useRoom';
-import RoomView from '../../../components/RoomView';
+import useRoom from '../../../../hooks/useRoom';
+import RoomView from '../../../../components/RoomView';
+import theme from '../../../../theme';
 
 export default function RoomScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -11,5 +12,9 @@ export default function RoomScreen() {
     return <Text>Loading room details...</Text>;
   }
 
-  return <RoomView room={room} />;
+  return (
+    <View style={{ flex: 1, backgroundColor: theme.colors.backgroundPrimary }}>
+      <RoomView room={room} />
+    </View>
+  );
 }
