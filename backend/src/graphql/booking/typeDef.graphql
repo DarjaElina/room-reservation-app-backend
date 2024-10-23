@@ -17,10 +17,11 @@ type Booking {
 }
 
 type Query {
-  allBookings: [Booking]!
+  allBookings: [Booking!]!
   bookingsByRoom(roomId: ID!): [Booking!]!
   bookingsByDateRange(startDate: Date!, endDate: Date!): [Booking!]!
   bookingsByUser(userId: ID!): [Booking!]!
+  bookingsByRoomAndUser(roomId: ID!, userId: ID!): [Booking!]!
 }
 
 type Mutation {

@@ -26,10 +26,12 @@ class RoomEquipment extends Model<RoomEquipmentAttributes, RoomEquipmentCreation
   id!: string;
 
   @ForeignKey(() => Room)
+  @AllowNull(false)
   @Column(DataType.UUID)
   roomId!: string;
 
   @ForeignKey(() => Equipment)
+  @AllowNull(false)
   @Column(DataType.UUID)
   equipmentId!: string;
 }

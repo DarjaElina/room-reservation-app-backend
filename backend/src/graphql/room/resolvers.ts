@@ -6,6 +6,7 @@ import User from "../../models/user";
 import Venue from "../../models/venue";
 import Booking from "../../models/booking";
 import { Op } from "sequelize";
+import Equipment from "../../models/equipment";
 
 const roomResolvers: Resolvers = {
   Query: {
@@ -16,29 +17,40 @@ const roomResolvers: Resolvers = {
       try {
         const rooms = await Room.findAll({
           where: isBookable !== undefined ? { isBookable } : {},
-          include: [{
-            model: Venue,
-            include: []
-          }]
+          include: [
+            {
+              model: Venue,
+              include: []
+            },
+            {
+              model: Equipment,
+              attributes: ['name'],
+              through: {
+                attributes: []
+              }
+            }
+          ]
         });
 
         const currentDateTime = new Date();
-        const roomsWithStatus = await Promise.all(
-          rooms.map(async (room) => {
-            const currentBooking = await Booking.findOne({
-              where: {
-                roomId: room.id,
-                startDate: { [Op.lte]: currentDateTime },
-                endDate: { [Op.gte]: currentDateTime },
-              },
-            });
-            return {
-              ...room.dataValues,
-              venue: room.venue,
-              isFree: !currentBooking,
-            };
-          })
-        );
+        const roomIds = rooms.map(room => room.id);
+        const currentBookings = await Booking.findAll({
+          where: {
+            roomId: { [Op.in]: roomIds },
+            startDate: { [Op.lte]: currentDateTime },
+            endDate: { [Op.gte]: currentDateTime },
+          }
+        });
+
+        const roomsWithStatus = rooms.map(room => {
+          const isFree = !currentBookings.some(booking => booking.roomId === room.id);
+          return {
+            ...room.dataValues,
+            venue: room.venue,
+            isFree,
+            equipment: room.equipment
+          };
+        });
 
         return roomsWithStatus;
       } catch (error) {
@@ -55,12 +67,28 @@ const roomResolvers: Resolvers = {
           include: [{
             model: Venue,
             include: []
-          }]
+          },
+          {
+            model: Equipment,
+            attributes: ['name'],
+            through: {
+              attributes: []
+            }
+          }
+        ]
         });
         if (!room) {
           throw new GraphQLError('Not found!');
         }
-        return room;
+        const currentDateTime = new Date();
+        const currentBooking = await Booking.findOne({
+          where: {
+            roomId: room.id,
+            startDate: { [Op.lte]: currentDateTime },
+            endDate: { [Op.gte]: currentDateTime },
+          }
+        });
+        return {...room.dataValues, isFree: !currentBooking, venue: room.venue };
       } catch (error) {
         return handleResolverErrors(error);
       }
@@ -70,6 +98,9 @@ const roomResolvers: Resolvers = {
   Room: {
     venue: (room) => {
       return room.venue;
+    },
+    equipment: (room) => {
+      return room.equipment || [];
     }
   }
 };

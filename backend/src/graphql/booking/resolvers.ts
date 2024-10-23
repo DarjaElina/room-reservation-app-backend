@@ -63,6 +63,14 @@ const bookingResolvers: Resolvers = {
       const bookings = await Booking.findAll({ where: { userId }});
 
       return bookings;
+    },
+    bookingsByRoomAndUser: async (_, { userId, roomId }, { user }: { user: User}) => {
+      if (!user) {
+        throw new GraphQLError('Not authenticated');
+      }
+      const bookings = await Booking.findAll({ where: { userId, roomId }});
+
+      return bookings;
     }
   },
 

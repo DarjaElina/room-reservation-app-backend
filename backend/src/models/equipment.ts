@@ -34,7 +34,7 @@ class Equipment extends Model<EquipmentAttributes, EquipmentCreationAttributes> 
   name!: string;
 
   @BelongsToMany(() => Room, () => RoomEquipment)
-  rooms!: Room[];
+  rooms!: Array<Room & {RoomEquipment: RoomEquipment}>;
 }
 
 export default Equipment;

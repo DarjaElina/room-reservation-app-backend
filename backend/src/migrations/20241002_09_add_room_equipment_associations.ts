@@ -9,12 +9,12 @@ export const up: Migration = async ({ context: queryInterface }) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    roomId: {
+    room_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: { model: 'rooms', key: 'id' },
     },
-    equipmentId: {
+    equipment_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: { model: 'equipment', key: 'id' },

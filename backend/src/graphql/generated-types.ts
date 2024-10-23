@@ -312,7 +312,7 @@ export type MutationUpdateVenueArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  allBookings: Array<Maybe<Booking>>;
+  allBookings: Array<Booking>;
   allDepartments: Array<Department>;
   allEquipment: Array<Equipment>;
   allFaculties: Array<Faculty>;
@@ -321,6 +321,7 @@ export type Query = {
   allVenues: Array<Venue>;
   bookingsByDateRange: Array<Booking>;
   bookingsByRoom: Array<Booking>;
+  bookingsByRoomAndUser: Array<Booking>;
   bookingsByUser: Array<Booking>;
   currentUser?: Maybe<User>;
   findAvailableRoomsByTime: Array<Room>;
@@ -361,6 +362,12 @@ export type QueryBookingsByDateRangeArgs = {
 
 export type QueryBookingsByRoomArgs = {
   roomId: Scalars['ID']['input'];
+};
+
+
+export type QueryBookingsByRoomAndUserArgs = {
+  roomId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
@@ -490,7 +497,7 @@ export type Room = {
   code: Scalars['String']['output'];
   department?: Maybe<Department>;
   description: Scalars['String']['output'];
-  equipment?: Maybe<Array<Equipment>>;
+  equipment?: Maybe<Array<Maybe<Equipment>>>;
   id: Scalars['ID']['output'];
   isBookable: Scalars['Boolean']['output'];
   isFree?: Maybe<Scalars['Boolean']['output']>;
@@ -759,7 +766,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  allBookings?: Resolver<Array<Maybe<ResolversTypes['Booking']>>, ParentType, ContextType>;
+  allBookings?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType>;
   allDepartments?: Resolver<Array<ResolversTypes['Department']>, ParentType, ContextType>;
   allEquipment?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType>;
   allFaculties?: Resolver<Array<ResolversTypes['Faculty']>, ParentType, ContextType>;
@@ -768,6 +775,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   allVenues?: Resolver<Array<ResolversTypes['Venue']>, ParentType, ContextType>;
   bookingsByDateRange?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByDateRangeArgs, 'endDate' | 'startDate'>>;
   bookingsByRoom?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByRoomArgs, 'roomId'>>;
+  bookingsByRoomAndUser?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByRoomAndUserArgs, 'roomId' | 'userId'>>;
   bookingsByUser?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByUserArgs, 'userId'>>;
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   findAvailableRoomsByTime?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindAvailableRoomsByTimeArgs, 'startsAt'>>;
@@ -798,7 +806,7 @@ export type RoomResolvers<ContextType = any, ParentType extends ResolversParentT
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   department?: Resolver<Maybe<ResolversTypes['Department']>, ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  equipment?: Resolver<Maybe<Array<ResolversTypes['Equipment']>>, ParentType, ContextType>;
+  equipment?: Resolver<Maybe<Array<Maybe<ResolversTypes['Equipment']>>>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   isBookable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   isFree?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
