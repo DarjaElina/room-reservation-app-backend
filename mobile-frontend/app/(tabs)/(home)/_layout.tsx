@@ -29,8 +29,11 @@ export default function Layout() {
       <Stack.Screen
         name="rooms/modal"
         options={{
-          presentation: 'modal',
+          title: '',
         }}
+        // options={{
+        //   presentation: 'modal',
+        // }}
       />
     </Stack>
   );

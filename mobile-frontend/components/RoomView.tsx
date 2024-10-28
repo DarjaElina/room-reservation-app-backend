@@ -1,6 +1,5 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import RoomDescription from './RoomDescription';
-import RoomItem from './RoomItem';
 import theme from '../theme';
 import { Image } from 'expo-image';
 import EquipmentList from './EquipmentList';
@@ -8,6 +7,7 @@ import Button from './Button';
 import useAuth from '../hooks/useAuth';
 import { Redirect } from 'expo-router';
 import BookingList from './BookingList';
+import { Link } from 'expo-router';
 
 interface RoomProps {
   id: string;
@@ -54,11 +54,24 @@ export default function RoomView({ room }: { room: RoomProps }) {
             justifyContent: 'space-between',
           }}
         >
-          <Button
-            isSmall
-            label="Reserve"
-            onSubmit={() => console.log('pressed!')}
-          />
+          <Link href="/(home)/rooms/modal" asChild>
+            {/* <Button
+              isSmall
+              label="Reserve"
+              onSubmit={() => console.log('pressed!')}
+            /> */}
+            <Pressable
+              style={{
+                width: 100,
+                backgroundColor: 'grey',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 20,
+              }}
+            >
+              <Text>Reserve</Text>
+            </Pressable>
+          </Link>
           <Button
             isSmall
             label="Favorite"
