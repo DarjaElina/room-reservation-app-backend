@@ -27,13 +27,10 @@ export default function Layout() {
         }}
       />
       <Stack.Screen
-        name="rooms/modal"
+        name="rooms/date-time-picker"
         options={{
           title: '',
         }}
-        // options={{
-        //   presentation: 'modal',
-        // }}
       />
     </Stack>
   );

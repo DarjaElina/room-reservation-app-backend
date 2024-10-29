@@ -54,7 +54,7 @@ export default function RoomView({ room }: { room: RoomProps }) {
             justifyContent: 'space-between',
           }}
         >
-          <Link href="/(home)/rooms/modal" asChild>
+          <Link href="/(home)/rooms/date-time-picker" asChild>
             {/* <Button
               isSmall
               label="Reserve"

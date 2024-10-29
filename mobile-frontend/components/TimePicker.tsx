@@ -1,7 +1,6 @@
 import { FlatList, View, Text, Pressable } from 'react-native';
 import { useState } from 'react';
 import theme from '../theme';
-import CalendarHeader from './CalendarHeader';
 
 function SelectedTimeSlot({ value }) {
   return (
@@ -21,7 +20,7 @@ function SelectedTimeSlot({ value }) {
   );
 }
 
-const testArray = [
+const timeArray = [
   { hour: 6, value: '06:00:00' },
   { hour: 6, value: '06:15:00' },
   { hour: 6, value: '06:30:00' },
@@ -94,7 +93,7 @@ const testArray = [
   { hour: 23, value: '23:15:00' },
   { hour: 23, value: '23:30:00' },
   { hour: 23, value: '23:45:00' },
-  { hour: 0, value: '00:00:00' }
+  { hour: 0, value: '00:00:00' },
 ];
 
 interface TimeSlot {
@@ -102,8 +101,7 @@ interface TimeSlot {
   value: string;
 }
 
-function Calendar() {
-  const [selectedValues, setSelectedValues] = useState<TimeSlot[]>([]);
+export default function TimePicker({ selectedValues, setSelectedValues }) {
 
   const handleSelect = (item: TimeSlot) => {
     const hour = Number(item.value.slice(0, 2));
@@ -122,44 +120,46 @@ function Calendar() {
     const isValueSelected = selectedValues.some((i) => i.value === item.value);
 
     if (isHourSelected && isValueSelected) {
-      console.log('I am if!!!')
       setSelectedValues(
         selectedValues.filter((selected) => selected.value !== item.value)
       );
     } else if (!isHourSelected) {
-      console.log('and i am ELSE :D')
       setSelectedValues([...selectedValues, ...hourBlock]);
     } else {
-      setSelectedValues([...selectedValues, item])
+      setSelectedValues([...selectedValues, item]);
     }
   };
-  console.log(selectedValues);
+  
+  
   return (
     <View>
-      <FlatList
-        data={testArray}
-        renderItem={({ item, index }) => (
-          <Pressable
-            onPress={() => handleSelect(item)}
-            style={{
-              height: 25,
-              borderTopWidth: 1,
-              borderColor:
-                index !== 0 && index % 4 === 0
-                  ? 'grey'
-                  : theme.colors.textPrimary,
-              position: 'relative',
-            }}
-          >
-            {index % 4 === 0 ? (
-              <Text style={{ padding: 2 }}>{item.value}</Text>
-            ) : null}
-            {selectedValues.find((i) => i.value === item.value) ? (
-              <SelectedTimeSlot value={item.value} />
-            ) : null}
-          </Pressable>
-        )}
-      />
+      <View>
+        <FlatList
+          data={timeArray}
+          renderItem={({ item, index }) => (
+            <Pressable
+              onPress={() => handleSelect(item)}
+              style={{
+                height: 25,
+                borderTopWidth: 1,
+                borderColor:
+                  index !== 0 && index % 4 === 0
+                    ? 'grey'
+                    : theme.colors.textPrimary,
+                position: 'relative',
+              }}
+            >
+              {index % 4 === 0 ? (
+                <Text style={{ padding: 2 }}>{item.value}</Text>
+              ) : null}
+              {selectedValues.find((i) => i.value === item.value) ? (
+                <SelectedTimeSlot value={item.value.slice(0, 5)} />
+              ) : null}
+            </Pressable>
+          )}
+        />
+        <Separator />
+      </View>
     </View>
   );
 }
@@ -171,18 +171,17 @@ function Separator() {
         width: 1,
         position: 'absolute',
         backgroundColor: 'grey',
-        height: '100%',
         left: '20%',
+        height: '100%',
       }}
     ></View>
   );
 }
 
-export default function CalendarTemplate() {
-  return (
-    <View style={{ position: 'relative' }}>
-      <Calendar />
-      <Separator />
-    </View>
-  );
-}
+// export default function CalendarTemplate() {
+//   return (
+//     <View style={{ position: 'relative' }}>
+//       <TimePicker />
+//     </View>
+//   );
+// }
