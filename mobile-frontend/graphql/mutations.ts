@@ -7,3 +7,13 @@ export const AUTHENTICATE = gql(`
     }
   }
 `);
+
+export const CREATE_BOOKING = gql(`
+  mutation CreateBooking($roomId: ID!, $startDate: Date!, $endDate: Date!) {
+    createBooking(roomId: $roomId, startDate: $startDate, endDate: $endDate) {
+      room {
+        code
+      }
+    }
+  }
+`);

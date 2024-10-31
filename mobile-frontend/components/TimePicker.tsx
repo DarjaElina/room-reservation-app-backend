@@ -1,107 +1,31 @@
 import { FlatList, View, Text, Pressable } from 'react-native';
-import { useState } from 'react';
 import theme from '../theme';
-
-function SelectedTimeSlot({ value }) {
-  return (
-    <View
-      style={{
-        minHeight: 25,
-        backgroundColor: '#8594e4',
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        zIndex: 1,
-        width: '80%',
-      }}
-    >
-      <Text style={{ color: theme.colors.textPrimary }}>{value}</Text>
-    </View>
-  );
-}
-
-const timeArray = [
-  { hour: 6, value: '06:00:00' },
-  { hour: 6, value: '06:15:00' },
-  { hour: 6, value: '06:30:00' },
-  { hour: 6, value: '06:45:00' },
-  { hour: 7, value: '07:00:00' },
-  { hour: 7, value: '07:15:00' },
-  { hour: 7, value: '07:30:00' },
-  { hour: 7, value: '07:45:00' },
-  { hour: 8, value: '08:00:00' },
-  { hour: 8, value: '08:15:00' },
-  { hour: 8, value: '08:30:00' },
-  { hour: 8, value: '08:45:00' },
-  { hour: 9, value: '09:00:00' },
-  { hour: 9, value: '09:15:00' },
-  { hour: 9, value: '09:30:00' },
-  { hour: 9, value: '09:45:00' },
-  { hour: 10, value: '10:00:00' },
-  { hour: 10, value: '10:15:00' },
-  { hour: 10, value: '10:30:00' },
-  { hour: 10, value: '10:45:00' },
-  { hour: 11, value: '11:00:00' },
-  { hour: 11, value: '11:15:00' },
-  { hour: 11, value: '11:30:00' },
-  { hour: 11, value: '11:45:00' },
-  { hour: 12, value: '12:00:00' },
-  { hour: 12, value: '12:15:00' },
-  { hour: 12, value: '12:30:00' },
-  { hour: 12, value: '12:45:00' },
-  { hour: 13, value: '13:00:00' },
-  { hour: 13, value: '13:15:00' },
-  { hour: 13, value: '13:30:00' },
-  { hour: 13, value: '13:45:00' },
-  { hour: 14, value: '14:00:00' },
-  { hour: 14, value: '14:15:00' },
-  { hour: 14, value: '14:30:00' },
-  { hour: 14, value: '14:45:00' },
-  { hour: 15, value: '15:00:00' },
-  { hour: 15, value: '15:15:00' },
-  { hour: 15, value: '15:30:00' },
-  { hour: 15, value: '15:45:00' },
-  { hour: 16, value: '16:00:00' },
-  { hour: 16, value: '16:15:00' },
-  { hour: 16, value: '16:30:00' },
-  { hour: 16, value: '16:45:00' },
-  { hour: 17, value: '17:00:00' },
-  { hour: 17, value: '17:15:00' },
-  { hour: 17, value: '17:30:00' },
-  { hour: 17, value: '17:45:00' },
-  { hour: 18, value: '18:00:00' },
-  { hour: 18, value: '18:15:00' },
-  { hour: 18, value: '18:30:00' },
-  { hour: 18, value: '18:45:00' },
-  { hour: 19, value: '19:00:00' },
-  { hour: 19, value: '19:15:00' },
-  { hour: 19, value: '19:30:00' },
-  { hour: 19, value: '19:45:00' },
-  { hour: 20, value: '20:00:00' },
-  { hour: 20, value: '20:15:00' },
-  { hour: 20, value: '20:30:00' },
-  { hour: 20, value: '20:45:00' },
-  { hour: 21, value: '21:00:00' },
-  { hour: 21, value: '21:15:00' },
-  { hour: 21, value: '21:30:00' },
-  { hour: 21, value: '21:45:00' },
-  { hour: 22, value: '22:00:00' },
-  { hour: 22, value: '22:15:00' },
-  { hour: 22, value: '22:30:00' },
-  { hour: 22, value: '22:45:00' },
-  { hour: 23, value: '23:00:00' },
-  { hour: 23, value: '23:15:00' },
-  { hour: 23, value: '23:30:00' },
-  { hour: 23, value: '23:45:00' },
-  { hour: 0, value: '00:00:00' },
-];
+import { useBookingContext } from '../hooks/useBookingContext';
+import { FAB } from 'react-native-paper';
+import { Alert } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { useNavigation } from 'expo-router';
+import Separator from './Separator';
+import SelectedTimeSlot from './SelectedTimeSlot';
+import { timeArray } from '../constants/TimeArray';
 
 interface TimeSlot {
   hour: number;
   value: string;
 }
 
-export default function TimePicker({ selectedValues, setSelectedValues }) {
+export default function TimePicker() {
+  const {
+    selectedTimeValues,
+    setSelectedTimeValues,
+    setBookingEndDate,
+    setBookingStartDate,
+    date,
+  } = useBookingContext();
+
+  const navigation = useNavigation();
+
+  const { id } = useLocalSearchParams();
 
   const handleSelect = (item: TimeSlot) => {
     const hour = Number(item.value.slice(0, 2));
@@ -112,29 +36,67 @@ export default function TimePicker({ selectedValues, setSelectedValues }) {
       { hour, value: `${hour < 10 ? '0' : ''}${hour}:30:00` },
       { hour, value: `${hour < 10 ? '0' : ''}${hour}:45:00` },
     ];
-
     const isHourSelected = hourBlock.every((block) =>
-      selectedValues.some((selected) => selected.hour === block.hour)
+      selectedTimeValues.some((selected) => selected.hour === block.hour)
     );
 
-    const isValueSelected = selectedValues.some((i) => i.value === item.value);
+    const isValueSelected = selectedTimeValues.some(
+      (i) => i.value === item.value
+    );
 
     if (isHourSelected && isValueSelected) {
-      setSelectedValues(
-        selectedValues.filter((selected) => selected.value !== item.value)
+      const curentSelected = selectedTimeValues.filter(
+        (i) => i.value === item.value
       );
-    } else if (!isHourSelected) {
-      setSelectedValues([...selectedValues, ...hourBlock]);
+      if (
+        selectedTimeValues.indexOf(curentSelected[0]) <=
+        selectedTimeValues.length / 2
+      ) {
+        setSelectedTimeValues(
+          selectedTimeValues
+            .slice(selectedTimeValues.indexOf(curentSelected[0]) + 1)
+            .sort((a, b) => a.hour - b.hour)
+        );
+      } else {
+        setSelectedTimeValues(
+          selectedTimeValues
+            .slice(0, selectedTimeValues.indexOf(curentSelected[0]))
+            .sort((a, b) => a.hour - b.hour)
+        );
+      }
+    } else if (
+      !isHourSelected &&
+      (selectedTimeValues.length === 0 ||
+        selectedTimeValues.filter((i) => i.hour === item.hour - 1).length ===
+          4 ||
+        selectedTimeValues.filter((i) => i.hour === item.hour + 1).length === 4)
+    ) {
+      setSelectedTimeValues(
+        [...selectedTimeValues, ...hourBlock].sort((a, b) => a.hour - b.hour)
+      );
     } else {
-      setSelectedValues([...selectedValues, item]);
+      setSelectedTimeValues([...hourBlock].sort((a, b) => a.hour - b.hour));
     }
   };
-  
-  
+
+  const handleSubmit = () => {
+    if (selectedTimeValues.length >= 1) {
+      const sortedTimeArray = selectedTimeValues.sort();
+      const startTime = sortedTimeArray[0].value;
+      const endTime = sortedTimeArray[sortedTimeArray.length - 1].value;
+      setBookingStartDate(`${date.toDateString()} ${startTime}`);
+      setBookingEndDate(`${date.toDateString()} ${endTime}`);
+      navigation.navigate('rooms/[id]/confirm-booking', { id });
+    } else {
+      Alert.alert('Empty booking', 'Please select booking time');
+    }
+  };
+
   return (
     <View>
       <View>
         <FlatList
+          contentContainerStyle={{ paddingBottom: 100 }}
           data={timeArray}
           renderItem={({ item, index }) => (
             <Pressable
@@ -152,36 +114,19 @@ export default function TimePicker({ selectedValues, setSelectedValues }) {
               {index % 4 === 0 ? (
                 <Text style={{ padding: 2 }}>{item.value}</Text>
               ) : null}
-              {selectedValues.find((i) => i.value === item.value) ? (
+              {selectedTimeValues.find((i) => i.value === item.value) ? (
                 <SelectedTimeSlot value={item.value.slice(0, 5)} />
               ) : null}
             </Pressable>
           )}
+        />
+        <FAB
+          style={{ position: 'absolute', right: 0, bottom: 150 }}
+          label="Confirm"
+          onPress={handleSubmit}
         />
         <Separator />
       </View>
     </View>
   );
 }
-
-function Separator() {
-  return (
-    <View
-      style={{
-        width: 1,
-        position: 'absolute',
-        backgroundColor: 'grey',
-        left: '20%',
-        height: '100%',
-      }}
-    ></View>
-  );
-}
-
-// export default function CalendarTemplate() {
-//   return (
-//     <View style={{ position: 'relative' }}>
-//       <TimePicker />
-//     </View>
-//   );
-// }

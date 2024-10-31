@@ -8,6 +8,8 @@ import useAuth from '../hooks/useAuth';
 import { Redirect } from 'expo-router';
 import BookingList from './BookingList';
 import { Link } from 'expo-router';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Entypo from '@expo/vector-icons/Entypo';
 
 interface RoomProps {
   id: string;
@@ -41,9 +43,18 @@ export default function RoomView({ room }: { room: RoomProps }) {
       <View style={{ margin: 10, display: 'flex', gap: 5 }}>
         <View style={styles.headerContainer}>
           <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{room.code}</Text>
-          <Text style={{ fontSize: 20 }}>
-            {room.isFree ? 'Available' : 'Occupied'}
-          </Text>
+
+          {room.isFree ? (
+            <Text style={{ fontSize: 20 }}>
+              <AntDesign name="checksquare" size={24} color="darkgreen" />
+              Available
+            </Text>
+          ) : (
+            <Text style={{ fontSize: 20 }}>
+              <Entypo name="squared-cross" size={24} color="darkred" />
+              Occupied
+            </Text>
+          )}
         </View>
         <Text style={{ fontSize: 12 }}>{room.venue.name}</Text>
         <EquipmentList equipment={room.equipment} />
@@ -54,16 +65,17 @@ export default function RoomView({ room }: { room: RoomProps }) {
             justifyContent: 'space-between',
           }}
         >
-          <Link href="/(home)/rooms/date-time-picker" asChild>
-            {/* <Button
-              isSmall
-              label="Reserve"
-              onSubmit={() => console.log('pressed!')}
-            /> */}
+          <Link
+            href={{
+              pathname: '/(home)/rooms/[id]/date-time-picker',
+              params: { id: room.id },
+            }}
+            asChild
+          >
             <Pressable
               style={{
                 width: 100,
-                backgroundColor: 'grey',
+                backgroundColor: '#b39ddb',
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: 20,

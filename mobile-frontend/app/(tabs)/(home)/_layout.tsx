@@ -1,7 +1,11 @@
 import { Stack } from 'expo-router';
 import theme from '../../../theme';
+import { useBookingContext } from '../../../hooks/useBookingContext';
+import { Link } from 'expo-router';
+import { Pressable, Text } from 'react-native';
 
 export default function Layout() {
+  const { handleSubmit } = useBookingContext();
   return (
     <Stack
       screenOptions={{
@@ -21,13 +25,19 @@ export default function Layout() {
         }}
       />
       <Stack.Screen
-        name="rooms/[id]"
+        name="rooms/[id]/index"
         options={{
           title: '',
         }}
       />
       <Stack.Screen
-        name="rooms/date-time-picker"
+        name="rooms/[id]/date-time-picker"
+        options={{
+          title: '',
+        }}
+      />
+      <Stack.Screen
+        name="rooms/[id]/confirm-booking"
         options={{
           title: '',
         }}

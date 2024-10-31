@@ -7,6 +7,7 @@ import { View } from 'react-native';
 import theme from '../theme';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { BookingProvider } from '../context/BookingContext';
 
 const authStorage = new AuthStorage();
 
@@ -14,9 +15,11 @@ export default function RootLayout() {
   return (
     <ApolloProvider client={apolloClient}>
       <AuthStorageContext.Provider value={authStorage}>
-        <SafeAreaView style={styles.container}>
-          <Slot />
-        </SafeAreaView>
+        <BookingProvider>
+          <SafeAreaView style={styles.container}>
+            <Slot />
+          </SafeAreaView>
+        </BookingProvider>
       </AuthStorageContext.Provider>
     </ApolloProvider>
   );

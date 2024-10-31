@@ -16,6 +16,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
   '\n  mutation Authenticate($username: String!, $password: String!) {\n    authenticate(username: $username, password: $password) {\n      value\n    }\n  }\n':
     types.AuthenticateDocument,
+  '\n  mutation CreateBooking($roomId: ID!, $startDate: Date!, $endDate: Date!) {\n    createBooking(roomId: $roomId, startDate: $startDate, endDate: $endDate) {\n      room {\n        code\n      }\n    }\n  }\n':
+    types.CreateBookingDocument,
   '\n  query CurrentUser {\n    currentUser {\n      username\n      id\n    }\n  }\n':
     types.CurrentUserDocument,
   ' \n  query AllRooms {\n    allRooms {\n      id\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n    }\n  }\n':
@@ -46,6 +48,12 @@ export function gql(source: string): unknown;
 export function gql(
   source: '\n  mutation Authenticate($username: String!, $password: String!) {\n    authenticate(username: $username, password: $password) {\n      value\n    }\n  }\n'
 ): (typeof documents)['\n  mutation Authenticate($username: String!, $password: String!) {\n    authenticate(username: $username, password: $password) {\n      value\n    }\n  }\n'];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: '\n  mutation CreateBooking($roomId: ID!, $startDate: Date!, $endDate: Date!) {\n    createBooking(roomId: $roomId, startDate: $startDate, endDate: $endDate) {\n      room {\n        code\n      }\n    }\n  }\n'
+): (typeof documents)['\n  mutation CreateBooking($roomId: ID!, $startDate: Date!, $endDate: Date!) {\n    createBooking(roomId: $roomId, startDate: $startDate, endDate: $endDate) {\n      room {\n        code\n      }\n    }\n  }\n'];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

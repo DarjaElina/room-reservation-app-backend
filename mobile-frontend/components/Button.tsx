@@ -6,13 +6,21 @@ type Props = {
   isSmall?: boolean;
   label: string;
   onSubmit: () => void;
+  style?: {};
 };
 
-export default function Button({ isBig, isSmall, label, onSubmit }: Props) {
+export default function Button({
+  isBig,
+  isSmall,
+  label,
+  onSubmit,
+  style,
+}: Props) {
   const buttonStyles = [
     styles.button,
     isBig && styles.bigButton,
     isSmall && styles.smallButton,
+    style,
   ];
   return (
     <Pressable style={buttonStyles} onPress={onSubmit}>
