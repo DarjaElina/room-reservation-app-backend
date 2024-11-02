@@ -26,6 +26,8 @@ const documents = {
     types.FindRoomDocument,
   '\n  query BookingsByRoomAndUser($roomId: ID!, $userId: ID!) {\n    bookingsByRoomAndUser(roomId: $roomId, userId: $userId) {\n      startDate\n      endDate\n      id\n    }\n  }\n':
     types.BookingsByRoomAndUserDocument,
+  '\n  query BookingsByRoomAndDate($roomId: ID!, $startDate: Date!, $endDate: Date!) {\n    bookingsByRoomAndDate(roomId: $roomId, startDate: $startDate, endDate: $endDate) {\n      id\n      user {\n        familyName\n        givenName\n      }\n      endDate\n      startDate\n    }\n  }\n':
+    types.BookingsByRoomAndDateDocument,
 };
 
 /**
@@ -78,6 +80,12 @@ export function gql(
 export function gql(
   source: '\n  query BookingsByRoomAndUser($roomId: ID!, $userId: ID!) {\n    bookingsByRoomAndUser(roomId: $roomId, userId: $userId) {\n      startDate\n      endDate\n      id\n    }\n  }\n'
 ): (typeof documents)['\n  query BookingsByRoomAndUser($roomId: ID!, $userId: ID!) {\n    bookingsByRoomAndUser(roomId: $roomId, userId: $userId) {\n      startDate\n      endDate\n      id\n    }\n  }\n'];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: '\n  query BookingsByRoomAndDate($roomId: ID!, $startDate: Date!, $endDate: Date!) {\n    bookingsByRoomAndDate(roomId: $roomId, startDate: $startDate, endDate: $endDate) {\n      id\n      user {\n        familyName\n        givenName\n      }\n      endDate\n      startDate\n    }\n  }\n'
+): (typeof documents)['\n  query BookingsByRoomAndDate($roomId: ID!, $startDate: Date!, $endDate: Date!) {\n    bookingsByRoomAndDate(roomId: $roomId, startDate: $startDate, endDate: $endDate) {\n      id\n      user {\n        familyName\n        givenName\n      }\n      endDate\n      startDate\n    }\n  }\n'];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

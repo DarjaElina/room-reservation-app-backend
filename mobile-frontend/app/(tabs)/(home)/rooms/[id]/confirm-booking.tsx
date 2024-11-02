@@ -23,6 +23,17 @@ export default function BookingConfirmationScreen() {
     return <Text style={{ color: '#fff', fontSize: 18 }}>Loading...</Text>;
   }
 
+  const formatReadableDate = (isoDate) => {
+    const date = new Date(isoDate);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
   const handleSubmit = async () => {
     try {
       await createBooking(
@@ -75,14 +86,12 @@ export default function BookingConfirmationScreen() {
           {room?.code}
         </Text>
         <Text style={{ color: '#fff', fontSize: 18, marginBottom: 5 }}>
-          <Text style={{ fontWeight: '600', color: '#d9a3ff' }}>
-            Starts at:
-          </Text>{' '}
-          {bookingStartDate.slice(0, -3)}
+          <Text style={{ fontWeight: '600', color: '#d9a3ff' }}>Starts:</Text>{' '}
+          {formatReadableDate(bookingStartDate)}
         </Text>
         <Text style={{ color: '#fff', fontSize: 18, marginBottom: 20 }}>
-          <Text style={{ fontWeight: '600', color: '#d9a3ff' }}>Ends at:</Text>{' '}
-          {bookingEndDate.slice(0, -3)}
+          <Text style={{ fontWeight: '600', color: '#d9a3ff' }}>Ends:</Text>{' '}
+          {formatReadableDate(bookingEndDate)}
         </Text>
         <Button
           isSmall

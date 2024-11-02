@@ -95,10 +95,10 @@ export type CreateBookingMutationVariables = Exact<{
 
 export type CreateBookingMutation = {
   __typename?: 'Mutation';
-  createBooking?: {
+  createBooking: {
     __typename?: 'Booking';
     room: { __typename?: 'Room'; code: string };
-  } | null;
+  };
 };
 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never }>;
@@ -157,6 +157,23 @@ export type BookingsByRoomAndUserQuery = {
     startDate: any;
     endDate: any;
     id: string;
+  }>;
+};
+
+export type BookingsByRoomAndDateQueryVariables = Exact<{
+  roomId: Scalars['ID']['input'];
+  startDate: Scalars['Date']['input'];
+  endDate: Scalars['Date']['input'];
+}>;
+
+export type BookingsByRoomAndDateQuery = {
+  __typename?: 'Query';
+  bookingsByRoomAndDate: Array<{
+    __typename?: 'Booking';
+    id: string;
+    endDate: any;
+    startDate: any;
+    user: { __typename?: 'User'; familyName: string; givenName: string };
   }>;
 };
 
@@ -555,4 +572,112 @@ export const BookingsByRoomAndUserDocument = {
 } as unknown as DocumentNode<
   BookingsByRoomAndUserQuery,
   BookingsByRoomAndUserQueryVariables
+>;
+export const BookingsByRoomAndDateDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'BookingsByRoomAndDate' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'roomId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'startDate' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Date' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'endDate' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Date' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'bookingsByRoomAndDate' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'roomId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'roomId' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'startDate' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'startDate' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'endDate' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'endDate' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'user' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'familyName' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'givenName' },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'endDate' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'startDate' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  BookingsByRoomAndDateQuery,
+  BookingsByRoomAndDateQueryVariables
 >;

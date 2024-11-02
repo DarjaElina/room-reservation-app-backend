@@ -1,14 +1,22 @@
 import { View, Text } from 'react-native';
 import theme from '../theme';
 
-export default function SelectedTimeSlot({ value }: { value: string }) {
+interface SelectedTimeSlotProps {
+  value?: string;
+  color: string;
+}
+
+export default function SelectedTimeSlot({
+  value,
+  color,
+}: SelectedTimeSlotProps) {
   return (
     <View
       style={{
         display: 'flex',
         alignItems: 'center',
         minHeight: 25,
-        backgroundColor: '#b39ddb',
+        backgroundColor: color,
         position: 'absolute',
         top: 0,
         right: 0,

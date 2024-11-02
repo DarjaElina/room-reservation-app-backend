@@ -1,18 +1,15 @@
-import { FlatList, View, Text, Pressable } from 'react-native';
-import theme from '../theme';
+import { FlatList, View, Text } from 'react-native';
 import { useBookingContext } from '../hooks/useBookingContext';
 import { FAB } from 'react-native-paper';
 import { Alert } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useNavigation } from 'expo-router';
 import Separator from './Separator';
-import SelectedTimeSlot from './SelectedTimeSlot';
 import { timeArray } from '../constants/TimeArray';
-
-interface TimeSlot {
-  hour: number;
-  value: string;
-}
+import { BOOKINGS_BY_ROOM_AND_DATE } from '../graphql/queries';
+import { useQuery } from '@apollo/client';
+import TimeSlot from './TimeSlot';
+import { TimeSlotType } from './TimeSlot';
 
 export default function TimePicker() {
   const {
@@ -23,11 +20,20 @@ export default function TimePicker() {
     date,
   } = useBookingContext();
 
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  const { data, loading, error } = useQuery(BOOKINGS_BY_ROOM_AND_DATE, {
+    variables: {
+      roomId: id,
+      startDate: new Date(date).setHours(6, 0, 0, 0),
+      endDate: new Date(date).setHours(23, 0, 0, 0),
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
   const navigation = useNavigation();
 
-  const { id } = useLocalSearchParams();
-
-  const handleSelect = (item: TimeSlot) => {
+  const handleSelect = (item: TimeSlotType) => {
     const hour = Number(item.value.slice(0, 2));
 
     const hourBlock = [
@@ -49,7 +55,7 @@ export default function TimePicker() {
         (i) => i.value === item.value
       );
       if (
-        selectedTimeValues.indexOf(curentSelected[0]) <=
+        selectedTimeValues.indexOf(curentSelected[0]) <
         selectedTimeValues.length / 2
       ) {
         setSelectedTimeValues(
@@ -81,43 +87,78 @@ export default function TimePicker() {
 
   const handleSubmit = () => {
     if (selectedTimeValues.length >= 1) {
-      const sortedTimeArray = selectedTimeValues.sort();
-      const startTime = sortedTimeArray[0].value;
-      const endTime = sortedTimeArray[sortedTimeArray.length - 1].value;
-      setBookingStartDate(`${date.toDateString()} ${startTime}`);
-      setBookingEndDate(`${date.toDateString()} ${endTime}`);
+      const startTime = selectedTimeValues[0].value;
+      const startDate = new Date(`${date.toDateString()} ${startTime}`);
+      setBookingStartDate(
+        new Date(`${date.toDateString()} ${startTime}`).toISOString()
+      );
+      setBookingEndDate(
+        new Date(
+          startDate.getTime() + selectedTimeValues.length * 15 * 60 * 1000
+        ).toISOString()
+      );
       navigation.navigate('rooms/[id]/confirm-booking', { id });
+      setSelectedTimeValues([]);
     } else {
       Alert.alert('Empty booking', 'Please select booking time');
     }
   };
 
+  const bookings = data?.bookingsByRoomAndDate
+    ? data?.bookingsByRoomAndDate
+    : [];
+
+  const mappedBookings = bookings.map((b) => {
+    let startHours;
+    let endHours;
+    let startMinutes;
+    let endMinutes;
+    if (new Date(b.startDate).getHours() < 10) {
+      startHours = `0${new Date(b.startDate).getHours()}`;
+    } else {
+      startHours = new Date(b.startDate).getHours();
+    }
+    if (new Date(b.endDate).getHours() < 10) {
+      endHours = `0${new Date(b.endDate).getHours()}`;
+    } else {
+      endHours = new Date(b.endDate).getHours();
+    }
+    if (new Date(b.startDate).getMinutes() < 15) {
+      startMinutes = `${new Date(b.startDate).getMinutes()}0`;
+    } else {
+      startMinutes = new Date(b.startDate).getMinutes();
+    }
+    if (new Date(b.endDate).getMinutes() < 15) {
+      endMinutes = `${new Date(b.endDate).getMinutes()}0`;
+    } else {
+      endMinutes = new Date(b.endDate).getMinutes();
+    }
+
+    return {
+      startDate: `${startHours}:${startMinutes}:00`,
+      endDate: `${endHours}:${endMinutes}:00`,
+    };
+  });
+
+  console.log(mappedBookings);
+
   return (
     <View>
       <View>
         <FlatList
+          keyExtractor={(item) => item.value}
           contentContainerStyle={{ paddingBottom: 100 }}
           data={timeArray}
+          extraData={selectedTimeValues}
           renderItem={({ item, index }) => (
-            <Pressable
-              onPress={() => handleSelect(item)}
-              style={{
-                height: 25,
-                borderTopWidth: 1,
-                borderColor:
-                  index !== 0 && index % 4 === 0
-                    ? 'grey'
-                    : theme.colors.textPrimary,
-                position: 'relative',
-              }}
-            >
-              {index % 4 === 0 ? (
-                <Text style={{ padding: 2 }}>{item.value}</Text>
-              ) : null}
-              {selectedTimeValues.find((i) => i.value === item.value) ? (
-                <SelectedTimeSlot value={item.value.slice(0, 5)} />
-              ) : null}
-            </Pressable>
+            <TimeSlot
+              index={index}
+              timeSlot={item}
+              onSelect={handleSelect}
+              booking={mappedBookings.find(
+                (b) => b.startDate <= item.value && b.endDate >= item.value
+              )}
+            />
           )}
         />
         <FAB

@@ -57,3 +57,17 @@ export const BOOKINGS_BY_ROOM_AND_USER = gql(`
     }
   }
 `);
+
+export const BOOKINGS_BY_ROOM_AND_DATE = gql(`
+  query BookingsByRoomAndDate($roomId: ID!, $startDate: Date!, $endDate: Date!) {
+    bookingsByRoomAndDate(roomId: $roomId, startDate: $startDate, endDate: $endDate) {
+      id
+      user {
+        familyName
+        givenName
+      }
+      endDate
+      startDate
+    }
+  }
+`);
