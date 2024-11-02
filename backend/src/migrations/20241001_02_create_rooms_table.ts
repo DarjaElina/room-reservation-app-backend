@@ -8,41 +8,41 @@ export const up: Migration = async ({ context: queryInterface }) => {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4
+      defaultValue: DataTypes.UUIDV4,
     },
     code: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
     type: {
       type: DataTypes.ENUM(...roomTypes),
-      allowNull: false
+      allowNull: false,
     },
     size: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     equipment: {
-      type: DataTypes.ARRAY(DataTypes.STRING)
+      type: DataTypes.ARRAY(DataTypes.STRING),
     },
     picture_url: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     is_bookable: {
       type: DataTypes.BOOLEAN,
-      allowNull: false
+      allowNull: false,
     },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
+      defaultValue: DataTypes.NOW,
     },
     updated_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
-    }
+      defaultValue: DataTypes.NOW,
+    },
   });
 };
 

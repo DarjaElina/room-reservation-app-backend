@@ -1,11 +1,17 @@
-import { Resolvers, User, BookingStatus } from "../generated-types";
-import Booking from "../../models/booking";
-import Room from "../../models/room";
-import { GraphQLError } from "graphql";
-import { handleResolverErrors } from "../../util/errorHandler";
-import { validateSingleBooking, checkOverlappingBookings, getTotalBookedHoursForWeek, checkBookingLimit, checkRoomDepartmentRestriction } from "../../helpers/helpers";
-
-
+import { Resolvers, User, BookingStatus } from '../generated-types';
+import Booking from '../../models/booking';
+import Room from '../../models/room';
+import { GraphQLError } from 'graphql';
+import { handleResolverErrors } from '../../util/errorHandler';
+import {
+  validateSingleBooking,
+  checkOverlappingBookings,
+  getTotalBookedHoursForWeek,
+  checkBookingLimit,
+  checkRoomDepartmentRestriction,
+} from '../../helpers/helpers';
+import { Op } from 'sequelize';
+import UserModel from '../../models/user';
 
 // for booking creation
 // students can book room for 12 hours/week
@@ -21,7 +27,6 @@ import { validateSingleBooking, checkOverlappingBookings, getTotalBookedHoursFor
 // as cancelled_late and will eat the time anyway
 // student can book one room for 3 hours maximum, teachers for 8 hours maximum, managers unlimited
 
-
 const bookingResolvers: Resolvers = {
   Query: {
     allBookings: async (_, __, { user }: { user: User }) => {
@@ -29,12 +34,14 @@ const bookingResolvers: Resolvers = {
         throw new GraphQLError('Not authenticated');
       }
       const bookings = await Booking.findAll({
-        include: [{
-          model: Room,
-          include: []
-        }]
+        include: [
+          {
+            model: Room,
+            include: [],
+          },
+        ],
       });
-      
+
       return bookings;
     },
 
@@ -42,16 +49,46 @@ const bookingResolvers: Resolvers = {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
-      const bookings = await Booking.findAll({ where: { roomId }});
+      const bookings = await Booking.findAll({ where: { roomId } });
 
       return bookings;
     },
 
-    bookingsByDateRange: async (_, { startDate, endDate }, { user }: { user: User }) => {
+    bookingsByDateRange: async (
+      _,
+      { startDate, endDate },
+      { user }: { user: User }
+    ) => {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
-      const bookings = await Booking.findAll({ where: { startDate, endDate }});
+      const bookings = await Booking.findAll({
+        where: { startDate, endDate },
+      });
+
+      return bookings;
+    },
+
+    bookingsByRoomAndDate: async (_, { roomId, startDate, endDate }, { user }: { user: User}) => {
+      if (!user) {
+        throw new GraphQLError('Not authenticated');
+      }
+
+      const bookings = await Booking.findAll({
+        where: {
+          roomId,
+          [Op.and]: [
+            { startDate: { [Op.lt]: endDate } },
+            { endDate: { [Op.gt]: startDate } }
+          ]
+        },
+        include: [
+          {
+            model: UserModel,
+            attributes: ['givenName', 'familyName']
+          }
+        ]
+      });
 
       return bookings;
     },
@@ -60,18 +97,22 @@ const bookingResolvers: Resolvers = {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
-      const bookings = await Booking.findAll({ where: { userId }});
+      const bookings = await Booking.findAll({ where: { userId } });
 
       return bookings;
     },
-    bookingsByRoomAndUser: async (_, { userId, roomId }, { user }: { user: User}) => {
+    bookingsByRoomAndUser: async (
+      _,
+      { userId, roomId },
+      { user }: { user: User }
+    ) => {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
-      const bookings = await Booking.findAll({ where: { userId, roomId }});
+      const bookings = await Booking.findAll({ where: { userId, roomId } });
 
       return bookings;
-    }
+    },
   },
 
   Booking: {
@@ -80,11 +121,15 @@ const bookingResolvers: Resolvers = {
     },
     user: (booking) => {
       return booking.user;
-    }
+    },
   },
 
   Mutation: {
-    createBooking: async (_, { roomId, startDate, endDate }, { user }: { user: User }) => {
+    createBooking: async (
+      _,
+      { roomId, startDate, endDate },
+      { user }: { user: User }
+    ) => {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
@@ -93,21 +138,38 @@ const bookingResolvers: Resolvers = {
 
       const totalBookedHours = await getTotalBookedHoursForWeek(user.id);
 
-      const newBookingHours = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60);
+      const newBookingHours =
+        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60);
 
       checkBookingLimit(user.role, totalBookedHours, newBookingHours);
 
       await checkRoomDepartmentRestriction(user, roomId);
 
+      const room = await Room.findByPk(roomId);
+
+      if (!room) {
+        throw new GraphQLError('Room not found!');
+      }
+
       try {
-        const booking = await Booking.create({ userId: user.id, roomId, startDate, endDate, status: BookingStatus.Active });
-        return booking;
+        const booking = await Booking.create({
+          userId: user.id,
+          roomId,
+          startDate,
+          endDate,
+          status: BookingStatus.Active,
+        });
+        return { ...booking, room };
       } catch (error) {
         return handleResolverErrors(error);
       }
     },
 
-    updateBooking: async (_, { bookingId, startDate, endDate }, { user }: { user: User }) => {
+    updateBooking: async (
+      _,
+      { bookingId, startDate, endDate },
+      { user }: { user: User }
+    ) => {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
@@ -150,9 +212,8 @@ const bookingResolvers: Resolvers = {
       } catch (error) {
         return handleResolverErrors(error);
       }
-    }
-  }
-
+    },
+  },
 };
 
 export default bookingResolvers;

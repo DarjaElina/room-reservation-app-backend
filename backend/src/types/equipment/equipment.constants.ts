@@ -15,7 +15,7 @@ export const EquipmentTypes = [
   'Drum kit',
   'Recording equipment',
   'Speakers',
-  'Conductor\'s podium',
+  "Conductor's podium",
   'Timpani',
   'Lighting equipment',
   'Harpsichord',
@@ -30,4 +30,3 @@ export const EquipmentTypes = [
   'Acoustic panels',
   'Practice pads',
 ];
-

@@ -22,24 +22,15 @@ type Query {
   bookingsByDateRange(startDate: Date!, endDate: Date!): [Booking!]!
   bookingsByUser(userId: ID!): [Booking!]!
   bookingsByRoomAndUser(roomId: ID!, userId: ID!): [Booking!]!
+  bookingsByRoomAndDate(roomId: ID!, startDate: Date!, endDate: Date!): [Booking!]!
 }
 
 type Mutation {
-  createBooking(
-    roomId: ID!
-    startDate: Date!
-    endDate: Date!
-  ): Booking
+  createBooking(roomId: ID!, startDate: Date!, endDate: Date!): Booking!
 
-  updateBooking(
-    bookingId: ID!
-    startDate: Date!
-    endDate: Date!
-  ): Booking
+  updateBooking(bookingId: ID!, startDate: Date!, endDate: Date!): Booking
 
-  cancelBooking(
-    bookingId: ID!
-  ): UserResponse!
+  cancelBooking(bookingId: ID!): UserResponse!
 
   updatePastBookings: UserResponse!
 }

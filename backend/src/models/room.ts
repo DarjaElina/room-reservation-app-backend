@@ -1,5 +1,22 @@
 import { DataType } from 'sequelize-typescript';
-import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, ForeignKey, BelongsTo, Unique, Length, Validate, IsUrl, BelongsToMany, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  PrimaryKey,
+  AllowNull,
+  Default,
+  HasMany,
+  ForeignKey,
+  BelongsTo,
+  Unique,
+  Length,
+  Validate,
+  IsUrl,
+  BelongsToMany,
+  CreatedAt,
+  UpdatedAt,
+} from 'sequelize-typescript';
 import { Optional } from 'sequelize';
 import { RoomType } from '../types/room/room.enums';
 import { roomTypes } from '../types/room/room.constants';
@@ -23,13 +40,15 @@ interface RoomAttributes {
   description: string;
 }
 
-type RoomCreationAttributes = Optional<RoomAttributes, 'id' | 'createdAt' | 'updatedAt'>;
+type RoomCreationAttributes = Optional<
+  RoomAttributes,
+  'id' | 'createdAt' | 'updatedAt'
+>;
 
 @Table({
   underscored: true,
-  modelName: 'room'
+  modelName: 'room',
 })
-
 class Room extends Model<RoomAttributes, RoomCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
@@ -41,7 +60,7 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
   @Unique
   @Length({ min: 3, max: 10 })
   @Validate({
-    is: /^[A-Z0-9-]+$/
+    is: /^[A-Z0-9-]+$/,
   })
   @Column
   code!: string;
@@ -50,15 +69,15 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
   @Column({
     type: DataType.ENUM(...roomTypes),
     validate: {
-      isIn: [roomTypes]
-    }
+      isIn: [roomTypes],
+    },
   })
   type!: RoomType;
 
   @AllowNull(false)
   @Validate({
     min: 3,
-    max: 1000
+    max: 1000,
   })
   @Column
   size!: number;
@@ -90,19 +109,19 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
   department?: Department;
 
   @BelongsToMany(() => Equipment, () => RoomEquipment)
-  equipment?: Array<Equipment & {RoomEquipment: RoomEquipment}>;
+  equipment?: Array<Equipment & { RoomEquipment: RoomEquipment }>;
 
   @CreatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   createdAt!: Date;
 
   @UpdatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   updatedAt!: Date;
 

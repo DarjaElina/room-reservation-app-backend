@@ -5,15 +5,14 @@ export const up: Migration = async ({ context: queryInterface }) => {
   await queryInterface.addColumn('room_equipment', 'created_at', {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: DataTypes.NOW
+    defaultValue: DataTypes.NOW,
   });
 
   await queryInterface.addColumn('room_equipment', 'updated_at', {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: DataTypes.NOW
+    defaultValue: DataTypes.NOW,
   });
-  
 };
 
 export const down: Migration = async ({ context: queryInterface }) => {

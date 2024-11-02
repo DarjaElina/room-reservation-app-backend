@@ -16,29 +16,35 @@ import { createToken, createPasswordHash } from '../../helpers/helpers';
 
 const userResolvers: Resolvers = {
   Query: {
-    allUsers: async (_, __,) => {
+    allUsers: async (_, __) => {
       const users = await User.findAll({
-        include: [{
-          model: Department,
-          include: []
-        }]
+        include: [
+          {
+            model: Department,
+            include: [],
+          },
+        ],
       });
-      
+
       return users;
     },
     currentUser: (_, __, { user }: { user: User }) => {
       return user;
-    }
+    },
   },
-  
+
   User: {
     department: (user) => {
       return user.department;
-    }  
+    },
   },
 
   Mutation: {
-    createUser: async (_, { userInput }: { userInput: UserInput }, { isAdmin }: { isAdmin: boolean } ) => {
+    createUser: async (
+      _,
+      { userInput }: { userInput: UserInput },
+      { isAdmin }: { isAdmin: boolean }
+    ) => {
       if (!isAdmin) {
         throw new GraphQLError('This action is not allowed');
       }
@@ -50,12 +56,16 @@ const userResolvers: Resolvers = {
           email: userInput.email,
           role: userInput.role,
           status: userInput.status,
-          departmentId: userInput.departmentId
+          departmentId: userInput.departmentId,
         };
-    
+
         const createdUser = await User.create(newUser);
-       
-        const token = await createToken(createdUser.id, TokenType.Activation, new Date(Date.now() + 24 * 60 * 60 * 1000));
+
+        const token = await createToken(
+          createdUser.id,
+          TokenType.Activation,
+          new Date(Date.now() + 24 * 60 * 60 * 1000)
+        );
 
         const activationLink = `https://example.com/activate?token=${token}`;
 
@@ -66,98 +76,113 @@ const userResolvers: Resolvers = {
         );
 
         return createdUser;
-    
       } catch (error) {
         return handleResolverErrors(error);
       }
     },
 
-    bulkCreateUsers: async (_, { users }: { users: UserInput[] }, { isAdmin }: { isAdmin: boolean }) => {
+    bulkCreateUsers: async (
+      _,
+      { users }: { users: UserInput[] },
+      { isAdmin }: { isAdmin: boolean }
+    ) => {
       if (!isAdmin) {
         throw new GraphQLError('This action is not allowed');
       }
       const transaction = await sequelize.transaction();
       try {
-       const createdUsers = await User.bulkCreate(
-        users.map(user => ({
-          givenName: user.givenName,
-          middleName: user.middleName,
-          familyName: user.familyName,
-          email: user.email,
-          role: user.role,
-          status: user.status,
-          departmentId: user.departmentId
-        })), { transaction, returning: true, validate: true }
-       );
+        const createdUsers = await User.bulkCreate(
+          users.map((user) => ({
+            givenName: user.givenName,
+            middleName: user.middleName,
+            familyName: user.familyName,
+            email: user.email,
+            role: user.role,
+            status: user.status,
+            departmentId: user.departmentId,
+          })),
+          { transaction, returning: true, validate: true }
+        );
 
-       
-       const bulkUpdates = createdUsers.map((user) => {
-        const username = generateUsername(user.familyName, user.givenName, user.userNumber);
-        return {
-          id: user.id,
-          username,
-        };
-      });
+        const bulkUpdates = createdUsers.map((user) => {
+          const username = generateUsername(
+            user.familyName,
+            user.givenName,
+            user.userNumber
+          );
+          return {
+            id: user.id,
+            username,
+          };
+        });
 
-      const updateQuery = `
+        const updateQuery = `
         UPDATE "users"
         SET "username" = CASE "id"
-          ${bulkUpdates.map(u => `WHEN '${u.id}' THEN '${u.username}'`).join('\n')}
+          ${bulkUpdates.map((u) => `WHEN '${u.id}' THEN '${u.username}'`).join('\n')}
         END
-        WHERE "id" IN (${bulkUpdates.map(u => `'${u.id}'`).join(', ')});
+        WHERE "id" IN (${bulkUpdates.map((u) => `'${u.id}'`).join(', ')});
       `;
 
-      await sequelize.query(updateQuery, { transaction });
+        await sequelize.query(updateQuery, { transaction });
 
-      await transaction.commit();
+        await transaction.commit();
 
-      await Promise.all(
-        createdUsers.map(async (user) => {
-          const token = await createToken(user.id, TokenType.Activation, new Date(Date.now() + 24 * 60 * 60 * 1000));
-  
-          const activationLink = `https://example.com/activate?token=${token}`;
-  
-          await sendMail(
-            user.email,
-            'Activate Your Account',
-            `Please click this link to activate your account: ${activationLink}`
-          );
-        })
-      );
+        await Promise.all(
+          createdUsers.map(async (user) => {
+            const token = await createToken(
+              user.id,
+              TokenType.Activation,
+              new Date(Date.now() + 24 * 60 * 60 * 1000)
+            );
 
-      return createdUsers;
+            const activationLink = `https://example.com/activate?token=${token}`;
 
+            await sendMail(
+              user.email,
+              'Activate Your Account',
+              `Please click this link to activate your account: ${activationLink}`
+            );
+          })
+        );
+
+        return createdUsers;
       } catch (error: unknown) {
         await transaction.rollback();
         return handleResolverErrors(error);
       }
     },
 
-    activateUser: async (_, { activationToken, newPassword } ) => {
+    activateUser: async (_, { activationToken, newPassword }) => {
       try {
-      const storedToken = await UserToken.findOne({ where: { token: activationToken, type: TokenType.Activation } });
+        const storedToken = await UserToken.findOne({
+          where: { token: activationToken, type: TokenType.Activation },
+        });
 
-      if (!storedToken || new Date() > storedToken.expiresAt) {
-        throw new GraphQLError('Token is invalid or has expired');
-      }
+        if (!storedToken || new Date() > storedToken.expiresAt) {
+          throw new GraphQLError('Token is invalid or has expired');
+        }
 
-      const user = await User.findByPk(storedToken.userId);
-      if (!user) {
-        throw new GraphQLError('User not found');
-      }
+        const user = await User.findByPk(storedToken.userId);
+        if (!user) {
+          throw new GraphQLError('User not found');
+        }
 
-      const passwordHash = createPasswordHash(newPassword);
-      await user.update({ passwordHash, status: UserStatus.Active });
+        const passwordHash = createPasswordHash(newPassword);
+        await user.update({ passwordHash, status: UserStatus.Active });
 
-      await storedToken.destroy();
+        await storedToken.destroy();
 
-      return { success: true, message: 'Account successfully activated, you can now log in' };
+        return {
+          success: true,
+          message: 'Account successfully activated, you can now log in',
+        };
       } catch (error) {
         return handleResolverErrors(error);
       }
     },
 
-    authenticate: async (_, { username, password } ) => {
+    authenticate: async (_, { username, password }) => {
       try {
         const user = await User.findOne({ where: { username } });
         if (!user) {
@@ -167,7 +192,9 @@ const userResolvers: Resolvers = {
           throw new GraphQLError('You need to activate your account first');
         }
         if (!user.passwordHash) {
-          throw new GraphQLError('Password not set. Please reset your password.');
+          throw new GraphQLError(
+            'Password not set. Please reset your password.'
+          );
         }
         if (!JWT_SECRET) {
           throw new Error('JWT_SECRET is not defined');
@@ -177,7 +204,9 @@ const userResolvers: Resolvers = {
         const isAdmin = user.role === UserRole.Admin;
 
         if (passwordCorrect) {
-          const token = jwt.sign({ userId: user.id, isAdmin }, JWT_SECRET, { expiresIn: '1h' });
+          const token = jwt.sign({ userId: user.id, isAdmin }, JWT_SECRET, {
+            expiresIn: '1h',
+          });
 
           return { value: token };
         } else throw new GraphQLError('Incorrect password');
@@ -186,7 +215,7 @@ const userResolvers: Resolvers = {
       }
     },
 
-    deleteUser: async (_, { userId }, { isAdmin }: { isAdmin: boolean } ) => {
+    deleteUser: async (_, { userId }, { isAdmin }: { isAdmin: boolean }) => {
       if (!isAdmin) {
         throw new GraphQLError('This action is not allowed');
       }
@@ -202,7 +231,11 @@ const userResolvers: Resolvers = {
       }
     },
 
-    updateUserStatus: async (_, { userId, status }, { isAdmin }: { isAdmin: boolean }) => {
+    updateUserStatus: async (
+      _,
+      { userId, status },
+      { isAdmin }: { isAdmin: boolean }
+    ) => {
       if (!isAdmin) {
         throw new GraphQLError('This action is not allowed');
       }
@@ -218,9 +251,11 @@ const userResolvers: Resolvers = {
       }
     },
 
-    resetPassword: async (_, { token, newPassword } ) => {
+    resetPassword: async (_, { token, newPassword }) => {
       try {
-        const storedToken = await UserToken.findOne({ where: { token, type: TokenType.Password_reset } });
+        const storedToken = await UserToken.findOne({
+          where: { token, type: TokenType.Password_reset },
+        });
 
         if (!storedToken || new Date() > storedToken.expiresAt) {
           throw new GraphQLError('Token is invalid or has expired');
@@ -237,13 +272,21 @@ const userResolvers: Resolvers = {
         await user.update({ passwordHash });
 
         await storedToken.destroy();
-        return { success: true, message: 'Password reset successful, you can now log in to your account' };
+        return {
+          success: true,
+          message:
+            'Password reset successful, you can now log in to your account',
+        };
       } catch (error) {
         return handleResolverErrors(error);
       }
     },
 
-    changePassword: async (_, { oldPassword, newPassword }, { user }: { user: User }) => {
+    changePassword: async (
+      _,
+      { oldPassword, newPassword },
+      { user }: { user: User }
+    ) => {
       try {
         if (!user.passwordHash) {
           throw new GraphQLError('No active account found');
@@ -261,12 +304,16 @@ const userResolvers: Resolvers = {
 
     requestPasswordReset: async (_, { email }) => {
       try {
-        const user = await User.findOne({ where: { email }});
+        const user = await User.findOne({ where: { email } });
         if (!user) {
           throw new GraphQLError('No user found with this email');
         }
 
-        const token = await createToken(user.id, TokenType.Password_reset, new Date(Date.now() + 3600000));
+        const token = await createToken(
+          user.id,
+          TokenType.Password_reset,
+          new Date(Date.now() + 3600000)
+        );
 
         const passwordResetLink: string = `https://example.com/activate?token=${token}`;
 
@@ -276,14 +323,15 @@ const userResolvers: Resolvers = {
           `Please click this link to reset your password: ${passwordResetLink}`
         );
 
-        return { success: true, message: 'Password reset email sent, please check your mailbox' };
+        return {
+          success: true,
+          message: 'Password reset email sent, please check your mailbox',
+        };
       } catch (error) {
         return handleResolverErrors(error);
       }
     },
-  }
+  },
 };
-
-
 
 export default userResolvers;

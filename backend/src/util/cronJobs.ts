@@ -11,8 +11,8 @@ const updateBookingStatuses = async () => {
       {
         where: {
           status: BookingStatus.Active,
-          endDate: { [Op.lt]: now }
-        }
+          endDate: { [Op.lt]: now },
+        },
       }
     );
     console.log(`${updatedCount} bookings updated to 'Past' status`);
@@ -29,8 +29,8 @@ const deleteOldBookings = async () => {
     const deletedCount = await Booking.destroy({
       where: {
         status: BookingStatus.Past,
-        endDate: { [Op.lt]: oneWeekAgo }
-      }
+        endDate: { [Op.lt]: oneWeekAgo },
+      },
     });
 
     console.log(`${deletedCount} old bookings deleted`);

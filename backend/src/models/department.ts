@@ -1,5 +1,19 @@
 import { DataType } from 'sequelize-typescript';
-import { Table, Model, Column, ForeignKey, BelongsTo, PrimaryKey, AllowNull, Default, Unique, Length, Validate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  ForeignKey,
+  BelongsTo,
+  PrimaryKey,
+  AllowNull,
+  Default,
+  Unique,
+  Length,
+  Validate,
+  CreatedAt,
+  UpdatedAt,
+} from 'sequelize-typescript';
 import Faculty from './faculty';
 import { Optional } from 'sequelize';
 import { Departments } from '../types/department/department.constants';
@@ -12,14 +26,19 @@ interface DepartmentAttributes {
   updated_at: Date;
 }
 
-type DepartmentCreationAttributes = Optional<DepartmentAttributes, 'id' | 'created_at' | 'updated_at'>;
+type DepartmentCreationAttributes = Optional<
+  DepartmentAttributes,
+  'id' | 'created_at' | 'updated_at'
+>;
 
 @Table({
   underscored: true,
-  modelName: 'department'
+  modelName: 'department',
 })
-
-class Department extends Model<DepartmentAttributes, DepartmentCreationAttributes> {
+class Department extends Model<
+  DepartmentAttributes,
+  DepartmentCreationAttributes
+> {
   @PrimaryKey
   @AllowNull(false)
   @Default(DataType.UUIDV4)
@@ -29,7 +48,7 @@ class Department extends Model<DepartmentAttributes, DepartmentCreationAttribute
   @Unique
   @Length({ min: 5, max: 100 })
   @Validate({
-    isIn: [Departments]
+    isIn: [Departments],
   })
   @Column
   name!: string;
@@ -44,15 +63,15 @@ class Department extends Model<DepartmentAttributes, DepartmentCreationAttribute
 
   @CreatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   createdAt!: Date;
 
   @UpdatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   updatedAt!: Date;
 }

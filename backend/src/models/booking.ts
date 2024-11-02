@@ -1,5 +1,17 @@
 import { DataType } from 'sequelize-typescript';
-import { Table, Model, Column, PrimaryKey, AllowNull, Default, ForeignKey, BelongsTo, BeforeSave, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  PrimaryKey,
+  AllowNull,
+  Default,
+  ForeignKey,
+  BelongsTo,
+  BeforeSave,
+  CreatedAt,
+  UpdatedAt,
+} from 'sequelize-typescript';
 import User from './user';
 import Room from './room';
 import { Optional } from 'sequelize';
@@ -17,13 +29,15 @@ export interface BookingAttributes {
   updatedAt: Date;
 }
 
-type BookingCreationAttributes = Optional<BookingAttributes, 'id' | 'createdAt' | 'updatedAt'>;
+type BookingCreationAttributes = Optional<
+  BookingAttributes,
+  'id' | 'createdAt' | 'updatedAt'
+>;
 
 @Table({
   underscored: true,
-  modelName: 'booking'
+  modelName: 'booking',
 })
-
 class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
@@ -51,7 +65,7 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
     type: DataType.ENUM(...bookingStatuses),
     validate: {
       isIn: [bookingStatuses],
-    }
+    },
   })
   status!: BookingStatus;
 
@@ -73,15 +87,15 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
 
   @CreatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   createdAt!: Date;
 
   @UpdatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   updatedAt!: Date;
 }

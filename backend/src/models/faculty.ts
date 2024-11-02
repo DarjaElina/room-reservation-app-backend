@@ -1,6 +1,16 @@
 import { DataType } from 'sequelize-typescript';
 import { Optional } from 'sequelize';
-import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  PrimaryKey,
+  AllowNull,
+  Default,
+  HasMany,
+  CreatedAt,
+  UpdatedAt,
+} from 'sequelize-typescript';
 import Department from './department';
 import { FacultyName } from '../types/faculty/faculty.enums';
 import { faculties } from '../types/faculty/faculty.constants';
@@ -12,13 +22,15 @@ interface FacultyAttributes {
   updatedAt: Date;
 }
 
-type FacultyCreationAttributes = Optional<FacultyAttributes, 'id' | 'createdAt' | 'updatedAt'>;
+type FacultyCreationAttributes = Optional<
+  FacultyAttributes,
+  'id' | 'createdAt' | 'updatedAt'
+>;
 
 @Table({
   underscored: true,
-  modelName: 'faculty'
+  modelName: 'faculty',
 })
-
 class Faculty extends Model<FacultyAttributes, FacultyCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
@@ -31,7 +43,7 @@ class Faculty extends Model<FacultyAttributes, FacultyCreationAttributes> {
     type: DataType.ENUM(...faculties),
     validate: {
       isIn: [faculties],
-    }
+    },
   })
   name!: FacultyName;
 
@@ -40,15 +52,15 @@ class Faculty extends Model<FacultyAttributes, FacultyCreationAttributes> {
 
   @CreatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   createdAt!: Date;
 
   @UpdatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   updatedAt!: Date;
 }

@@ -7,7 +7,7 @@ export const up: Migration = async ({ context: queryInterface }) => {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4
+      defaultValue: DataTypes.UUIDV4,
     },
     room_id: {
       type: DataTypes.UUID,
@@ -18,7 +18,7 @@ export const up: Migration = async ({ context: queryInterface }) => {
       type: DataTypes.UUID,
       allowNull: false,
       references: { model: 'equipment', key: 'id' },
-    }
+    },
   });
 };
 

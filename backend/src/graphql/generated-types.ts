@@ -68,7 +68,7 @@ export type Mutation = {
   bulkCreateUsers?: Maybe<Array<Maybe<User>>>;
   cancelBooking: UserResponse;
   changePassword: UserResponse;
-  createBooking?: Maybe<Booking>;
+  createBooking: Booking;
   createDepartment: Department;
   createEquipment: Equipment;
   createFaculty: Faculty;
@@ -321,6 +321,7 @@ export type Query = {
   allVenues: Array<Venue>;
   bookingsByDateRange: Array<Booking>;
   bookingsByRoom: Array<Booking>;
+  bookingsByRoomAndDate: Array<Booking>;
   bookingsByRoomAndUser: Array<Booking>;
   bookingsByUser: Array<Booking>;
   currentUser?: Maybe<User>;
@@ -362,6 +363,13 @@ export type QueryBookingsByDateRangeArgs = {
 
 export type QueryBookingsByRoomArgs = {
   roomId: Scalars['ID']['input'];
+};
+
+
+export type QueryBookingsByRoomAndDateArgs = {
+  endDate: Scalars['Date']['input'];
+  roomId: Scalars['ID']['input'];
+  startDate: Scalars['Date']['input'];
 };
 
 
@@ -736,7 +744,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   bulkCreateUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<MutationBulkCreateUsersArgs, 'users'>>;
   cancelBooking?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationCancelBookingArgs, 'bookingId'>>;
   changePassword?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'newPassword' | 'oldPassword'>>;
-  createBooking?: Resolver<Maybe<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'endDate' | 'roomId' | 'startDate'>>;
+  createBooking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'endDate' | 'roomId' | 'startDate'>>;
   createDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationCreateDepartmentArgs, 'name'>>;
   createEquipment?: Resolver<ResolversTypes['Equipment'], ParentType, ContextType, RequireFields<MutationCreateEquipmentArgs, 'name'>>;
   createFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationCreateFacultyArgs, 'name'>>;
@@ -775,6 +783,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   allVenues?: Resolver<Array<ResolversTypes['Venue']>, ParentType, ContextType>;
   bookingsByDateRange?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByDateRangeArgs, 'endDate' | 'startDate'>>;
   bookingsByRoom?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByRoomArgs, 'roomId'>>;
+  bookingsByRoomAndDate?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByRoomAndDateArgs, 'endDate' | 'roomId' | 'startDate'>>;
   bookingsByRoomAndUser?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByRoomAndUserArgs, 'roomId' | 'userId'>>;
   bookingsByUser?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByUserArgs, 'userId'>>;
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;

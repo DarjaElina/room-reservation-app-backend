@@ -5,9 +5,12 @@ import { dateScalarResolvers } from './scalarDate/resolvers';
 import bookingResolvers from './booking/resolvers';
 import roomResolvers from './room/resolvers';
 
-
-
 const typeDefs = mergeTypeDefs(loadFilesSync('src/graphql/**/*.graphql'));
-const resolvers = mergeResolvers([userResolvers, dateScalarResolvers, bookingResolvers, roomResolvers]);
+const resolvers = mergeResolvers([
+  userResolvers,
+  dateScalarResolvers,
+  bookingResolvers,
+  roomResolvers,
+]);
 
 export { typeDefs, resolvers };

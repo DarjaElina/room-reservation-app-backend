@@ -1,9 +1,21 @@
 import { Optional } from 'sequelize';
-import { DataType, Table, Model, Column, PrimaryKey, AllowNull, Default, CreatedAt, UpdatedAt, Unique, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import {
+  DataType,
+  Table,
+  Model,
+  Column,
+  PrimaryKey,
+  AllowNull,
+  Default,
+  CreatedAt,
+  UpdatedAt,
+  Unique,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 import { TokenType } from '../types/token/token.enums';
 import { tokenTypes } from '../types/token/token.constants';
 import User from './user';
-
 
 interface UserTokenAttributes {
   id: string;
@@ -15,14 +27,19 @@ interface UserTokenAttributes {
   expiresAt: Date;
 }
 
-type UserTokenCreationAttributes = Optional<UserTokenAttributes, 'id' | 'createdAt' | 'updatedAt'>;
+type UserTokenCreationAttributes = Optional<
+  UserTokenAttributes,
+  'id' | 'createdAt' | 'updatedAt'
+>;
 
 @Table({
   underscored: true,
-  modelName: 'user_token'
+  modelName: 'user_token',
 })
-
-class UserToken extends Model<UserTokenAttributes, UserTokenCreationAttributes> {
+class UserToken extends Model<
+  UserTokenAttributes,
+  UserTokenCreationAttributes
+> {
   @PrimaryKey
   @AllowNull(false)
   @Default(DataType.UUIDV4)
@@ -33,27 +50,27 @@ class UserToken extends Model<UserTokenAttributes, UserTokenCreationAttributes> 
   @Unique
   @Column
   token!: string;
-  
+
   @AllowNull(false)
   @Column({
     type: DataType.ENUM(...tokenTypes),
     validate: {
       isIn: [tokenTypes],
-    }
+    },
   })
   type!: TokenType;
 
   @CreatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   createdAt!: Date;
 
   @UpdatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   updatedAt!: Date;
 

@@ -13,11 +13,21 @@ import UserToken from '../models/user_token';
 import { Umzug, SequelizeStorage } from 'umzug';
 
 if (!DATABASE_URL) {
-  throw new Error("DATABASE_URL is not defined.");
+  throw new Error('DATABASE_URL is not defined.');
 }
 
 export const sequelize = new Sequelize(DATABASE_URL, {
-  models: [User, Booking, Venue, Room, Department, Faculty, Equipment, RoomEquipment, UserToken],
+  models: [
+    User,
+    Booking,
+    Venue,
+    Room,
+    Department,
+    Faculty,
+    Equipment,
+    RoomEquipment,
+    UserToken,
+  ],
 });
 
 const migrationConf = {

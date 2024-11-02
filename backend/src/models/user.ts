@@ -1,5 +1,24 @@
 import { Optional } from 'sequelize';
-import { DataType, Table, Model, Column, HasMany, AllowNull, Default, PrimaryKey, Length, IsEmail, Unique, Validate, ForeignKey, BelongsTo, CreatedAt, UpdatedAt, AutoIncrement, AfterCreate } from 'sequelize-typescript';
+import {
+  DataType,
+  Table,
+  Model,
+  Column,
+  HasMany,
+  AllowNull,
+  Default,
+  PrimaryKey,
+  Length,
+  IsEmail,
+  Unique,
+  Validate,
+  ForeignKey,
+  BelongsTo,
+  CreatedAt,
+  UpdatedAt,
+  AutoIncrement,
+  AfterCreate,
+} from 'sequelize-typescript';
 import { UserRole, UserStatus } from '../types/user/user.enums';
 import { roles, userStatuses } from '../types/user/user.constants';
 import Booking from './booking';
@@ -23,15 +42,16 @@ interface UserAttributes {
   userNumber: number;
 }
 
-
-type UserCreationAttributes = Optional<UserAttributes, 'id' | 'createdAt' | 'updatedAt' | 'userNumber' | 'username'>;
+type UserCreationAttributes = Optional<
+  UserAttributes,
+  'id' | 'createdAt' | 'updatedAt' | 'userNumber' | 'username'
+>;
 
 @Table({
   underscored: true,
   modelName: 'user',
-  initialAutoIncrement: '10000'
+  initialAutoIncrement: '10000',
 })
-
 class User extends Model<UserAttributes, UserCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
@@ -43,7 +63,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   @Length({ min: 2, max: 40 })
   @Validate({
     is: /^[a-zA-ZÀ-ÿ\s'-]+$/i,
-    notEmpty: true
+    notEmpty: true,
   })
   @Column
   givenName!: string;
@@ -52,7 +72,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   @Length({ min: 2, max: 40 })
   @Validate({
     is: /^[a-zA-ZÀ-ÿ\s'-]+$/i,
-    notEmpty: true
+    notEmpty: true,
   })
   @Column
   familyName!: string;
@@ -60,14 +80,14 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   @Length({ min: 2, max: 40 })
   @Validate({
     is: /^[a-zA-ZÀ-ÿ\s'-]+$/i,
-    notEmpty: true
+    notEmpty: true,
   })
   @Column
   middleName?: string;
 
   @Validate({
     is: /^[A-Za-z]{1}[A-Za-z]{1}[0-9]{5}$/,
-    notEmpty: true
+    notEmpty: true,
   })
   @Unique
   @Column
@@ -86,8 +106,8 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   @Column({
     type: DataType.ENUM(...roles),
     validate: {
-      isIn: [roles]
-    }
+      isIn: [roles],
+    },
   })
   role!: UserRole;
 
@@ -95,8 +115,8 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   @Column({
     type: DataType.ENUM(...userStatuses),
     validate: {
-      isIn: [userStatuses]
-    }
+      isIn: [userStatuses],
+    },
   })
   status!: UserStatus;
 
@@ -113,15 +133,15 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
 
   @CreatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   createdAt!: Date;
 
   @UpdatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   updatedAt!: Date;
 
@@ -133,13 +153,16 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
 
   @AfterCreate
   static async addUsername(instance: User) {
-    const username = generateUsername(instance.givenName, instance.familyName, instance.userNumber);
+    const username = generateUsername(
+      instance.givenName,
+      instance.familyName,
+      instance.userNumber
+    );
     await instance.update({ username });
   }
 
   @HasMany(() => UserToken)
   userTokens!: UserToken[];
 }
-
 
 export default User;

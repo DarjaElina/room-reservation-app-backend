@@ -20,7 +20,7 @@ type Room {
   equipment: [Equipment]
   pictureUrl: String
   isBookable: Boolean!
-  department: Department,
+  department: Department
   isFree: Boolean
   description: String!
 }
@@ -35,11 +35,11 @@ type Query {
   findRoomsByDepartment(departmentId: ID!): [Room!]!
   findRoomsBySizeRange(minSize: Int!, maxSize: Int!): [Room!]!
   findRooms(
-    venueId: ID,
-    roomType: RoomType,
-    accessoriesIds: [ID!],
-    minSize: Int,
-    maxSize: Int,
+    venueId: ID
+    roomType: RoomType
+    accessoriesIds: [ID!]
+    minSize: Int
+    maxSize: Int
     isBookable: Boolean
   ): [Room!]!
 }
@@ -47,24 +47,24 @@ type Query {
 type Mutation {
   setRoomBookableStatus(roomId: ID!, isBookable: Boolean!): Room!
   createRoom(
-    venueId: ID!,
-    code: String!,
-    type: RoomType!,
-    size: Int!,
-    equipmentIds: [ID!]!,
-    pictureUrl: String,
-    isBookable: Boolean!,
+    venueId: ID!
+    code: String!
+    type: RoomType!
+    size: Int!
+    equipmentIds: [ID!]!
+    pictureUrl: String
+    isBookable: Boolean!
     departmentId: ID!
   ): Room!
 
   updateRoom(
-    roomId: ID!,
-    code: String,
-    type: RoomType,
-    size: Int,
-    equipmentIds: [ID!],
-    pictureUrl: String,
-    isBookable: Boolean,
+    roomId: ID!
+    code: String
+    type: RoomType
+    size: Int
+    equipmentIds: [ID!]
+    pictureUrl: String
+    isBookable: Boolean
     departmentId: ID
   ): Room!
   deleteRoom(roomId: ID!): Boolean!

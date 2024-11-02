@@ -5,7 +5,6 @@ export const up: Migration = async ({ context: queryInterface }) => {
       ALTER TABLE users
       ALTER COLUMN username DROP NOT NULL;
     `);
-  
 };
 
 export const down: Migration = async ({ context: queryInterface }) => {

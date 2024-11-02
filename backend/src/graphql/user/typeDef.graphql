@@ -62,10 +62,7 @@ type Mutation {
 
   bulkCreateUsers(users: [UserInput!]!): [User]
 
-  authenticate(
-    username: String!
-    password: String!
-  ): AccessToken
+  authenticate(username: String!, password: String!): AccessToken
 
   updateUser(
     userId: ID!
@@ -77,14 +74,15 @@ type Mutation {
     password: String
   ): User
 
-  activateUser(
-      activationToken: String!
-      newPassword: String!
-  ): UserResponse!
+  activateUser(activationToken: String!, newPassword: String!): UserResponse!
 
   deleteUser(userId: ID!): UserResponse!
   updateUserStatus(userId: ID!, status: UserStatus!): User
-  resetPassword(token: String!, oldPassword: String!, newPassword: String!): UserResponse!
+  resetPassword(
+    token: String!
+    oldPassword: String!
+    newPassword: String!
+  ): UserResponse!
   changePassword(oldPassword: String!, newPassword: String!): UserResponse!
   requestPasswordReset(email: String!): UserResponse!
 }

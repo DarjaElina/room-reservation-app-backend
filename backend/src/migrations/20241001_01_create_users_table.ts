@@ -2,14 +2,13 @@ import { DataTypes } from 'sequelize';
 import type { Migration } from '../util/db';
 import { roles, userStatuses } from '../types/user/user.constants';
 
-
 export const up: Migration = async ({ context: queryInterface }) => {
   await queryInterface.createTable('users', {
     id: {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4
+      defaultValue: DataTypes.UUIDV4,
     },
     given_name: {
       type: DataTypes.STRING,
@@ -26,12 +25,12 @@ export const up: Migration = async ({ context: queryInterface }) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
     role: {
       type: DataTypes.ENUM(...roles),
@@ -47,13 +46,13 @@ export const up: Migration = async ({ context: queryInterface }) => {
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
+      defaultValue: DataTypes.NOW,
     },
     updated_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
-    }
+      defaultValue: DataTypes.NOW,
+    },
   });
 };
 

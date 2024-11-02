@@ -16,9 +16,9 @@ interface MyContext {
   user: User | null;
 }
 
-const start = async() => {
+const start = async () => {
   const app = express();
-  
+
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   const httpServer = http.createServer(app);
 
@@ -28,7 +28,6 @@ const start = async() => {
   });
 
   await server.start();
-
 
   app.use(
     '/',
@@ -40,14 +39,16 @@ const start = async() => {
 
         return { user, isAdmin };
       },
-    }),
+    })
   );
 
   await connectToDatabase();
 
   startCronJobs();
 
-  await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
+  await new Promise<void>((resolve) =>
+    httpServer.listen({ port: PORT }, resolve)
+  );
   console.log(`🚀 Server ready at http://localhost:${PORT}/`);
 };
 

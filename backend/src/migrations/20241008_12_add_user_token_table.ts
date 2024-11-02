@@ -8,7 +8,7 @@ export const up: Migration = async ({ context: queryInterface }) => {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4
+      defaultValue: DataTypes.UUIDV4,
     },
     user_id: {
       type: DataTypes.UUID,
@@ -17,26 +17,26 @@ export const up: Migration = async ({ context: queryInterface }) => {
     },
     expires_at: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
     },
     token: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     type: {
       type: DataTypes.ENUM(...tokenTypes),
-      allowNull: false
+      allowNull: false,
     },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
+      defaultValue: DataTypes.NOW,
     },
     updated_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
-    }
+      defaultValue: DataTypes.NOW,
+    },
   });
 };
 

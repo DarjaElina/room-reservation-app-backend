@@ -6,5 +6,5 @@ export enum RoomType {
   MeetingRoom = 'MEETING_ROOM',
   PracticeRoom = 'PRACTICE_ROOM',
   Studio = 'STUDIO',
-  Theater = 'THEATER'
+  Theater = 'THEATER',
 }

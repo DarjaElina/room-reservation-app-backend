@@ -8,11 +8,11 @@ export const up: Migration = async ({ context: queryInterface }) => {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4
+      defaultValue: DataTypes.UUIDV4,
     },
     start_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
     },
     end_date: {
       type: DataTypes.DATE,
@@ -20,18 +20,18 @@ export const up: Migration = async ({ context: queryInterface }) => {
     },
     status: {
       type: DataTypes.ENUM(...bookingStatuses),
-      allowNull: false
+      allowNull: false,
     },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
+      defaultValue: DataTypes.NOW,
     },
     updated_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW
-    }
+      defaultValue: DataTypes.NOW,
+    },
   });
 };
 

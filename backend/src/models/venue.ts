@@ -1,6 +1,19 @@
 import { DataType } from 'sequelize-typescript';
 import { Optional } from 'sequelize';
-import { Table, Model, Column, PrimaryKey, AllowNull, Default, HasMany, Unique, Length, Validate, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  PrimaryKey,
+  AllowNull,
+  Default,
+  HasMany,
+  Unique,
+  Length,
+  Validate,
+  CreatedAt,
+  UpdatedAt,
+} from 'sequelize-typescript';
 import Room from './room';
 
 interface VenueAttributes {
@@ -11,13 +24,15 @@ interface VenueAttributes {
   updatedAt: Date;
 }
 
-type VenueCreationAttributes = Optional<VenueAttributes, 'id' | 'createdAt' | 'updatedAt'>;
+type VenueCreationAttributes = Optional<
+  VenueAttributes,
+  'id' | 'createdAt' | 'updatedAt'
+>;
 
 @Table({
   underscored: true,
-  modelName: 'venue'
+  modelName: 'venue',
 })
-
 class Venue extends Model<VenueAttributes, VenueCreationAttributes> {
   @PrimaryKey
   @AllowNull(false)
@@ -29,7 +44,7 @@ class Venue extends Model<VenueAttributes, VenueCreationAttributes> {
   @Unique
   @Length({ min: 3, max: 10 })
   @Validate({
-    is: /^[A-Z0-9-]+$/
+    is: /^[A-Z0-9-]+$/,
   })
   @Column
   code!: string;
@@ -37,7 +52,7 @@ class Venue extends Model<VenueAttributes, VenueCreationAttributes> {
   @AllowNull(false)
   @Length({ min: 5, max: 50 })
   @Validate({
-    is: /^[a-zA-ZÀ-ÿ\s'-]+$/
+    is: /^[a-zA-ZÀ-ÿ\s'-]+$/,
   })
   @Column
   name!: string;
@@ -47,15 +62,15 @@ class Venue extends Model<VenueAttributes, VenueCreationAttributes> {
 
   @CreatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   createdAt!: Date;
 
   @UpdatedAt
   @Column({
-      type: DataType.DATE,
-      defaultValue: DataType.NOW
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
   })
   updatedAt!: Date;
 }
