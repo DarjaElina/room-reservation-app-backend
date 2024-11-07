@@ -1,7 +1,4 @@
 import { Text, View, StyleSheet } from 'react-native';
-import useSignOut from '../../../hooks/useSignOut';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
 import theme from '../../../theme';
 import useRooms from '../../../hooks/useRooms';
 import RoomList from '../../../components/RoomList';

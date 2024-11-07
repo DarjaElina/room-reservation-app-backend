@@ -49,8 +49,8 @@ export const FIND_ROOM = gql(`
 `);
 
 export const BOOKINGS_BY_ROOM_AND_USER = gql(`
-  query BookingsByRoomAndUser($roomId: ID!, $userId: ID!) {
-    bookingsByRoomAndUser(roomId: $roomId, userId: $userId) {
+  query BookingsByRoomAndUser($roomId: ID!, $userId: ID!, $status: BookingStatus) {
+    bookingsByRoomAndUser(roomId: $roomId, userId: $userId, status: $status) {
       startDate
       endDate
       id
@@ -68,6 +68,23 @@ export const BOOKINGS_BY_ROOM_AND_DATE = gql(`
       }
       endDate
       startDate
+    }
+  }
+`);
+
+export const ALL_VENUES = gql(`
+  query AllVenues {
+    allVenues {
+      name
+      code
+    }
+  }
+`);
+
+export const ALL_EQUIPMENT = gql(`
+  query AllEquipment {
+    allEquipment {
+      name
     }
   }
 `);

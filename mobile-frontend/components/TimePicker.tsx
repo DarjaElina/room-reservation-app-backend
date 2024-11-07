@@ -22,7 +22,7 @@ export default function TimePicker() {
 
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  const { data, loading, error } = useQuery(BOOKINGS_BY_ROOM_AND_DATE, {
+  const { data } = useQuery(BOOKINGS_BY_ROOM_AND_DATE, {
     variables: {
       roomId: id,
       startDate: new Date(date).setHours(6, 0, 0, 0),
@@ -32,58 +32,6 @@ export default function TimePicker() {
   });
 
   const navigation = useNavigation();
-
-  const handleSelect = (item: TimeSlotType) => {
-    const hour = Number(item.value.slice(0, 2));
-
-    const hourBlock = [
-      { hour, value: `${hour < 10 ? '0' : ''}${hour}:00:00` },
-      { hour, value: `${hour < 10 ? '0' : ''}${hour}:15:00` },
-      { hour, value: `${hour < 10 ? '0' : ''}${hour}:30:00` },
-      { hour, value: `${hour < 10 ? '0' : ''}${hour}:45:00` },
-    ];
-    const isHourSelected = hourBlock.every((block) =>
-      selectedTimeValues.some((selected) => selected.hour === block.hour)
-    );
-
-    const isValueSelected = selectedTimeValues.some(
-      (i) => i.value === item.value
-    );
-
-    if (isHourSelected && isValueSelected) {
-      const curentSelected = selectedTimeValues.filter(
-        (i) => i.value === item.value
-      );
-      if (
-        selectedTimeValues.indexOf(curentSelected[0]) <
-        selectedTimeValues.length / 2
-      ) {
-        setSelectedTimeValues(
-          selectedTimeValues
-            .slice(selectedTimeValues.indexOf(curentSelected[0]) + 1)
-            .sort((a, b) => a.hour - b.hour)
-        );
-      } else {
-        setSelectedTimeValues(
-          selectedTimeValues
-            .slice(0, selectedTimeValues.indexOf(curentSelected[0]))
-            .sort((a, b) => a.hour - b.hour)
-        );
-      }
-    } else if (
-      !isHourSelected &&
-      (selectedTimeValues.length === 0 ||
-        selectedTimeValues.filter((i) => i.hour === item.hour - 1).length ===
-          4 ||
-        selectedTimeValues.filter((i) => i.hour === item.hour + 1).length === 4)
-    ) {
-      setSelectedTimeValues(
-        [...selectedTimeValues, ...hourBlock].sort((a, b) => a.hour - b.hour)
-      );
-    } else {
-      setSelectedTimeValues([...hourBlock].sort((a, b) => a.hour - b.hour));
-    }
-  };
 
   const handleSubmit = () => {
     if (selectedTimeValues.length >= 1) {
@@ -140,7 +88,74 @@ export default function TimePicker() {
     };
   });
 
-  console.log(mappedBookings);
+  const handleSelect = (item: TimeSlotType) => {
+    const hour = Number(item.value.slice(0, 2));
+
+    const hourBlock = [
+      { hour, value: `${hour < 10 ? '0' : ''}${hour}:00:00` },
+      { hour, value: `${hour < 10 ? '0' : ''}${hour}:15:00` },
+      { hour, value: `${hour < 10 ? '0' : ''}${hour}:30:00` },
+      { hour, value: `${hour < 10 ? '0' : ''}${hour}:45:00` },
+    ];
+
+    const isHourSelected = hourBlock.every((block) =>
+      selectedTimeValues.some((selected) => selected.hour === block.hour)
+    );
+
+    const isValueSelected = selectedTimeValues.some(
+      (i) => i.value === item.value
+    );
+
+    if (isHourSelected && isValueSelected) {
+      const currentSelected = selectedTimeValues.find(
+        (i) => i.value === item.value
+      );
+      if (currentSelected) {
+        const currentIndex = selectedTimeValues.indexOf(currentSelected);
+
+        setSelectedTimeValues(
+          currentIndex < selectedTimeValues.length / 2
+            ? selectedTimeValues
+                .slice(currentIndex + 1)
+                .filter(
+                  (i) => !mappedBookings.some((b) => b.startDate === i.value)
+                )
+            : selectedTimeValues
+                .slice(0, currentIndex)
+                .filter(
+                  (i) =>
+                    !mappedBookings.some(
+                      (b) => b.startDate <= i.value && b.endDate >= i.value
+                    )
+                )
+        );
+      }
+    } else if (
+      !isHourSelected &&
+      (selectedTimeValues.length === 0 ||
+        selectedTimeValues.filter((i) => i.hour === item.hour - 1).length ===
+          4 ||
+        selectedTimeValues.filter((i) => i.hour === item.hour + 1).length === 4)
+    ) {
+      setSelectedTimeValues(
+        [...selectedTimeValues, ...hourBlock].filter(
+          (i) =>
+            !mappedBookings.some(
+              (b) => b.startDate <= i.value && b.endDate >= i.value
+            )
+        )
+      );
+    } else {
+      setSelectedTimeValues(
+        hourBlock.filter(
+          (i) =>
+            !mappedBookings.some(
+              (b) => b.startDate <= i.value && b.endDate >= i.value
+            )
+        )
+      );
+    }
+  };
 
   return (
     <View>

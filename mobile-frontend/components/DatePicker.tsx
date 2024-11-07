@@ -1,20 +1,24 @@
 import { useState } from 'react';
-import { View } from 'react-native';
-import RNDateTimePicker, {
-  DateTimePickerEvent,
-} from '@react-native-community/datetimepicker';
+import { View, TouchableOpacity, Text } from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useBookingContext } from '../hooks/useBookingContext';
 
 export default function DatePicker() {
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(true);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const { date, setDate } = useBookingContext();
 
-  const onChange = (event: DateTimePickerEvent, selectedDate: Date) => {
-    const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    setDate(date);
+    hideDatePicker();
   };
 
   const handleNextDay = () => {
@@ -52,13 +56,34 @@ export default function DatePicker() {
         onPress={handlePrevDay}
         disabled={date > new Date() ? false : true}
       />
-      <RNDateTimePicker
+      <TouchableOpacity
+        onPress={showDatePicker}
+        style={{
+          backgroundColor: '#f0f0f0',
+          paddingVertical: 8,
+          paddingHorizontal: 12,
+          borderRadius: 8,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 4,
+          elevation: 3,
+        }}
+      >
+        <Text style={{ fontSize: 18, color: 'black' }}>
+          {date.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+          })}
+        </Text>
+      </TouchableOpacity>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
         minimumDate={new Date()}
-        testID="dateTimePicker"
-        value={date}
-        mode={mode}
-        is24Hour={true}
-        onChange={onChange}
       />
       <AntDesign.Button
         backgroundColor="lightgrey"

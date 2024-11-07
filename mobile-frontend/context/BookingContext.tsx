@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState } from 'react';
 interface TimeSlot {
   value: string;
   hour: number;
+  isBooked?: boolean;
 }
 
 interface BookingContextType {

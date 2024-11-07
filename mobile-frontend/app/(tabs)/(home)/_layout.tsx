@@ -1,11 +1,7 @@
 import { Stack } from 'expo-router';
 import theme from '../../../theme';
-import { useBookingContext } from '../../../hooks/useBookingContext';
-import { Link } from 'expo-router';
-import { Pressable, Text } from 'react-native';
 
 export default function Layout() {
-  const { handleSubmit } = useBookingContext();
   return (
     <Stack
       screenOptions={{
@@ -22,6 +18,24 @@ export default function Layout() {
         name="index"
         options={{
           title: 'Home',
+        }}
+      />
+      <Stack.Screen
+        name="building-filter"
+        options={{
+          title: '',
+        }}
+      />
+      <Stack.Screen
+        name="equipment-filter"
+        options={{
+          title: '',
+        }}
+      />
+      <Stack.Screen
+        name="time-filter"
+        options={{
+          title: '',
         }}
       />
       <Stack.Screen

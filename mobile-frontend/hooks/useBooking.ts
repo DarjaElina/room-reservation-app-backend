@@ -1,13 +1,16 @@
 import { useMutation } from '@apollo/client';
 import { CREATE_BOOKING } from '../graphql/mutations';
 
-const useBooking = () => {
-  const [mutate] = useMutation(CREATE_BOOKING);
+const useBooking = (): [
+  (roomId: string, startDate: number, endDate: number) => Promise<any>,
+  { loading: boolean },
+] => {
+  const [mutate, { loading }] = useMutation(CREATE_BOOKING);
 
   const createBooking = async (
     roomId: string,
-    startDate: Date,
-    endDate: Date
+    startDate: number,
+    endDate: number
   ) => {
     try {
       const { data } = await mutate({
@@ -16,12 +19,12 @@ const useBooking = () => {
 
       return data;
     } catch (error) {
-      console.error('Booking creation failed:', error);
+      //console.error('Booking creation failed:', error);
       throw error;
     }
   };
 
-  return [createBooking];
+  return [createBooking, { loading }];
 };
 
 export default useBooking;

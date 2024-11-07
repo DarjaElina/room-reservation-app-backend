@@ -20,6 +20,5 @@ export default function BookedTimeSlot({ booking }: BookedTimeSlotProps) {
   if (!booking) {
     return null;
   }
-  console.log(booking);
   return <SelectedTimeSlot color="darkred" />;
 }

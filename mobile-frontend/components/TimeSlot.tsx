@@ -53,7 +53,8 @@ const TimeSlot = memo(function TimeSlotItem({
       {index % 4 === 0 ? (
         <Text style={{ padding: 2 }}>{timeSlot.value}</Text>
       ) : null}
-      {selectedTimeValues.find((i) => i.value === timeSlot.value) ? (
+      {selectedTimeValues.find((i) => i.value === timeSlot.value) &&
+      !booking ? (
         <SelectedTimeSlot color="#A8D5BA" value={timeSlot.value.slice(0, 5)} />
       ) : null}
       <BookedTimeSlot booking={booking} />

@@ -12,6 +12,7 @@ import {
 } from '../../helpers/helpers';
 import { Op } from 'sequelize';
 import UserModel from '../../models/user';
+import { isBookingStatus } from '../../util/helpers';
 
 // for booking creation
 // students can book room for 12 hours/week
@@ -69,7 +70,11 @@ const bookingResolvers: Resolvers = {
       return bookings;
     },
 
-    bookingsByRoomAndDate: async (_, { roomId, startDate, endDate }, { user }: { user: User}) => {
+    bookingsByRoomAndDate: async (
+      _,
+      { roomId, startDate, endDate },
+      { user }: { user: User }
+    ) => {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
@@ -79,15 +84,15 @@ const bookingResolvers: Resolvers = {
           roomId,
           [Op.and]: [
             { startDate: { [Op.lt]: endDate } },
-            { endDate: { [Op.gt]: startDate } }
-          ]
+            { endDate: { [Op.gt]: startDate } },
+          ],
         },
         include: [
           {
             model: UserModel,
-            attributes: ['givenName', 'familyName']
-          }
-        ]
+            attributes: ['givenName', 'familyName'],
+          },
+        ],
       });
 
       return bookings;
@@ -103,16 +108,24 @@ const bookingResolvers: Resolvers = {
     },
     bookingsByRoomAndUser: async (
       _,
-      { userId, roomId },
+      { userId, roomId, status },
       { user }: { user: User }
-    ) => {
+   ) => {
       if (!user) {
-        throw new GraphQLError('Not authenticated');
+         throw new GraphQLError('Not authenticated');
       }
-      const bookings = await Booking.findAll({ where: { userId, roomId } });
-
-      return bookings;
-    },
+   
+      const whereClause: { userId: string; roomId: string; status?: BookingStatus } = {
+         userId,
+         roomId,
+      };
+   
+      if (status && isBookingStatus(status)) {
+         whereClause.status = status;
+      }
+   
+      return await Booking.findAll({ where: whereClause });
+   },
   },
 
   Booking: {

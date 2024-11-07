@@ -1,10 +1,14 @@
-import { View, FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { View, FlatList } from 'react-native';
 import Room from './RoomItem';
 import { Link } from 'expo-router';
+import SearchBar from './SearchBar';
+import FilterButtons from './FilterButtons';
 
 export default function RoomList({ rooms }) {
   return (
     <View>
+      <SearchBar />
+      <FilterButtons />
       <FlatList
         contentContainerStyle={{
           padding: 5,

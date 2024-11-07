@@ -375,6 +375,7 @@ export type QueryBookingsByRoomAndDateArgs = {
 
 export type QueryBookingsByRoomAndUserArgs = {
   roomId: Scalars['ID']['input'];
+  status?: InputMaybe<BookingStatus>;
   userId: Scalars['ID']['input'];
 };
 

@@ -27,6 +27,7 @@ type EquipmentCreationAttributes = Optional<EquipmentAttributes, 'id'>;
   underscored: true,
   modelName: 'equipment',
   tableName: 'equipment',
+  timestamps: false,
 })
 class Equipment extends Model<
   EquipmentAttributes,

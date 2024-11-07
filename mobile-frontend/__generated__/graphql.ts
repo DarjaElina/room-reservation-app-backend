@@ -2,40 +2,27 @@
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
-export type MakeEmpty<
-  T extends { [key: string]: unknown },
-  K extends keyof T,
-> = { [_ in K]?: never };
-export type Incremental<T> =
-  | T
-  | {
-      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
-    };
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
   /** Date custom scalar type */
-  Date: { input: any; output: any };
+  Date: { input: any; output: any; }
 };
 
 export enum BookingStatus {
   Active = 'ACTIVE',
   Cancelled = 'CANCELLED',
   CancelledLate = 'CANCELLED_LATE',
-  Past = 'PAST',
+  Past = 'PAST'
 }
 
 export enum RoomType {
@@ -46,12 +33,12 @@ export enum RoomType {
   MeetingRoom = 'MEETING_ROOM',
   PracticeRoom = 'PRACTICE_ROOM',
   Studio = 'STUDIO',
-  Theater = 'THEATER',
+  Theater = 'THEATER'
 }
 
 export enum TokenType {
   Activation = 'ACTIVATION',
-  PasswordReset = 'PASSWORD_RESET',
+  PasswordReset = 'PASSWORD_RESET'
 }
 
 export type UserInput = {
@@ -68,13 +55,13 @@ export enum UserRole {
   Admin = 'ADMIN',
   Manager = 'MANAGER',
   Student = 'STUDENT',
-  Teacher = 'TEACHER',
+  Teacher = 'TEACHER'
 }
 
 export enum UserStatus {
   Active = 'ACTIVE',
   Disabled = 'DISABLED',
-  Pending = 'PENDING',
+  Pending = 'PENDING'
 }
 
 export type AuthenticateMutationVariables = Exact<{
@@ -82,10 +69,8 @@ export type AuthenticateMutationVariables = Exact<{
   password: Scalars['String']['input'];
 }>;
 
-export type AuthenticateMutation = {
-  __typename?: 'Mutation';
-  authenticate?: { __typename?: 'AccessToken'; value: string } | null;
-};
+
+export type AuthenticateMutation = { __typename?: 'Mutation', authenticate?: { __typename?: 'AccessToken', value: string } | null };
 
 export type CreateBookingMutationVariables = Exact<{
   roomId: Scalars['ID']['input'];
@@ -93,72 +78,34 @@ export type CreateBookingMutationVariables = Exact<{
   endDate: Scalars['Date']['input'];
 }>;
 
-export type CreateBookingMutation = {
-  __typename?: 'Mutation';
-  createBooking: {
-    __typename?: 'Booking';
-    room: { __typename?: 'Room'; code: string };
-  };
-};
 
-export type CurrentUserQueryVariables = Exact<{ [key: string]: never }>;
+export type CreateBookingMutation = { __typename?: 'Mutation', createBooking: { __typename?: 'Booking', room: { __typename?: 'Room', code: string } } };
 
-export type CurrentUserQuery = {
-  __typename?: 'Query';
-  currentUser?: { __typename?: 'User'; username: string; id: string } | null;
-};
+export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type AllRoomsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type AllRoomsQuery = {
-  __typename?: 'Query';
-  allRooms: Array<{
-    __typename?: 'Room';
-    id: string;
-    isFree?: boolean | null;
-    code: string;
-    pictureUrl?: string | null;
-    isBookable: boolean;
-    size: number;
-    equipment?: Array<{ __typename?: 'Equipment'; name: string } | null> | null;
-    venue: { __typename?: 'Venue'; name: string };
-  } | null>;
-};
+export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', username: string, id: string } | null };
+
+export type AllRoomsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllRoomsQuery = { __typename?: 'Query', allRooms: Array<{ __typename?: 'Room', id: string, isFree?: boolean | null, code: string, pictureUrl?: string | null, isBookable: boolean, size: number, equipment?: Array<{ __typename?: 'Equipment', name: string } | null> | null, venue: { __typename?: 'Venue', name: string } } | null> };
 
 export type FindRoomQueryVariables = Exact<{
   roomId: Scalars['ID']['input'];
 }>;
 
-export type FindRoomQuery = {
-  __typename?: 'Query';
-  findRoom?: {
-    __typename?: 'Room';
-    id: string;
-    isFree?: boolean | null;
-    code: string;
-    pictureUrl?: string | null;
-    isBookable: boolean;
-    size: number;
-    description: string;
-    equipment?: Array<{ __typename?: 'Equipment'; name: string } | null> | null;
-    venue: { __typename?: 'Venue'; name: string };
-  } | null;
-};
+
+export type FindRoomQuery = { __typename?: 'Query', findRoom?: { __typename?: 'Room', id: string, isFree?: boolean | null, code: string, pictureUrl?: string | null, isBookable: boolean, size: number, description: string, equipment?: Array<{ __typename?: 'Equipment', name: string } | null> | null, venue: { __typename?: 'Venue', name: string } } | null };
 
 export type BookingsByRoomAndUserQueryVariables = Exact<{
   roomId: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
+  status?: InputMaybe<BookingStatus>;
 }>;
 
-export type BookingsByRoomAndUserQuery = {
-  __typename?: 'Query';
-  bookingsByRoomAndUser: Array<{
-    __typename?: 'Booking';
-    startDate: any;
-    endDate: any;
-    id: string;
-  }>;
-};
+
+export type BookingsByRoomAndUserQuery = { __typename?: 'Query', bookingsByRoomAndUser: Array<{ __typename?: 'Booking', startDate: any, endDate: any, id: string }> };
 
 export type BookingsByRoomAndDateQueryVariables = Exact<{
   roomId: Scalars['ID']['input'];
@@ -166,518 +113,26 @@ export type BookingsByRoomAndDateQueryVariables = Exact<{
   endDate: Scalars['Date']['input'];
 }>;
 
-export type BookingsByRoomAndDateQuery = {
-  __typename?: 'Query';
-  bookingsByRoomAndDate: Array<{
-    __typename?: 'Booking';
-    id: string;
-    endDate: any;
-    startDate: any;
-    user: { __typename?: 'User'; familyName: string; givenName: string };
-  }>;
-};
 
-export const AuthenticateDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'Authenticate' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'username' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'String' },
-            },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'password' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'String' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'authenticate' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'username' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'username' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'password' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'password' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'value' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  AuthenticateMutation,
-  AuthenticateMutationVariables
->;
-export const CreateBookingDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateBooking' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'roomId' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'startDate' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Date' } },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'endDate' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Date' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createBooking' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'roomId' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'roomId' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'startDate' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'startDate' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'endDate' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'endDate' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'room' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'code' } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateBookingMutation,
-  CreateBookingMutationVariables
->;
-export const CurrentUserDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'CurrentUser' },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'currentUser' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'username' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<CurrentUserQuery, CurrentUserQueryVariables>;
-export const AllRoomsDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'AllRooms' },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'allRooms' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'isFree' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'code' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'equipment' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                    ],
-                  },
-                },
-                { kind: 'Field', name: { kind: 'Name', value: 'pictureUrl' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'isBookable' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'venue' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<AllRoomsQuery, AllRoomsQueryVariables>;
-export const FindRoomDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'FindRoom' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'roomId' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'findRoom' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'roomId' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'roomId' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'isFree' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'code' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'equipment' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                    ],
-                  },
-                },
-                { kind: 'Field', name: { kind: 'Name', value: 'pictureUrl' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'isBookable' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'size' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'venue' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                    ],
-                  },
-                },
-                { kind: 'Field', name: { kind: 'Name', value: 'description' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<FindRoomQuery, FindRoomQueryVariables>;
-export const BookingsByRoomAndUserDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'BookingsByRoomAndUser' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'roomId' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'userId' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'bookingsByRoomAndUser' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'roomId' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'roomId' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'userId' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'userId' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'startDate' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'endDate' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  BookingsByRoomAndUserQuery,
-  BookingsByRoomAndUserQueryVariables
->;
-export const BookingsByRoomAndDateDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'BookingsByRoomAndDate' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'roomId' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'startDate' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Date' } },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'endDate' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Date' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'bookingsByRoomAndDate' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'roomId' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'roomId' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'startDate' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'startDate' },
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'endDate' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'endDate' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'user' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'familyName' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'givenName' },
-                      },
-                    ],
-                  },
-                },
-                { kind: 'Field', name: { kind: 'Name', value: 'endDate' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'startDate' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  BookingsByRoomAndDateQuery,
-  BookingsByRoomAndDateQueryVariables
->;
+export type BookingsByRoomAndDateQuery = { __typename?: 'Query', bookingsByRoomAndDate: Array<{ __typename?: 'Booking', id: string, endDate: any, startDate: any, user: { __typename?: 'User', familyName: string, givenName: string } }> };
+
+export type AllVenuesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllVenuesQuery = { __typename?: 'Query', allVenues: Array<{ __typename?: 'Venue', name: string, code: string }> };
+
+export type AllEquipmentQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllEquipmentQuery = { __typename?: 'Query', allEquipment: Array<{ __typename?: 'Equipment', name: string }> };
+
+
+export const AuthenticateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Authenticate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"username"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<AuthenticateMutation, AuthenticateMutationVariables>;
+export const CreateBookingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateBooking"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Date"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Date"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createBooking"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"roomId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}}},{"kind":"Argument","name":{"kind":"Name","value":"startDate"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}}},{"kind":"Argument","name":{"kind":"Name","value":"endDate"},"value":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"room"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}}]}}]}}]}}]} as unknown as DocumentNode<CreateBookingMutation, CreateBookingMutationVariables>;
+export const CurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CurrentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CurrentUserQuery, CurrentUserQueryVariables>;
+export const AllRoomsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AllRooms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allRooms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isFree"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"equipment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pictureUrl"}},{"kind":"Field","name":{"kind":"Name","value":"isBookable"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"venue"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<AllRoomsQuery, AllRoomsQueryVariables>;
+export const FindRoomDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindRoom"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"findRoom"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"roomId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isFree"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"equipment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pictureUrl"}},{"kind":"Field","name":{"kind":"Name","value":"isBookable"}},{"kind":"Field","name":{"kind":"Name","value":"size"}},{"kind":"Field","name":{"kind":"Name","value":"venue"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}}]} as unknown as DocumentNode<FindRoomQuery, FindRoomQueryVariables>;
+export const BookingsByRoomAndUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BookingsByRoomAndUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"status"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BookingStatus"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bookingsByRoomAndUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"roomId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}}},{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"Argument","name":{"kind":"Name","value":"status"},"value":{"kind":"Variable","name":{"kind":"Name","value":"status"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<BookingsByRoomAndUserQuery, BookingsByRoomAndUserQueryVariables>;
+export const BookingsByRoomAndDateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BookingsByRoomAndDate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Date"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Date"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bookingsByRoomAndDate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"roomId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roomId"}}},{"kind":"Argument","name":{"kind":"Name","value":"startDate"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}}},{"kind":"Argument","name":{"kind":"Name","value":"endDate"},"value":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"familyName"}},{"kind":"Field","name":{"kind":"Name","value":"givenName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}}]}}]}}]} as unknown as DocumentNode<BookingsByRoomAndDateQuery, BookingsByRoomAndDateQueryVariables>;
+export const AllVenuesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AllVenues"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allVenues"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"code"}}]}}]}}]} as unknown as DocumentNode<AllVenuesQuery, AllVenuesQueryVariables>;
+export const AllEquipmentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AllEquipment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allEquipment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<AllEquipmentQuery, AllEquipmentQueryVariables>;
