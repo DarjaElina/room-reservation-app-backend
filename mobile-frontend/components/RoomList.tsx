@@ -4,7 +4,8 @@ import { Link } from 'expo-router';
 import SearchBar from './SearchBar';
 import FilterButtons from './FilterButtons';
 
-export default function RoomList({ rooms }) {
+export default function RoomList({ rooms, onEndReach }) {
+  const roomNodes = rooms ? rooms.edges.map((edge) => edge.node) : [];
   return (
     <View>
       <SearchBar />
@@ -14,10 +15,12 @@ export default function RoomList({ rooms }) {
           padding: 5,
           display: 'flex',
         }}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
         horizontal={false}
         numColumns={2}
-        data={rooms}
+        data={roomNodes}
         renderItem={({ item }) => (
           <Link
             style={{ margin: 5 }}

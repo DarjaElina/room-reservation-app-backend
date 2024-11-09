@@ -25,6 +25,10 @@ import Booking from './booking';
 import Department from './department';
 import Equipment from './equipment';
 import RoomEquipment from './room_equipment';
+import {
+  PaginateOptions,
+  PaginationConnection,
+} from 'sequelize-cursor-pagination';
 
 interface RoomAttributes {
   id: string;
@@ -54,7 +58,7 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
   @AllowNull(false)
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
-  id!: string;
+  declare id: string;
 
   @AllowNull(false)
   @Unique
@@ -63,7 +67,7 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
     is: /^[A-Z0-9-]+$/,
   })
   @Column
-  code!: string;
+  declare code: string;
 
   @AllowNull(false)
   @Column({
@@ -72,7 +76,7 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
       isIn: [roomTypes],
     },
   })
-  type!: RoomType;
+  declare type: RoomType;
 
   @AllowNull(false)
   @Validate({
@@ -80,54 +84,62 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
     max: 1000,
   })
   @Column
-  size!: number;
+  declare size: number;
 
   @IsUrl
   @Column(DataType.STRING)
-  pictureUrl?: string;
+  declare pictureUrl?: string;
 
   @AllowNull(false)
   @Column
-  isBookable!: boolean;
+  declare isBookable: boolean;
 
   @ForeignKey(() => Venue)
   @AllowNull(false)
   @Column(DataType.UUID)
-  venueId!: string;
+  declare venueId: string;
 
   @BelongsTo(() => Venue)
-  venue!: Venue;
+  declare venue: Venue;
 
   @HasMany(() => Booking)
-  bookings!: Booking[];
+  declare bookings: Booking[];
 
   @ForeignKey(() => Department)
   @Column(DataType.UUID)
-  departmentId?: string;
+  declare departmentId?: string;
 
   @BelongsTo(() => Department)
-  department?: Department;
+  declare department?: Department;
 
   @BelongsToMany(() => Equipment, () => RoomEquipment)
-  equipment?: Array<Equipment & { RoomEquipment: RoomEquipment }>;
+  declare equipment?: Array<Equipment & { RoomEquipment: RoomEquipment }>;
 
   @CreatedAt
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
   })
-  createdAt!: Date;
+  declare createdAt: Date;
 
   @UpdatedAt
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
   })
-  updatedAt!: Date;
+  declare updatedAt: Date;
 
   @AllowNull(false)
   @Column
-  description!: string;
+  declare description: string;
+
+  declare static paginate: (
+    options: PaginateOptions<Room>,
+  ) => Promise<PaginationConnection<Room>>;
 }
+
+
+
+
 
 export default Room;

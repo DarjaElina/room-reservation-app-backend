@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import { CustomPageInfo } from '../types/pagination.types';
 export type Maybe<T> = T;
 export type InputMaybe<T> = T;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -6,6 +7,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -310,13 +312,20 @@ export type MutationUpdateVenueArgs = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  endCursor?: Maybe<Scalars['String']['output']>;
+  hasNextPage: Scalars['Boolean']['output'];
+  hasPreviousPage: Scalars['Boolean']['output'];
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   allBookings: Array<Booking>;
   allDepartments: Array<Department>;
   allEquipment: Array<Equipment>;
   allFaculties: Array<Faculty>;
-  allRooms: Array<Maybe<Room>>;
   allUsers: Array<User>;
   allVenues: Array<Venue>;
   bookingsByDateRange: Array<Booking>;
@@ -325,7 +334,6 @@ export type Query = {
   bookingsByRoomAndUser: Array<Booking>;
   bookingsByUser: Array<Booking>;
   currentUser?: Maybe<User>;
-  findAvailableRoomsByTime: Array<Room>;
   findDepartment?: Maybe<Department>;
   findDepartmentByName: Array<Department>;
   findDepartmentsByFaculty: Array<Department>;
@@ -334,12 +342,6 @@ export type Query = {
   findFaculty?: Maybe<Faculty>;
   findFacultyByName: Array<Faculty>;
   findRoom?: Maybe<Room>;
-  findRooms: Array<Room>;
-  findRoomsByAccessories: Array<Room>;
-  findRoomsByDepartment: Array<Room>;
-  findRoomsBySizeRange: Array<Room>;
-  findRoomsByType: Array<Room>;
-  findRoomsByVenueId: Array<Room>;
   findUser?: Maybe<User>;
   findUserByName?: Maybe<User>;
   findUsersByDepartment: Array<User>;
@@ -347,11 +349,7 @@ export type Query = {
   findVenue?: Maybe<Venue>;
   findVenueByName: Array<Venue>;
   findVenuesByDepartment: Array<Venue>;
-};
-
-
-export type QueryAllRoomsArgs = {
-  isBookable?: InputMaybe<Scalars['Boolean']['input']>;
+  rooms: RoomConnection;
 };
 
 
@@ -382,12 +380,6 @@ export type QueryBookingsByRoomAndUserArgs = {
 
 export type QueryBookingsByUserArgs = {
   userId: Scalars['ID']['input'];
-};
-
-
-export type QueryFindAvailableRoomsByTimeArgs = {
-  endsAt?: InputMaybe<Scalars['Date']['input']>;
-  startsAt: Scalars['Date']['input'];
 };
 
 
@@ -431,42 +423,6 @@ export type QueryFindRoomArgs = {
 };
 
 
-export type QueryFindRoomsArgs = {
-  accessoriesIds?: InputMaybe<Array<Scalars['ID']['input']>>;
-  isBookable?: InputMaybe<Scalars['Boolean']['input']>;
-  maxSize?: InputMaybe<Scalars['Int']['input']>;
-  minSize?: InputMaybe<Scalars['Int']['input']>;
-  roomType?: InputMaybe<RoomType>;
-  venueId?: InputMaybe<Scalars['ID']['input']>;
-};
-
-
-export type QueryFindRoomsByAccessoriesArgs = {
-  accessoriesIds: Array<Scalars['ID']['input']>;
-};
-
-
-export type QueryFindRoomsByDepartmentArgs = {
-  departmentId: Scalars['ID']['input'];
-};
-
-
-export type QueryFindRoomsBySizeRangeArgs = {
-  maxSize: Scalars['Int']['input'];
-  minSize: Scalars['Int']['input'];
-};
-
-
-export type QueryFindRoomsByTypeArgs = {
-  roomType: Scalars['String']['input'];
-};
-
-
-export type QueryFindRoomsByVenueIdArgs = {
-  venueId: Scalars['ID']['input'];
-};
-
-
 export type QueryFindUserArgs = {
   id: Scalars['ID']['input'];
 };
@@ -501,6 +457,19 @@ export type QueryFindVenuesByDepartmentArgs = {
   departmentId: Scalars['ID']['input'];
 };
 
+
+export type QueryRoomsArgs = {
+  accessoriesIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  endsAt?: InputMaybe<Scalars['Date']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  isBookable?: InputMaybe<Scalars['Boolean']['input']>;
+  roomType?: InputMaybe<RoomType>;
+  searchKeyword?: InputMaybe<Scalars['String']['input']>;
+  startsAt?: InputMaybe<Scalars['Date']['input']>;
+  venueId?: InputMaybe<Scalars['ID']['input']>;
+};
+
 export type Room = {
   __typename?: 'Room';
   code: Scalars['String']['output'];
@@ -514,6 +483,19 @@ export type Room = {
   size: Scalars['Int']['output'];
   type: RoomType;
   venue: Venue;
+};
+
+export type RoomConnection = {
+  __typename?: 'RoomConnection';
+  edges: Array<Maybe<RoomEdge>>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type RoomEdge = {
+  __typename?: 'RoomEdge';
+  cursor: Scalars['String']['output'];
+  node: Room;
 };
 
 export enum RoomType {
@@ -664,8 +646,11 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
+  PageInfo: ResolverTypeWrapper<CustomPageInfo>;
   Query: ResolverTypeWrapper<{}>;
   Room: ResolverTypeWrapper<Room>;
+  RoomConnection: ResolverTypeWrapper<Omit<RoomConnection, 'pageInfo'> & { pageInfo: ResolversTypes['PageInfo'] }>;
+  RoomEdge: ResolverTypeWrapper<RoomEdge>;
   RoomType: RoomType;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   TokenType: TokenType;
@@ -689,8 +674,11 @@ export type ResolversParentTypes = {
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
+  PageInfo: CustomPageInfo;
   Query: {};
   Room: Room;
+  RoomConnection: Omit<RoomConnection, 'pageInfo'> & { pageInfo: ResolversParentTypes['PageInfo'] };
+  RoomEdge: RoomEdge;
   String: Scalars['String']['output'];
   User: User;
   UserInput: UserInput;
@@ -774,12 +762,19 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateVenue?: Resolver<ResolversTypes['Venue'], ParentType, ContextType, RequireFields<MutationUpdateVenueArgs, 'id'>>;
 };
 
+export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
+  endCursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  hasPreviousPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  startCursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   allBookings?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType>;
   allDepartments?: Resolver<Array<ResolversTypes['Department']>, ParentType, ContextType>;
   allEquipment?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType>;
   allFaculties?: Resolver<Array<ResolversTypes['Faculty']>, ParentType, ContextType>;
-  allRooms?: Resolver<Array<Maybe<ResolversTypes['Room']>>, ParentType, ContextType, Partial<QueryAllRoomsArgs>>;
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   allVenues?: Resolver<Array<ResolversTypes['Venue']>, ParentType, ContextType>;
   bookingsByDateRange?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByDateRangeArgs, 'endDate' | 'startDate'>>;
@@ -788,7 +783,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   bookingsByRoomAndUser?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByRoomAndUserArgs, 'roomId' | 'userId'>>;
   bookingsByUser?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByUserArgs, 'userId'>>;
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  findAvailableRoomsByTime?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindAvailableRoomsByTimeArgs, 'startsAt'>>;
   findDepartment?: Resolver<Maybe<ResolversTypes['Department']>, ParentType, ContextType, RequireFields<QueryFindDepartmentArgs, 'id'>>;
   findDepartmentByName?: Resolver<Array<ResolversTypes['Department']>, ParentType, ContextType, RequireFields<QueryFindDepartmentByNameArgs, 'name'>>;
   findDepartmentsByFaculty?: Resolver<Array<ResolversTypes['Department']>, ParentType, ContextType, RequireFields<QueryFindDepartmentsByFacultyArgs, 'facultyId'>>;
@@ -797,12 +791,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   findFaculty?: Resolver<Maybe<ResolversTypes['Faculty']>, ParentType, ContextType, RequireFields<QueryFindFacultyArgs, 'id'>>;
   findFacultyByName?: Resolver<Array<ResolversTypes['Faculty']>, ParentType, ContextType, RequireFields<QueryFindFacultyByNameArgs, 'name'>>;
   findRoom?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomArgs, 'roomId'>>;
-  findRooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, Partial<QueryFindRoomsArgs>>;
-  findRoomsByAccessories?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsByAccessoriesArgs, 'accessoriesIds'>>;
-  findRoomsByDepartment?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsByDepartmentArgs, 'departmentId'>>;
-  findRoomsBySizeRange?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsBySizeRangeArgs, 'maxSize' | 'minSize'>>;
-  findRoomsByType?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsByTypeArgs, 'roomType'>>;
-  findRoomsByVenueId?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QueryFindRoomsByVenueIdArgs, 'venueId'>>;
   findUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUserArgs, 'id'>>;
   findUserByName?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUserByNameArgs, 'name'>>;
   findUsersByDepartment?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUsersByDepartmentArgs, 'departmentId'>>;
@@ -810,6 +798,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   findVenue?: Resolver<Maybe<ResolversTypes['Venue']>, ParentType, ContextType, RequireFields<QueryFindVenueArgs, 'id'>>;
   findVenueByName?: Resolver<Array<ResolversTypes['Venue']>, ParentType, ContextType, RequireFields<QueryFindVenueByNameArgs, 'name'>>;
   findVenuesByDepartment?: Resolver<Array<ResolversTypes['Venue']>, ParentType, ContextType, RequireFields<QueryFindVenuesByDepartmentArgs, 'departmentId'>>;
+  rooms?: Resolver<ResolversTypes['RoomConnection'], ParentType, ContextType, Partial<QueryRoomsArgs>>;
 };
 
 export type RoomResolvers<ContextType = any, ParentType extends ResolversParentTypes['Room'] = ResolversParentTypes['Room']> = {
@@ -824,6 +813,19 @@ export type RoomResolvers<ContextType = any, ParentType extends ResolversParentT
   size?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['RoomType'], ParentType, ContextType>;
   venue?: Resolver<ResolversTypes['Venue'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type RoomConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['RoomConnection'] = ResolversParentTypes['RoomConnection']> = {
+  edges?: Resolver<Array<Maybe<ResolversTypes['RoomEdge']>>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type RoomEdgeResolvers<ContextType = any, ParentType extends ResolversParentTypes['RoomEdge'] = ResolversParentTypes['RoomEdge']> = {
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  node?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -862,8 +864,11 @@ export type Resolvers<ContextType = any> = {
   Equipment?: EquipmentResolvers<ContextType>;
   Faculty?: FacultyResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  PageInfo?: PageInfoResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Room?: RoomResolvers<ContextType>;
+  RoomConnection?: RoomConnectionResolvers<ContextType>;
+  RoomEdge?: RoomEdgeResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserResponse?: UserResponseResolvers<ContextType>;
   Venue?: VenueResolvers<ContextType>;

@@ -1,5 +1,23 @@
 scalar Date
 
+type RoomConnection {
+  totalCount: Int!
+  edges: [RoomEdge]!
+  pageInfo: PageInfo!
+}
+
+type RoomEdge {
+  node: Room!
+  cursor: String!
+}
+
+type PageInfo {
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
 enum RoomType {
   PRACTICE_ROOM
   CONCERT_HALL
@@ -26,22 +44,18 @@ type Room {
 }
 
 type Query {
-  allRooms(isBookable: Boolean): [Room]!
   findRoom(roomId: ID!): Room
-  findAvailableRoomsByTime(startsAt: Date!, endsAt: Date): [Room!]!
-  findRoomsByVenueId(venueId: ID!): [Room!]!
-  findRoomsByAccessories(accessoriesIds: [ID!]!): [Room!]!
-  findRoomsByType(roomType: String!): [Room!]!
-  findRoomsByDepartment(departmentId: ID!): [Room!]!
-  findRoomsBySizeRange(minSize: Int!, maxSize: Int!): [Room!]!
-  findRooms(
+   rooms(
+    startsAt: Date
+    endsAt: Date
     venueId: ID
     roomType: RoomType
     accessoriesIds: [ID!]
-    minSize: Int
-    maxSize: Int
     isBookable: Boolean
-  ): [Room!]!
+    searchKeyword: String
+    after: String
+    first: Int
+  ): RoomConnection!
 }
 
 type Mutation {

@@ -10,6 +10,9 @@ const config: CodegenConfig = {
         scalars: {
           Date: 'Date',
         },
+        mappers: {
+          PageInfo: '../types/pagination.types#CustomPageInfo'
+        },
       },
     },
   },

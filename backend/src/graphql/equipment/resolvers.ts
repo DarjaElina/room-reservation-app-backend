@@ -14,7 +14,6 @@ const equipmentResolvers: Resolvers = {
         const equipment = await Equipment.findAll();
         return equipment;
       } catch (error) {
-        console.log(error)
         return handleResolverErrors(error);
       }
     }

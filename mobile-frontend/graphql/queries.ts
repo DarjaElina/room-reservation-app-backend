@@ -10,19 +10,28 @@ export const CURRENT_USER = gql(`
 `);
 
 export const ALL_ROOMS = gql(` 
-  query AllRooms {
-    allRooms {
-      id
-      isFree
-      code
-      equipment {
-        name
+  query Rooms($startsAt: Date, $endsAt: Date, $venueId: ID, $roomType: RoomType, $accessoriesIds: [ID!], $isBookable: Boolean, $searchKeyword: String, $after: String, $first: Int) {
+    rooms(startsAt: $startsAt, endsAt: $endsAt, venueId: $venueId, roomType: $roomType, accessoriesIds: $accessoriesIds, isBookable: $isBookable, searchKeyword: $searchKeyword, after: $after, first: $first) {
+      edges {
+        cursor
+        node {
+          id
+          isFree
+          code
+          equipment {
+            name
+          }
+          pictureUrl
+          size
+          venue {
+            name
+          }
+        }
       }
-      pictureUrl
-      isBookable
-      size
-      venue {
-        name
+      pageInfo {
+        endCursor
+        hasNextPage
+        startCursor
       }
     }
   }

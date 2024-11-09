@@ -5,56 +5,97 @@ import { GraphQLError } from 'graphql';
 import User from '../../models/user';
 import Venue from '../../models/venue';
 import Booking from '../../models/booking';
-import { Op } from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
 import Equipment from '../../models/equipment';
+import { z } from 'zod';
+import { RoomType } from '../../types/room/room.enums';
+import { makePaginate } from 'sequelize-cursor-pagination';
+
+const argsSchema = z.object({
+  startsAt: z.date().refine(date => date > new Date(), {
+    message: "Start date must be in the future",
+  }).optional(),
+  endsAt: z.date().refine(date => date > new Date(), {
+    message: "End date must be in the future",
+  }).optional(),
+  venueId: z.string().optional(),
+  roomType: z.nativeEnum(RoomType).optional(),
+  accessoiresIds: z.array(z.string()).optional(),
+  isBookable: z.boolean().optional(),
+  searchKeyword: z.string().optional(),
+  after: z.string().optional(),
+  first: z
+    .number()
+    .min(1)
+    .max(30)
+    .default(30)
+    .optional(),
+});
+
+Room.paginate = makePaginate(Room);
 
 const roomResolvers: Resolvers = {
   Query: {
-    allRooms: async (_, { isBookable }, { user }: { user: User }) => {
+    rooms: async (_, args, { user }: { user: User }) => {
       if (!user) {
         throw new GraphQLError('Unauthenticated');
       }
+
       try {
-        const rooms = await Room.findAll({
-          where: isBookable !== undefined ? { isBookable } : {},
+        const normalizedArgs = argsSchema.parse(args);
+        const {
+          startsAt,
+          endsAt,
+          venueId,
+          roomType,
+          accessoiresIds,
+          isBookable,
+          searchKeyword,
+          after,
+          first,
+        } = normalizedArgs;
+
+        const where: WhereOptions = {};
+
+        if (startsAt && endsAt) {
+          where.startsAt = { [Op.gte]: startsAt };
+          where.endsAt = { [Op.lte]: endsAt };
+        }
+
+        if (venueId) {
+          where.venueId = venueId;
+        }
+
+        if (roomType) {
+          where.roomType = roomType;
+        }
+
+        if (isBookable !== undefined) {
+          where.isBookable = isBookable;
+        }
+
+        if (accessoiresIds && accessoiresIds.length > 0) {
+          where.accessoiresIds = { [Op.in]: accessoiresIds };
+        }
+
+        if (searchKeyword) {
+          where.searchKeyword = { [Op.iLike]: `%${searchKeyword}%` };
+        }
+
+        const queryOptions = {
+          limit: first,
+          after,
+          where,
           include: [
             {
               model: Venue,
-              include: [],
-            },
-            {
-              model: Equipment,
-              attributes: ['name'],
-              through: {
-                attributes: [],
-              },
             },
           ],
-        });
+        };
 
-        const currentDateTime = new Date();
-        const roomIds = rooms.map((room) => room.id);
-        const currentBookings = await Booking.findAll({
-          where: {
-            roomId: { [Op.in]: roomIds },
-            startDate: { [Op.lte]: currentDateTime },
-            endDate: { [Op.gte]: currentDateTime },
-          },
-        });
+        const rooms = await Room.paginate(queryOptions);
 
-        const roomsWithStatus = rooms.map((room) => {
-          const isFree = !currentBookings.some(
-            (booking) => booking.roomId === room.id
-          );
-          return {
-            ...room.dataValues,
-            venue: room.venue,
-            isFree,
-            equipment: room.equipment,
-          };
-        });
-
-        return roomsWithStatus;
+        return rooms;
       } catch (error) {
         return handleResolverErrors(error);
       }

@@ -30,9 +30,11 @@
     "pg": "^8.13.0",
     "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.3",
+    "sequelize-cursor-pagination": "^3.4.0",
     "sequelize-typescript": "^2.1.6",
     "ts-node": "^10.9.2",
-    "umzug": "^3.8.2"
+    "umzug": "^3.8.2",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
