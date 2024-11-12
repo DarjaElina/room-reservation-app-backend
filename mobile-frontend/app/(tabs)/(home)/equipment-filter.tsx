@@ -8,7 +8,7 @@ export default function BuildingFilter() {
   const [checked, setChecked] = useState(false);
   const { equipment, loading, error } = useEquipment();
 
-  console.log(equipment)
+  console.log(equipment);
 
   if (loading) {
     return <Text style={styles.loadingText}>Loading equipment...</Text>;

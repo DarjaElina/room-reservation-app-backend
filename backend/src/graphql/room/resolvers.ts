@@ -41,6 +41,7 @@ const roomResolvers: Resolvers = {
         throw new GraphQLError('Unauthenticated');
       }
 
+      
       try {
         const normalizedArgs = argsSchema.parse(args);
         const {
@@ -56,6 +57,9 @@ const roomResolvers: Resolvers = {
         } = normalizedArgs;
 
         const where: WhereOptions = {};
+
+        console.log('normalized args', normalizedArgs)
+        console.log('search keyword from backend', searchKeyword);
 
         if (startsAt && endsAt) {
           where.startsAt = { [Op.gte]: startsAt };
@@ -79,7 +83,7 @@ const roomResolvers: Resolvers = {
         }
 
         if (searchKeyword) {
-          where.searchKeyword = { [Op.iLike]: `%${searchKeyword}%` };
+          where.code = { [Op.iLike]: `%${searchKeyword}%` };
         }
 
         const queryOptions = {

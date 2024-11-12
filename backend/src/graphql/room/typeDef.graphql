@@ -45,7 +45,7 @@ type Room {
 
 type Query {
   findRoom(roomId: ID!): Room
-   rooms(
+  rooms(
     startsAt: Date
     endsAt: Date
     venueId: ID

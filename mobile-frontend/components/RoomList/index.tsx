@@ -1,0 +1,59 @@
+import { View, ActivityIndicator, Text, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { useDebounce } from 'use-debounce';
+import theme from '../../theme';
+import useRooms from '../../hooks/useRooms';
+import RoomListContainer from './RoomListContainer';
+import SearchBar from '../SearchBar';
+import FilterButtons from '../FilterButtons';
+
+export default function RoomListWrapper() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+
+  const { rooms, loading, error, fetchMore } = useRooms({
+    first: 4,
+    searchKeyword: debouncedSearchQuery,
+  });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.backgroundPrimary}
+        />
+        <Text>Loading rooms...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return <Text>Error loading rooms: {error.message}</Text>;
+  }
+
+  const roomNodes = rooms ? rooms.edges.map((edge) => edge.node) : [];
+
+  return (
+    <View style={styles.container}>
+      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <FilterButtons />
+      <RoomListContainer rooms={roomNodes} onEndReach={onEndReach} />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

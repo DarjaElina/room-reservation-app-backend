@@ -3,6 +3,7 @@ import { ALL_ROOMS } from '../graphql/queries';
 
 const useRooms = (variables) => {
   const { data, error, loading, fetchMore, ...result } = useQuery(ALL_ROOMS, {
+    fetchPolicy: 'cache-and-network',
     variables,
   });
 

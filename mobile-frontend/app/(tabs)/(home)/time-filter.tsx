@@ -3,14 +3,40 @@ import { TextInput } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useState } from 'react';
 import Button from '../../../components/Button';
-import theme from '../../../theme';
+import { z, ZodType } from 'zod';
+
+type FormData = {
+  startDate: Date;
+  endDate: Date;
+};
+
+const dateValidationSchema: ZodType<FormData> = z
+  .object({
+    startDate: z.coerce.date().refine((data) => data > new Date(), {
+      message: 'Start date must be in the future',
+    }),
+    endDate: z.coerce.date(),
+  })
+  .refine((data) => data.endDate > data.startDate, {
+    message: 'End date cannot be earlier than start date.',
+    path: ['endDate'],
+  });
+
+const validateDates = (startDate: Date, endDate: Date) => {
+  const result = dateValidationSchema.safeParse({ startDate, endDate });
+  if (!result.success) {
+    Alert.alert(result.error.errors[0].message);
+    return false;
+  }
+  return true;
+};
 
 export default function TimeFilter() {
   const [isStartDatePickerVisible, setStartDatePickerVisibility] =
     useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
 
   const showStartDatePicker = () => {
     setStartDatePickerVisibility(true);
@@ -22,6 +48,10 @@ export default function TimeFilter() {
 
   const handleStartDateConfirm = (date) => {
     setStartDate(date);
+    const endDateTime = new Date(date);
+    endDateTime.setHours(date.getHours() + 1);
+    setEndDate(endDateTime);
+
     hideStartDatePicker();
   };
 
@@ -33,16 +63,22 @@ export default function TimeFilter() {
     setEndDatePickerVisibility(false);
   };
 
-  const handleEndDateConfirm = (date) => {
-    setEndDate(date);
-    hideEndDatePicker();
+  const handleEndDateConfirm = (time) => {
+    const endDateTime = new Date(startDate);
+    endDateTime.setHours(time.getHours());
+    endDateTime.setMinutes(time.getMinutes());
+
+    if (validateDates(startDate, endDateTime)) {
+      setEndDate(endDateTime);
+      hideEndDatePicker();
+    }
   };
 
   const handleSearch = () => {
     if (startDate && endDate) {
       Alert.alert(
         'Searching for available classrooms',
-        `From ${startDate.toLocaleString().slice(0, 16)} to ${endDate.toLocaleString().slice(0, 16)}`
+        `From ${startDate.toLocaleString()} to ${endDate.toLocaleString()}`
       );
     } else {
       Alert.alert('Please select both start and end dates.');
@@ -56,8 +92,12 @@ export default function TimeFilter() {
       </Text>
       <TextInput
         label="Start Date"
-        value={startDate ? startDate.toLocaleString().slice(0, 16) : ''}
-        onFocus={showStartDatePicker}
+        value={
+          startDate
+            ? `${startDate.toDateString()}, ${startDate.toLocaleTimeString(undefined, { timeStyle: 'short' })}`
+            : ''
+        }
+        onPressIn={showStartDatePicker}
         style={styles.textInput}
       />
       <DateTimePickerModal
@@ -66,25 +106,29 @@ export default function TimeFilter() {
         onConfirm={handleStartDateConfirm}
         onCancel={hideStartDatePicker}
         minimumDate={new Date()}
+        minuteInterval={15}
       />
       <TextInput
         label="End Date"
-        value={endDate ? endDate.toLocaleString().slice(0, 16) : ''}
-        onFocus={showEndDatePicker}
+        value={
+          endDate
+            ? `${endDate.toDateString()}, ${endDate.toLocaleTimeString(undefined, { timeStyle: 'short' })}`
+            : ''
+        }
+        onPressIn={showEndDatePicker}
         style={styles.textInput}
       />
       <DateTimePickerModal
         isVisible={isEndDatePickerVisible}
-        mode="datetime"
+        mode="time"
         onConfirm={handleEndDateConfirm}
         onCancel={hideEndDatePicker}
-        minimumDate={startDate || new Date()}
+        minuteInterval={15}
       />
       <Button
         label="Search Classrooms"
         onSubmit={handleSearch}
         style={styles.button}
-        textStyle={styles.buttonText}
       />
     </View>
   );

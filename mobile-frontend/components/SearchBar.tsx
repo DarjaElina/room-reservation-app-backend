@@ -1,12 +1,9 @@
 import { Searchbar } from 'react-native-paper';
-import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import theme from '../theme';
-import FilterButtons from './FilterButtons';
 
-export default function SearchBar() {
-  const [searchQuery, setSearchQuery] = useState('');
-  console.log('hello search!');
+export default function SearchBar({ searchQuery, setSearchQuery }) {
+  console.log('i am search bar!');
 
   return (
     <View style={styles.container}>
@@ -18,7 +15,6 @@ export default function SearchBar() {
         inputStyle={styles.input}
         iconColor="#888"
       />
-      {/* <FilterButtons /> */}
     </View>
   );
 }

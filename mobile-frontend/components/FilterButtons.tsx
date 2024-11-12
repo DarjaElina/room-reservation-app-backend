@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SegmentedButtons } from 'react-native-paper';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import theme from '../theme';
 import { router } from 'expo-router';
 
-export default function FilterButtons() {
+function FilterButtons() {
   const [value, setValue] = React.useState('');
+
+  console.log('we are filter buttons!');
 
   return (
     <View style={styles.container}>
@@ -82,3 +84,5 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+export default React.memo(FilterButtons);
