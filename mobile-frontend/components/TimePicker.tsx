@@ -1,5 +1,5 @@
 import { FlatList, View, Text } from 'react-native';
-import { useBookingContext } from '../hooks/useBookingContext';
+import useBookingContext from '../hooks/useBookingContext';
 import { FAB } from 'react-native-paper';
 import { Alert } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';

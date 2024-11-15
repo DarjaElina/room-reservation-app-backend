@@ -1,4 +1,4 @@
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import Room from '../RoomItem';
 import { Link } from 'expo-router';
 

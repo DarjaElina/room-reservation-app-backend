@@ -61,11 +61,6 @@ const roomResolvers: Resolvers = {
         console.log('normalized args', normalizedArgs)
         console.log('search keyword from backend', searchKeyword);
 
-        if (startsAt && endsAt) {
-          where.startsAt = { [Op.gte]: startsAt };
-          where.endsAt = { [Op.lte]: endsAt };
-        }
-
         if (venueId) {
           where.venueId = venueId;
         }
@@ -86,6 +81,18 @@ const roomResolvers: Resolvers = {
           where.code = { [Op.iLike]: `%${searchKeyword}%` };
         }
 
+        const conflictingBookings = await Booking.findAll({
+          attributes: ['roomId'],
+          where: {
+            startDate: { [Op.lte]: endsAt },
+            endDate: { [Op.gte]: startsAt },
+          },
+        });
+
+        const conflictingRoomIds = conflictingBookings.map(b => b.roomId);
+
+        where.id = { [Op.notIn]: conflictingRoomIds };
+
         const queryOptions = {
           limit: first,
           after,
@@ -96,9 +103,9 @@ const roomResolvers: Resolvers = {
             },
           ],
         };
-
+    
         const rooms = await Room.paginate(queryOptions);
-
+    
         return rooms;
       } catch (error) {
         return handleResolverErrors(error);
@@ -158,3 +165,6 @@ const roomResolvers: Resolvers = {
 };
 
 export default roomResolvers;
+
+
+

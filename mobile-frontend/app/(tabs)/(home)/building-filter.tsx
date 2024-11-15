@@ -15,7 +15,6 @@ export default function BuildingFilter() {
   return (
     <View style={styles.container}>
       <FlatList
-        ListHeaderComponent={<SearchBar />}
         data={buildings}
         renderItem={({ item }) => (
           <CheckboxItem

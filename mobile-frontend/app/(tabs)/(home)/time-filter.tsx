@@ -4,6 +4,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useState } from 'react';
 import Button from '../../../components/Button';
 import { z, ZodType } from 'zod';
+import useFilter from '../../../hooks/useFilter';
+import { router } from 'expo-router';
 
 type FormData = {
   startDate: Date;
@@ -32,11 +34,10 @@ const validateDates = (startDate: Date, endDate: Date) => {
 };
 
 export default function TimeFilter() {
+  const { startDate, setStartDate, endDate, setEndDate } = useFilter();
   const [isStartDatePickerVisible, setStartDatePickerVisibility] =
     useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
 
   const showStartDatePicker = () => {
     setStartDatePickerVisibility(true);
@@ -47,12 +48,21 @@ export default function TimeFilter() {
   };
 
   const handleStartDateConfirm = (date) => {
-    setStartDate(date);
-    const endDateTime = new Date(date);
-    endDateTime.setHours(date.getHours() + 1);
-    setEndDate(endDateTime);
+    const clonedDate = new Date(date);
 
-    hideStartDatePicker();
+    if (
+      validateDates(
+        date,
+        new Date(clonedDate.setHours(clonedDate.getHours() + 1))
+      )
+    ) {
+      setStartDate(date);
+      const endDateTime = new Date(date);
+      endDateTime.setHours(date.getHours() + 1);
+
+      setEndDate(endDateTime);
+      hideStartDatePicker();
+    }
   };
 
   const showEndDatePicker = () => {
@@ -64,25 +74,57 @@ export default function TimeFilter() {
   };
 
   const handleEndDateConfirm = (time) => {
-    const endDateTime = new Date(startDate);
-    endDateTime.setHours(time.getHours());
-    endDateTime.setMinutes(time.getMinutes());
-
-    if (validateDates(startDate, endDateTime)) {
-      setEndDate(endDateTime);
-      hideEndDatePicker();
-    }
+    if (startDate) {
+      const endDateTime = new Date(startDate);
+      endDateTime.setHours(time.getHours());
+      endDateTime.setMinutes(time.getMinutes());
+      if (validateDates(startDate, endDateTime)) {
+        setEndDate(endDateTime);
+        hideEndDatePicker();
+      }
+    } else Alert.alert('Please, select start date first.');
   };
 
   const handleSearch = () => {
     if (startDate && endDate) {
       Alert.alert(
         'Searching for available classrooms',
-        `From ${startDate.toLocaleString()} to ${endDate.toLocaleString()}`
+        `From ${startDate.toDateString()}, ${startDate.toLocaleTimeString(undefined, { timeStyle: 'short' })} to ${endDate.toDateString()}, ${endDate.toLocaleTimeString(undefined, { timeStyle: 'short' })}`,
+        [
+          {
+            text: 'Cancel',
+            onPress: () => {
+              console.log('Search cancelled');
+            },
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => {
+              console.log('Proceeding to search results');
+              router.replace('/(home)/');
+            },
+          },
+        ]
       );
     } else {
       Alert.alert('Please select both start and end dates.');
     }
+  };
+
+  const clearSearch = () => {
+    setStartDate(null);
+    setEndDate(null);
+  };
+
+  const handleReset = () => {
+    Alert.alert('Are you sure?', 'This will reset your date selections.', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      { text: 'Yes, Clear', onPress: clearSearch },
+    ]);
   };
 
   return (
@@ -130,6 +172,13 @@ export default function TimeFilter() {
         onSubmit={handleSearch}
         style={styles.button}
       />
+      {(startDate || endDate) && (
+        <Button
+          label="Clear Dates"
+          onSubmit={handleReset}
+          style={styles.button}
+        />
+      )}
     </View>
   );
 }

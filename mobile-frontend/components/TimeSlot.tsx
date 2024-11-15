@@ -2,7 +2,7 @@ import { Pressable, Text } from 'react-native';
 import { memo } from 'react';
 import SelectedTimeSlot from './SelectedTimeSlot';
 import BookedTimeSlot from './BookedTimeSlots';
-import { useBookingContext } from '../hooks/useBookingContext';
+import useBookingContext from '../hooks/useBookingContext';
 import theme from '../theme';
 
 export interface TimeSlotType {

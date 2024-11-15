@@ -2,7 +2,15 @@ import { Searchbar } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import theme from '../theme';
 
-export default function SearchBar({ searchQuery, setSearchQuery }) {
+interface SearchBarProps {
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function SearchBar({
+  searchQuery,
+  setSearchQuery,
+}: SearchBarProps) {
   console.log('i am search bar!');
 
   return (

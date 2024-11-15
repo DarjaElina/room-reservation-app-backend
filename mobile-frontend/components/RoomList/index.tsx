@@ -6,14 +6,19 @@ import useRooms from '../../hooks/useRooms';
 import RoomListContainer from './RoomListContainer';
 import SearchBar from '../SearchBar';
 import FilterButtons from '../FilterButtons';
+import useFilter from '../../hooks/useFilter';
 
 export default function RoomListWrapper() {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const { startDate, endDate } = useFilter();
+  console.log(startDate, endDate);
 
   const { rooms, loading, error, fetchMore } = useRooms({
     first: 4,
     searchKeyword: debouncedSearchQuery,
+    startsAt: startDate?.getTime() ?? undefined,
+    endsAt: endDate?.getTime() ?? undefined,
   });
 
   const onEndReach = () => {
@@ -37,6 +42,8 @@ export default function RoomListWrapper() {
   }
 
   const roomNodes = rooms ? rooms.edges.map((edge) => edge.node) : [];
+
+  console.log(roomNodes.length);
 
   return (
     <View style={styles.container}>

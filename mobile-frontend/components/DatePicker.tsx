@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useBookingContext } from '../hooks/useBookingContext';
+import useBookingContext from '../hooks/useBookingContext';
 
 export default function DatePicker() {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -16,7 +16,7 @@ export default function DatePicker() {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (date) => {
+  const handleConfirm = (date: Date) => {
     setDate(date);
     hideDatePicker();
   };

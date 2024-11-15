@@ -1,7 +1,17 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Checkbox } from 'expo-checkbox';
 
-export default function CheckboxItem({ name, isChecked, setChecked }) {
+interface CheckBoxItemProps {
+  name: string;
+  isChecked: boolean;
+  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function CheckboxItem({
+  name,
+  isChecked,
+  setChecked,
+}: CheckBoxItemProps) {
   return (
     <View style={styles.checkboxItem}>
       <Checkbox

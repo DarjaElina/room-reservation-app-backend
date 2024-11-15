@@ -1,9 +1,8 @@
-import { Slot, Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import { ApolloProvider } from '@apollo/client';
 import apolloClient from '../utils/apolloClient';
 import AuthStorageContext from '../context/AuthStorageContext';
 import AuthStorage from '../utils/authStorage';
-import { View } from 'react-native';
 import theme from '../theme';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

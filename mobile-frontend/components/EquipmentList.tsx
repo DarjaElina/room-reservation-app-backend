@@ -1,4 +1,4 @@
-import { View, FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { View, FlatList } from 'react-native';
 import EquipmentItem from './EquipmentItem';
 
 export default function EquipmentList({ equipment }) {
