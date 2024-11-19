@@ -459,15 +459,15 @@ export type QueryFindVenuesByDepartmentArgs = {
 
 
 export type QueryRoomsArgs = {
-  accessoriesIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   after?: InputMaybe<Scalars['String']['input']>;
   endsAt?: InputMaybe<Scalars['Date']['input']>;
+  equipmentIds?: InputMaybe<Array<Scalars['ID']['input']>>;
   first?: InputMaybe<Scalars['Int']['input']>;
   isBookable?: InputMaybe<Scalars['Boolean']['input']>;
-  roomType?: InputMaybe<RoomType>;
+  roomTypes?: InputMaybe<Array<RoomType>>;
   searchKeyword?: InputMaybe<Scalars['String']['input']>;
   startsAt?: InputMaybe<Scalars['Date']['input']>;
-  venueId?: InputMaybe<Scalars['ID']['input']>;
+  venueIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export type Room = {

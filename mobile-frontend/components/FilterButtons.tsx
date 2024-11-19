@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SegmentedButtons } from 'react-native-paper';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import theme from '../theme';
 import { router } from 'expo-router';
 
@@ -23,7 +23,7 @@ function FilterButtons() {
             icon: () => (
               <Ionicons
                 name="time"
-                size={20}
+                size={15}
                 color={
                   value === 'time'
                     ? theme.colors.backgroundPrimary
@@ -41,7 +41,7 @@ function FilterButtons() {
             icon: () => (
               <Ionicons
                 name="location"
-                size={20}
+                size={15}
                 color={
                   value === 'building'
                     ? theme.colors.backgroundPrimary
@@ -54,14 +54,14 @@ function FilterButtons() {
             onPress: () => router.navigate('/(home)/building-filter'),
           },
           {
-            value: 'equipment',
-            label: 'Equipment',
+            value: 'tools',
+            label: 'Tools',
             icon: () => (
               <FontAwesome5
                 name="guitar"
-                size={20}
+                size={15}
                 color={
-                  value === 'equipment'
+                  value === 'tools'
                     ? theme.colors.backgroundPrimary
                     : theme.colors.textPrimary
                 }
@@ -71,6 +71,24 @@ function FilterButtons() {
             checkedColor: theme.colors.backgroundPrimary,
             onPress: () => router.navigate('/(home)/equipment-filter'),
           },
+          {
+            value: 'type',
+            label: 'Type',
+            icon: () => (
+              <MaterialIcons
+                name="class"
+                size={15}
+                color={
+                  value === 'type'
+                    ? theme.colors.backgroundPrimary
+                    : theme.colors.textPrimary
+                }
+              />
+            ),
+            uncheckedColor: theme.colors.textPrimary,
+            checkedColor: theme.colors.backgroundPrimary,
+            onPress: () => router.navigate('/(home)/type-filter'),
+          },
         ]}
       />
     </View>
@@ -79,8 +97,6 @@ function FilterButtons() {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
     marginBottom: 5,
   },
 });

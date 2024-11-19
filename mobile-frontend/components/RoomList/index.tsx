@@ -7,18 +7,22 @@ import RoomListContainer from './RoomListContainer';
 import SearchBar from '../SearchBar';
 import FilterButtons from '../FilterButtons';
 import useFilter from '../../hooks/useFilter';
+import { PaperProvider } from 'react-native-paper';
 
 export default function RoomListWrapper() {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
-  const { startDate, endDate } = useFilter();
-  console.log(startDate, endDate);
+  const { startDate, endDate, buildings, equipment, types } = useFilter();
+  console.log(types);
 
   const { rooms, loading, error, fetchMore } = useRooms({
     first: 4,
     searchKeyword: debouncedSearchQuery,
     startsAt: startDate?.getTime() ?? undefined,
     endsAt: endDate?.getTime() ?? undefined,
+    venueIds: buildings,
+    equipmentIds: equipment,
+    roomTypes: types,
   });
 
   const onEndReach = () => {
@@ -46,11 +50,13 @@ export default function RoomListWrapper() {
   console.log(roomNodes.length);
 
   return (
-    <View style={styles.container}>
-      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <FilterButtons />
-      <RoomListContainer rooms={roomNodes} onEndReach={onEndReach} />
-    </View>
+    <PaperProvider>
+      <View style={styles.container}>
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <FilterButtons />
+        <RoomListContainer rooms={roomNodes} onEndReach={onEndReach} />
+      </View>
+    </PaperProvider>
   );
 }
 

@@ -10,22 +10,23 @@ export const CURRENT_USER = gql(`
 `);
 
 export const ALL_ROOMS = gql(` 
-  query Rooms($startsAt: Date, $endsAt: Date, $venueId: ID, $roomType: RoomType, $accessoriesIds: [ID!], $isBookable: Boolean, $searchKeyword: String, $after: String, $first: Int) {
-    rooms(startsAt: $startsAt, endsAt: $endsAt, venueId: $venueId, roomType: $roomType, accessoriesIds: $accessoriesIds, isBookable: $isBookable, searchKeyword: $searchKeyword, after: $after, first: $first) {
+  query Rooms($startsAt: Date, $endsAt: Date, $venueIds: [ID!], $roomTypes: [RoomType!], $equipmentIds: [ID!], $searchKeyword: String, $isBookable: Boolean, $after: String, $first: Int) {
+    rooms(startsAt: $startsAt, endsAt: $endsAt, venueIds: $venueIds, roomTypes: $roomTypes, equipmentIds: $equipmentIds, searchKeyword: $searchKeyword, isBookable: $isBookable, after: $after, first: $first) {
       edges {
         cursor
         node {
-          id
-          isFree
           code
           equipment {
             name
           }
+          id
+          isFree
           pictureUrl
           size
           venue {
             name
           }
+          description
         }
       }
       pageInfo {
@@ -86,6 +87,7 @@ export const ALL_VENUES = gql(`
     allVenues {
       name
       code
+      id
     }
   }
 `);
@@ -94,6 +96,7 @@ export const ALL_EQUIPMENT = gql(`
   query AllEquipment {
     allEquipment {
       name
+      id
     }
   }
 `);

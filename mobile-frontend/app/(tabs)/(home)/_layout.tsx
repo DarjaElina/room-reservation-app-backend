@@ -41,6 +41,12 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
+          name="type-filter"
+          options={{
+            title: '',
+          }}
+        />
+        <Stack.Screen
           name="rooms/[id]/index"
           options={{
             title: '',

@@ -18,9 +18,9 @@ const argsSchema = z.object({
   endsAt: z.date().refine(date => date > new Date(), {
     message: "End date must be in the future",
   }).optional(),
-  venueId: z.string().optional(),
-  roomType: z.nativeEnum(RoomType).optional(),
-  accessoiresIds: z.array(z.string()).optional(),
+  venueIds: z.array(z.string()).optional(),
+  roomTypes: z.array(z.nativeEnum(RoomType)).optional(),
+  equipmentIds: z.array(z.string()).optional(),
   isBookable: z.boolean().optional(),
   searchKeyword: z.string().optional(),
   after: z.string().optional(),
@@ -47,9 +47,9 @@ const roomResolvers: Resolvers = {
         const {
           startsAt,
           endsAt,
-          venueId,
-          roomType,
-          accessoiresIds,
+          venueIds,
+          roomTypes,
+          equipmentIds,
           isBookable,
           searchKeyword,
           after,
@@ -58,25 +58,18 @@ const roomResolvers: Resolvers = {
 
         const where: WhereOptions = {};
 
-        console.log('normalized args', normalizedArgs)
-        console.log('search keyword from backend', searchKeyword);
-
-        if (venueId) {
-          where.venueId = venueId;
+        if (venueIds && venueIds.length > 0) {
+          where.venueId = { [Op.in]: venueIds };
         }
 
-        if (roomType) {
-          where.roomType = roomType;
+        if (roomTypes && roomTypes.length > 0) {
+          where.type = { [Op.in]: roomTypes};
         }
 
         if (isBookable !== undefined) {
           where.isBookable = isBookable;
         }
-
-        if (accessoiresIds && accessoiresIds.length > 0) {
-          where.accessoiresIds = { [Op.in]: accessoiresIds };
-        }
-
+  
         if (searchKeyword) {
           where.code = { [Op.iLike]: `%${searchKeyword}%` };
         }
@@ -100,6 +93,13 @@ const roomResolvers: Resolvers = {
           include: [
             {
               model: Venue,
+            },
+            {
+              model: Equipment,
+              where: equipmentIds && equipmentIds.length > 0 
+                ? { id: { [Op.in]: equipmentIds } } 
+                : undefined,
+              through: { attributes: [] },
             },
           ],
         };

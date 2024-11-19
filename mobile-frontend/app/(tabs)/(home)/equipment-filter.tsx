@@ -1,32 +1,28 @@
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import useEquipment from '../../../hooks/useEquipment';
+import CheckBox from '../../../components/CheckBox';
 import SearchBar from '../../../components/SearchBar';
-import CheckboxItem from '../../../components/CheckboxItem';
+import useFilter from '../../../hooks/useFilter';
 
-export default function BuildingFilter() {
-  const [checked, setChecked] = useState(false);
+export default function EquipmentFilter() {
   const { equipment, loading, error } = useEquipment();
-
-  console.log(equipment);
+  const { equipment: selectedEquipment, setEquipment } = useFilter();
 
   if (loading) {
     return <Text style={styles.loadingText}>Loading equipment...</Text>;
   }
 
+  const options = equipment.map((b) => {
+    return { label: b.name, value: b.id };
+  });
+
   return (
     <View style={styles.container}>
-      <FlatList
-        ListHeaderComponent={<SearchBar />}
-        data={equipment}
-        renderItem={({ item }) => (
-          <CheckboxItem
-            name={item.name}
-            setChecked={setChecked}
-            isChecked={checked}
-          />
-        )}
-        keyExtractor={(item) => item.name}
+      <SearchBar />
+      <CheckBox
+        options={options}
+        checkedValues={selectedEquipment}
+        onChange={setEquipment}
       />
     </View>
   );
@@ -41,5 +37,12 @@ const styles = StyleSheet.create({
   loadingText: {
     color: '#e3d5f0',
     fontSize: 16,
+  },
+  button: {
+    backgroundColor: '#090623',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 10,
   },
 });

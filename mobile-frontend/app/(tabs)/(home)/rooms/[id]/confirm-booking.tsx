@@ -1,5 +1,5 @@
 import { View, Text, Alert } from 'react-native';
-import { useBookingContext } from '../../../../../hooks/useBookingContext';
+import useBookingContext from '../../../../../hooks/useBookingContext';
 import Button from '../../../../../components/Button';
 import { useLocalSearchParams } from 'expo-router';
 import useRoom from '../../../../../hooks/useRoom';

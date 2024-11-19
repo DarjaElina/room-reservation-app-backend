@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
 
 interface FilterContextType {
   startDate: Date | null;
@@ -7,8 +7,10 @@ interface FilterContextType {
   setEndDate: React.Dispatch<React.SetStateAction<Date | null>>;
   equipment: string[];
   setEquipment: React.Dispatch<React.SetStateAction<string[]>>;
-  building: string;
-  setBuilding: React.Dispatch<React.SetStateAction<string>>;
+  buildings: string[];
+  setBuildings: React.Dispatch<React.SetStateAction<string[]>>;
+  types: string[];
+  setTypes: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export const FilterContext = createContext<FilterContextType | null>(null);
@@ -17,7 +19,8 @@ export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [equipment, setEquipment] = useState<string[]>([]);
-  const [building, setBuilding] = useState('');
+  const [buildings, setBuildings] = useState<string[]>([]);
+  const [types, setTypes] = useState<string[]>([]);
 
   const value = {
     startDate,
@@ -26,8 +29,10 @@ export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
     setEndDate,
     equipment,
     setEquipment,
-    building,
-    setBuilding,
+    buildings,
+    setBuildings,
+    types,
+    setTypes,
   };
 
   return (

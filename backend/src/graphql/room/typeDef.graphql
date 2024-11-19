@@ -48,9 +48,9 @@ type Query {
   rooms(
     startsAt: Date
     endsAt: Date
-    venueId: ID
-    roomType: RoomType
-    accessoriesIds: [ID!]
+    venueIds: [ID!]
+    roomTypes: [RoomType!]
+    equipmentIds: [ID!]
     isBookable: Boolean
     searchKeyword: String
     after: String

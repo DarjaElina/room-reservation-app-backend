@@ -1,47 +1,59 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { Checkbox } from 'expo-checkbox';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
-interface CheckBoxItemProps {
-  name: string;
-  isChecked: boolean;
-  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export default function CheckboxItem({
-  name,
-  isChecked,
-  setChecked,
-}: CheckBoxItemProps) {
+export default function CheckBoxItem({
+  item,
+  isActive,
+  updatedCheckedValues,
+  setUpdatedCheckedValues,
+  onChange,
+}) {
   return (
-    <View style={styles.checkboxItem}>
-      <Checkbox
-        style={styles.checkbox}
-        value={isChecked}
-        onValueChange={setChecked}
-        color="#d9a3ff"
+    <TouchableOpacity
+      style={[styles.checkBox, isActive && styles.activeCheckboxColor]}
+      onPress={() => {
+        const newValues = isActive
+          ? updatedCheckedValues.filter((v) => v !== item.value)
+          : [...updatedCheckedValues, item.value];
+        setUpdatedCheckedValues(newValues);
+        onChange(newValues);
+      }}
+    >
+      <MaterialIcons
+        name={isActive ? 'check-box' : 'check-box-outline-blank'}
+        size={24}
+        color={isActive ? '#ffffff' : '#f4e1f6'}
       />
-      <Text style={styles.venueText}>{name}</Text>
-    </View>
+      <Text style={isActive ? [styles.text, styles.activeText] : styles.text}>
+        {item.label}
+      </Text>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  checkboxItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 8,
+  container: {
     width: '100%',
   },
-  venueText: {
-    fontSize: 15,
-    color: '#e3d5f0',
-    marginLeft: 10,
+  checkBox: {
+    height: 60,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    backgroundColor: '#48225a',
+    paddingHorizontal: 15,
+    borderRadius: 15,
   },
-  checkbox: {
-    width: 24,
-    height: 24,
-    borderRadius: 5,
+  activeCheckboxColor: {
+    backgroundColor: '#6a329b',
+  },
+  text: {
+    fontSize: 16,
+    marginLeft: 15,
+    color: '#f4e1f6',
+  },
+  activeText: {
+    color: '#ffffff',
   },
 });

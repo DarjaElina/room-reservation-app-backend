@@ -211,8 +211,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 10,
   },
-  buttonText: {
-    color: '#d9a3ff',
-    fontWeight: '600',
-  },
 });
