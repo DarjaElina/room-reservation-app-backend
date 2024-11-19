@@ -21,8 +21,8 @@ const documents = {
     "\n  query FindRoom($roomId: ID!) {\n    findRoom(roomId: $roomId) {\n      id\n      isFree\n      code\n      equipment {\n        name\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n      description\n    }\n  }\n": types.FindRoomDocument,
     "\n  query BookingsByRoomAndUser($roomId: ID!, $userId: ID!, $status: BookingStatus) {\n    bookingsByRoomAndUser(roomId: $roomId, userId: $userId, status: $status) {\n      startDate\n      endDate\n      id\n    }\n  }\n": types.BookingsByRoomAndUserDocument,
     "\n  query BookingsByRoomAndDate($roomId: ID!, $startDate: Date!, $endDate: Date!) {\n    bookingsByRoomAndDate(roomId: $roomId, startDate: $startDate, endDate: $endDate) {\n      id\n      user {\n        familyName\n        givenName\n      }\n      endDate\n      startDate\n    }\n  }\n": types.BookingsByRoomAndDateDocument,
-    "\n  query AllVenues {\n    allVenues {\n      name\n      code\n      id\n    }\n  }\n": types.AllVenuesDocument,
-    "\n  query AllEquipment {\n    allEquipment {\n      name\n      id\n    }\n  }\n": types.AllEquipmentDocument,
+    "\n  query AllVenues($searchKeyword: String) {\n    allVenues(searchKeyword: $searchKeyword) {\n      name\n      code\n      id\n    }\n  }\n": types.AllVenuesDocument,
+    "\n  query AllEquipment($searchKeyword: String) {\n    allEquipment(searchKeyword: $searchKeyword) {\n      name\n      id\n    }\n  }\n": types.AllEquipmentDocument,
 };
 
 /**
@@ -70,11 +70,11 @@ export function gql(source: "\n  query BookingsByRoomAndDate($roomId: ID!, $star
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query AllVenues {\n    allVenues {\n      name\n      code\n      id\n    }\n  }\n"): (typeof documents)["\n  query AllVenues {\n    allVenues {\n      name\n      code\n      id\n    }\n  }\n"];
+export function gql(source: "\n  query AllVenues($searchKeyword: String) {\n    allVenues(searchKeyword: $searchKeyword) {\n      name\n      code\n      id\n    }\n  }\n"): (typeof documents)["\n  query AllVenues($searchKeyword: String) {\n    allVenues(searchKeyword: $searchKeyword) {\n      name\n      code\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query AllEquipment {\n    allEquipment {\n      name\n      id\n    }\n  }\n"): (typeof documents)["\n  query AllEquipment {\n    allEquipment {\n      name\n      id\n    }\n  }\n"];
+export function gql(source: "\n  query AllEquipment($searchKeyword: String) {\n    allEquipment(searchKeyword: $searchKeyword) {\n      name\n      id\n    }\n  }\n"): (typeof documents)["\n  query AllEquipment($searchKeyword: String) {\n    allEquipment(searchKeyword: $searchKeyword) {\n      name\n      id\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

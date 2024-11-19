@@ -87,6 +87,7 @@ const roomResolvers: Resolvers = {
         where.id = { [Op.notIn]: conflictingRoomIds };
 
         const queryOptions = {
+          order: ['code'],
           limit: first,
           after,
           where,
@@ -101,7 +102,7 @@ const roomResolvers: Resolvers = {
                 : undefined,
               through: { attributes: [] },
             },
-          ],
+          ]
         };
     
         const rooms = await Room.paginate(queryOptions);

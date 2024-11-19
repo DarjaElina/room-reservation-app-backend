@@ -3,6 +3,8 @@ import CheckBox from '../../../components/CheckBox';
 import SearchBar from '../../../components/SearchBar';
 import useFilter from '../../../hooks/useFilter';
 import { RoomType } from '../../../__generated__/graphql';
+import { useState } from 'react';
+import { useDebounce } from 'use-debounce';
 
 export const RoomTypeLabels: Record<RoomType, string> = {
   [RoomType.AdministrativeSpace]: 'Administrative Space',
@@ -16,6 +18,8 @@ export const RoomTypeLabels: Record<RoomType, string> = {
 };
 
 export default function TypeFilter() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
   const { types, setTypes } = useFilter();
 
   const options = Object.entries(RoomTypeLabels).map(([value, label]) => ({
@@ -23,10 +27,21 @@ export default function TypeFilter() {
     value,
   }));
 
+  const filteredOptions = options.filter((o) =>
+    o.label.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
+  );
   return (
     <View style={styles.container}>
-      <SearchBar />
-      <CheckBox options={options} checkedValues={types} onChange={setTypes} />
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        placeholder="Search room types..."
+      />
+      <CheckBox
+        options={filteredOptions}
+        checkedValues={types}
+        onChange={setTypes}
+      />
     </View>
   );
 }

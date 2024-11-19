@@ -4,7 +4,7 @@ type Equipment {
 }
 
 type Query {
-  allEquipment: [Equipment!]!
+  allEquipment(searchKeyword: String): [Equipment!]!
   findEquipment(id: ID!): Equipment
   findEquipmentByName(name: String!): [Equipment!]!
 }

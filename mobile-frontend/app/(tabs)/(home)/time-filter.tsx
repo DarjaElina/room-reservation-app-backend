@@ -87,26 +87,7 @@ export default function TimeFilter() {
 
   const handleSearch = () => {
     if (startDate && endDate) {
-      Alert.alert(
-        'Searching for available classrooms',
-        `From ${startDate.toDateString()}, ${startDate.toLocaleTimeString(undefined, { timeStyle: 'short' })} to ${endDate.toDateString()}, ${endDate.toLocaleTimeString(undefined, { timeStyle: 'short' })}`,
-        [
-          {
-            text: 'Cancel',
-            onPress: () => {
-              console.log('Search cancelled');
-            },
-            style: 'cancel',
-          },
-          {
-            text: 'OK',
-            onPress: () => {
-              console.log('Proceeding to search results');
-              router.replace('/(home)/');
-            },
-          },
-        ]
-      );
+      router.replace('/(home)');
     } else {
       Alert.alert('Please select both start and end dates.');
     }

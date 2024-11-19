@@ -52,7 +52,11 @@ export default function RoomListWrapper() {
   return (
     <PaperProvider>
       <View style={styles.container}>
-        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <SearchBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          placeholder="Search rooms by code..."
+        />
         <FilterButtons />
         <RoomListContainer rooms={roomNodes} onEndReach={onEndReach} />
       </View>

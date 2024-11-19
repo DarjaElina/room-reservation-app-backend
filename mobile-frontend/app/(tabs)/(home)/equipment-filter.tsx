@@ -3,9 +3,15 @@ import useEquipment from '../../../hooks/useEquipment';
 import CheckBox from '../../../components/CheckBox';
 import SearchBar from '../../../components/SearchBar';
 import useFilter from '../../../hooks/useFilter';
+import { useState } from 'react';
+import { useDebounce } from 'use-debounce';
 
 export default function EquipmentFilter() {
-  const { equipment, loading, error } = useEquipment();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const { equipment, loading, error } = useEquipment({
+    searchKeyword: debouncedSearchQuery,
+  });
   const { equipment: selectedEquipment, setEquipment } = useFilter();
 
   if (loading) {
@@ -18,7 +24,11 @@ export default function EquipmentFilter() {
 
   return (
     <View style={styles.container}>
-      <SearchBar />
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        placeholder="Search equipment..."
+      />
       <CheckBox
         options={options}
         checkedValues={selectedEquipment}

@@ -5,7 +5,7 @@ type Venue {
 }
 
 type Query {
-  allVenues: [Venue!]!
+  allVenues(searchKeyword: String): [Venue!]!
   findVenue(id: ID!): Venue
   findVenueByName(name: String!): [Venue!]!
   findVenuesByDepartment(departmentId: ID!): [Venue!]!

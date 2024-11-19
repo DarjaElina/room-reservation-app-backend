@@ -5,18 +5,20 @@ import theme from '../theme';
 interface SearchBarProps {
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  placeholder?: string;
 }
 
 export default function SearchBar({
   searchQuery,
   setSearchQuery,
+  placeholder = 'Search...',
 }: SearchBarProps) {
   console.log('i am search bar!');
 
   return (
     <View style={styles.container}>
       <Searchbar
-        placeholder="Search"
+        placeholder={placeholder}
         onChangeText={setSearchQuery}
         value={searchQuery}
         style={styles.searchbar}

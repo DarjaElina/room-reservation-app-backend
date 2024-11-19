@@ -1,8 +1,11 @@
 import { useQuery } from '@apollo/client';
 import { ALL_VENUES } from '../graphql/queries';
 
-const useVenues = () => {
-  const { data, error, loading } = useQuery(ALL_VENUES);
+const useVenues = (variables) => {
+  const { data, error, loading } = useQuery(ALL_VENUES, {
+    fetchPolicy: 'cache-and-network',
+    variables,
+  });
 
   return {
     buildings: data ? data.allVenues : [],

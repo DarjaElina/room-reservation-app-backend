@@ -3,9 +3,15 @@ import useVenues from '../../../hooks/useVenues';
 import CheckBox from '../../../components/CheckBox';
 import SearchBar from '../../../components/SearchBar';
 import useFilter from '../../../hooks/useFilter';
+import { useState } from 'react';
+import { useDebounce } from 'use-debounce';
 
 export default function BuildingFilter() {
-  const { buildings, loading, error } = useVenues();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const { buildings, loading, error } = useVenues({
+    searchKeyword: debouncedSearchQuery,
+  });
   const { buildings: selectedBuildings, setBuildings } = useFilter();
 
   if (loading) {
@@ -18,7 +24,11 @@ export default function BuildingFilter() {
 
   return (
     <View style={styles.container}>
-      <SearchBar />
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        placeholder="Search building by name..."
+      />
       <CheckBox
         options={options}
         checkedValues={selectedBuildings}

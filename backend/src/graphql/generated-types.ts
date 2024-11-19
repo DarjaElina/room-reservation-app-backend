@@ -353,6 +353,16 @@ export type Query = {
 };
 
 
+export type QueryAllEquipmentArgs = {
+  searchKeyword?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryAllVenuesArgs = {
+  searchKeyword?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type QueryBookingsByDateRangeArgs = {
   endDate: Scalars['Date']['input'];
   startDate: Scalars['Date']['input'];
@@ -773,10 +783,10 @@ export type PageInfoResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   allBookings?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType>;
   allDepartments?: Resolver<Array<ResolversTypes['Department']>, ParentType, ContextType>;
-  allEquipment?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType>;
+  allEquipment?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType, Partial<QueryAllEquipmentArgs>>;
   allFaculties?: Resolver<Array<ResolversTypes['Faculty']>, ParentType, ContextType>;
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
-  allVenues?: Resolver<Array<ResolversTypes['Venue']>, ParentType, ContextType>;
+  allVenues?: Resolver<Array<ResolversTypes['Venue']>, ParentType, ContextType, Partial<QueryAllVenuesArgs>>;
   bookingsByDateRange?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByDateRangeArgs, 'endDate' | 'startDate'>>;
   bookingsByRoom?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByRoomArgs, 'roomId'>>;
   bookingsByRoomAndDate?: Resolver<Array<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<QueryBookingsByRoomAndDateArgs, 'endDate' | 'roomId' | 'startDate'>>;

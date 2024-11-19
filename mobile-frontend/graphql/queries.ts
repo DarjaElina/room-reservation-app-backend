@@ -83,8 +83,8 @@ export const BOOKINGS_BY_ROOM_AND_DATE = gql(`
 `);
 
 export const ALL_VENUES = gql(`
-  query AllVenues {
-    allVenues {
+  query AllVenues($searchKeyword: String) {
+    allVenues(searchKeyword: $searchKeyword) {
       name
       code
       id
@@ -93,8 +93,8 @@ export const ALL_VENUES = gql(`
 `);
 
 export const ALL_EQUIPMENT = gql(`
-  query AllEquipment {
-    allEquipment {
+  query AllEquipment($searchKeyword: String) {
+    allEquipment(searchKeyword: $searchKeyword) {
       name
       id
     }
