@@ -1,19 +1,13 @@
-import { View, Text, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Alert, StyleSheet, ActivityIndicator } from 'react-native';
 import useBookingContext from '../../../../../hooks/useBookingContext';
-import Button from '../../../../../components/Button';
 import { useLocalSearchParams } from 'expo-router';
 import useRoom from '../../../../../hooks/useRoom';
 import useBooking from '../../../../../hooks/useBooking';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import UserMessage from '../../../../../components/UserMessage';
-import { useState } from 'react';
-import { ActivityIndicator } from 'react-native-paper';
 import { router } from 'expo-router';
-
-// todo
-// implement user messages for success and error
-// implement search bar for classrooms
-// make filtering by building, equipment and available time
+import theme from '@/theme';
 
 export default function BookingConfirmationScreen() {
   const { bookingStartDate, bookingEndDate } = useBookingContext();
@@ -23,7 +17,7 @@ export default function BookingConfirmationScreen() {
   const [userMessage, setUserMessage] = useState<string | null>('');
 
   if (roomLoading) {
-    return <Text style={{ color: '#fff', fontSize: 18 }}>Loading...</Text>;
+    return <Text style={styles.loadingText}>Loading...</Text>;
   }
 
   const formatReadableDate = (isoDate: string) => {
@@ -55,100 +49,113 @@ export default function BookingConfirmationScreen() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#340b46',
-        paddingHorizontal: 20,
-      }}
-    >
-      {/* Loading overlay */}
+    <View style={styles.container}>
       {loading && (
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 10,
-          }}
-        >
-          <ActivityIndicator size="large" color="#d9a3ff" />
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color={theme.colors.textSecondary} />
         </View>
       )}
-
       <UserMessage text={userMessage} />
-
-      {/* Booking details container */}
-      <View
-        style={{
-          backgroundColor: '#2c0a3b',
-          borderRadius: 12,
-          padding: 20,
-          width: '100%',
-          maxWidth: 400,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: 0.3,
-          shadowRadius: 10,
-          elevation: 5,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 10,
-          }}
-        >
+      <View style={styles.card}>
+        <View style={styles.header}>
           <FontAwesome5
             name="calendar-check"
             size={24}
-            color="white"
-            style={{ marginRight: 8 }}
+            color={theme.colors.textPrimary}
+            style={styles.icon}
           />
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: 24,
-              color: '#e3d5f0',
-            }}
-          >
-            Booking Details
-          </Text>
+          <Text style={styles.headerText}>Booking Details</Text>
         </View>
-        <Text style={{ color: '#fff', fontSize: 18, marginBottom: 5 }}>
-          <Text style={{ fontWeight: '600', color: '#d9a3ff' }}>Room:</Text>{' '}
-          {room?.code}
+        <Text style={styles.detailText}>
+          <Text style={styles.label}>Room:</Text> {room?.code}
         </Text>
-        <Text style={{ color: '#fff', fontSize: 18, marginBottom: 5 }}>
-          <Text style={{ fontWeight: '600', color: '#d9a3ff' }}>Starts:</Text>{' '}
+        <Text style={styles.detailText}>
+          <Text style={styles.label}>Starts:</Text>{' '}
           {formatReadableDate(bookingStartDate)}
         </Text>
-        <Text style={{ color: '#fff', fontSize: 18, marginBottom: 20 }}>
-          <Text style={{ fontWeight: '600', color: '#d9a3ff' }}>Ends:</Text>{' '}
+        <Text style={styles.detailText}>
+          <Text style={styles.label}>Ends:</Text>{' '}
           {formatReadableDate(bookingEndDate)}
         </Text>
-        <Button
-          isSmall
-          label="Reserve"
-          onSubmit={handleSubmit}
-          style={{
-            backgroundColor: '#090623',
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            borderRadius: 8,
-          }}
-          textStyle={{ color: '#d9a3ff', fontWeight: '600' }}
-        />
+        <View style={styles.buttonContainer}>
+          <Text onPress={handleSubmit} style={styles.buttonText}>
+            Reserve
+          </Text>
+        </View>
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.colors.backgroundPrimary,
+    paddingHorizontal: theme.spacing.large,
+  },
+  loadingText: {
+    color: theme.colors.textPrimary,
+    fontSize: theme.fontSizes.body,
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  card: {
+    backgroundColor: theme.colors.backgroundSecondary,
+    borderRadius: theme.borderRadius.medium,
+    padding: theme.spacing.large,
+    width: '100%',
+    maxWidth: 400,
+    shadowColor: theme.colors.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: theme.colors.shadowOpacity,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: theme.spacing.medium,
+  },
+  icon: {
+    marginRight: theme.spacing.small,
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: theme.fontSizes.heading,
+    color: theme.colors.textPrimary,
+  },
+  detailText: {
+    color: theme.colors.textPrimary,
+    fontSize: theme.fontSizes.body,
+    marginBottom: theme.spacing.small,
+  },
+  label: {
+    fontWeight: '600',
+    color: theme.colors.textSecondary,
+  },
+  buttonContainer: {
+    backgroundColor: theme.colors.buttonBackground,
+    paddingVertical: theme.spacing.medium,
+    paddingHorizontal: theme.spacing.large,
+    borderRadius: theme.borderRadius.small,
+    alignItems: 'center',
+    marginTop: theme.spacing.medium,
+  },
+  buttonText: {
+    color: theme.colors.buttonText,
+    fontSize: theme.fontSizes.button,
+    fontWeight: 'bold',
+  },
+});

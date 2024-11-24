@@ -1,15 +1,14 @@
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Form from '../components/Form';
 import Button from '../components/Button';
-import Text from '../components/Text';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import theme from '../theme';
 import useSignIn from '../hooks/useSignIn';
 import { router } from 'expo-router';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function Login() {
   const [signIn] = useSignIn();
@@ -33,6 +32,7 @@ export default function Login() {
   const onSubmit: SubmitHandler<UserFormType> = async (data: UserFormType) => {
     const { username, password } = data;
     try {
+      console.log('pressed!');
       await signIn(username, password);
       router.replace('/');
     } catch (error) {
@@ -41,20 +41,15 @@ export default function Login() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardAwareScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.iconContainer}>
         <FontAwesome5
           name="user-circle"
-          size={40}
-          color={theme.colors.textSecondary}
+          size={50}
+          color={theme.colors.textPrimary}
         />
       </View>
-      <Text
-        style={{ textAlign: 'center', marginBottom: 20 }}
-        fontSize="heading"
-      >
-        Log In
-      </Text>
+      <Text style={styles.title}>Log In</Text>
       <Form
         control={control}
         errors={errors}
@@ -64,19 +59,26 @@ export default function Login() {
         ]}
       />
       <Button isBig label="Login" onSubmit={handleSubmit(onSubmit)} />
-    </SafeAreaView>
+    </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  scrollContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignContent: 'center',
+    paddingHorizontal: theme.spacing.medium,
+    backgroundColor: theme.colors.backgroundPrimary,
   },
   iconContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: theme.fontSizes.heading,
+    color: theme.colors.textPrimary,
+    fontWeight: 'bold',
   },
 });

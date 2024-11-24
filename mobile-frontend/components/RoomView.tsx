@@ -1,15 +1,23 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Modal,
+  ScrollView,
+} from 'react-native';
 import RoomDescription from './RoomDescription';
 import theme from '../theme';
 import { Image } from 'expo-image';
 import EquipmentList from './EquipmentList';
-import Button from './Button';
 import useAuth from '../hooks/useAuth';
 import { Redirect } from 'expo-router';
 import BookingList from './BookingList';
 import { Link } from 'expo-router';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
+import { useState } from 'react';
+import QueryResult from './QueryResult';
 
 interface RoomProps {
   id: string;
@@ -25,96 +33,191 @@ interface RoomProps {
 }
 
 export default function RoomView({ room }: { room: RoomProps }) {
-  const { user } = useAuth();
+  const { user, error, loading } = useAuth();
+  const [modalVisible, setModalVisible] = useState(false);
   if (!user) {
     return <Redirect href="/sign-in" />;
   }
   const blurhash =
     '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.image}
-        source="https://nlr.ru/eng/dep/artupload/eng/article/RA2510/NA19217.jpg"
-        placeholder={{ blurhash }}
-        contentFit="cover"
-        transition={1000}
-      />
-      <View style={{ margin: 10, display: 'flex', gap: 5 }}>
-        <View style={styles.headerContainer}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{room.code}</Text>
-
-          {room.isFree ? (
-            <Text style={{ fontSize: 20 }}>
-              <AntDesign name="checksquare" size={24} color="darkgreen" />
-              Available
-            </Text>
-          ) : (
-            <Text style={{ fontSize: 20 }}>
-              <Entypo name="squared-cross" size={24} color="darkred" />
-              Occupied
-            </Text>
-          )}
-        </View>
-        <Text style={{ fontSize: 12 }}>{room.venue.name}</Text>
-        <EquipmentList equipment={room.equipment} />
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Link
-            href={{
-              pathname: '/(home)/rooms/[id]/date-time-picker',
-              params: { id: room.id },
-            }}
-            asChild
-          >
-            <Pressable
-              style={{
-                width: 100,
-                backgroundColor: '#b39ddb',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 20,
+    <QueryResult error={error} loading={loading} data={user}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: theme.spacing.large }}
+        style={styles.container}
+      >
+        <Image
+          style={styles.image}
+          source="https://nlr.ru/eng/dep/artupload/eng/article/RA2510/NA19217.jpg"
+          placeholder={{ blurhash }}
+          contentFit="cover"
+          transition={1000}
+        />
+        <View>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerText}>{room.code}</Text>
+            <Link
+              href={{
+                pathname: '/(home)/rooms/[id]/date-time-picker',
+                params: { id: room.id },
               }}
+              asChild
             >
-              <Text>Reserve</Text>
-            </Pressable>
-          </Link>
-          <Button
-            isSmall
-            label="Favorite"
-            onSubmit={() => console.log('pressed!')}
-          />
+              <Pressable style={styles.reserveButton}>
+                <Text style={styles.reserveButtonText}>Reserve</Text>
+              </Pressable>
+            </Link>
+          </View>
+
+          <View style={styles.locationContainer}>
+            <Entypo
+              name="location-pin"
+              size={24}
+              color={theme.colors.textPrimary}
+            />
+            <Text style={styles.locationText}>{room.venue.name}</Text>
+          </View>
+          {room.isFree ? (
+            <View style={styles.statusContainer}>
+              <AntDesign
+                name="checksquare"
+                size={20}
+                color={theme.colors.success}
+              />
+              <Text style={styles.statusText}>Available</Text>
+            </View>
+          ) : (
+            <View style={styles.statusContainer}>
+              <Entypo
+                name="squared-cross"
+                size={20}
+                color={theme.colors.error}
+              />
+              <Text style={[styles.statusText, { color: theme.colors.error }]}>
+                Occupied
+              </Text>
+            </View>
+          )}
+
+          <EquipmentList equipment={room.equipment} />
+          <RoomDescription text={room.description} />
+          <Pressable
+            style={styles.showReservationsContainer}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.showReservationsText}>
+              Show Upcoming Reservations
+            </Text>
+          </Pressable>
+
+          <Modal
+            visible={modalVisible}
+            animationType="slide"
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <BookingList userId={user.id} roomId={room.id} />
+              <Pressable
+                onPress={() => setModalVisible(false)}
+                style={styles.closeButton}
+              >
+                <Text style={styles.closeButtonText}>Close</Text>
+              </Pressable>
+            </View>
+          </Modal>
         </View>
-        <RoomDescription text={room.description} />
-        <BookingList userId={user.id} roomId={room.id} />
-      </View>
-    </View>
+      </ScrollView>
+    </QueryResult>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.textPrimary,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: theme.colors.backgroundPrimary,
+    borderTopLeftRadius: theme.borderRadius.large,
+    borderTopRightRadius: theme.borderRadius.large,
+    padding: theme.spacing.medium,
   },
   image: {
     width: '100%',
     height: 200,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
-    marginBottom: 10,
+    borderTopRightRadius: theme.borderRadius.medium,
+    borderTopLeftRadius: theme.borderRadius.medium,
+    marginBottom: theme.spacing.medium,
   },
   headerContainer: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: theme.spacing.small,
+    paddingHorizontal: theme.spacing.small,
+  },
+  headerText: {
+    fontSize: theme.fontSizes.heading,
+    fontWeight: 'bold',
+    color: theme.colors.textPrimary,
+  },
+  reserveButton: {
+    backgroundColor: theme.colors.buttonBackground,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: theme.borderRadius.medium,
+    paddingVertical: theme.spacing.small,
+    paddingHorizontal: theme.spacing.medium,
+  },
+  reserveButtonText: {
+    fontSize: theme.fontSizes.button,
+    color: theme.colors.buttonText,
+  },
+  statusContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.small,
+  },
+  statusText: {
+    fontSize: theme.fontSizes.subheading,
+    color: theme.colors.success,
+    fontWeight: '600',
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: theme.spacing.medium,
+  },
+  locationText: {
+    fontSize: theme.fontSizes.body,
+    color: theme.colors.textPrimary,
+    marginLeft: theme.spacing.small,
+  },
+  showReservationsContainer: {
+    backgroundColor: theme.colors.buttonBackground,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: theme.borderRadius.medium,
+    paddingVertical: theme.spacing.small,
+    paddingHorizontal: theme.spacing.medium,
+  },
+  showReservationsText: {
+    color: theme.colors.buttonText,
+    fontSize: theme.fontSizes.subheading,
+    textAlign: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    padding: theme.spacing.medium,
+    backgroundColor: theme.colors.backgroundSecondary,
+    justifyContent: 'center',
+  },
+  closeButton: {
+    backgroundColor: theme.colors.buttonBackground,
+    padding: theme.spacing.small,
+    marginTop: theme.spacing.large,
+    borderRadius: theme.borderRadius.medium,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: theme.colors.buttonText,
+    fontSize: theme.fontSizes.button,
   },
 });

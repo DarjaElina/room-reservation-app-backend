@@ -6,7 +6,7 @@ import { relayStylePagination } from '@apollo/client/utilities';
 const authStorage = new AuthStorage();
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
+  uri: 'http://87.92.4.36:4000',
 });
 
 const cache = new InMemoryCache({
@@ -14,6 +14,18 @@ const cache = new InMemoryCache({
     Query: {
       fields: {
         rooms: relayStylePagination(),
+      },
+    },
+    Room: {
+      fields: {
+        equipment: {
+          merge(existing = [], incoming: any[], { readField }) {
+            if (readField('id', incoming)) {
+              return [...existing, ...incoming];
+            }
+            return incoming;
+          },
+        },
       },
     },
   },

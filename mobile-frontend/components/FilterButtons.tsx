@@ -8,14 +8,17 @@ import { router } from 'expo-router';
 function FilterButtons() {
   const [value, setValue] = React.useState('');
 
-  console.log('we are filter buttons!');
-
   return (
     <View style={styles.container}>
       <SegmentedButtons
         density="medium"
         value={value}
         onValueChange={setValue}
+        theme={{
+          colors: {
+            secondaryContainer: theme.colors.buttonBackground,
+          },
+        }}
         buttons={[
           {
             value: 'time',
@@ -26,13 +29,13 @@ function FilterButtons() {
                 size={15}
                 color={
                   value === 'time'
-                    ? theme.colors.backgroundPrimary
+                    ? theme.colors.buttonText
                     : theme.colors.textPrimary
                 }
               />
             ),
             uncheckedColor: theme.colors.textPrimary,
-            checkedColor: theme.colors.backgroundPrimary,
+            checkedColor: theme.colors.buttonText,
             onPress: () => router.navigate('/(home)/time-filter'),
           },
           {
@@ -44,13 +47,13 @@ function FilterButtons() {
                 size={15}
                 color={
                   value === 'building'
-                    ? theme.colors.backgroundPrimary
+                    ? theme.colors.buttonText
                     : theme.colors.textPrimary
                 }
               />
             ),
             uncheckedColor: theme.colors.textPrimary,
-            checkedColor: theme.colors.backgroundPrimary,
+            checkedColor: theme.colors.buttonText,
             onPress: () => router.navigate('/(home)/building-filter'),
           },
           {
@@ -62,13 +65,13 @@ function FilterButtons() {
                 size={15}
                 color={
                   value === 'tools'
-                    ? theme.colors.backgroundPrimary
+                    ? theme.colors.buttonText
                     : theme.colors.textPrimary
                 }
               />
             ),
             uncheckedColor: theme.colors.textPrimary,
-            checkedColor: theme.colors.backgroundPrimary,
+            checkedColor: theme.colors.buttonText,
             onPress: () => router.navigate('/(home)/equipment-filter'),
           },
           {
@@ -80,13 +83,13 @@ function FilterButtons() {
                 size={15}
                 color={
                   value === 'type'
-                    ? theme.colors.backgroundPrimary
+                    ? theme.colors.buttonText
                     : theme.colors.textPrimary
                 }
               />
             ),
             uncheckedColor: theme.colors.textPrimary,
-            checkedColor: theme.colors.backgroundPrimary,
+            checkedColor: theme.colors.buttonText,
             onPress: () => router.navigate('/(home)/type-filter'),
           },
         ]}
@@ -97,7 +100,7 @@ function FilterButtons() {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 5,
+    marginBottom: theme.spacing.medium,
   },
 });
 

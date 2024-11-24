@@ -18,6 +18,7 @@ export const ALL_ROOMS = gql(`
           code
           equipment {
             name
+            id
           }
           id
           isFree
@@ -46,6 +47,7 @@ export const FIND_ROOM = gql(`
       code
       equipment {
         name
+        id
       }
       pictureUrl
       isBookable

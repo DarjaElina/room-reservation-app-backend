@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
+import { AntDesign, Entypo } from '@expo/vector-icons'; // Importing icons
 import theme from '../theme';
 
 interface RoomProps {
@@ -27,9 +28,36 @@ export default function Room({
         contentFit="cover"
         transition={1000}
       />
-      <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{code}</Text>
-      <Text style={{ fontSize: 12 }}>{venue}</Text>
-      <Text>{isFree ? 'Available' : 'Occupied'}</Text>
+      <Text style={styles.code}>{code}</Text>
+      <View style={styles.locationContainer}>
+        <Entypo
+          name="location-pin"
+          size={18}
+          color={theme.colors.textSecondary}
+        />
+        <Text style={styles.locationText}>{venue}</Text>
+      </View>
+      <View style={styles.statusContainer}>
+        {isFree ? (
+          <>
+            <AntDesign
+              name="checksquare"
+              size={16}
+              color={theme.colors.success}
+            />
+            <Text style={[styles.statusText, { color: theme.colors.success }]}>
+              Available
+            </Text>
+          </>
+        ) : (
+          <>
+            <Entypo name="squared-cross" size={16} color={theme.colors.error} />
+            <Text style={[styles.statusText, { color: theme.colors.error }]}>
+              Occupied
+            </Text>
+          </>
+        )}
+      </View>
     </View>
   );
 }
@@ -38,19 +66,40 @@ const styles = StyleSheet.create({
   container: {
     width: 170,
     minHeight: 200,
-    backgroundColor: theme.colors.textPrimary,
+    backgroundColor: theme.colors.backgroundSecondary,
     display: 'flex',
-    gap: 5,
-    padding: 5,
-    borderRadius: 10,
+    gap: theme.spacing.small,
+    padding: theme.spacing.small,
+    borderRadius: theme.borderRadius.medium,
+    overflow: 'hidden',
+    shadowColor: theme.colors.shadow,
+    shadowOpacity: theme.colors.shadowOpacity,
+    shadowRadius: 6,
+    elevation: 3,
   },
   image: {
     width: '100%',
     height: 100,
-    backgroundColor: '#0553',
-    borderRadius: 10,
+    borderRadius: theme.borderRadius.medium,
   },
-  title: {
-    fontSize: 25,
+  code: {
+    fontSize: theme.fontSizes.heading,
+    fontWeight: 'bold',
+    color: theme.colors.textPrimary,
+  },
+  locationContainer: {
+    flexDirection: 'row',
+  },
+  locationText: {
+    fontSize: theme.fontSizes.small,
+    color: theme.colors.textSecondary,
+  },
+  statusContainer: {
+    flexDirection: 'row',
+    gap: theme.spacing.small,
+  },
+  statusText: {
+    fontSize: theme.fontSizes.subheading,
+    fontWeight: '600',
   },
 });

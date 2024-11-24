@@ -44,10 +44,9 @@ const TimeSlot = memo(function TimeSlotItem({
       style={{
         height: 25,
         borderTopWidth: 1,
-        borderColor:
-          index !== 0 && index % 4 === 0 ? 'grey' : theme.colors.textPrimary,
+        borderColor: index !== 0 && index % 4 === 0 ? 'grey' : 'lightgrey',
         position: 'relative',
-        backgroundColor: '',
+        backgroundColor: theme.colors.backgroundSecondary,
       }}
     >
       {index % 4 === 0 ? (
@@ -55,7 +54,10 @@ const TimeSlot = memo(function TimeSlotItem({
       ) : null}
       {selectedTimeValues.find((i) => i.value === timeSlot.value) &&
       !booking ? (
-        <SelectedTimeSlot color="#A8D5BA" value={timeSlot.value.slice(0, 5)} />
+        <SelectedTimeSlot
+          color={theme.colors.success}
+          value={timeSlot.value.slice(0, 5)}
+        />
       ) : null}
       <BookedTimeSlot booking={booking} />
     </Pressable>

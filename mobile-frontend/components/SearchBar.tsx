@@ -13,8 +13,6 @@ export default function SearchBar({
   setSearchQuery,
   placeholder = 'Search...',
 }: SearchBarProps) {
-  console.log('i am search bar!');
-
   return (
     <View style={styles.container}>
       <Searchbar
@@ -23,7 +21,8 @@ export default function SearchBar({
         value={searchQuery}
         style={styles.searchbar}
         inputStyle={styles.input}
-        iconColor="#888"
+        placeholderTextColor={theme.colors.textSecondary}
+        iconColor={theme.colors.textSecondary}
       />
     </View>
   );
@@ -35,13 +34,22 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   searchbar: {
-    height: 40,
-    borderRadius: 8,
+    height: 50,
+    borderRadius: theme.borderRadius.large,
     justifyContent: 'center',
-    backgroundColor: theme.colors.inputBackgrounds,
+    borderWidth: 2,
+    borderColor: theme.colors.inputBorder,
+    elevation: 5,
+    backgroundColor: theme.colors.backgroundSecondary,
+    shadowColor: theme.colors.shadow,
+    shadowOpacity: theme.colors.shadowOpacity,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 8,
+    overflow: 'hidden',
   },
   input: {
-    fontSize: 16,
+    fontSize: theme.fontSizes.body,
     minHeight: 0,
+    color: theme.colors.textPrimary,
   },
 });

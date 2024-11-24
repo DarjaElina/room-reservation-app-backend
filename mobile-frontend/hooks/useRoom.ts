@@ -6,6 +6,8 @@ const useRoom = (roomId: string) => {
     variables: { roomId },
   });
 
+  console.log(data);
+
   return {
     room: data ? data.findRoom : null,
     loading,

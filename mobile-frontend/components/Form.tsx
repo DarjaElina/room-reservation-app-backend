@@ -2,8 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Controller, Control, FieldErrors } from 'react-hook-form';
 import { TextInput } from 'react-native-paper';
-
-//ed10041
+import theme from '../theme';
 
 interface FormProps {
   control: Control<any>;
@@ -34,7 +33,14 @@ export default function Form({ control, errors, fields }: FormProps) {
                 onChangeText={onChange}
                 value={value}
                 autoCapitalize="none"
-                activeOutlineColor={error ? 'red' : 'black'}
+                activeUnderlineColor={
+                  error ? theme.colors.error : theme.colors.inputActiveBorder
+                }
+                style={{
+                  backgroundColor: 'transparent',
+                  color: theme.colors.textPrimary,
+                }}
+                placeholderTextColor={theme.colors.textSecondary}
               />
             )}
             name={field.name}
@@ -52,10 +58,11 @@ export default function Form({ control, errors, fields }: FormProps) {
 
 const styles = StyleSheet.create({
   inputContainer: {
-    marginBottom: 15,
+    marginBottom: theme.spacing.large,
   },
   errorText: {
-    color: '#EB6424',
-    marginTop: 7,
+    color: theme.colors.error,
+    marginTop: theme.spacing.small,
+    fontSize: theme.fontSizes.subheading,
   },
 });

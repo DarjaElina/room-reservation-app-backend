@@ -1,4 +1,4 @@
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 import useBookingContext from '../hooks/useBookingContext';
 import { FAB } from 'react-native-paper';
 import { Alert } from 'react-native';
@@ -10,6 +10,7 @@ import { BOOKINGS_BY_ROOM_AND_DATE } from '../graphql/queries';
 import { useQuery } from '@apollo/client';
 import TimeSlot from './TimeSlot';
 import { TimeSlotType } from './TimeSlot';
+import theme from '@/theme';
 
 export default function TimePicker() {
   const {
@@ -177,12 +178,22 @@ export default function TimePicker() {
           )}
         />
         <FAB
-          style={{ position: 'absolute', right: 0, bottom: 150 }}
+          style={styles.floatingButton}
           label="Confirm"
           onPress={handleSubmit}
+          color={theme.colors.buttonText}
         />
         <Separator />
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  floatingButton: {
+    position: 'absolute',
+    right: 0,
+    bottom: 150,
+    backgroundColor: theme.colors.buttonBackground,
+  },
+});

@@ -8,20 +8,28 @@ interface EquipmentProp {
 export default function EquipmentItem({ name }: EquipmentProp) {
   return (
     <View style={styles.container}>
-      <Text>{name}</Text>
+      <Text style={styles.text}>{name}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: theme.colors.textSecondary,
-    padding: 2,
-    margin: 2,
-    backgroundColor: theme.colors.textPrimary,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: theme.colors.backgroundSecondary,
+    borderRadius: 15,
+    shadowColor: theme.colors.shadow || '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  text: {
+    color: theme.colors.textPrimary,
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });

@@ -10,10 +10,13 @@ export default function Layout() {
           headerStyle: {
             backgroundColor: theme.colors.backgroundPrimary,
           },
-          headerTintColor: '#fff',
+          headerTintColor: theme.colors.textPrimary,
           headerTitleStyle: {
             fontWeight: 'bold',
+            fontSize: theme.fontSizes.heading,
+            color: theme.colors.textPrimary,
           },
+          headerShadowVisible: true,
         }}
       >
         <Stack.Screen

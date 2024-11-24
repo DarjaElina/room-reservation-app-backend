@@ -1,15 +1,30 @@
-import { View, FlatList } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import EquipmentItem from './EquipmentItem';
 
-export default function EquipmentList({ equipment }) {
+interface EquipmentListProps {
+  equipment: { id: string; name: string }[];
+}
+
+export default function EquipmentList({ equipment }: EquipmentListProps) {
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
-        horizontal={true}
+        horizontal
         data={equipment}
         renderItem={({ item }) => <EquipmentItem name={item.name} />}
-        keyExtractor={(item) => item.name}
+        keyExtractor={(item) => String(item.id)}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.listContent}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 10,
+  },
+  listContent: {
+    gap: 10,
+  },
+});

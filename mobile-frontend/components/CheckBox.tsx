@@ -34,25 +34,4 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
   },
-  checkBox: {
-    height: 60,
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    backgroundColor: '#48225a',
-    paddingHorizontal: 15,
-    borderRadius: 15,
-  },
-  activeCheckboxColor: {
-    backgroundColor: '#6a329b',
-  },
-  text: {
-    fontSize: 16,
-    marginLeft: 15,
-    color: '#f4e1f6',
-  },
-  activeText: {
-    color: '#ffffff',
-  },
 });

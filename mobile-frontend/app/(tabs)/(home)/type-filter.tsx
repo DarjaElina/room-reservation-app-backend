@@ -5,6 +5,7 @@ import useFilter from '../../../hooks/useFilter';
 import { RoomType } from '../../../__generated__/graphql';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import theme from '@/theme';
 
 export const RoomTypeLabels: Record<RoomType, string> = {
   [RoomType.AdministrativeSpace]: 'Administrative Space',
@@ -49,7 +50,7 @@ export default function TypeFilter() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#340b46',
+    backgroundColor: theme.colors.backgroundPrimary,
     padding: 20,
   },
   loadingText: {

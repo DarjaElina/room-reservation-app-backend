@@ -1,19 +1,52 @@
 const theme = {
   colors: {
-    backgroundPrimary: '#340b46',
-    textPrimary: '#F9F4FB',
-    textSecondary: '#C0C0C0',
-    buttons: '#090623',
-    borders: '#C0C0C0',
-    inputBackgrounds: '#F9F4FB',
+    backgroundPrimary: '#D3E0EA',
+    backgroundSecondary: '#F6F5F5',
+
+    textPrimary: '#276678',
+    textSecondary: '#1687A7',
+
+    buttonBackground: '#1687A7',
+    buttonText: '#F6F5F5',
+
+    inputBorder: '#276678',
+    inputBackground: '#F6F5F5',
+    inputActiveBorder: '#276678',
+
+    checkboxActiveBackground: '#276678',
+    checkboxInactiveBackground: '#F6F5F5',
+    checkboxActiveText: '#FFFFFF',
+    checkboxInactiveText: '#276678',
+
+    success: 'darkgreen',
+    error: 'darkred',
+
+    shadow: '#000000',
+    shadowOpacity: 0.2,
   },
   fontSizes: {
     body: 14,
-    subheading: 16,
+    subheading: 14,
     heading: 30,
+    small: 12,
+    button: 16,
+    large: 36,
+  },
+  spacing: {
+    small: 8,
+    medium: 12,
+    large: 16,
+    extraLarge: 20,
+  },
+  borderRadius: {
+    small: 6,
+    medium: 12,
+    large: 20,
   },
 };
 
 export default theme;
+
+//#340b46
 
 // https://mobilepalette.netlify.app/?color=340b46

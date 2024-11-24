@@ -6,6 +6,7 @@ import Button from '../../../components/Button';
 import { z, ZodType } from 'zod';
 import useFilter from '../../../hooks/useFilter';
 import { router } from 'expo-router';
+import theme from '../../../theme';
 
 type FormData = {
   startDate: Date;
@@ -114,6 +115,8 @@ export default function TimeFilter() {
         Select the time range to search for available classrooms.
       </Text>
       <TextInput
+        disabled
+        activeUnderlineColor={theme.colors.inputActiveBorder}
         label="Start Date"
         value={
           startDate
@@ -132,6 +135,8 @@ export default function TimeFilter() {
         minuteInterval={15}
       />
       <TextInput
+        disabled
+        activeUnderlineColor={theme.colors.inputActiveBorder}
         label="End Date"
         value={
           endDate
@@ -169,24 +174,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#340b46',
+    backgroundColor: theme.colors.backgroundPrimary,
     padding: 20,
   },
   instructionText: {
-    color: '#e3d5f0',
-    fontSize: 18,
+    color: theme.colors.textPrimary,
+    fontSize: theme.fontSizes.body,
     marginBottom: 20,
     textAlign: 'center',
   },
   textInput: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.backgroundPrimary,
     marginBottom: 15,
     width: '100%',
     borderRadius: 8,
     padding: 10,
   },
   button: {
-    backgroundColor: '#090623',
+    backgroundColor: theme.colors.buttonBackground,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,

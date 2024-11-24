@@ -22,6 +22,7 @@ export default function Button({
     isSmall && styles.smallButton,
     style,
   ];
+
   return (
     <Pressable style={buttonStyles} onPress={onSubmit}>
       <Text style={styles.buttonLabel}>{label}</Text>
@@ -32,11 +33,12 @@ export default function Button({
 const styles = StyleSheet.create({
   button: {
     borderRadius: 15,
-    backgroundColor: theme.colors.buttons,
+    backgroundColor: theme.colors.buttonBackground,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    padding: 5,
+    paddingVertical: theme.spacing.small,
+    paddingHorizontal: theme.spacing.medium,
   },
   bigButton: {
     width: '100%',
@@ -47,7 +49,8 @@ const styles = StyleSheet.create({
     height: 35,
   },
   buttonLabel: {
-    color: theme.colors.textPrimary,
-    fontSize: 16,
+    color: theme.colors.buttonText,
+    fontSize: theme.fontSizes.button,
+    fontWeight: 'bold',
   },
 });

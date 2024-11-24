@@ -1,5 +1,4 @@
-import { View, Text } from 'react-native';
-import theme from '../theme';
+import { View, Text, StyleSheet } from 'react-native';
 
 interface SelectedTimeSlotProps {
   value?: string;
@@ -11,20 +10,24 @@ export default function SelectedTimeSlot({
   color,
 }: SelectedTimeSlotProps) {
   return (
-    <View
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        minHeight: 25,
-        backgroundColor: color,
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        zIndex: 1,
-        width: '80%',
-      }}
-    >
-      <Text style={{ color: theme.colors.textPrimary }}>{value}</Text>
+    <View style={[styles.container, { backgroundColor: color }]}>
+      <Text style={styles.text}>{value}</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+    minHeight: 25,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 1,
+    width: '80%',
+  },
+  text: {
+    color: '#fff',
+  },
+});

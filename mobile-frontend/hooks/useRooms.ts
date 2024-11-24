@@ -7,6 +7,9 @@ const useRooms = (variables) => {
     variables,
   });
 
+  const { equipmentIds } = variables;
+  console.log('vars from hook', equipmentIds);
+
   const handleFetchMore = () => {
     const canFetchMore = !loading && data?.rooms.pageInfo.hasNextPage;
 

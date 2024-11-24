@@ -1,19 +1,18 @@
 import { View, ActivityIndicator, Text, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import theme from '../../theme';
 import useRooms from '../../hooks/useRooms';
 import RoomListContainer from './RoomListContainer';
 import SearchBar from '../SearchBar';
 import FilterButtons from '../FilterButtons';
 import useFilter from '../../hooks/useFilter';
 import { PaperProvider } from 'react-native-paper';
+import QueryResult from '../QueryResult';
 
 export default function RoomListWrapper() {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
   const { startDate, endDate, buildings, equipment, types } = useFilter();
-  console.log(types);
 
   const { rooms, loading, error, fetchMore } = useRooms({
     first: 4,
@@ -29,37 +28,21 @@ export default function RoomListWrapper() {
     fetchMore();
   };
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator
-          size="large"
-          color={theme.colors.backgroundPrimary}
-        />
-        <Text>Loading rooms...</Text>
-      </View>
-    );
-  }
-
-  if (error) {
-    return <Text>Error loading rooms: {error.message}</Text>;
-  }
-
-  const roomNodes = rooms ? rooms.edges.map((edge) => edge.node) : [];
-
-  console.log(roomNodes.length);
+  const roomNodes = rooms.edges ? rooms.edges.map((edge) => edge.node) : [];
 
   return (
     <PaperProvider>
-      <View style={styles.container}>
-        <SearchBar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          placeholder="Search rooms by code..."
-        />
-        <FilterButtons />
-        <RoomListContainer rooms={roomNodes} onEndReach={onEndReach} />
-      </View>
+      <QueryResult loading={loading} error={error} data={rooms}>
+        <View style={styles.container}>
+          <SearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            placeholder="Search rooms by code..."
+          />
+          <FilterButtons />
+          <RoomListContainer rooms={roomNodes} onEndReach={onEndReach} />
+        </View>
+      </QueryResult>
     </PaperProvider>
   );
 }
