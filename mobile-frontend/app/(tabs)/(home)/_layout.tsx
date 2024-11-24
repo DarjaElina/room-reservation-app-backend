@@ -11,18 +11,13 @@ export default function Layout() {
             backgroundColor: theme.colors.backgroundPrimary,
           },
           headerTintColor: theme.colors.textPrimary,
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontSize: theme.fontSizes.heading,
-            color: theme.colors.textPrimary,
-          },
           headerShadowVisible: true,
         }}
       >
         <Stack.Screen
           name="index"
           options={{
-            title: 'Home',
+            title: '',
           }}
         />
         <Stack.Screen

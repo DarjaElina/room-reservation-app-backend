@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Alert, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Alert, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
 import useBookingContext from '../../../../../hooks/useBookingContext';
 import { useLocalSearchParams } from 'expo-router';
 import useRoom from '../../../../../hooks/useRoom';
@@ -77,11 +77,11 @@ export default function BookingConfirmationScreen() {
           <Text style={styles.label}>Ends:</Text>{' '}
           {formatReadableDate(bookingEndDate)}
         </Text>
-        <View style={styles.buttonContainer}>
-          <Text onPress={handleSubmit} style={styles.buttonText}>
+        <Pressable onPress={handleSubmit} style={styles.buttonContainer}>
+          <Text style={styles.buttonText}>
             Reserve
           </Text>
-        </View>
+        </Pressable>
       </View>
     </View>
   );

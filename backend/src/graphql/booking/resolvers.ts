@@ -10,125 +10,71 @@ import {
   checkBookingLimit,
   checkRoomDepartmentRestriction,
 } from '../../helpers/helpers';
-import { Op } from 'sequelize';
-import UserModel from '../../models/user';
-import { isBookingStatus } from '../../util/helpers';
+import { Op, WhereOptions } from 'sequelize';
+import { z } from 'zod';
 
-// for booking creation
-// students can book room for 12 hours/week
-// teachers for 30 hours/week
-// teachers can book rooms month ahead
-// students two day ahead
-// practice_room as well as classrooms are available for all students unless classroom belongs to specific department
-// concert_hall, administrative spaces, meeting_rooms, theater, studio are only for teachers and managers to book
-// concert halls can be booked for upcoming semester for exams and performances by managers
-
-// booking can not be updated if less than 15 min left before it starts
-// booking can be cancelled, but if ist less than 30 min before start, it will be marked
-// as cancelled_late and will eat the time anyway
-// student can book one room for 3 hours maximum, teachers for 8 hours maximum, managers unlimited
+const argsSchema = z.object({
+  roomId: z.string().optional(),
+  userId: z.string().optional(),
+  status: z.nativeEnum(BookingStatus).optional(),
+  startDate: z
+    .date()
+    .optional(),
+  endDate: z
+    .date()
+    .optional(),
+});
 
 const bookingResolvers: Resolvers = {
   Query: {
-    allBookings: async (_, __, { user }: { user: User }) => {
+    bookings: async (_, args, { user }: { user: User }) => {
       if (!user) {
-        throw new GraphQLError('Not authenticated');
-      }
-      const bookings = await Booking.findAll({
-        include: [
-          {
-            model: Room,
-            include: [],
-          },
-        ],
-      });
-
-      return bookings;
-    },
-
-    bookingsByRoom: async (_, { roomId }, { user }: { user: User }) => {
-      if (!user) {
-        throw new GraphQLError('Not authenticated');
-      }
-      const bookings = await Booking.findAll({ where: { roomId } });
-
-      return bookings;
-    },
-
-    bookingsByDateRange: async (
-      _,
-      { startDate, endDate },
-      { user }: { user: User }
-    ) => {
-      if (!user) {
-        throw new GraphQLError('Not authenticated');
-      }
-      const bookings = await Booking.findAll({
-        where: { startDate, endDate },
-      });
-
-      return bookings;
-    },
-
-    bookingsByRoomAndDate: async (
-      _,
-      { roomId, startDate, endDate },
-      { user }: { user: User }
-    ) => {
-      if (!user) {
-        throw new GraphQLError('Not authenticated');
+        throw new GraphQLError('Unauthenticated');
       }
 
-      const bookings = await Booking.findAll({
-        where: {
+      try {
+        const normalizedArgs = argsSchema.parse(args);
+        const {
           roomId,
-          [Op.and]: [
-            { startDate: { [Op.lt]: endDate } },
-            { endDate: { [Op.gt]: startDate } },
+          userId,
+          status,
+          startDate,
+          endDate
+        } = normalizedArgs;
+
+        const where: WhereOptions = {};
+
+        if (roomId) {
+          where.roomId = roomId;
+        }
+
+        if (userId) {
+          where.userId = userId;
+        }
+
+        if (status) {
+          where.status = status;
+        }
+
+        if (startDate && endDate) {
+          where.startDate = { [Op.lt]: endDate };
+          where.endDate = { [Op.gt]: startDate };
+        }
+
+        const bookings = await Booking.findAll({
+          include: [
+            {
+              model: Room,
+              attributes: ['id', 'name', 'description'],
+            },
           ],
-        },
-        include: [
-          {
-            model: UserModel,
-            attributes: ['givenName', 'familyName'],
-          },
-        ],
-      });
+          where
+        });
 
-      return bookings;
-    },
-
-    bookingsByUser: async (_, { userId }, { user }: { user: User }) => {
-      if (!user) {
-        throw new GraphQLError('Not authenticated');
+        return bookings;
+      } catch (error) {
+        return handleResolverErrors(error);
       }
-      const bookings = await Booking.findAll({ where: { userId } });
-
-      return bookings;
-    },
-    bookingsByRoomAndUser: async (
-      _,
-      { userId, roomId, status },
-      { user }: { user: User }
-    ) => {
-      if (!user) {
-        throw new GraphQLError('Not authenticated');
-      }
-
-      const whereClause: {
-        userId: string;
-        roomId: string;
-        status?: BookingStatus;
-      } = {
-        userId,
-        roomId,
-      };
-
-      if (status && isBookingStatus(status)) {
-        whereClause.status = status;
-      }
-
-      return await Booking.findAll({ where: whereClause });
     },
   },
 

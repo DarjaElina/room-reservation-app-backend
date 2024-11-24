@@ -11,11 +11,11 @@ interface BookingListProps {
 }
 
 export default function BookingList({ roomId, userId }: BookingListProps) {
-  const { loading, bookings, error } = useBookings(
+  const { loading, bookings, error } = useBookings({
     roomId,
     userId,
-    BookingStatus.Active
-  );
+    status: BookingStatus.Active
+  });
 
   if (bookings.length <= 0) {
     return (

@@ -2,13 +2,10 @@ import { useQuery } from '@apollo/client';
 import { ALL_ROOMS } from '../graphql/queries';
 
 const useRooms = (variables) => {
-  const { data, error, loading, fetchMore, ...result } = useQuery(ALL_ROOMS, {
+  const { data, error, loading, fetchMore } = useQuery(ALL_ROOMS, {
     fetchPolicy: 'cache-and-network',
     variables,
   });
-
-  const { equipmentIds } = variables;
-  console.log('vars from hook', equipmentIds);
 
   const handleFetchMore = () => {
     const canFetchMore = !loading && data?.rooms.pageInfo.hasNextPage;

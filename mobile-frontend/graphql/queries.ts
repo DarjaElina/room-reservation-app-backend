@@ -60,30 +60,6 @@ export const FIND_ROOM = gql(`
   }
 `);
 
-export const BOOKINGS_BY_ROOM_AND_USER = gql(`
-  query BookingsByRoomAndUser($roomId: ID!, $userId: ID!, $status: BookingStatus) {
-    bookingsByRoomAndUser(roomId: $roomId, userId: $userId, status: $status) {
-      startDate
-      endDate
-      id
-    }
-  }
-`);
-
-export const BOOKINGS_BY_ROOM_AND_DATE = gql(`
-  query BookingsByRoomAndDate($roomId: ID!, $startDate: Date!, $endDate: Date!) {
-    bookingsByRoomAndDate(roomId: $roomId, startDate: $startDate, endDate: $endDate) {
-      id
-      user {
-        familyName
-        givenName
-      }
-      endDate
-      startDate
-    }
-  }
-`);
-
 export const ALL_VENUES = gql(`
   query AllVenues($searchKeyword: String) {
     allVenues(searchKeyword: $searchKeyword) {
@@ -102,3 +78,17 @@ export const ALL_EQUIPMENT = gql(`
     }
   }
 `);
+
+export const BOOKINGS = gql(`
+  query Bookings($roomId: ID, $userId: ID, $status: BookingStatus, $startDate: Date, $endDate: Date) {
+    bookings(roomId: $roomId, userId: $userId, status: $status, startDate: $startDate, endDate: $endDate) {
+      endDate
+      id
+      startDate
+      user {
+        familyName
+        givenName
+      }
+    }
+  }
+`)

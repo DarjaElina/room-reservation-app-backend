@@ -1,18 +1,13 @@
 import { useQuery } from '@apollo/client';
-import { BOOKINGS_BY_ROOM_AND_USER } from '../graphql/queries';
-import { BookingStatus } from '../__generated__/graphql';
+import { BOOKINGS } from '../graphql/queries';
 
-const useBookings = (
-  roomId: string,
-  userId: string,
-  status?: BookingStatus
-) => {
-  const { data, error, loading } = useQuery(BOOKINGS_BY_ROOM_AND_USER, {
-    variables: { roomId, userId, status },
+const useBookings = (variables) => {
+  const { data, error, loading } = useQuery(BOOKINGS, {
+    variables
   });
 
   return {
-    bookings: data ? data.bookingsByRoomAndUser : [],
+    bookings: data ? data.bookings : [],
     loading,
     error,
   };
