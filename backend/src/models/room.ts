@@ -134,12 +134,8 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
   declare description: string;
 
   declare static paginate: (
-    options: PaginateOptions<Room>,
+    options: PaginateOptions<Room>
   ) => Promise<PaginationConnection<Room>>;
 }
-
-
-
-
 
 export default Room;

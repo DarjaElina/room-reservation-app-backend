@@ -14,7 +14,7 @@ const resolvers = mergeResolvers([
   bookingResolvers,
   roomResolvers,
   venueResolvers,
-  equipmentResolvers
+  equipmentResolvers,
 ]);
 
 export { typeDefs, resolvers };

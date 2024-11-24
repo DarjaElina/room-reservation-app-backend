@@ -11,25 +11,28 @@ import { z } from 'zod';
 import { RoomType } from '../../types/room/room.enums';
 import { makePaginate } from 'sequelize-cursor-pagination';
 
+type RoomWithIsFree = Room & { isFree?: boolean };
+
 const argsSchema = z.object({
-  startsAt: z.date().refine(date => date > new Date(), {
-    message: "Start date must be in the future",
-  }).optional(),
-  endsAt: z.date().refine(date => date > new Date(), {
-    message: "End date must be in the future",
-  }).optional(),
+  startsAt: z
+    .date()
+    .refine((date) => date > new Date(), {
+      message: 'Start date must be in the future',
+    })
+    .optional(),
+  endsAt: z
+    .date()
+    .refine((date) => date > new Date(), {
+      message: 'End date must be in the future',
+    })
+    .optional(),
   venueIds: z.array(z.string()).optional(),
   roomTypes: z.array(z.nativeEnum(RoomType)).optional(),
   equipmentIds: z.array(z.string()).optional(),
   isBookable: z.boolean().optional(),
   searchKeyword: z.string().optional(),
   after: z.string().optional(),
-  first: z
-    .number()
-    .min(1)
-    .max(30)
-    .default(30)
-    .optional(),
+  first: z.number().min(1).max(30).default(30).optional(),
 });
 
 Room.paginate = makePaginate(Room);
@@ -41,12 +44,11 @@ const roomResolvers: Resolvers = {
         throw new GraphQLError('Unauthenticated');
       }
 
-      
       try {
         const normalizedArgs = argsSchema.parse(args);
         const {
-          startsAt,
-          endsAt,
+          startsAt = new Date(),
+          endsAt = new Date(new Date().getTime() + 60 * 60 * 1000),
           venueIds,
           roomTypes,
           equipmentIds,
@@ -63,13 +65,13 @@ const roomResolvers: Resolvers = {
         }
 
         if (roomTypes && roomTypes.length > 0) {
-          where.type = { [Op.in]: roomTypes};
+          where.type = { [Op.in]: roomTypes };
         }
 
         if (isBookable !== undefined) {
           where.isBookable = isBookable;
         }
-  
+
         if (searchKeyword) {
           where.code = { [Op.iLike]: `%${searchKeyword}%` };
         }
@@ -82,7 +84,7 @@ const roomResolvers: Resolvers = {
           },
         });
 
-        const conflictingRoomIds = conflictingBookings.map(b => b.roomId);
+        const conflictingRoomIds = conflictingBookings.map((b) => b.roomId);
 
         where.id = { [Op.notIn]: conflictingRoomIds };
 
@@ -97,16 +99,21 @@ const roomResolvers: Resolvers = {
             },
             {
               model: Equipment,
-              where: equipmentIds && equipmentIds.length > 0 
-                ? { id: { [Op.in]: equipmentIds } } 
-                : undefined,
-              through: { attributes: [] },
+              where:
+                equipmentIds && equipmentIds.length > 0
+                  ? { id: { [Op.in]: equipmentIds } }
+                  : undefined,
+              through: { attributes: ['id'] },
             },
-          ]
+          ],
         };
-    
+
         const rooms = await Room.paginate(queryOptions);
-    
+        rooms.edges.forEach((e) => {
+          const node = e.node as RoomWithIsFree;
+          node.isFree = !conflictingRoomIds.includes(node.id);
+        });
+
         return rooms;
       } catch (error) {
         return handleResolverErrors(error);
@@ -126,7 +133,7 @@ const roomResolvers: Resolvers = {
             },
             {
               model: Equipment,
-              attributes: ['name'],
+              attributes: ['name', 'id'],
               through: {
                 attributes: [],
               },
@@ -166,6 +173,3 @@ const roomResolvers: Resolvers = {
 };
 
 export default roomResolvers;
-
-
-

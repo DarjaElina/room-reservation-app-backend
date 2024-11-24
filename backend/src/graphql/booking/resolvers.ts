@@ -110,22 +110,26 @@ const bookingResolvers: Resolvers = {
       _,
       { userId, roomId, status },
       { user }: { user: User }
-   ) => {
+    ) => {
       if (!user) {
-         throw new GraphQLError('Not authenticated');
+        throw new GraphQLError('Not authenticated');
       }
-   
-      const whereClause: { userId: string; roomId: string; status?: BookingStatus } = {
-         userId,
-         roomId,
+
+      const whereClause: {
+        userId: string;
+        roomId: string;
+        status?: BookingStatus;
+      } = {
+        userId,
+        roomId,
       };
-   
+
       if (status && isBookingStatus(status)) {
-         whereClause.status = status;
+        whereClause.status = status;
       }
-   
+
       return await Booking.findAll({ where: whereClause });
-   },
+    },
   },
 
   Booking: {

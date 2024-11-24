@@ -1,9 +1,9 @@
-import { Resolvers } from "../generated-types";
-import { GraphQLError } from "graphql";
-import Equipment from "../../models/equipment";
-import { handleResolverErrors } from "../../util/errorHandler";
-import User from "../../models/user";
-import { z } from "zod";
+import { Resolvers } from '../generated-types';
+import { GraphQLError } from 'graphql';
+import Equipment from '../../models/equipment';
+import { handleResolverErrors } from '../../util/errorHandler';
+import User from '../../models/user';
+import { z } from 'zod';
 import { Op, WhereOptions } from 'sequelize';
 
 const argsSchema = z.object({
@@ -24,13 +24,13 @@ const equipmentResolvers: Resolvers = {
         where.name = { [Op.iLike]: `%${searchKeyword}%` };
       }
       try {
-        const equipment = await Equipment.findAll({where});
+        const equipment = await Equipment.findAll({ where });
         return equipment;
       } catch (error) {
         return handleResolverErrors(error);
       }
-    }
-  }
+    },
+  },
 };
 
 export default equipmentResolvers;

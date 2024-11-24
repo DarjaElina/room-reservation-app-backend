@@ -1,10 +1,10 @@
-import { Resolvers } from "../generated-types";
-import { GraphQLError } from "graphql";
-import Venue from "../../models/venue";
-import { handleResolverErrors } from "../../util/errorHandler";
-import User from "../../models/user";
+import { Resolvers } from '../generated-types';
+import { GraphQLError } from 'graphql';
+import Venue from '../../models/venue';
+import { handleResolverErrors } from '../../util/errorHandler';
+import User from '../../models/user';
 import { z } from 'zod';
-import { Op, WhereOptions } from "sequelize";
+import { Op, WhereOptions } from 'sequelize';
 
 const argsSchema = z.object({
   searchKeyword: z.string().optional(),
@@ -26,13 +26,13 @@ const venueResolvers: Resolvers = {
       }
 
       try {
-        const venues = await Venue.findAll({where});
+        const venues = await Venue.findAll({ where });
         return venues;
       } catch (error) {
         return handleResolverErrors(error);
       }
-    }
-  }
+    },
+  },
 };
 
 export default venueResolvers;

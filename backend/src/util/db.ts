@@ -65,6 +65,7 @@ export const rollbackMigration = async () => {
   try {
     await sequelize.authenticate();
     const migrations = await umzug.down();
+    //await umzug.down({step: 2});
     //await umzug.down({to: 0});
     console.log('Rolled back migrations', {
       files: migrations.map((mig) => mig.name),
@@ -73,3 +74,5 @@ export const rollbackMigration = async () => {
     console.error('Failed to rollback migration', err);
   }
 };
+
+

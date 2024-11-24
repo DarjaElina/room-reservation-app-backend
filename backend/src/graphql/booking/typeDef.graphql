@@ -21,7 +21,11 @@ type Query {
   bookingsByRoom(roomId: ID!): [Booking!]!
   bookingsByDateRange(startDate: Date!, endDate: Date!): [Booking!]!
   bookingsByUser(userId: ID!): [Booking!]!
-  bookingsByRoomAndUser(roomId: ID!, userId: ID!, status: BookingStatus): [Booking!]!
+  bookingsByRoomAndUser(
+    roomId: ID!
+    userId: ID!
+    status: BookingStatus
+  ): [Booking!]!
   bookingsByRoomAndDate(
     roomId: ID!
     startDate: Date!
