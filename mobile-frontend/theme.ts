@@ -31,6 +31,7 @@ const theme = {
     small: 12,
     button: 16,
     large: 36,
+    medium: 20,
   },
   spacing: {
     small: 8,

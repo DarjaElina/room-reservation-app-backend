@@ -1,12 +1,17 @@
 import { useState } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import useBookingContext from '../hooks/useBookingContext';
+import theme from '@/theme';
 
-export default function DatePicker() {
+export default function DatePicker({ dateToModify }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const { date, setDate } = useBookingContext();
+  const { date: dateFromContext, setDate } = useBookingContext();
+
+  const date = dateToModify ?? dateFromContext;
+  console.log('date from date picker:', date);
+
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -38,16 +43,7 @@ export default function DatePicker() {
   };
 
   return (
-    <View
-      style={{
-        backgroundColor: 'lightgrey',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: 5,
-      }}
-    >
+    <View style={styles.container}>
       <AntDesign.Button
         backgroundColor="lightgrey"
         name="caretleft"
@@ -95,3 +91,14 @@ export default function DatePicker() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: theme.colors.backgroundPrimary,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 5,
+  },
+});

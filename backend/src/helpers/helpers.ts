@@ -93,6 +93,7 @@ export const checkOverlappingBookings = async (
       roomId,
       startDate: { [Op.lt]: endDate },
       endDate: { [Op.gt]: startDate },
+      status: BookingStatus.Active
     },
   });
   if (hasOverlappingBooking) {

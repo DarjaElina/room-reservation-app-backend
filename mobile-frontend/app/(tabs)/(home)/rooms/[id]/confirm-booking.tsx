@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Alert, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  Alert,
+  StyleSheet,
+  ActivityIndicator,
+  Pressable,
+} from 'react-native';
 import useBookingContext from '../../../../../hooks/useBookingContext';
 import { useLocalSearchParams } from 'expo-router';
 import useRoom from '../../../../../hooks/useRoom';
@@ -8,6 +15,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import UserMessage from '../../../../../components/UserMessage';
 import { router } from 'expo-router';
 import theme from '@/theme';
+import { TextInput } from 'react-native-paper';
 
 export default function BookingConfirmationScreen() {
   const { bookingStartDate, bookingEndDate } = useBookingContext();
@@ -15,6 +23,8 @@ export default function BookingConfirmationScreen() {
   const { loading: roomLoading, room } = useRoom(id);
   const [createBooking, { loading }] = useBooking();
   const [userMessage, setUserMessage] = useState<string | null>('');
+  const [bookingTitle, setBookingTitle] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
 
   if (roomLoading) {
     return <Text style={styles.loadingText}>Loading...</Text>;
@@ -36,12 +46,14 @@ export default function BookingConfirmationScreen() {
       await createBooking(
         id,
         new Date(bookingStartDate).getTime(),
-        new Date(bookingEndDate).getTime()
+        new Date(bookingEndDate).getTime(),
+        bookingTitle.trim() || undefined
       );
       setUserMessage('Booking created successfully.');
+      setBookingTitle('');
       setTimeout(() => {
         setUserMessage(null);
-        router.navigate('/(home)/');
+        router.navigate('/(tabs)/(home)');
       }, 2000);
     } catch (error) {
       Alert.alert(error.message);
@@ -66,6 +78,21 @@ export default function BookingConfirmationScreen() {
           />
           <Text style={styles.headerText}>Booking Details</Text>
         </View>
+          <Text style={styles.detailText}>
+            <Text style={[styles.label, {fontSize: 20}]}>Title:</Text>
+          </Text>
+          <TextInput
+            mode="flat"
+            style={styles.input}
+            value={bookingTitle}
+            onChangeText={setBookingTitle}
+            placeholder="Booking title"
+            placeholderTextColor={theme.colors.textPrimary}
+            activeUnderlineColor={
+              error ? theme.colors.error : theme.colors.inputActiveBorder
+            }
+          />
+        {error && <Text style={styles.errorText}>{error}</Text>}
         <Text style={styles.detailText}>
           <Text style={styles.label}>Room:</Text> {room?.code}
         </Text>
@@ -78,9 +105,7 @@ export default function BookingConfirmationScreen() {
           {formatReadableDate(bookingEndDate)}
         </Text>
         <Pressable onPress={handleSubmit} style={styles.buttonContainer}>
-          <Text style={styles.buttonText}>
-            Reserve
-          </Text>
+          <Text style={styles.buttonText}>Reserve</Text>
         </Pressable>
       </View>
     </View>
@@ -116,11 +141,10 @@ const styles = StyleSheet.create({
     padding: theme.spacing.large,
     width: '100%',
     maxWidth: 400,
+    elevation: 5,
     shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: theme.colors.shadowOpacity,
     shadowRadius: 10,
-    elevation: 5,
   },
   header: {
     flexDirection: 'row',
@@ -157,5 +181,17 @@ const styles = StyleSheet.create({
     color: theme.colors.buttonText,
     fontSize: theme.fontSizes.button,
     fontWeight: 'bold',
+  },
+  input: {
+    backgroundColor: 'transparent',
+    color: theme.colors.textPrimary,
+    marginBottom: 8,
+    height: 30,
+    paddingHorizontal: 0,
+    paddingVertical: 3,
+  },
+  errorText: {
+    color: theme.colors.error,
+    marginBottom: 16,
   },
 });

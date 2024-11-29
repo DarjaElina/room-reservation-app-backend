@@ -82,6 +82,7 @@ export const ALL_EQUIPMENT = gql(`
 export const BOOKINGS = gql(`
   query Bookings($roomId: ID, $userId: ID, $status: BookingStatus, $startDate: Date, $endDate: Date) {
     bookings(roomId: $roomId, userId: $userId, status: $status, startDate: $startDate, endDate: $endDate) {
+      title
       endDate
       id
       startDate
@@ -89,6 +90,10 @@ export const BOOKINGS = gql(`
         familyName
         givenName
       }
+      room {
+        code
+        id
+      }
     }
   }
-`)
+`);

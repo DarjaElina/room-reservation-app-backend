@@ -6,13 +6,13 @@ import { useLocalSearchParams } from 'expo-router';
 import { useNavigation } from 'expo-router';
 import Separator from './Separator';
 import { timeArray } from '../constants/TimeArray';
-import { BOOKINGS_BY_ROOM_AND_DATE } from '../graphql/queries';
-import { useQuery } from '@apollo/client';
 import TimeSlot from './TimeSlot';
 import { TimeSlotType } from './TimeSlot';
 import theme from '@/theme';
+import useBookings from '@/hooks/useBookings';
+import { useRef, useState, useEffect } from 'react';
 
-export default function TimePicker() {
+export default function TimePicker({ startTime }) {
   const {
     selectedTimeValues,
     setSelectedTimeValues,
@@ -23,16 +23,26 @@ export default function TimePicker() {
 
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  const { data } = useQuery(BOOKINGS_BY_ROOM_AND_DATE, {
-    variables: {
-      roomId: id,
-      startDate: new Date(date).setHours(6, 0, 0, 0),
-      endDate: new Date(date).setHours(23, 0, 0, 0),
-    },
-    fetchPolicy: 'cache-and-network',
+  const { bookings, loading, error } = useBookings({
+    roomId: id,
+    startDate: new Date(date).setHours(6, 0, 0, 0),
+    endDate: new Date(date).setHours(23, 0, 0, 0),
   });
 
   const navigation = useNavigation();
+
+  const ref = useRef<FlatList>(null);
+
+  console.log(timeArray.filter(i => i.value === startTime))
+
+  useEffect(() => {
+    if (startTime) {
+      ref.current?.scrollToItem({
+        item: timeArray.find(i => i.value === startTime),
+        animated: true,
+      });
+    }
+  }, [startTime]);
 
   const handleSubmit = () => {
     if (selectedTimeValues.length >= 1) {
@@ -52,10 +62,6 @@ export default function TimePicker() {
       Alert.alert('Empty booking', 'Please select booking time');
     }
   };
-
-  const bookings = data?.bookingsByRoomAndDate
-    ? data?.bookingsByRoomAndDate
-    : [];
 
   const mappedBookings = bookings.map((b) => {
     let startHours;
@@ -162,6 +168,7 @@ export default function TimePicker() {
     <View>
       <View>
         <FlatList
+          ref={ref}
           keyExtractor={(item) => item.value}
           contentContainerStyle={{ paddingBottom: 100 }}
           data={timeArray}
@@ -176,6 +183,12 @@ export default function TimePicker() {
               )}
             />
           )}
+          onScrollToIndexFailed={info => {
+            const wait = new Promise(resolve => setTimeout(resolve, 500));
+            wait.then(() => {
+              ref.current?.scrollToIndex({ index: info.index, animated: true });
+            });
+          }}
         />
         <FAB
           style={styles.floatingButton}

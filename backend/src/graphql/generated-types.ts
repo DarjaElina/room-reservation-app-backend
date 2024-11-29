@@ -31,6 +31,7 @@ export type Booking = {
   room: Room;
   startDate: Scalars['Date']['output'];
   status: BookingStatus;
+  title?: Maybe<Scalars['String']['output']>;
   user: User;
 };
 
@@ -150,6 +151,7 @@ export type MutationCreateBookingArgs = {
   endDate: Scalars['Date']['input'];
   roomId: Scalars['ID']['input'];
   startDate: Scalars['Date']['input'];
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -256,6 +258,7 @@ export type MutationUpdateBookingArgs = {
   bookingId: Scalars['ID']['input'];
   endDate: Scalars['Date']['input'];
   startDate: Scalars['Date']['input'];
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -524,6 +527,7 @@ export type UserInput = {
 
 export type UserResponse = {
   __typename?: 'UserResponse';
+  id?: Maybe<Scalars['ID']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   success: Scalars['Boolean']['output'];
 };
@@ -681,6 +685,7 @@ export type BookingResolvers<ContextType = any, ParentType extends ResolversPare
   room?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
   startDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['BookingStatus'], ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -823,6 +828,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type UserResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserResponse'] = ResolversParentTypes['UserResponse']> = {
+  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

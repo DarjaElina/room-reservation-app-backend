@@ -1,28 +1,26 @@
 import { FlatList, Text, View, StyleSheet } from 'react-native';
 import BookingItem from './BookingItem';
 import useBookings from '../hooks/useBookings';
-import { BookingStatus } from '../__generated__/graphql';
 import QueryResult from './QueryResult';
 import theme from '../theme';
 
 interface BookingListProps {
-  userId: string;
-  roomId: string;
+  queryOptions: {
+    roomId?: string;
+    userId?: string;
+    status?: string;
+  };
+  emptyMessage: string;
 }
 
-export default function BookingList({ roomId, userId }: BookingListProps) {
-  const { loading, bookings, error } = useBookings({
-    roomId,
-    userId,
-    status: BookingStatus.Active
-  });
+export default function BookingList({
+  queryOptions,
+  emptyMessage,
+}: BookingListProps) {
+  const { loading, bookings, error } = useBookings(queryOptions);
 
-  if (bookings.length <= 0) {
-    return (
-      <Text style={styles.message}>
-        You have no upcoming reservations for this room.
-      </Text>
-    );
+  if (!loading && bookings.length <= 0) {
+    return <Text style={styles.message}>{emptyMessage}</Text>;
   }
 
   const sortedBookings = [...bookings].sort(
@@ -32,11 +30,17 @@ export default function BookingList({ roomId, userId }: BookingListProps) {
   return (
     <QueryResult error={error} loading={loading} data={bookings}>
       <View style={styles.container}>
-        <Text style={styles.header}>Upcoming Reservations For This Room</Text>
         <FlatList
           data={sortedBookings}
           renderItem={({ item }) => (
-            <BookingItem startDate={item.startDate} endDate={item.endDate} />
+            <BookingItem
+              startDate={item.startDate}
+              endDate={item.endDate}
+              roomCode={item.room.code}
+              title={item.title}
+              id={item.id}
+              roomId={item.room.id}
+            />
           )}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
@@ -49,19 +53,7 @@ export default function BookingList({ roomId, userId }: BookingListProps) {
 const styles = StyleSheet.create({
   container: {
     padding: theme.spacing.large,
-    backgroundColor: theme.colors.backgroundSecondary,
-    borderRadius: theme.borderRadius.medium,
-    shadowColor: theme.colors.shadow,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: theme.colors.shadowOpacity,
-    shadowRadius: 2,
-    elevation: 5,
-  },
-  header: {
-    fontSize: theme.fontSizes.large,
-    fontWeight: 'bold',
-    marginBottom: theme.spacing.medium,
-    color: theme.colors.textPrimary,
+    backgroundColor: theme.colors.backgroundPrimary,
   },
   message: {
     fontSize: theme.fontSizes.subheading,
@@ -71,5 +63,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     gap: theme.spacing.medium,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -27,6 +27,7 @@ export interface BookingAttributes {
   status: BookingStatus;
   createdAt: Date;
   updatedAt: Date;
+  title?: string;
 }
 
 type BookingCreationAttributes = Optional<
@@ -98,6 +99,13 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
     defaultValue: DataType.NOW,
   })
   updatedAt!: Date;
+
+  @AllowNull(false)
+  @Column({
+    type: DataType.STRING,
+    defaultValue: 'Reservation from Booking App',
+  })
+  title?: string;
 }
 
 export default Booking;

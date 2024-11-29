@@ -12,6 +12,7 @@ import {
 } from '../../helpers/helpers';
 import { Op, WhereOptions } from 'sequelize';
 import { z } from 'zod';
+import UserModel from '../../models/user';
 
 const argsSchema = z.object({
   roomId: z.string().optional(),
@@ -65,8 +66,11 @@ const bookingResolvers: Resolvers = {
           include: [
             {
               model: Room,
-              attributes: ['id', 'name', 'description'],
+              attributes: ['id', 'code'],
             },
+            {
+              model: UserModel,
+            }
           ],
           where
         });
@@ -90,7 +94,7 @@ const bookingResolvers: Resolvers = {
   Mutation: {
     createBooking: async (
       _,
-      { roomId, startDate, endDate },
+      { roomId, startDate, endDate, title },
       { user }: { user: User }
     ) => {
       if (!user) {
@@ -121,8 +125,9 @@ const bookingResolvers: Resolvers = {
           startDate,
           endDate,
           status: BookingStatus.Active,
+          title
         });
-        return { ...booking, room };
+        return { ...booking.dataValues, room, user };
       } catch (error) {
         return handleResolverErrors(error);
       }
@@ -171,7 +176,7 @@ const bookingResolvers: Resolvers = {
           await booking.update({ status: BookingStatus.CancelledLate });
         }
         await booking.update({ status: BookingStatus.Cancelled });
-        return { success: true, message: 'Booking canceled' };
+        return { success: true, message: 'Booking canceled', id: booking.id };
       } catch (error) {
         return handleResolverErrors(error);
       }

@@ -18,6 +18,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useState } from 'react';
 import QueryResult from './QueryResult';
+import { BookingStatus } from '@/__generated__/graphql';
 
 interface RoomProps {
   id: string;
@@ -116,7 +117,15 @@ export default function RoomView({ room }: { room: RoomProps }) {
             onRequestClose={() => setModalVisible(false)}
           >
             <View style={styles.modalContainer}>
-              <BookingList userId={user.id} roomId={room.id} />
+              <BookingList
+                queryOptions={{
+                  roomId: room.id,
+                  userId: user.id,
+                  status: BookingStatus.Active,
+                }}
+                emptyMessage="You have no upcoming reservations for this room."
+              />
+
               <Pressable
                 onPress={() => setModalVisible(false)}
                 style={styles.closeButton}
@@ -176,7 +185,7 @@ const styles = StyleSheet.create({
     gap: theme.spacing.small,
   },
   statusText: {
-    fontSize: theme.fontSizes.subheading,
+    fontSize: theme.fontSizes.medium,
     color: theme.colors.success,
     fontWeight: '600',
   },
@@ -205,16 +214,16 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    padding: theme.spacing.medium,
-    backgroundColor: theme.colors.backgroundSecondary,
+    backgroundColor: theme.colors.backgroundPrimary,
     justifyContent: 'center',
   },
   closeButton: {
     backgroundColor: theme.colors.buttonBackground,
     padding: theme.spacing.small,
-    marginTop: theme.spacing.large,
     borderRadius: theme.borderRadius.medium,
     alignItems: 'center',
+    width: '40%',
+    alignSelf: 'center',
   },
   closeButtonText: {
     color: theme.colors.buttonText,

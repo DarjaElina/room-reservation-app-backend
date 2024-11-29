@@ -14,19 +14,7 @@ interface TimeSlotProps {
   onSelect: (timeSlot: TimeSlotType) => void;
   timeSlot: TimeSlotType;
   index: number;
-  booking?:
-    | {
-        __typename?: 'Booking';
-        id: string;
-        endDate: any;
-        startDate: any;
-        user: {
-          __typename?: 'User';
-          familyName: string;
-          givenName: string;
-        };
-      }
-    | undefined;
+  booking?: { startDate: string; endDate: string } | undefined;
 }
 
 const TimeSlot = memo(function TimeSlotItem({

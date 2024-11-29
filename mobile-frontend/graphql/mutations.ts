@@ -9,11 +9,28 @@ export const AUTHENTICATE = gql(`
 `);
 
 export const CREATE_BOOKING = gql(`
-  mutation CreateBooking($roomId: ID!, $startDate: Date!, $endDate: Date!) {
-    createBooking(roomId: $roomId, startDate: $startDate, endDate: $endDate) {
+  mutation CreateBooking($roomId: ID!, $startDate: Date!, $endDate: Date!, $title: String) {
+    createBooking(roomId: $roomId, startDate: $startDate, endDate: $endDate, title: $title) {
+      title
+      id
+      startDate
+      endDate
+      user {
+        familyName
+        givenName
+      }
       room {
         code
       }
+    }
+  }
+`);
+
+export const CANCEL_BOOKING = gql(`
+  mutation Mutation($bookingId: ID!) {
+    cancelBooking(bookingId: $bookingId) {
+      id
+      message
     }
   }
 `);
