@@ -86,14 +86,18 @@ export const validateSingleBooking = (
 export const checkOverlappingBookings = async (
   roomId: string,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
+  bookingId?: string
 ) => {
   const hasOverlappingBooking = await Booking.findOne({
     where: {
       roomId,
       startDate: { [Op.lt]: endDate },
       endDate: { [Op.gt]: startDate },
-      status: BookingStatus.Active
+      status: BookingStatus.Active,
+      id: {
+        [Op.ne]: bookingId, 
+      }
     },
   });
   if (hasOverlappingBooking) {

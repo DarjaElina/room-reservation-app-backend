@@ -10,9 +10,23 @@ import TimeSlot from './TimeSlot';
 import { TimeSlotType } from './TimeSlot';
 import theme from '@/theme';
 import useBookings from '@/hooks/useBookings';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
+import { BookingStatus } from '@/__generated__/graphql';
+import { router } from 'expo-router';
 
-export default function TimePicker({ startTime }) {
+interface TimePickerProps {
+  startTime?: string;
+  endTime?: string;
+  modificationMode?: boolean;
+  bookingId?: string;
+}
+
+export default function TimePicker({
+  startTime,
+  endTime,
+  modificationMode,
+  bookingId
+}: TimePickerProps) {
   const {
     selectedTimeValues,
     setSelectedTimeValues,
@@ -27,18 +41,26 @@ export default function TimePicker({ startTime }) {
     roomId: id,
     startDate: new Date(date).setHours(6, 0, 0, 0),
     endDate: new Date(date).setHours(23, 0, 0, 0),
+    status: BookingStatus.Active,
   });
 
-  const navigation = useNavigation();
+  useEffect(() => {
+    if (startTime && endTime) {
+      setSelectedTimeValues((prevValues) =>
+        prevValues.concat(
+          timeArray.filter((i) => i.value >= startTime && i.value < endTime)
+        )
+      );
+    }
+  }, [startTime, endTime]);
+
 
   const ref = useRef<FlatList>(null);
-
-  console.log(timeArray.filter(i => i.value === startTime))
 
   useEffect(() => {
     if (startTime) {
       ref.current?.scrollToItem({
-        item: timeArray.find(i => i.value === startTime),
+        item: timeArray.find((i) => i.value === startTime),
         animated: true,
       });
     }
@@ -56,44 +78,61 @@ export default function TimePicker({ startTime }) {
           startDate.getTime() + selectedTimeValues.length * 15 * 60 * 1000
         ).toISOString()
       );
-      navigation.navigate('rooms/[id]/confirm-booking', { id });
+      if (modificationMode) {
+        router.replace({
+          pathname: `/(tabs)/(home)/rooms/[id]/confirm-booking-modification`,
+          params: {
+            id,
+            bookingId
+          },
+        });
+      } else router.replace({
+        pathname: `/(tabs)/(home)/rooms/[id]/confirm-booking-creation`,
+        params: {
+          id
+        },
+      });
       setSelectedTimeValues([]);
     } else {
       Alert.alert('Empty booking', 'Please select booking time');
     }
   };
 
-  const mappedBookings = bookings.map((b) => {
-    let startHours;
-    let endHours;
-    let startMinutes;
-    let endMinutes;
-    if (new Date(b.startDate).getHours() < 10) {
-      startHours = `0${new Date(b.startDate).getHours()}`;
-    } else {
-      startHours = new Date(b.startDate).getHours();
-    }
-    if (new Date(b.endDate).getHours() < 10) {
-      endHours = `0${new Date(b.endDate).getHours()}`;
-    } else {
-      endHours = new Date(b.endDate).getHours();
-    }
-    if (new Date(b.startDate).getMinutes() < 15) {
-      startMinutes = `${new Date(b.startDate).getMinutes()}0`;
-    } else {
-      startMinutes = new Date(b.startDate).getMinutes();
-    }
-    if (new Date(b.endDate).getMinutes() < 15) {
-      endMinutes = `${new Date(b.endDate).getMinutes()}0`;
-    } else {
-      endMinutes = new Date(b.endDate).getMinutes();
-    }
+  const mappedBookings = bookings
+    .map((b) => {
+      let startHours;
+      let endHours;
+      let startMinutes;
+      let endMinutes;
+      if (new Date(b.startDate).getHours() < 10) {
+        startHours = `0${new Date(b.startDate).getHours()}`;
+      } else {
+        startHours = new Date(b.startDate).getHours();
+      }
+      if (new Date(b.endDate).getHours() < 10) {
+        endHours = `0${new Date(b.endDate).getHours()}`;
+      } else {
+        endHours = new Date(b.endDate).getHours();
+      }
+      if (new Date(b.startDate).getMinutes() < 15) {
+        startMinutes = `${new Date(b.startDate).getMinutes()}0`;
+      } else {
+        startMinutes = new Date(b.startDate).getMinutes();
+      }
+      if (new Date(b.endDate).getMinutes() < 15) {
+        endMinutes = `${new Date(b.endDate).getMinutes()}0`;
+      } else {
+        endMinutes = new Date(b.endDate).getMinutes();
+      }
 
-    return {
-      startDate: `${startHours}:${startMinutes}:00`,
-      endDate: `${endHours}:${endMinutes}:00`,
-    };
-  });
+      return {
+        startDate: `${startHours}:${startMinutes}:00`,
+        endDate: `${endHours}:${endMinutes}:00`,
+      };
+    })
+    .filter((b) => (startTime && endTime) && !(b.startDate >= startTime && b.endDate <= endTime));
+
+    
 
   const handleSelect = (item: TimeSlotType) => {
     const hour = Number(item.value.slice(0, 2));
@@ -164,6 +203,7 @@ export default function TimePicker({ startTime }) {
     }
   };
 
+
   return (
     <View>
       <View>
@@ -179,12 +219,15 @@ export default function TimePicker({ startTime }) {
               timeSlot={item}
               onSelect={handleSelect}
               booking={mappedBookings.find(
-                (b) => b.startDate <= item.value && b.endDate >= item.value
+                (b) =>
+                  b.startDate <= item.value &&
+                  b.endDate > item.value &&
+                  b.startDate !== startTime
               )}
             />
           )}
-          onScrollToIndexFailed={info => {
-            const wait = new Promise(resolve => setTimeout(resolve, 500));
+          onScrollToIndexFailed={(info) => {
+            const wait = new Promise((resolve) => setTimeout(resolve, 500));
             wait.then(() => {
               ref.current?.scrollToIndex({ index: info.index, animated: true });
             });

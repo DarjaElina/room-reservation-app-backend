@@ -51,13 +51,25 @@ export default function Layout() {
           }}
         />
         <Stack.Screen
-          name="rooms/[id]/date-time-picker"
+          name="rooms/[id]/create-booking"
           options={{
             title: '',
           }}
         />
         <Stack.Screen
-          name="rooms/[id]/confirm-booking"
+          name="rooms/[id]/modify-booking"
+          options={{
+            title: '',
+          }}
+        />
+        <Stack.Screen
+          name="rooms/[id]/confirm-booking-creation"
+          options={{
+            title: '',
+          }}
+        />
+        <Stack.Screen
+          name="rooms/[id]/confirm-booking-modification"
           options={{
             title: '',
           }}

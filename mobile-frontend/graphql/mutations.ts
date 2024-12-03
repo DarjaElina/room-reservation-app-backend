@@ -27,8 +27,17 @@ export const CREATE_BOOKING = gql(`
 `);
 
 export const CANCEL_BOOKING = gql(`
-  mutation Mutation($bookingId: ID!) {
+  mutation CancelBooking($bookingId: ID!) {
     cancelBooking(bookingId: $bookingId) {
+      id
+      message
+    }
+  }
+`);
+
+export const UPDATE_BOOKING = gql(`
+  mutation UpdateBooking($bookingId: ID!, $startDate: Date!, $endDate: Date!, $title: String, $roomId: ID!) {
+    updateBooking(bookingId: $bookingId, startDate: $startDate, endDate: $endDate, title: $title, roomId: $roomId) {
       id
       message
     }

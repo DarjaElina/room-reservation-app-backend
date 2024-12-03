@@ -89,7 +89,7 @@ export type Mutation = {
   requestPasswordReset: UserResponse;
   resetPassword: UserResponse;
   setRoomBookableStatus: Room;
-  updateBooking?: Maybe<Booking>;
+  updateBooking: UserResponse;
   updateDepartment: Department;
   updateEquipment: Equipment;
   updateFaculty: Faculty;
@@ -257,6 +257,7 @@ export type MutationSetRoomBookableStatusArgs = {
 export type MutationUpdateBookingArgs = {
   bookingId: Scalars['ID']['input'];
   endDate: Scalars['Date']['input'];
+  roomId: Scalars['ID']['input'];
   startDate: Scalars['Date']['input'];
   title?: InputMaybe<Scalars['String']['input']>;
 };
@@ -740,7 +741,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   requestPasswordReset?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationRequestPasswordResetArgs, 'email'>>;
   resetPassword?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'newPassword' | 'oldPassword' | 'token'>>;
   setRoomBookableStatus?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationSetRoomBookableStatusArgs, 'isBookable' | 'roomId'>>;
-  updateBooking?: Resolver<Maybe<ResolversTypes['Booking']>, ParentType, ContextType, RequireFields<MutationUpdateBookingArgs, 'bookingId' | 'endDate' | 'startDate'>>;
+  updateBooking?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationUpdateBookingArgs, 'bookingId' | 'endDate' | 'roomId' | 'startDate'>>;
   updateDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationUpdateDepartmentArgs, 'id'>>;
   updateEquipment?: Resolver<ResolversTypes['Equipment'], ParentType, ContextType, RequireFields<MutationUpdateEquipmentArgs, 'id' | 'name'>>;
   updateFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationUpdateFacultyArgs, 'id' | 'name'>>;

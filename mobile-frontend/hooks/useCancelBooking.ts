@@ -26,7 +26,7 @@ const useCancelBooking = (): [
       });
       return data;
     } catch (error) {
-      // console.error('Booking cancellation failed:', error);
+      console.error('Booking cancellation failed:', error);
       throw error;
     }
   };

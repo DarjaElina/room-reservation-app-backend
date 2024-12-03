@@ -15,6 +15,7 @@ interface TimeSlotProps {
   timeSlot: TimeSlotType;
   index: number;
   booking?: { startDate: string; endDate: string } | undefined;
+  bookingToModify?: { startDate: string; endDate: string } | undefined;
 }
 
 const TimeSlot = memo(function TimeSlotItem({
@@ -40,8 +41,7 @@ const TimeSlot = memo(function TimeSlotItem({
       {index % 4 === 0 ? (
         <Text style={{ padding: 2 }}>{timeSlot.value}</Text>
       ) : null}
-      {selectedTimeValues.find((i) => i.value === timeSlot.value) &&
-      !booking ? (
+      {selectedTimeValues.find((i) => i.value === timeSlot.value) ? (
         <SelectedTimeSlot
           color={theme.colors.success}
           value={timeSlot.value.slice(0, 5)}

@@ -135,14 +135,12 @@ const bookingResolvers: Resolvers = {
 
     updateBooking: async (
       _,
-      { bookingId, startDate, endDate },
+      { bookingId, startDate, endDate, title, roomId },
       { user }: { user: User }
     ) => {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
-
-      try {
         const booking = await Booking.findByPk(bookingId);
         if (!booking) {
           throw new GraphQLError('Booking does not exist');
@@ -150,9 +148,19 @@ const bookingResolvers: Resolvers = {
         if (booking.userId !== user.id) {
           throw new GraphQLError('You can update only your own bookings');
         }
-        await checkOverlappingBookings(booking.roomId, startDate, endDate);
-        await booking.update({ startDate, endDate });
-        return booking;
+        validateSingleBooking(user.role, startDate, endDate);
+        await checkOverlappingBookings(roomId, startDate, endDate);
+
+        const totalBookedHours = await getTotalBookedHoursForWeek(user.id);
+
+        const newBookingHours =
+        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60);
+
+        checkBookingLimit(user.role, totalBookedHours, newBookingHours);
+
+      try {
+        await booking.update({ startDate, endDate, title });
+        return { success: true, message: 'Booking updated successfully.', id: bookingId };
       } catch (error) {
         return handleResolverErrors(error);
       }

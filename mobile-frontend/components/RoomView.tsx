@@ -59,7 +59,7 @@ export default function RoomView({ room }: { room: RoomProps }) {
             <Text style={styles.headerText}>{room.code}</Text>
             <Link
               href={{
-                pathname: '/(home)/rooms/[id]/date-time-picker',
+                pathname: '/(home)/rooms/[id]/create-booking',
                 params: { id: room.id },
               }}
               asChild

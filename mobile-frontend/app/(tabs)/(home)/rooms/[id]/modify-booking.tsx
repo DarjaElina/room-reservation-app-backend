@@ -4,13 +4,16 @@ import DatePicker from '../../../../../components/DatePicker';
 import { useLocalSearchParams } from 'expo-router';
 
 export default function BookingModificationScreen() {
-  const { date }: {date: string} = useLocalSearchParams();
-  console.log('query', date)
-  console.log('start time here!!', new Date(date).toLocaleTimeString('it-IT'));
+  const { start, end, bookingId } = useLocalSearchParams();
   return (
     <View>
-      <DatePicker dateToModify={new Date(date)}/>
-      <TimePicker startTime={new Date(date).toLocaleTimeString('it-IT')}/>
+      <DatePicker dateToModify={new Date(start)} />
+      <TimePicker
+        startTime={new Date(start).toLocaleTimeString('it-IT')}
+        endTime={new Date(end).toLocaleTimeString('it-IT')}
+        modificationMode={true}
+        bookingId={bookingId}
+      />
     </View>
   );
 }

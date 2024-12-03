@@ -12,7 +12,11 @@ interface BookingModificationFormProps {
     endDate: Date;
     id: string;
   };
-  onSubmit: (updatedData: { title: string; start: string; end: string }) => void;
+  onSubmit: (updatedData: {
+    title: string;
+    start: string;
+    end: string;
+  }) => void;
   onCancel: () => void;
 }
 
@@ -45,8 +49,9 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
       pathname: `/(tabs)/(home)/rooms/[id]/modify-booking`,
       params: {
         id: initialData.roomId,
-        date: new Date(initialData.startDate).toISOString(),
-        bookingId: initialData.id
+        start: new Date(initialData.startDate).toISOString(),
+        end: new Date(initialData.endDate).toISOString(),
+        bookingId: initialData.id,
       },
     });
   };
@@ -64,23 +69,39 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
 
       <View style={styles.dateContainer}>
         <Text style={styles.dateLabel}>Start Date:</Text>
-        <Pressable onPress={() => handleNavigateToDatePicker('start')} style={styles.datePressable}>
-          <Text style={styles.dateText}>{formatDate(new Date(initialData.startDate))}</Text>
+        <Pressable
+          onPress={() => handleNavigateToDatePicker('start')}
+          style={styles.datePressable}
+        >
+          <Text style={styles.dateText}>
+            {formatDate(new Date(initialData.startDate))}
+          </Text>
         </Pressable>
       </View>
 
       <View style={styles.dateContainer}>
         <Text style={styles.dateLabel}>End Date:</Text>
-        <Pressable onPress={() => handleNavigateToDatePicker('end')} style={styles.datePressable}>
-          <Text style={styles.dateText}>{formatDate(new Date(initialData.endDate))}</Text>
+        <Pressable
+          onPress={() => handleNavigateToDatePicker('end')}
+          style={styles.datePressable}
+        >
+          <Text style={styles.dateText}>
+            {formatDate(new Date(initialData.endDate))}
+          </Text>
         </Pressable>
       </View>
 
       <View style={styles.buttonContainer}>
-        <Pressable onPress={handleSave} style={[styles.button, styles.saveButton]}>
+        <Pressable
+          onPress={handleSave}
+          style={[styles.button, styles.saveButton]}
+        >
           <Text style={styles.buttonText}>Save</Text>
         </Pressable>
-        <Pressable onPress={onCancel} style={[styles.button, styles.cancelButton]}>
+        <Pressable
+          onPress={onCancel}
+          style={[styles.button, styles.cancelButton]}
+        >
           <Text style={styles.buttonText}>Cancel</Text>
         </Pressable>
       </View>
@@ -152,4 +173,3 @@ const styles = StyleSheet.create({
 });
 
 export default BookingModificationForm;
-

@@ -1,19 +1,7 @@
 import SelectedTimeSlot from './SelectedTimeSlot';
 
 interface BookedTimeSlotProps {
-  booking:
-    | {
-        __typename?: 'Booking';
-        id: string;
-        endDate: any;
-        startDate: any;
-        user: {
-          __typename?: 'User';
-          familyName: string;
-          givenName: string;
-        };
-      }
-    | undefined;
+  booking: { startDate: string; endDate: string } | undefined;
 }
 
 export default function BookedTimeSlot({ booking }: BookedTimeSlotProps) {

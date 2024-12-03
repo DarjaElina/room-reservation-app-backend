@@ -4,14 +4,21 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import useBookingContext from '../hooks/useBookingContext';
 import theme from '@/theme';
+import { useEffect } from 'react';
 
-export default function DatePicker({ dateToModify }) {
+interface DatePickerProps {
+  dateToModify?: Date;
+}
+
+export default function DatePicker({ dateToModify }: DatePickerProps) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const { date: dateFromContext, setDate } = useBookingContext();
+  const { date, setDate } = useBookingContext();
 
-  const date = dateToModify ?? dateFromContext;
-  console.log('date from date picker:', date);
-
+  useEffect(() => {
+    if (dateToModify) {
+      setDate(dateToModify);
+    }
+  }, []);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);

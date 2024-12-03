@@ -30,7 +30,7 @@ type Query {
 type Mutation {
   createBooking(roomId: ID!, startDate: Date!, endDate: Date!, title: String): Booking!
 
-  updateBooking(bookingId: ID!, startDate: Date!, endDate: Date!, title: String): Booking
+  updateBooking(bookingId: ID!, startDate: Date!, endDate: Date!, title: String, roomId: ID!): UserResponse!
 
   cancelBooking(bookingId: ID!): UserResponse!
 

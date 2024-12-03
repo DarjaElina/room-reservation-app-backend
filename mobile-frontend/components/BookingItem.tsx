@@ -23,7 +23,7 @@ export default function BookingItem({
   roomCode,
   title,
   id,
-  roomId
+  roomId,
 }: BookingItemProps) {
   const [cancelBooking] = useCancelBooking();
   const formattedStartDate = new Date(startDate);
@@ -39,6 +39,8 @@ export default function BookingItem({
     hour12: false,
   };
 
+  console.log(new Date(startDate) < new Date());
+
   const handleCancel = async (id: string) => {
     try {
       await cancelBooking(id);
@@ -47,7 +49,7 @@ export default function BookingItem({
       console.error('Failed to cancel booking:', error);
     }
   };
-  
+
   const confirmCancel = (id: string) => {
     Alert.alert(
       'Cancel Booking',
@@ -66,47 +68,62 @@ export default function BookingItem({
       { cancelable: true }
     );
   };
-  
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.code}>{roomCode}</Text>
       <View style={styles.dateContainer}>
-        <FontAwesome name="calendar" size={20} color={theme.colors.textPrimary} />
+        <FontAwesome
+          name="calendar"
+          size={20}
+          color={theme.colors.textPrimary}
+        />
         <Text style={styles.date}>
           {formattedStartDate.toLocaleString(undefined, options)} -{' '}
           {formattedEndDate.toLocaleString(undefined, options)}
         </Text>
       </View>
-      <View style={styles.buttonContainer}>
-        <Pressable onPress={() => confirmCancel(id)} style={[styles.button, styles.cancelButton]}>
-          <MaterialIcons name="delete-forever" size={24} color="#FFF" />
-          <Text style={styles.buttonText}>Cancel</Text>
-        </Pressable>
-        <Pressable onPress={() => setShowModal(true)} style={[styles.button, styles.modifyButton]}>
-          <Entypo name="pencil" size={24} color="#FFF" />
-          <Text style={styles.buttonText}>Modify</Text>
-        </Pressable>
-      <Modal visible={showModal} animationType="slide" onRequestClose={() => setShowModal(false)}>
-        <View style={styles.modalContainer}>
-          <BookingModificationForm
-            initialData={{
-              title,
-              roomId,
-              startDate,
-              endDate,
-              id
-            }}
-            onSubmit={(updatedData) => {
-              console.log('Updated booking:', updatedData);
-              setShowModal(false);
-            }}
-            onCancel={() => setShowModal(false)}
-          />
+      {new Date(startDate) > new Date() ? (
+        <View style={styles.buttonContainer}>
+          <Pressable
+            onPress={() => confirmCancel(id)}
+            style={[styles.button, styles.cancelButton]}
+          >
+            <MaterialIcons name="delete-forever" size={24} color="#FFF" />
+            <Text style={styles.buttonText}>Cancel</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => setShowModal(true)}
+            style={[styles.button, styles.modifyButton]}
+          >
+            <Entypo name="pencil" size={24} color="#FFF" />
+            <Text style={styles.buttonText}>Modify</Text>
+          </Pressable>
+          <Modal
+            visible={showModal}
+            animationType="slide"
+            onRequestClose={() => setShowModal(false)}
+          >
+            <View style={styles.modalContainer}>
+              <BookingModificationForm
+                initialData={{
+                  title,
+                  roomId,
+                  startDate,
+                  endDate,
+                  id,
+                }}
+                onSubmit={(updatedData) => {
+                  console.log('Updated booking:', updatedData);
+                  setShowModal(false);
+                }}
+                onCancel={() => setShowModal(false)}
+              />
+            </View>
+          </Modal>
         </View>
-      </Modal>
-      </View>
+      ) : null}
     </View>
   );
 }
@@ -175,6 +192,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.backgroundPrimary,
     justifyContent: 'center',
-  }
+  },
 });
-

@@ -16,7 +16,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "\n  mutation Authenticate($username: String!, $password: String!) {\n    authenticate(username: $username, password: $password) {\n      value\n    }\n  }\n": types.AuthenticateDocument,
     "\n  mutation CreateBooking($roomId: ID!, $startDate: Date!, $endDate: Date!, $title: String) {\n    createBooking(roomId: $roomId, startDate: $startDate, endDate: $endDate, title: $title) {\n      title\n      id\n      startDate\n      endDate\n      user {\n        familyName\n        givenName\n      }\n      room {\n        code\n      }\n    }\n  }\n": types.CreateBookingDocument,
-    "\n  mutation Mutation($bookingId: ID!) {\n    cancelBooking(bookingId: $bookingId) {\n      id\n      message\n    }\n  }\n": types.MutationDocument,
+    "\n  mutation CancelBooking($bookingId: ID!) {\n    cancelBooking(bookingId: $bookingId) {\n      id\n      message\n    }\n  }\n": types.CancelBookingDocument,
+    "\n  mutation UpdateBooking($bookingId: ID!, $startDate: Date!, $endDate: Date!, $title: String, $roomId: ID!) {\n    updateBooking(bookingId: $bookingId, startDate: $startDate, endDate: $endDate, title: $title, roomId: $roomId) {\n      id\n      message\n    }\n  }\n": types.UpdateBookingDocument,
     "\n  query CurrentUser {\n    currentUser {\n      username\n      id\n    }\n  }\n": types.CurrentUserDocument,
     " \n  query Rooms($startsAt: Date, $endsAt: Date, $venueIds: [ID!], $roomTypes: [RoomType!], $equipmentIds: [ID!], $searchKeyword: String, $isBookable: Boolean, $after: String, $first: Int) {\n    rooms(startsAt: $startsAt, endsAt: $endsAt, venueIds: $venueIds, roomTypes: $roomTypes, equipmentIds: $equipmentIds, searchKeyword: $searchKeyword, isBookable: $isBookable, after: $after, first: $first) {\n      edges {\n        cursor\n        node {\n          code\n          equipment {\n            name\n            id\n          }\n          id\n          isFree\n          pictureUrl\n          size\n          venue {\n            name\n          }\n          description\n        }\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n        startCursor\n      }\n    }\n  }\n": types.RoomsDocument,
     "\n  query FindRoom($roomId: ID!) {\n    findRoom(roomId: $roomId) {\n      id\n      isFree\n      code\n      equipment {\n        name\n        id\n      }\n      pictureUrl\n      isBookable\n      size\n      venue {\n        name\n      }\n      description\n    }\n  }\n": types.FindRoomDocument,
@@ -50,7 +51,11 @@ export function gql(source: "\n  mutation CreateBooking($roomId: ID!, $startDate
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation Mutation($bookingId: ID!) {\n    cancelBooking(bookingId: $bookingId) {\n      id\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation Mutation($bookingId: ID!) {\n    cancelBooking(bookingId: $bookingId) {\n      id\n      message\n    }\n  }\n"];
+export function gql(source: "\n  mutation CancelBooking($bookingId: ID!) {\n    cancelBooking(bookingId: $bookingId) {\n      id\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation CancelBooking($bookingId: ID!) {\n    cancelBooking(bookingId: $bookingId) {\n      id\n      message\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdateBooking($bookingId: ID!, $startDate: Date!, $endDate: Date!, $title: String, $roomId: ID!) {\n    updateBooking(bookingId: $bookingId, startDate: $startDate, endDate: $endDate, title: $title, roomId: $roomId) {\n      id\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateBooking($bookingId: ID!, $startDate: Date!, $endDate: Date!, $title: String, $roomId: ID!) {\n    updateBooking(bookingId: $bookingId, startDate: $startDate, endDate: $endDate, title: $title, roomId: $roomId) {\n      id\n      message\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
