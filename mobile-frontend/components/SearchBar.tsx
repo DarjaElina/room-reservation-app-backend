@@ -1,6 +1,7 @@
 import { Searchbar } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import theme from '../theme';
+import { useTheme } from '@react-navigation/native';
 
 interface SearchBarProps {
   searchQuery: string;
@@ -13,16 +14,25 @@ export default function SearchBar({
   setSearchQuery,
   placeholder = 'Search...',
 }: SearchBarProps) {
+  const { colors } = useTheme();
   return (
     <View style={styles.container}>
       <Searchbar
         placeholder={placeholder}
         onChangeText={setSearchQuery}
         value={searchQuery}
-        style={styles.searchbar}
-        inputStyle={styles.input}
-        placeholderTextColor={theme.colors.textSecondary}
-        iconColor={theme.colors.textSecondary}
+        style={[
+          styles.searchbar,
+          {
+            borderColor: colors.inputBorder,
+            backgroundColor: colors.backgroundSecondary,
+            shadowColor: colors.shadow,
+            shadowOpacity: colors.shadowOpacity,
+          },
+        ]}
+        inputStyle={[styles.input, { color: colors.textPrimary }]}
+        placeholderTextColor={colors.textSecondary}
+        iconColor={colors.textSecondary}
       />
     </View>
   );
@@ -38,11 +48,9 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.large,
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: theme.colors.inputBorder,
+
     elevation: 5,
-    backgroundColor: theme.colors.backgroundSecondary,
-    shadowColor: theme.colors.shadow,
-    shadowOpacity: theme.colors.shadowOpacity,
+
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 8,
     overflow: 'hidden',
@@ -50,6 +58,5 @@ const styles = StyleSheet.create({
   input: {
     fontSize: theme.fontSizes.body,
     minHeight: 0,
-    color: theme.colors.textPrimary,
   },
 });

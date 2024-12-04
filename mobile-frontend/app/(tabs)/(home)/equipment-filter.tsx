@@ -7,8 +7,10 @@ import { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import theme from '../../../theme';
 import QueryResult from '@/components/QueryResult';
+import { useTheme } from '@react-navigation/native';
 
 export default function EquipmentFilter() {
+  const { colors } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
   const { equipment, loading, error } = useEquipment({
@@ -22,7 +24,12 @@ export default function EquipmentFilter() {
 
   return (
     <QueryResult loading={loading} error={error} data={equipment}>
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          { backgroundColor: colors.backgroundPrimary },
+        ]}
+      >
         <SearchBar
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
@@ -41,7 +48,6 @@ export default function EquipmentFilter() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.backgroundPrimary,
     padding: 20,
   },
 });

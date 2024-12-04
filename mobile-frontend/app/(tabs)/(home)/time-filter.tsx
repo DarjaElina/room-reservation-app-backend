@@ -7,6 +7,7 @@ import { z, ZodType } from 'zod';
 import useFilter from '../../../hooks/useFilter';
 import { router } from 'expo-router';
 import theme from '../../../theme';
+import { Theme } from '@react-navigation/native';
 
 type FormData = {
   startDate: Date;
@@ -35,6 +36,7 @@ const validateDates = (startDate: Date, endDate: Date) => {
 };
 
 export default function TimeFilter() {
+  const { colors } = useTheme();
   const { startDate, setStartDate, endDate, setEndDate } = useFilter();
   const [isStartDatePickerVisible, setStartDatePickerVisibility] =
     useState(false);
@@ -110,13 +112,27 @@ export default function TimeFilter() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.instructionText}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.backgroundPrimary,
+        },
+      ]}
+    >
+      <Text
+        style={[
+          styles.instructionText,
+          {
+            color: colors.textPrimary,
+          },
+        ]}
+      >
         Select the time range to search for available classrooms.
       </Text>
       <TextInput
         disabled
-        activeUnderlineColor={theme.colors.inputActiveBorder}
+        activeUnderlineColor={colors.inputActiveBorder}
         label="Start Date"
         value={
           startDate
@@ -136,7 +152,7 @@ export default function TimeFilter() {
       />
       <TextInput
         disabled
-        activeUnderlineColor={theme.colors.inputActiveBorder}
+        activeUnderlineColor={colors.inputActiveBorder}
         label="End Date"
         value={
           endDate
@@ -144,7 +160,12 @@ export default function TimeFilter() {
             : ''
         }
         onPressIn={showEndDatePicker}
-        style={styles.textInput}
+        style={[
+          styles.textInput,
+          {
+            backgroundColor: colors.backgroundPrimary,
+          },
+        ]}
       />
       <DateTimePickerModal
         isVisible={isEndDatePickerVisible}
@@ -162,7 +183,12 @@ export default function TimeFilter() {
         <Button
           label="Clear Dates"
           onSubmit={handleReset}
-          style={styles.button}
+          style={[
+            styles.button,
+            {
+              backgroundColor: colors.buttonBackground,
+            },
+          ]}
         />
       )}
     </View>
@@ -174,24 +200,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: theme.colors.backgroundPrimary,
     padding: 20,
   },
   instructionText: {
-    color: theme.colors.textPrimary,
     fontSize: theme.fontSizes.body,
     marginBottom: 20,
     textAlign: 'center',
   },
   textInput: {
-    backgroundColor: theme.colors.backgroundPrimary,
     marginBottom: 15,
     width: '100%',
     borderRadius: 8,
     padding: 10,
   },
   button: {
-    backgroundColor: theme.colors.buttonBackground,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,

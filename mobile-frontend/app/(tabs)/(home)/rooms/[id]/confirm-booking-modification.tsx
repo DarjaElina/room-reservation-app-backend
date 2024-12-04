@@ -9,22 +9,27 @@ import useUpdateBooking from '@/hooks/useUpdateBooking';
 import { useState } from 'react';
 import { router } from 'expo-router';
 import theme from '@/theme';
+import { useTheme } from '@react-navigation/native';
 
 export default function ConfirmBookingModificationScreen() {
   const { bookingStartDate, bookingEndDate } = useBookingContext();
-  const { id, bookingId } = useLocalSearchParams<{ id: string, bookingId: string }>();
+  const { id, bookingId } = useLocalSearchParams<{
+    id: string;
+    bookingId: string;
+  }>();
   const { loading: roomLoading, room, error: roomError } = useRoom(id);
   const [updateBooking, { loading }] = useUpdateBooking();
   const [userMessage, setUserMessage] = useState<string | null>('');
   const [bookingTitle, setBookingTitle] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const { colors } = useTheme();
 
   console.log(
     bookingId,
     new Date(bookingStartDate).getTime(),
     new Date(bookingEndDate).getTime(),
     bookingTitle.trim() || undefined
-  )
+  );
 
   const handleSubmit = async () => {
     try {
@@ -33,7 +38,7 @@ export default function ConfirmBookingModificationScreen() {
         new Date(bookingStartDate).getTime(),
         new Date(bookingEndDate).getTime(),
         id,
-        bookingTitle.trim() || undefined,
+        bookingTitle.trim() || undefined
       );
       setUserMessage('Booking updated successfully.');
       setBookingTitle('');
@@ -42,14 +47,21 @@ export default function ConfirmBookingModificationScreen() {
         router.navigate('/(tabs)/(home)');
       }, 2000);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       Alert.alert(error.message);
     }
   };
 
   return (
     <QueryResult data={room} loading={roomLoading} error={roomError}>
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: colors.backgroundPrimary,
+          },
+        ]}
+      >
         <UserMessage text={userMessage} />
         <BookingDetailsCard
           roomCode={room?.code}
@@ -59,7 +71,7 @@ export default function ConfirmBookingModificationScreen() {
           setBookingTitle={setBookingTitle}
           error={error}
           onSubmit={handleSubmit}
-          buttonText='Save'
+          buttonText="Save"
         />
       </View>
     </QueryResult>
@@ -71,7 +83,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: theme.colors.backgroundPrimary,
     paddingHorizontal: theme.spacing.large,
   },
 });

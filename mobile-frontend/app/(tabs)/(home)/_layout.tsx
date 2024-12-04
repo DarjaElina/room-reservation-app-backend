@@ -1,16 +1,18 @@
 import { Stack } from 'expo-router';
 import theme from '../../../theme';
 import { FilterProvider } from '../../../context/FilterContext';
+import { useTheme } from '@react-navigation/native';
 
 export default function Layout() {
+  const { colors } = useTheme();
   return (
     <FilterProvider>
       <Stack
         screenOptions={{
           headerStyle: {
-            backgroundColor: theme.colors.backgroundPrimary,
+            backgroundColor: colors.backgroundPrimary,
           },
-          headerTintColor: theme.colors.textPrimary,
+          headerTintColor: colors.textPrimary,
           headerShadowVisible: true,
         }}
       >

@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, Pressable, Alert, Modal } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Alert,
+  Modal,
+  useColorScheme,
+} from 'react-native';
 import theme from '../theme';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -6,6 +14,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import useCancelBooking from '@/hooks/useCancelBooking';
 import BookingModificationForm from './BookingModificationForm';
 import { useState } from 'react';
+import { useTheme } from '@react-navigation/native';
 
 interface BookingItemProps {
   startDate: Date;
@@ -29,6 +38,8 @@ export default function BookingItem({
   const formattedStartDate = new Date(startDate);
   const formattedEndDate = new Date(endDate);
   const [showModal, setShowModal] = useState(false);
+  const { colors } = useTheme();
+  const scheme = useColorScheme();
 
   const options: Intl.DateTimeFormatOptions = {
     day: 'numeric',
@@ -70,16 +81,46 @@ export default function BookingItem({
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.code}>{roomCode}</Text>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.backgroundSecondary,
+          shadowColor: colors.shadow,
+          shadowOpacity: colors.shadowOpacity,
+        },
+      ]}
+    >
+      <Text
+        style={[
+          styles.title,
+          {
+            color: colors.textPrimary,
+          },
+        ]}
+      >
+        {title}
+      </Text>
+      <Text
+        style={[
+          styles.code,
+          {
+            color: colors.textSecondary,
+          },
+        ]}
+      >
+        {roomCode}
+      </Text>
       <View style={styles.dateContainer}>
-        <FontAwesome
-          name="calendar"
-          size={20}
-          color={theme.colors.textPrimary}
-        />
-        <Text style={styles.date}>
+        <FontAwesome name="calendar" size={20} color={colors.textPrimary} />
+        <Text
+          style={[
+            styles.date,
+            {
+              color: colors.textSecondary,
+            },
+          ]}
+        >
           {formattedStartDate.toLocaleString(undefined, options)} -{' '}
           {formattedEndDate.toLocaleString(undefined, options)}
         </Text>
@@ -88,24 +129,59 @@ export default function BookingItem({
         <View style={styles.buttonContainer}>
           <Pressable
             onPress={() => confirmCancel(id)}
-            style={[styles.button, styles.cancelButton]}
+            style={[styles.button, { backgroundColor: colors.error }]}
           >
-            <MaterialIcons name="delete-forever" size={24} color="#FFF" />
-            <Text style={styles.buttonText}>Cancel</Text>
+            <MaterialIcons
+              name="delete-forever"
+              size={24}
+              color={scheme === 'light' ? 'white' : 'black'}
+            />
+            <Text
+              style={[
+                styles.buttonText,
+                {
+                  backgroundColor: colors.error,
+                  color: colors.buttonText,
+                },
+              ]}
+            >
+              Cancel
+            </Text>
           </Pressable>
           <Pressable
             onPress={() => setShowModal(true)}
-            style={[styles.button, styles.modifyButton]}
+            style={[styles.button, { backgroundColor: colors.success }]}
           >
-            <Entypo name="pencil" size={24} color="#FFF" />
-            <Text style={styles.buttonText}>Modify</Text>
+            <Entypo
+              name="pencil"
+              size={24}
+              color={scheme === 'light' ? 'white' : 'black'}
+            />
+            <Text
+              style={[
+                styles.buttonText,
+                {
+                  backgroundColor: colors.success,
+                  color: colors.buttonText,
+                },
+              ]}
+            >
+              Modify
+            </Text>
           </Pressable>
           <Modal
             visible={showModal}
             animationType="slide"
             onRequestClose={() => setShowModal(false)}
           >
-            <View style={styles.modalContainer}>
+            <View
+              style={[
+                styles.modalContainer,
+                {
+                  backgroundColor: colors.backgroundPrimary,
+                },
+              ]}
+            >
               <BookingModificationForm
                 initialData={{
                   title,
@@ -131,11 +207,9 @@ export default function BookingItem({
 const styles = StyleSheet.create({
   container: {
     padding: theme.spacing.large,
-    backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.medium,
-    shadowColor: theme.colors.shadow,
+
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: theme.colors.shadowOpacity,
     shadowRadius: 4,
     elevation: 3,
     margin: theme.spacing.medium,
@@ -143,7 +217,6 @@ const styles = StyleSheet.create({
   },
   code: {
     fontSize: theme.fontSizes.medium,
-    color: theme.colors.textSecondary,
     marginBottom: theme.spacing.small,
   },
   dateContainer: {
@@ -155,7 +228,6 @@ const styles = StyleSheet.create({
   date: {
     fontSize: theme.fontSizes.body,
     fontWeight: '500',
-    color: theme.colors.textSecondary,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -170,14 +242,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.medium,
     width: '40%',
   },
-  cancelButton: {
-    backgroundColor: theme.colors.error,
-  },
-  modifyButton: {
-    backgroundColor: theme.colors.success,
-  },
   buttonText: {
-    color: theme.colors.buttonText,
     fontWeight: '600',
     fontSize: theme.fontSizes.button,
     marginLeft: theme.spacing.small,
@@ -185,12 +250,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: theme.fontSizes.medium,
     fontWeight: 'bold',
-    color: theme.colors.textPrimary,
     marginBottom: theme.spacing.small,
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: theme.colors.backgroundPrimary,
     justifyContent: 'center',
   },
 });

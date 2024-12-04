@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import theme from '@/theme';
+import { useTheme } from '@react-navigation/native';
 
 export default function BookingDetailsCard({
   roomCode,
@@ -12,8 +13,9 @@ export default function BookingDetailsCard({
   setBookingTitle,
   error,
   onSubmit,
-  buttonText
+  buttonText,
 }) {
+  const { colors } = useTheme();
   const formatReadableDate = (isoDate) => {
     const date = new Date(isoDate);
     return date.toLocaleString('en-US', {
@@ -26,44 +28,104 @@ export default function BookingDetailsCard({
   };
 
   return (
-    <View style={styles.card}>
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: colors.backgroundSecondary,
+          shadowColor: colors.shadow,
+        },
+      ]}
+    >
       <View style={styles.header}>
         <FontAwesome5
           name="calendar-check"
           size={24}
-          color={theme.colors.textPrimary}
+          color={colors.textPrimary}
           style={styles.icon}
         />
-        <Text style={styles.headerText}>Booking Details</Text>
+        <Text
+          style={[
+            styles.headerText,
+            {
+              color: colors.textPrimary,
+            },
+          ]}
+        >
+          Booking Details
+        </Text>
       </View>
       <Text style={styles.detailText}>
-        <Text style={[styles.label, { fontSize: 20 }]}>Title:</Text>
+        <Text
+          style={[styles.label, { color: colors.textPrimary, fontSize: 20 }]}
+        >
+          Title:
+        </Text>
       </Text>
       <TextInput
         mode="flat"
-        style={styles.input}
+        style={[
+          styles.input,
+          {
+            color: colors.textPrimary,
+          },
+        ]}
         value={bookingTitle}
         onChangeText={setBookingTitle}
         placeholder="Booking title"
-        placeholderTextColor={theme.colors.textPrimary}
-        activeUnderlineColor={
-          error ? theme.colors.error : theme.colors.inputActiveBorder
-        }
+        placeholderTextColor={colors.textPrimary}
+        activeUnderlineColor={error ? colors.error : colors.inputActiveBorder}
       />
-      {error && <Text style={styles.errorText}>{error}</Text>}
-      <Text style={styles.detailText}>
-        <Text style={styles.label}>Room:</Text> {roomCode}
+      {error && (
+        <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
+      )}
+      <Text style={[styles.detailText, { color: colors.textPrimary }]}>
+        <Text style={[styles.label, { color: colors.textPrimary }]}>Room:</Text>{' '}
+        {roomCode}
       </Text>
-      <Text style={styles.detailText}>
-        <Text style={styles.label}>Starts:</Text>{' '}
+      <Text style={[styles.detailText, { color: colors.textSecondary }]}>
+        <Text
+          style={[
+            styles.label,
+            {
+              color: colors.textSecondary,
+            },
+          ]}
+        >
+          Starts:
+        </Text>{' '}
         {formatReadableDate(bookingStartDate)}
       </Text>
-      <Text style={styles.detailText}>
-        <Text style={styles.label}>Ends:</Text>{' '}
+      <Text
+        style={[
+          styles.detailText,
+          {
+            color: colors.textSecondary,
+          },
+        ]}
+      >
+        <Text style={[styles.label]}>Ends:</Text>{' '}
         {formatReadableDate(bookingEndDate)}
       </Text>
-      <Pressable onPress={onSubmit} style={styles.buttonContainer}>
-        <Text style={styles.buttonText}>{buttonText}</Text>
+      <Pressable
+        onPress={onSubmit}
+        style={[
+          styles.buttonContainer,
+          {
+            backgroundColor: colors.buttonBackground,
+          },
+        ]}
+      >
+        <Text
+          style={[
+            styles.buttonText,
+            {
+              color: colors.buttonText,
+            },
+          ]}
+        >
+          {buttonText}
+        </Text>
       </Pressable>
     </View>
   );
@@ -71,7 +133,6 @@ export default function BookingDetailsCard({
 
 const styles = StyleSheet.create({
   loadingText: {
-    color: theme.colors.textPrimary,
     fontSize: theme.fontSizes.body,
   },
   loadingOverlay: {
@@ -86,13 +147,11 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   card: {
-    backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.medium,
     padding: theme.spacing.large,
     width: '100%',
     maxWidth: 400,
     elevation: 5,
-    shadowColor: theme.colors.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 10,
   },
@@ -108,19 +167,15 @@ const styles = StyleSheet.create({
   headerText: {
     fontWeight: 'bold',
     fontSize: theme.fontSizes.heading,
-    color: theme.colors.textPrimary,
   },
   detailText: {
-    color: theme.colors.textPrimary,
     fontSize: theme.fontSizes.body,
     marginBottom: theme.spacing.small,
   },
   label: {
     fontWeight: '600',
-    color: theme.colors.textSecondary,
   },
   buttonContainer: {
-    backgroundColor: theme.colors.buttonBackground,
     paddingVertical: theme.spacing.medium,
     paddingHorizontal: theme.spacing.large,
     borderRadius: theme.borderRadius.small,
@@ -128,20 +183,17 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.medium,
   },
   buttonText: {
-    color: theme.colors.buttonText,
     fontSize: theme.fontSizes.button,
     fontWeight: 'bold',
   },
   input: {
     backgroundColor: 'transparent',
-    color: theme.colors.textPrimary,
     marginBottom: 8,
     height: 30,
     paddingHorizontal: 0,
     paddingVertical: 3,
   },
   errorText: {
-    color: theme.colors.error,
     marginBottom: 16,
   },
 });

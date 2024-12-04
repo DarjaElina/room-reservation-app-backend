@@ -51,7 +51,8 @@
     "react-native-screens": "~4.1.0",
     "react-native-web": "~0.19.13",
     "use-debounce": "^10.0.4",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "expo-localization": "~16.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",

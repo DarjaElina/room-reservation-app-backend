@@ -1,6 +1,7 @@
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import theme from '../theme';
+import { useTheme } from '@react-navigation/native';
 
 interface CheckBoxItemProps {
   item: { value: string; label: string };
@@ -17,6 +18,7 @@ export default function CheckBoxItem({
   setUpdatedCheckedValues,
   onChange,
 }: CheckBoxItemProps) {
+  const { colors } = useTheme();
   const handlePress = () => {
     const newValues = isActive
       ? updatedCheckedValues.filter((v) => v !== item.value)
@@ -28,17 +30,35 @@ export default function CheckBoxItem({
 
   return (
     <TouchableOpacity
-      style={[styles.checkBox, isActive && styles.activeCheckboxColor]}
+      style={[
+        styles.checkBox,
+        isActive && {
+          backgroundColor: colors.checkboxActiveBackground,
+        },
+        {
+          backgroundColor: colors.checkboxInactiveBackground,
+          borderColor: colors.inputBorder,
+        },
+      ]}
       onPress={handlePress}
     >
       <MaterialIcons
         name={isActive ? 'check-box' : 'check-box-outline-blank'}
         size={24}
-        color={
-          isActive ? theme.colors.backgroundPrimary : theme.colors.textSecondary
-        }
+        color={isActive ? colors.backgroundPrimary : colors.textSecondary}
       />
-      <Text style={isActive ? [styles.text, styles.activeText] : styles.text}>
+      <Text
+        style={
+          isActive
+            ? [
+                styles.text,
+                {
+                  color: colors.checkboxActiveText,
+                },
+              ]
+            : styles.text
+        }
+      >
         {item.label}
       </Text>
     </TouchableOpacity>
@@ -52,21 +72,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-    backgroundColor: theme.colors.checkboxInactiveBackground,
     paddingHorizontal: 15,
     borderRadius: theme.borderRadius.medium,
     borderWidth: 1,
-    borderColor: theme.colors.inputBorder,
   },
-  activeCheckboxColor: {
-    backgroundColor: theme.colors.checkboxActiveBackground,
-  },
+  activeCheckboxColor: {},
   text: {
     fontSize: theme.fontSizes.body,
     marginLeft: 15,
-    color: theme.colors.checkboxInactiveText,
   },
-  activeText: {
-    color: theme.colors.checkboxActiveText,
-  },
+  activeText: {},
 });

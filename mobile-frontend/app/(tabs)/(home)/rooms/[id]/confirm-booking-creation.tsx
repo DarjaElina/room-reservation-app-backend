@@ -9,6 +9,7 @@ import useBooking from '@/hooks/useBooking';
 import { useState } from 'react';
 import { router } from 'expo-router';
 import theme from '@/theme';
+import { useTheme } from '@react-navigation/native';
 
 export default function ConfirmBookingCreationScreen() {
   const { bookingStartDate, bookingEndDate } = useBookingContext();
@@ -18,6 +19,7 @@ export default function ConfirmBookingCreationScreen() {
   const [userMessage, setUserMessage] = useState<string | null>('');
   const [bookingTitle, setBookingTitle] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const { colors } = useTheme();
 
   const handleSubmit = async () => {
     try {
@@ -40,7 +42,12 @@ export default function ConfirmBookingCreationScreen() {
 
   return (
     <QueryResult data={room} loading={roomLoading} error={roomError}>
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          { backgroundColor: colors.backgroundPrimary },
+        ]}
+      >
         <UserMessage text={userMessage} />
         <BookingDetailsCard
           roomCode={room?.code}
@@ -50,7 +57,7 @@ export default function ConfirmBookingCreationScreen() {
           setBookingTitle={setBookingTitle}
           error={error}
           onSubmit={handleSubmit}
-          buttonText='Reserve'
+          buttonText="Reserve"
         />
       </View>
     </QueryResult>
@@ -62,7 +69,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: theme.colors.backgroundPrimary,
     paddingHorizontal: theme.spacing.large,
   },
 });

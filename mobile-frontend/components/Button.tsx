@@ -1,6 +1,6 @@
 import { StyleSheet, Pressable, Text } from 'react-native';
 import theme from '../theme';
-
+import { useTheme } from '@react-navigation/native';
 type Props = {
   isBig?: boolean;
   isSmall?: boolean;
@@ -16,8 +16,14 @@ export default function Button({
   onSubmit,
   style,
 }: Props) {
+  const { colors } = useTheme();
   const buttonStyles = [
-    styles.button,
+    [
+      styles.button,
+      {
+        backgroundColor: colors.buttonBackground,
+      },
+    ],
     isBig && styles.bigButton,
     isSmall && styles.smallButton,
     style,
@@ -25,7 +31,16 @@ export default function Button({
 
   return (
     <Pressable style={buttonStyles} onPress={onSubmit}>
-      <Text style={styles.buttonLabel}>{label}</Text>
+      <Text
+        style={[
+          styles.buttonLabel,
+          {
+            color: colors.buttonText,
+          },
+        ]}
+      >
+        {label}
+      </Text>
     </Pressable>
   );
 }
@@ -33,7 +48,6 @@ export default function Button({
 const styles = StyleSheet.create({
   button: {
     borderRadius: 15,
-    backgroundColor: theme.colors.buttonBackground,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
@@ -49,7 +63,6 @@ const styles = StyleSheet.create({
     height: 35,
   },
   buttonLabel: {
-    color: theme.colors.buttonText,
     fontSize: theme.fontSizes.button,
     fontWeight: 'bold',
   },

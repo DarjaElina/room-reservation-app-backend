@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Controller, Control, FieldErrors } from 'react-hook-form';
 import { TextInput } from 'react-native-paper';
 import theme from '../theme';
+import { useTheme } from '@react-navigation/native';
 
 interface FormProps {
   control: Control<any>;
@@ -15,6 +16,7 @@ interface FormProps {
 }
 
 export default function Form({ control, errors, fields }: FormProps) {
+  const { colors } = useTheme();
   return (
     <>
       {fields.map((field) => (
@@ -34,19 +36,27 @@ export default function Form({ control, errors, fields }: FormProps) {
                 value={value}
                 autoCapitalize="none"
                 activeUnderlineColor={
-                  error ? theme.colors.error : theme.colors.inputActiveBorder
+                  error ? colors.error : colors.inputActiveBorder
                 }
                 style={{
                   backgroundColor: 'transparent',
-                  color: theme.colors.textPrimary,
+                  color: colors.textPrimary,
                 }}
-                placeholderTextColor={theme.colors.textSecondary}
+                placeholderTextColor={colors.textSecondary}
+                textColor={colors.textPrimary}
               />
             )}
             name={field.name}
           />
           {errors[field.name] && (
-            <Text style={styles.errorText}>
+            <Text
+              style={[
+                styles.errorText,
+                {
+                  color: colors.error,
+                },
+              ]}
+            >
               {String(errors[field.name]?.message)}
             </Text>
           )}
@@ -61,7 +71,6 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.large,
   },
   errorText: {
-    color: theme.colors.error,
     marginTop: theme.spacing.small,
     fontSize: theme.fontSizes.subheading,
   },

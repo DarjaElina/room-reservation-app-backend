@@ -3,6 +3,7 @@ import BookingItem from './BookingItem';
 import useBookings from '../hooks/useBookings';
 import QueryResult from './QueryResult';
 import theme from '../theme';
+import { useTheme } from '@react-navigation/native';
 
 interface BookingListProps {
   queryOptions: {
@@ -18,9 +19,21 @@ export default function BookingList({
   emptyMessage,
 }: BookingListProps) {
   const { loading, bookings, error } = useBookings(queryOptions);
+  const { colors } = useTheme();
 
   if (!loading && bookings.length <= 0) {
-    return <Text style={styles.message}>{emptyMessage}</Text>;
+    return (
+      <Text
+        style={[
+          styles.message,
+          {
+            color: colors.textPrimary,
+          },
+        ]}
+      >
+        {emptyMessage}
+      </Text>
+    );
   }
 
   const sortedBookings = [...bookings].sort(
@@ -29,7 +42,14 @@ export default function BookingList({
 
   return (
     <QueryResult error={error} loading={loading} data={bookings}>
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: colors.backgroundPrimary,
+          },
+        ]}
+      >
         <FlatList
           data={sortedBookings}
           renderItem={({ item }) => (
@@ -53,11 +73,9 @@ export default function BookingList({
 const styles = StyleSheet.create({
   container: {
     padding: theme.spacing.large,
-    backgroundColor: theme.colors.backgroundPrimary,
   },
   message: {
     fontSize: theme.fontSizes.subheading,
-    color: theme.colors.textPrimary,
     textAlign: 'center',
     marginVertical: theme.spacing.large,
   },

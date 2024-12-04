@@ -4,10 +4,11 @@ import { SegmentedButtons } from 'react-native-paper';
 import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import theme from '../theme';
 import { router } from 'expo-router';
+import { useTheme } from '@react-navigation/native';
 
 function FilterButtons() {
   const [value, setValue] = React.useState('');
-
+  const { colors } = useTheme();
   return (
     <View style={styles.container}>
       <SegmentedButtons
@@ -16,7 +17,7 @@ function FilterButtons() {
         onValueChange={setValue}
         theme={{
           colors: {
-            secondaryContainer: theme.colors.buttonBackground,
+            secondaryContainer: colors.buttonBackground,
           },
         }}
         buttons={[
@@ -28,14 +29,12 @@ function FilterButtons() {
                 name="time"
                 size={15}
                 color={
-                  value === 'time'
-                    ? theme.colors.buttonText
-                    : theme.colors.textPrimary
+                  value === 'time' ? colors.buttonText : colors.textPrimary
                 }
               />
             ),
-            uncheckedColor: theme.colors.textPrimary,
-            checkedColor: theme.colors.buttonText,
+            uncheckedColor: colors.textPrimary,
+            checkedColor: colors.buttonText,
             onPress: () => router.navigate('/(home)/time-filter'),
           },
           {
@@ -46,14 +45,12 @@ function FilterButtons() {
                 name="location"
                 size={15}
                 color={
-                  value === 'building'
-                    ? theme.colors.buttonText
-                    : theme.colors.textPrimary
+                  value === 'building' ? colors.buttonText : colors.textPrimary
                 }
               />
             ),
-            uncheckedColor: theme.colors.textPrimary,
-            checkedColor: theme.colors.buttonText,
+            uncheckedColor: colors.textPrimary,
+            checkedColor: colors.buttonText,
             onPress: () => router.navigate('/(home)/building-filter'),
           },
           {
@@ -64,14 +61,12 @@ function FilterButtons() {
                 name="guitar"
                 size={15}
                 color={
-                  value === 'tools'
-                    ? theme.colors.buttonText
-                    : theme.colors.textPrimary
+                  value === 'tools' ? colors.buttonText : colors.textPrimary
                 }
               />
             ),
-            uncheckedColor: theme.colors.textPrimary,
-            checkedColor: theme.colors.buttonText,
+            uncheckedColor: colors.textPrimary,
+            checkedColor: colors.buttonText,
             onPress: () => router.navigate('/(home)/equipment-filter'),
           },
           {
@@ -82,14 +77,12 @@ function FilterButtons() {
                 name="class"
                 size={15}
                 color={
-                  value === 'type'
-                    ? theme.colors.buttonText
-                    : theme.colors.textPrimary
+                  value === 'type' ? colors.buttonText : colors.textPrimary
                 }
               />
             ),
-            uncheckedColor: theme.colors.textPrimary,
-            checkedColor: theme.colors.buttonText,
+            uncheckedColor: colors.textPrimary,
+            checkedColor: colors.buttonText,
             onPress: () => router.navigate('/(home)/type-filter'),
           },
         ]}

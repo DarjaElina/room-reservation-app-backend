@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import theme from '@/theme';
 import { router } from 'expo-router';
+import { useTheme } from '@react-navigation/native';
 
 interface BookingModificationFormProps {
   initialData: {
@@ -28,6 +29,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
   const [title, setTitle] = useState(initialData.title);
   const [start, setStart] = useState(initialData.startDate);
   const [end, setEnd] = useState(initialData.endDate);
+  const { colors } = useTheme();
 
   const formatDate = (date: Date): string => {
     return date.toLocaleString('en-GB', {
@@ -64,11 +66,20 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
         value={title}
         onChangeText={setTitle}
         placeholder="Booking title"
-        activeUnderlineColor={theme.colors.textPrimary}
+        activeUnderlineColor={colors.textPrimary}
       />
 
       <View style={styles.dateContainer}>
-        <Text style={styles.dateLabel}>Start Date:</Text>
+        <Text
+          style={[
+            ,
+            {
+              color: colors.textPrimary,
+            },
+          ]}
+        >
+          Start Date:
+        </Text>
         <Pressable
           onPress={() => handleNavigateToDatePicker('start')}
           style={styles.datePressable}
@@ -85,7 +96,14 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
           onPress={() => handleNavigateToDatePicker('end')}
           style={styles.datePressable}
         >
-          <Text style={styles.dateText}>
+          <Text
+            style={[
+              styles.dateText,
+              {
+                color: colors.textSecondary,
+              },
+            ]}
+          >
             {formatDate(new Date(initialData.endDate))}
           </Text>
         </Pressable>
@@ -94,13 +112,18 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
       <View style={styles.buttonContainer}>
         <Pressable
           onPress={handleSave}
-          style={[styles.button, styles.saveButton]}
+          style={[
+            styles.button,
+            {
+              backgroundColor: colors.success,
+            },
+          ]}
         >
           <Text style={styles.buttonText}>Save</Text>
         </Pressable>
         <Pressable
           onPress={onCancel}
-          style={[styles.button, styles.cancelButton]}
+          style={[styles.button, { backgroundColor: colors.error }]}
         >
           <Text style={styles.buttonText}>Cancel</Text>
         </Pressable>
@@ -131,7 +154,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: theme.colors.textPrimary,
   },
   datePressable: {
     backgroundColor: '#f0f0f0',
@@ -146,7 +168,6 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 16,
-    color: theme.colors.textSecondary,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -159,12 +180,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 8,
   },
-  saveButton: {
-    backgroundColor: theme.colors.success,
-  },
-  cancelButton: {
-    backgroundColor: theme.colors.error,
-  },
+  saveButton: {},
+  cancelButton: {},
   buttonText: {
     fontSize: 16,
     color: '#fff',

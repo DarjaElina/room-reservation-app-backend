@@ -1,29 +1,29 @@
-const theme = {
-  colors: {
-    backgroundPrimary: '#D3E0EA',
-    backgroundSecondary: '#F6F5F5',
+const staticTheme = {
+  // colors: {
+  //   backgroundPrimary: '#D3E0EA',
+  //   backgroundSecondary: '#F6F5F5',
 
-    textPrimary: '#276678',
-    textSecondary: '#1687A7',
+  //   textPrimary: '#276678',
+  //   textSecondary: '#1687A7',
 
-    buttonBackground: '#1687A7',
-    buttonText: '#F6F5F5',
+  //   buttonBackground: '#1687A7',
+  //   buttonText: '#F6F5F5',
 
-    inputBorder: '#276678',
-    inputBackground: '#F6F5F5',
-    inputActiveBorder: '#276678',
+  //   inputBorder: '#276678',
+  //   inputBackground: '#F6F5F5',
+  //   inputActiveBorder: '#276678',
 
-    checkboxActiveBackground: '#276678',
-    checkboxInactiveBackground: '#F6F5F5',
-    checkboxActiveText: '#FFFFFF',
-    checkboxInactiveText: '#276678',
+  //   checkboxActiveBackground: '#276678',
+  //   checkboxInactiveBackground: '#F6F5F5',
+  //   checkboxActiveText: '#FFFFFF',
+  //   checkboxInactiveText: '#276678',
 
-    success: 'darkgreen',
-    error: 'darkred',
+  //   success: 'darkgreen',
+  //   error: 'darkred',
 
-    shadow: '#000000',
-    shadowOpacity: 0.2,
-  },
+  //   shadow: '#000000',
+  //   shadowOpacity: 0.2,
+  // },
   fontSizes: {
     body: 14,
     subheading: 14,
@@ -46,8 +46,4 @@ const theme = {
   },
 };
 
-export default theme;
-
-//#340b46
-
-// https://mobilepalette.netlify.app/?color=340b46
+export default staticTheme;

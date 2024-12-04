@@ -6,14 +6,32 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import theme from '../../theme';
 import { Text, StyleSheet, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
+import { useTheme } from '@react-navigation/native';
+
 export default function TabLayout() {
   const { loading, error, data } = useQuery(CURRENT_USER);
-
+  const { colors } = useTheme();
   if (loading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color={theme.colors.textPrimary} />
-        <Text style={styles.text}>Loading...</Text>
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: colors.backgroundPrimary,
+          },
+        ]}
+      >
+        <ActivityIndicator size="large" color={colors.textPrimary} />
+        <Text
+          style={[
+            styles.text,
+            {
+              color: colors.textPrimary,
+            },
+          ]}
+        >
+          Loading...
+        </Text>
       </View>
     );
   }
@@ -25,9 +43,9 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: theme.colors.buttonBackground,
+        tabBarActiveTintColor: colors.buttonBackground,
         tabBarStyle: {
-          backgroundColor: theme.colors.backgroundPrimary,
+          backgroundColor: colors.backgroundPrimary,
         },
       }}
     >
@@ -79,15 +97,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: theme.colors.backgroundPrimary, // Using theme backgroundPrimary
   },
   text: {
-    color: theme.colors.textPrimary, // Use textPrimary color from theme
-    marginTop: theme.spacing.small, // Use theme spacing
-    fontSize: theme.fontSizes.subheading, // Use theme font size
-  },
-  errorText: {
-    color: theme.colors.error, // Use error color from theme
-    fontSize: theme.fontSizes.subheading, // Use theme font size
+    marginTop: theme.spacing.small,
+    fontSize: theme.fontSizes.subheading,
   },
 });

@@ -1,14 +1,24 @@
 import { View, Text, StyleSheet } from 'react-native';
 import theme from '../theme';
+import { useTheme } from '@react-navigation/native';
 
 interface EquipmentProp {
   name: string;
 }
 
 export default function EquipmentItem({ name }: EquipmentProp) {
+  const { colors } = useTheme();
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{name}</Text>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.backgroundSecondary,
+          shadowColor: colors.shadow || '#000',
+        },
+      ]}
+    >
+      <Text style={[, { color: colors.textPrimary }]}>{name}</Text>
     </View>
   );
 }
@@ -19,16 +29,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 12,
-    backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: 15,
-    shadowColor: theme.colors.shadow || '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
   },
   text: {
-    color: theme.colors.textPrimary,
     fontSize: 14,
     fontWeight: 'bold',
   },

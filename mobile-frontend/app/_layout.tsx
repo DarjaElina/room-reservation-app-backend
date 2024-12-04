@@ -3,20 +3,28 @@ import { ApolloProvider } from '@apollo/client';
 import apolloClient from '../utils/apolloClient';
 import AuthStorageContext from '../context/AuthStorageContext';
 import AuthStorage from '../utils/authStorage';
-import theme from '../theme';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BookingProvider } from '../context/BookingContext';
-
+import { ThemeProvider } from '@react-navigation/native';
+import { customLightTheme, customDarkTheme } from '@/constants/ColorTheme';
 const authStorage = new AuthStorage();
+import { StatusBar } from 'expo-status-bar';
+import { CustomThemeProvider } from '@/context/CustomThemeContext';
 
 export default function RootLayout() {
+  const scheme = useColorScheme();
   return (
     <ApolloProvider client={apolloClient}>
       <AuthStorageContext.Provider value={authStorage}>
         <BookingProvider>
           <SafeAreaView style={styles.container}>
-            <Slot />
+              <ThemeProvider
+                value={scheme === 'dark' ? customDarkTheme : customLightTheme}
+              >
+                  <StatusBar style="auto" />
+                  <Slot />
+              </ThemeProvider>
           </SafeAreaView>
         </BookingProvider>
       </AuthStorageContext.Provider>
@@ -29,7 +37,5 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
     flexShrink: 1,
-    backgroundColor: theme.colors.backgroundPrimary,
-    padding: 5,
   },
 });

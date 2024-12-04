@@ -9,8 +9,10 @@ import theme from '../theme';
 import useSignIn from '../hooks/useSignIn';
 import { router } from 'expo-router';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useTheme } from '@react-navigation/native';
 
 export default function Login() {
+  const { colors } = useTheme();
   const [signIn] = useSignIn();
   const userSchema = z.object({
     username: z.string().regex(/^[a-z]{2}\d{5}$/, {
@@ -41,15 +43,27 @@ export default function Login() {
   };
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={styles.scrollContainer}>
+    <KeyboardAwareScrollView
+      contentContainerStyle={[
+        styles.scrollContainer,
+        {
+          backgroundColor: colors.backgroundPrimary,
+        },
+      ]}
+    >
       <View style={styles.iconContainer}>
-        <FontAwesome5
-          name="user-circle"
-          size={50}
-          color={theme.colors.textPrimary}
-        />
+        <FontAwesome5 name="user-circle" size={50} color={colors.textPrimary} />
       </View>
-      <Text style={styles.title}>Log In</Text>
+      <Text
+        style={[
+          styles.title,
+          {
+            color: colors.textPrimary,
+          },
+        ]}
+      >
+        Log In
+      </Text>
       <Form
         control={control}
         errors={errors}
@@ -68,7 +82,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: theme.spacing.medium,
-    backgroundColor: theme.colors.backgroundPrimary,
   },
   iconContainer: {
     display: 'flex',
@@ -78,7 +91,6 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     fontSize: theme.fontSizes.heading,
-    color: theme.colors.textPrimary,
     fontWeight: 'bold',
   },
 });

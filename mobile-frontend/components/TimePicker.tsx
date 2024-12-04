@@ -13,6 +13,7 @@ import useBookings from '@/hooks/useBookings';
 import { useRef, useEffect } from 'react';
 import { BookingStatus } from '@/__generated__/graphql';
 import { router } from 'expo-router';
+import { useTheme } from '@react-navigation/native';
 
 interface TimePickerProps {
   startTime?: string;
@@ -25,7 +26,7 @@ export default function TimePicker({
   startTime,
   endTime,
   modificationMode,
-  bookingId
+  bookingId,
 }: TimePickerProps) {
   const {
     selectedTimeValues,
@@ -34,6 +35,8 @@ export default function TimePicker({
     setBookingStartDate,
     date,
   } = useBookingContext();
+
+  const { colors } = useTheme();
 
   const { id } = useLocalSearchParams<{ id: string }>();
 
@@ -53,7 +56,6 @@ export default function TimePicker({
       );
     }
   }, [startTime, endTime]);
-
 
   const ref = useRef<FlatList>(null);
 
@@ -83,15 +85,16 @@ export default function TimePicker({
           pathname: `/(tabs)/(home)/rooms/[id]/confirm-booking-modification`,
           params: {
             id,
-            bookingId
+            bookingId,
           },
         });
-      } else router.replace({
-        pathname: `/(tabs)/(home)/rooms/[id]/confirm-booking-creation`,
-        params: {
-          id
-        },
-      });
+      } else
+        router.replace({
+          pathname: `/(tabs)/(home)/rooms/[id]/confirm-booking-creation`,
+          params: {
+            id,
+          },
+        });
       setSelectedTimeValues([]);
     } else {
       Alert.alert('Empty booking', 'Please select booking time');
@@ -130,9 +133,12 @@ export default function TimePicker({
         endDate: `${endHours}:${endMinutes}:00`,
       };
     })
-    .filter((b) => (startTime && endTime) && !(b.startDate >= startTime && b.endDate <= endTime));
-
-    
+    .filter(
+      (b) =>
+        startTime &&
+        endTime &&
+        !(b.startDate >= startTime && b.endDate <= endTime)
+    );
 
   const handleSelect = (item: TimeSlotType) => {
     const hour = Number(item.value.slice(0, 2));
@@ -203,7 +209,6 @@ export default function TimePicker({
     }
   };
 
-
   return (
     <View>
       <View>
@@ -234,10 +239,13 @@ export default function TimePicker({
           }}
         />
         <FAB
-          style={styles.floatingButton}
+          style={[
+            styles.floatingButton,
+            { backgroundColor: colors.buttonBackground },
+          ]}
           label="Confirm"
           onPress={handleSubmit}
-          color={theme.colors.buttonText}
+          color={colors.buttonText}
         />
         <Separator />
       </View>
@@ -250,6 +258,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     bottom: 150,
-    backgroundColor: theme.colors.buttonBackground,
   },
 });

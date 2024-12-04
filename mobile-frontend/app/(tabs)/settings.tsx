@@ -1,20 +1,12 @@
-import { Text, View, StyleSheet } from 'react-native';
-import theme from '../../theme';
-import useSignOut from '../../hooks/useSignOut';
+import { Text, View, StyleSheet, Switch } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 
 export default function SettingsScreen() {
-  const { signOut } = useSignOut();
+  const { colors } = useTheme();
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Settings will be here</Text>
-      <Text
-        style={styles.text}
-        onPress={() => {
-          signOut();
-        }}
-      >
-        Sign Out
-      </Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.text, { color: colors.text }]}>Settings will be here</Text>
     </View>
   );
 }
@@ -22,11 +14,10 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.backgroundPrimary,
     justifyContent: 'space-around',
     alignItems: 'center',
   },
   text: {
-    color: '#fff',
+    fontSize: 16,
   },
 });

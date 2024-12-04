@@ -5,6 +5,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import useBookingContext from '../hooks/useBookingContext';
 import theme from '@/theme';
 import { useEffect } from 'react';
+import { useTheme } from '@react-navigation/native';
 
 interface DatePickerProps {
   dateToModify?: Date;
@@ -13,6 +14,7 @@ interface DatePickerProps {
 export default function DatePicker({ dateToModify }: DatePickerProps) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const { date, setDate } = useBookingContext();
+  const { colors } = useTheme();
 
   useEffect(() => {
     if (dateToModify) {
@@ -50,7 +52,14 @@ export default function DatePicker({ dateToModify }: DatePickerProps) {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.backgroundPrimary,
+        },
+      ]}
+    >
       <AntDesign.Button
         backgroundColor="lightgrey"
         name="caretleft"
@@ -101,7 +110,6 @@ export default function DatePicker({ dateToModify }: DatePickerProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.backgroundPrimary,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
