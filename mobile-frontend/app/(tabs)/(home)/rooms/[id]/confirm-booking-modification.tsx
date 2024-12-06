@@ -24,13 +24,6 @@ export default function ConfirmBookingModificationScreen() {
   const [error, setError] = useState<string | null>(null);
   const { colors } = useTheme();
 
-  console.log(
-    bookingId,
-    new Date(bookingStartDate).getTime(),
-    new Date(bookingEndDate).getTime(),
-    bookingTitle.trim() || undefined
-  );
-
   const handleSubmit = async () => {
     try {
       await updateBooking(
