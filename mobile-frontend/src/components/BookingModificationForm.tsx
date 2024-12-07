@@ -5,6 +5,7 @@ import useUpdateBooking from '@/src/hooks/useUpdateBooking';
 import { router } from 'expo-router';
 import { useTheme } from '@react-navigation/native';
 import UserMessage from './UserMessage';
+import { useI18nContext } from '../i18n/i18n-react';
 
 interface BookingModificationFormProps {
   initialData: {
@@ -32,6 +33,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
   const schema = useColorScheme();
   const [updateBooking, {loading}] = useUpdateBooking();
   const [userMessage, setUserMessage] = useState<string | null>('');
+  const { LL } = useI18nContext();
 
   const formatDate = (date: Date): string => {
     return date.toLocaleString('en-GB', {
@@ -52,7 +54,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
         initialData.roomId,
         title,
       );
-      setUserMessage('Booking updated successfully.');
+      setUserMessage(LL.BOOKING_UPDATED_SUCCESSFULLY());
       setTitle('');
       setTimeout(() => {
         setUserMessage(null);
@@ -85,7 +87,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
         style={[styles.input, {backgroundColor: colors.inputBackground}]}
         value={title}
         onChangeText={setTitle}
-        placeholder="Booking title"
+        placeholder={LL.BOOKING_TITLE()}
         activeUnderlineColor={colors.textPrimary}
         placeholderTextColor={colors.textSecondary}
         textColor={colors.textPrimary}
@@ -100,7 +102,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
             },
           ]}
         >
-          Start Date:
+          {LL.STARTS()}:
         </Text>
         <Pressable
           onPress={() => handleNavigateToDatePicker('start')}
@@ -118,7 +120,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
             {
               color: colors.textPrimary,
             },
-          ]}>End Date:</Text>
+          ]}>{LL.ENDS()}:</Text>
         <Pressable
           onPress={() => handleNavigateToDatePicker('end')}
           style={styles.datePressable}
@@ -141,13 +143,13 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
             },
           ]}
         >
-          <Text style={[styles.buttonText, {color: schema === 'dark' ? 'black' : 'white'}]}>Save</Text>
+          <Text style={[styles.buttonText, {color: schema === 'dark' ? 'black' : 'white'}]}>{LL.SAVE()}</Text>
         </Pressable>
         <Pressable
           onPress={onCancel}
           style={[styles.button, { backgroundColor: colors.error }]}
         >
-          <Text style={[styles.buttonText, {color: schema === 'dark' ? 'black' : 'white'}]}>Cancel</Text>
+          <Text style={[styles.buttonText, {color: schema === 'dark' ? 'black' : 'white'}]}>{LL.CANCEL()}</Text>
         </Pressable>
       </View>
     </View>

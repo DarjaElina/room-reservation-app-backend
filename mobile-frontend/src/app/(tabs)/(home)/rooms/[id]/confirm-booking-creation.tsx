@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { router } from 'expo-router';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
+import { useI18nContext } from '@/src/i18n/i18n-react';
 
 export default function ConfirmBookingCreationScreen() {
   const { bookingStartDate, bookingEndDate } = useBookingContext();
@@ -20,6 +21,7 @@ export default function ConfirmBookingCreationScreen() {
   const [bookingTitle, setBookingTitle] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const { colors } = useTheme();
+  const { LL } = useI18nContext();
 
   const handleSubmit = async () => {
     try {
@@ -29,7 +31,7 @@ export default function ConfirmBookingCreationScreen() {
         new Date(bookingEndDate).getTime(),
         bookingTitle.trim() || undefined
       );
-      setUserMessage('Booking created successfully.');
+      setUserMessage(LL.BOOKING_CREATED());
       setBookingTitle('');
       setTimeout(() => {
         setUserMessage(null);
@@ -57,7 +59,7 @@ export default function ConfirmBookingCreationScreen() {
           setBookingTitle={setBookingTitle}
           error={error}
           onSubmit={handleSubmit}
-          buttonText="Reserve"
+          buttonText={LL.RESERVE()}
         />
       </View>
     </QueryResult>

@@ -7,6 +7,8 @@ import { z, ZodType } from 'zod';
 import useFilter from '@/src/hooks/useFilter';
 import { router } from 'expo-router';
 import theme from '@/src/theme';
+import {useTheme} from '@react-navigation/native';
+import { useI18nContext } from '@/src/i18n/i18n-react';
 
 type FormData = {
   startDate: Date;
@@ -40,6 +42,7 @@ export default function TimeFilter() {
   const [isStartDatePickerVisible, setStartDatePickerVisibility] =
     useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
+  const { LL } = useI18nContext();
 
   const showStartDatePicker = () => {
     setStartDatePickerVisibility(true);
@@ -127,7 +130,7 @@ export default function TimeFilter() {
           },
         ]}
       >
-        Select the time range to search for available classrooms.
+       {LL.SELECT_TIME_RANGE()}
       </Text>
       <TextInput
         disabled
@@ -139,7 +142,7 @@ export default function TimeFilter() {
             : ''
         }
         onPressIn={showStartDatePicker}
-        style={styles.textInput}
+        style={[styles.textInput, { backgroundColor: colors.backgroundPrimary }]}
       />
       <DateTimePickerModal
         isVisible={isStartDatePickerVisible}

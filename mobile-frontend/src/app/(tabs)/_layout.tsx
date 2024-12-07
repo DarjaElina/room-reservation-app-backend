@@ -7,10 +7,12 @@ import theme from '@/src/theme';
 import { Text, StyleSheet, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { useTheme } from '@react-navigation/native';
+import { useI18nContext } from '@/src/i18n/i18n-react';
 
 export default function TabLayout() {
   const { loading, error, data } = useQuery(CURRENT_USER);
   const { colors } = useTheme();
+  const { LL } = useI18nContext();
   if (loading) {
     return (
       <View
@@ -30,7 +32,7 @@ export default function TabLayout() {
             },
           ]}
         >
-          Loading...
+          {LL.LOADING()}
         </Text>
       </View>
     );
@@ -52,7 +54,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="(home)"
         options={{
-          title: 'Search',
+          title: LL.SEARCH_TAB(),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? 'grid-sharp' : 'grid-outline'}
@@ -65,7 +67,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="calendar"
         options={{
-          title: 'My Calendar',
+          title: LL.MY_CALENDAR(),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? 'calendar-sharp' : 'calendar-outline'}
@@ -78,7 +80,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
+          title: LL.SETTINGS(),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? 'settings-sharp' : 'settings-outline'}

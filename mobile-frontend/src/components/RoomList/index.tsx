@@ -8,6 +8,7 @@ import FilterButtons from '../FilterButtons';
 import useFilter from '@/src/hooks/useFilter';
 import { PaperProvider } from 'react-native-paper';
 import QueryResult from '../QueryResult';
+import { useI18nContext } from '@/src/i18n/i18n-react';
 
 export default function RoomListWrapper() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,6 +24,7 @@ export default function RoomListWrapper() {
     equipmentIds: equipment,
     roomTypes: types,
   });
+  const { LL } = useI18nContext();
 
   const onEndReach = () => {
     fetchMore();
@@ -37,7 +39,7 @@ export default function RoomListWrapper() {
           <SearchBar
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            placeholder="Search rooms by code..."
+            placeholder={LL.SEARCH_ROOMS_BY_CODE()}
           />
           <FilterButtons />
           <RoomListContainer rooms={roomNodes} onEndReach={onEndReach} />

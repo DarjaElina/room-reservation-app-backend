@@ -2,6 +2,7 @@ import { Searchbar } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
+import { useI18nContext } from '../i18n/i18n-react'
 
 interface SearchBarProps {
   searchQuery: string;
@@ -15,10 +16,11 @@ export default function SearchBar({
   placeholder = 'Search...',
 }: SearchBarProps) {
   const { colors } = useTheme();
+  const { LL } = useI18nContext();
   return (
     <View style={styles.container}>
       <Searchbar
-        placeholder={placeholder}
+        placeholder={LL.SEARCH()}
         onChangeText={setSearchQuery}
         value={searchQuery}
         style={[

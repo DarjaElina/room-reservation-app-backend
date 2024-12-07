@@ -5,8 +5,9 @@ import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import theme from '@/src/theme';
 import { router } from 'expo-router';
 import { useTheme } from '@react-navigation/native';
-
+import { useI18nContext } from '../i18n/i18n-react';
 function FilterButtons() {
+  const { LL } = useI18nContext();
   const [value, setValue] = React.useState('');
   const { colors } = useTheme();
   return (
@@ -23,7 +24,7 @@ function FilterButtons() {
         buttons={[
           {
             value: 'time',
-            label: 'Time',
+            label: LL.TIME(),
             icon: () => (
               <Ionicons
                 name="time"
@@ -39,7 +40,7 @@ function FilterButtons() {
           },
           {
             value: 'building',
-            label: 'Building',
+            label: LL.BUILDING(),
             icon: () => (
               <Ionicons
                 name="location"
@@ -55,7 +56,7 @@ function FilterButtons() {
           },
           {
             value: 'tools',
-            label: 'Tools',
+            label: LL.TOOLS(),
             icon: () => (
               <FontAwesome5
                 name="guitar"
@@ -71,7 +72,7 @@ function FilterButtons() {
           },
           {
             value: 'type',
-            label: 'Type',
+            label: LL.TYPE(),
             icon: () => (
               <MaterialIcons
                 name="class"

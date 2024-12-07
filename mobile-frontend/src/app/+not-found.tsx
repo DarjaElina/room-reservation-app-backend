@@ -1,13 +1,15 @@
 import { View, StyleSheet } from 'react-native';
 import { Link, Stack } from 'expo-router';
+import { useI18nContext } from '../i18n/i18n-react';
 
 export default function NotFoundScreen() {
+  const { LL } = useI18nContext();
   return (
     <>
       <Stack.Screen options={{ title: 'Oops! Not Found' }} />
       <View style={styles.container}>
         <Link href="/" style={styles.button}>
-          Go back to Home screen!
+          {LL.GO_BACK_HOME()}
         </Link>
       </View>
     </>

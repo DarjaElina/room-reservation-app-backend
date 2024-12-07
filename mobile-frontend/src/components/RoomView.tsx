@@ -20,6 +20,7 @@ import QueryResult from './QueryResult';
 import { BookingStatus } from '@/__generated__/graphql';
 import { useTheme } from '@react-navigation/native';
 import { router } from 'expo-router';
+import { useI18nContext } from '../i18n/i18n-react'
 
 interface RoomProps {
   id: string;
@@ -41,6 +42,7 @@ export default function RoomView({ room }: { room: RoomProps }) {
   if (!user) {
     return <Redirect href="/sign-in" />;
   }
+  const { LL } = useI18nContext();
   const blurhash =
     '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
   return (
@@ -79,7 +81,7 @@ export default function RoomView({ room }: { room: RoomProps }) {
               <Text
                 style={[styles.reserveButtonText, { color: colors.buttonText }]}
               >
-                Reserve
+                {LL.RESERVE()}
               </Text>
             </Pressable>
           </View>
@@ -101,14 +103,14 @@ export default function RoomView({ room }: { room: RoomProps }) {
             <View style={styles.statusContainer}>
               <AntDesign name="checksquare" size={20} color={colors.success} />
               <Text style={[styles.statusText, { color: colors.success }]}>
-                Available
+                {LL.AVAILABLE()}
               </Text>
             </View>
           ) : (
             <View style={styles.statusContainer}>
               <Entypo name="squared-cross" size={20} color={colors.error} />
               <Text style={[styles.statusText, { color: colors.error }]}>
-                Occupied
+                {LL.OCCUPIED()}
               </Text>
             </View>
           )}
@@ -128,7 +130,7 @@ export default function RoomView({ room }: { room: RoomProps }) {
                 { color: colors.buttonText },
               ]}
             >
-              Show Upcoming Reservations
+              {LL.SHOW_UPCOMING_RESERVATIONS()}
             </Text>
           </Pressable>
 
@@ -149,7 +151,7 @@ export default function RoomView({ room }: { room: RoomProps }) {
                   userId: user.id,
                   status: BookingStatus.Active,
                 }}
-                emptyMessage="You have no upcoming reservations for this room."
+                emptyMessage={LL.NO_UPCOMING_BOOKINGS()}
               />
 
               <Pressable
@@ -162,7 +164,7 @@ export default function RoomView({ room }: { room: RoomProps }) {
                 <Text
                   style={[styles.closeButtonText, { color: colors.buttonText }]}
                 >
-                  Close
+                  {LL.CLOSE()}
                 </Text>
               </Pressable>
             </View>

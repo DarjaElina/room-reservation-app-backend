@@ -3,6 +3,7 @@ import { Image } from 'expo-image';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
+import { useI18nContext } from '../i18n/i18n-react';
 
 interface RoomProps {
   code: string;
@@ -21,6 +22,7 @@ export default function Room({
   isFree,
 }: RoomProps) {
   const { colors } = useTheme();
+  const { LL } = useI18nContext();
   return (
     <View
       style={[
@@ -67,14 +69,14 @@ export default function Room({
           <>
             <AntDesign name="checksquare" size={16} color={colors.success} />
             <Text style={[styles.statusText, { color: colors.success }]}>
-              Available
+              {LL.AVAILABLE()}
             </Text>
           </>
         ) : (
           <>
             <Entypo name="squared-cross" size={16} color={colors.error} />
             <Text style={[styles.statusText, { color: colors.error }]}>
-              Occupied
+              {LL.OCCUPIED()}
             </Text>
           </>
         )}

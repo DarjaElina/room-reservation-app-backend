@@ -10,9 +10,11 @@ import useSignIn from '@/src/hooks/useSignIn';
 import { router } from 'expo-router';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTheme } from '@react-navigation/native';
+import { useI18nContext } from '../i18n/i18n-react';
 
 export default function Login() {
   const { colors } = useTheme();
+  const { LL } = useI18nContext()
   const [signIn] = useSignIn();
   const userSchema = z.object({
     username: z.string().regex(/^[a-z]{2}\d{5}$/, {
@@ -62,17 +64,17 @@ export default function Login() {
           },
         ]}
       >
-        Log In
+        {LL.LOGIN()}
       </Text>
       <Form
         control={control}
         errors={errors}
         fields={[
-          { name: 'username', label: 'Username' },
-          { name: 'password', label: 'Password', isPassword: true },
+          { name: 'username', label: LL.USERNAME() },
+          { name: 'password', label: LL.PASSWORD(), isPassword: true },
         ]}
       />
-      <Button isBig label="Login" onSubmit={handleSubmit(onSubmit)} />
+      <Button isBig label={LL.LOGIN()} onSubmit={handleSubmit(onSubmit)} />
     </KeyboardAwareScrollView>
   );
 }

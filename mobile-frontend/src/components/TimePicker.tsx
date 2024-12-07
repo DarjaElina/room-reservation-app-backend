@@ -1,19 +1,22 @@
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, ActivityIndicator } from 'react-native';
 import useBookingContext from '@/src/hooks/useBookingContext';
 import { FAB } from 'react-native-paper';
 import { Alert } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import { useNavigation } from 'expo-router';
 import Separator from './Separator';
 import { timeArray } from '@/src/constants/TimeArray';
 import TimeSlot from './TimeSlot';
 import { TimeSlotType } from './TimeSlot';
-import theme from '@/src/theme';
 import useBookings from '@/src/hooks/useBookings';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { BookingStatus } from '@/__generated__/graphql';
 import { router } from 'expo-router';
 import { useTheme } from '@react-navigation/native';
+import { useI18nContext } from '../i18n/i18n-react'
+import type { Locales } from '../i18n/i18n-types'
+import { loadLocaleAsync } from '../i18n/i18n-util.async'
+import { setUserLocale } from '@/src/utils/localeStorage';
+
 
 interface TimePickerProps {
   startTime?: string;
@@ -37,6 +40,14 @@ export default function TimePicker({
   } = useBookingContext();
 
   const { colors } = useTheme();
+
+  const { locale, LL, setLocale } = useI18nContext()
+
+  const onLocaleSelected = useCallback((locale: Locales) => {
+		setUserLocale(locale)
+			.then(async locale => { await loadLocaleAsync(locale); return locale })
+			.then(setLocale)
+	}, [])
 
   const { id } = useLocalSearchParams<{ id: string }>();
 
@@ -97,7 +108,7 @@ export default function TimePicker({
         });
       setSelectedTimeValues([]);
     } else {
-      Alert.alert('Empty booking', 'Please select booking time');
+      Alert.alert(LL.EMPTY_BOOKINGS(), LL.SELECT_BOOKING_TIME());
     }
   };
 
@@ -243,7 +254,7 @@ export default function TimePicker({
             styles.floatingButton,
             { backgroundColor: colors.buttonBackground },
           ]}
-          label="Confirm"
+          label={LL.CONFIRM()}
           onPress={handleSubmit}
           color={colors.buttonText}
         />

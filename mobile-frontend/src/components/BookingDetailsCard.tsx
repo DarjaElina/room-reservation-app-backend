@@ -4,6 +4,7 @@ import { TextInput } from 'react-native-paper';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
+import { useI18nContext } from '../i18n/i18n-react';
 
 export default function BookingDetailsCard({
   roomCode,
@@ -26,6 +27,7 @@ export default function BookingDetailsCard({
       minute: '2-digit',
     });
   };
+  const { LL } = useI18nContext();
 
   return (
     <View
@@ -52,14 +54,14 @@ export default function BookingDetailsCard({
             },
           ]}
         >
-          Booking Details
+          {LL.BOOKING_DETAILS()}
         </Text>
       </View>
       <Text style={styles.detailText}>
         <Text
           style={[styles.label, { color: colors.textPrimary, fontSize: 20 }]}
         >
-          Title:
+          {LL.TITLE()}
         </Text>
       </Text>
       <TextInput
@@ -72,7 +74,7 @@ export default function BookingDetailsCard({
         ]}
         value={bookingTitle}
         onChangeText={setBookingTitle}
-        placeholder="Booking title"
+        placeholder={LL.BOOKING_TITLE()}
         placeholderTextColor={colors.textPrimary}
         activeUnderlineColor={error ? colors.error : colors.inputActiveBorder}
       />
@@ -80,7 +82,7 @@ export default function BookingDetailsCard({
         <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
       )}
       <Text style={[styles.detailText, { color: colors.textPrimary }]}>
-        <Text style={[styles.label, { color: colors.textPrimary }]}>Room:</Text>{' '}
+        <Text style={[styles.label, { color: colors.textPrimary }]}>{LL.ROOM()}:</Text>{' '}
         {roomCode}
       </Text>
       <Text style={[styles.detailText, { color: colors.textSecondary }]}>
@@ -92,7 +94,7 @@ export default function BookingDetailsCard({
             },
           ]}
         >
-          Starts:
+          {LL.STARTS()}:
         </Text>{' '}
         {formatReadableDate(bookingStartDate)}
       </Text>
@@ -104,7 +106,7 @@ export default function BookingDetailsCard({
           },
         ]}
       >
-        <Text style={[styles.label]}>Ends:</Text>{' '}
+        <Text style={[styles.label]}>{LL.ENDS()}:</Text>{' '}
         {formatReadableDate(bookingEndDate)}
       </Text>
       <Pressable
@@ -162,7 +164,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.medium,
   },
   icon: {
-    marginRight: theme.spacing.small,
+    marginRight: theme.spacing.large,
   },
   headerText: {
     fontWeight: 'bold',

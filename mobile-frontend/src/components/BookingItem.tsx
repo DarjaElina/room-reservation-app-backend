@@ -15,6 +15,7 @@ import useCancelBooking from '@/src/hooks/useCancelBooking';
 import BookingModificationForm from './BookingModificationForm';
 import { useState } from 'react';
 import { useTheme } from '@react-navigation/native';
+import { useI18nContext } from '../i18n/i18n-react';
 
 interface BookingItemProps {
   startDate: Date;
@@ -40,6 +41,7 @@ export default function BookingItem({
   const [showModal, setShowModal] = useState(false);
   const { colors } = useTheme();
   const scheme = useColorScheme();
+  const { LL } = useI18nContext()
 
   const options: Intl.DateTimeFormatOptions = {
     day: 'numeric',
@@ -63,15 +65,15 @@ export default function BookingItem({
 
   const confirmCancel = (id: string) => {
     Alert.alert(
-      'Cancel Booking',
-      'Are you sure you want to cancel this booking?',
+      LL.CANCEL_BOOKING_TITLE(),
+      LL.CANCEL_BOOKING_MESSAGE(),
       [
         {
-          text: 'No',
+          text: LL.CANCEL_BOOKING_NO(),
           style: 'cancel',
         },
         {
-          text: 'Yes, Cancel',
+          text: LL.CANCEL_BOOKING_YES(),
           onPress: () => handleCancel(id),
           style: 'destructive',
         },
@@ -145,7 +147,7 @@ export default function BookingItem({
                 },
               ]}
             >
-              Cancel
+              {LL.CANCEL()}
             </Text>
           </Pressable>
           <Pressable
@@ -166,7 +168,7 @@ export default function BookingItem({
                 },
               ]}
             >
-              Modify
+              {LL.MODIFY()}
             </Text>
           </Pressable>
           <Modal

@@ -1,8 +1,8 @@
 import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { AuthContextType } from '../src/context/AuthStorageContext';
+import { AuthStorageContextType } from '@/src/context/AuthStorageContext';
 
-class AuthStorage implements AuthContextType {
+class AuthStorage implements AuthStorageContextType {
   namespace: string;
   constructor(namespace = 'auth') {
     this.namespace = namespace;

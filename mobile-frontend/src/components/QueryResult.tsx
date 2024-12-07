@@ -1,6 +1,7 @@
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
+import { useI18nContext } from '../i18n/i18n-react';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
 
 const QueryResult = ({ loading, error, data, children }) => {
   const { colors } = useTheme();
+  const { LL } = useI18nContext();
   if (loading) {
     return (
       <View
@@ -38,7 +40,7 @@ const QueryResult = ({ loading, error, data, children }) => {
             },
           ]}
         >
-          Loading...
+          {LL.LOADING()}
         </Text>
       </View>
     );
@@ -61,7 +63,7 @@ const QueryResult = ({ loading, error, data, children }) => {
             },
           ]}
         >
-          ERROR: {error.message}
+          `{LL.ERROR}: {error.message}`
         </Text>
       </View>
     );
@@ -84,7 +86,7 @@ const QueryResult = ({ loading, error, data, children }) => {
             },
           ]}
         >
-          Nothing to show...
+          {LL.NOTHING_TO_SHOW()}
         </Text>
       </View>
     );
