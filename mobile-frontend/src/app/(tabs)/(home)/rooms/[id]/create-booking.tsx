@@ -4,7 +4,7 @@ import DatePicker from '@/src/components/DatePicker';
 
 export default function BookingCreationScreen() {
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <DatePicker />
       <TimePicker />
     </View>

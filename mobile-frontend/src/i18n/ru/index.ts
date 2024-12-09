@@ -1,4 +1,4 @@
-import type { Translation } from '../i18n-types'
+import type { Translation } from '../i18n-types';
 
 const ru: Translation = {
   CONFIRM: 'Подтвердить',
@@ -57,7 +57,7 @@ const ru: Translation = {
   EMPTY_BOOKINGS: 'Пустое бронирование',
   SELECT_BOOKING_TIME: 'Пожалуйста, выберите время бронирования.',
   SELECTED_LANGUAGE: 'Выбранный язык',
-  SELECT_LANGUAGE: 'Выбрать язык'
-}
+  SELECT_LANGUAGE: 'Выбрать язык',
+};
 
-export default ru
+export default ru;

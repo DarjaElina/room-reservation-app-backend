@@ -6,7 +6,7 @@ import { useLocalSearchParams } from 'expo-router';
 export default function BookingModificationScreen() {
   const { start, end, bookingId } = useLocalSearchParams();
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <DatePicker dateToModify={new Date(start)} />
       <TimePicker
         startTime={new Date(start).toLocaleTimeString('it-IT')}

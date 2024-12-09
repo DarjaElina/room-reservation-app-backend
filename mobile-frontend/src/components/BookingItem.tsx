@@ -16,6 +16,7 @@ import BookingModificationForm from './BookingModificationForm';
 import { useState } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
+import useStyles from '../hooks/useStyles';
 
 interface BookingItemProps {
   startDate: Date;
@@ -41,7 +42,8 @@ export default function BookingItem({
   const [showModal, setShowModal] = useState(false);
   const { colors } = useTheme();
   const scheme = useColorScheme();
-  const { LL } = useI18nContext()
+  const { LL } = useI18nContext();
+  const styles = useStyles();
 
   const options: Intl.DateTimeFormatOptions = {
     day: 'numeric',
@@ -85,7 +87,7 @@ export default function BookingItem({
   return (
     <View
       style={[
-        styles.container,
+        styles.bookingItemContainer,
         {
           backgroundColor: colors.backgroundSecondary,
           shadowColor: colors.shadow,
@@ -95,7 +97,7 @@ export default function BookingItem({
     >
       <Text
         style={[
-          styles.title,
+          styles.bookingTitle,
           {
             color: colors.textPrimary,
           },
@@ -105,7 +107,7 @@ export default function BookingItem({
       </Text>
       <Text
         style={[
-          styles.code,
+          styles.bookingItemCode,
           {
             color: colors.textSecondary,
           },
@@ -113,11 +115,15 @@ export default function BookingItem({
       >
         {roomCode}
       </Text>
-      <View style={styles.dateContainer}>
-        <FontAwesome name="calendar" size={20} color={colors.textPrimary} />
+      <View style={styles.bookingItemDateContainer}>
+        <FontAwesome
+          name="calendar"
+          size={styles.bookingItemDate.fontSize * 1}
+          color={colors.textPrimary}
+        />
         <Text
           style={[
-            styles.date,
+            styles.bookingItemDate,
             {
               color: colors.textSecondary,
             },
@@ -128,14 +134,17 @@ export default function BookingItem({
         </Text>
       </View>
       {new Date(startDate) > new Date() ? (
-        <View style={styles.buttonContainer}>
+        <View style={styles.bookingItemButtonContainer}>
           <Pressable
             onPress={() => confirmCancel(id)}
-            style={[styles.button, { backgroundColor: colors.error }]}
+            style={[
+              styles.button,
+              { backgroundColor: colors.error, flexDirection: 'row' },
+            ]}
           >
             <MaterialIcons
               name="delete-forever"
-              size={24}
+              size={styles.buttonText.fontSize * 1.5}
               color={scheme === 'light' ? 'white' : 'black'}
             />
             <Text
@@ -152,11 +161,14 @@ export default function BookingItem({
           </Pressable>
           <Pressable
             onPress={() => setShowModal(true)}
-            style={[styles.button, { backgroundColor: colors.success }]}
+            style={[
+              styles.button,
+              { backgroundColor: colors.success, flexDirection: 'row' },
+            ]}
           >
             <Entypo
               name="pencil"
-              size={24}
+              size={styles.buttonText.fontSize * 1.5}
               color={scheme === 'light' ? 'white' : 'black'}
             />
             <Text
@@ -205,57 +217,3 @@ export default function BookingItem({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: theme.spacing.large,
-    borderRadius: theme.borderRadius.medium,
-
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 3,
-    margin: theme.spacing.medium,
-    gap: 12,
-  },
-  code: {
-    fontSize: theme.fontSizes.medium,
-    marginBottom: theme.spacing.small,
-  },
-  dateContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.small,
-    marginBottom: theme.spacing.medium,
-  },
-  date: {
-    fontSize: theme.fontSizes.body,
-    fontWeight: '500',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    gap: theme.spacing.large,
-  },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: theme.spacing.medium,
-    borderRadius: theme.borderRadius.medium,
-    width: '40%',
-  },
-  buttonText: {
-    fontWeight: '600',
-    fontSize: theme.fontSizes.button,
-    marginLeft: theme.spacing.small,
-  },
-  title: {
-    fontSize: theme.fontSizes.medium,
-    fontWeight: 'bold',
-    marginBottom: theme.spacing.small,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-});

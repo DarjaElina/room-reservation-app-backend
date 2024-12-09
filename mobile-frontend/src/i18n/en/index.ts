@@ -1,7 +1,7 @@
-import type { BaseTranslation } from '../i18n-types'
+import type { BaseTranslation } from '../i18n-types';
 
 const en = {
-	CONFIRM: 'Confirm',
+  CONFIRM: 'Confirm',
   SEARCH: 'Search',
   AVAILABLE: 'Available',
   TIME: 'Time',
@@ -53,12 +53,12 @@ const en = {
   PASSWORD_REQUIRED: 'Password is required.',
   SEARCH_TAB: 'Search',
   CLOSE: 'Close',
-  SELECT_TIME_RANGE: 'Select the time range to search for available classrooms.',
+  SELECT_TIME_RANGE:
+    'Select the time range to search for available classrooms.',
   EMPTY_BOOKINGS: 'Empty booking',
   SELECT_BOOKING_TIME: 'Please select booking time.',
   SELECTED_LANGUAGE: 'Selected language:',
-  SELECT_LANGUAGE: 'Select language'
+  SELECT_LANGUAGE: 'Select language',
+} satisfies BaseTranslation;
 
-} satisfies BaseTranslation
-
-export default en
+export default en;

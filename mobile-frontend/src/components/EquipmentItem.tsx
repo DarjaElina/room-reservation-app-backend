@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
+import useStyles from '../hooks/useStyles';
 
 interface EquipmentProp {
   name: string;
@@ -7,35 +8,20 @@ interface EquipmentProp {
 
 export default function EquipmentItem({ name }: EquipmentProp) {
   const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <View
       style={[
-        styles.container,
+        styles.equipmentItemContainer,
         {
           backgroundColor: colors.backgroundSecondary,
           shadowColor: colors.shadow || '#000',
         },
       ]}
     >
-      <Text style={[, { color: colors.textPrimary }]}>{name}</Text>
+      <Text style={[, styles.equipmentItemText, { color: colors.textPrimary }]}>
+        {name}
+      </Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 15,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
-  },
-  text: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-});

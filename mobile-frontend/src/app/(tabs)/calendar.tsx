@@ -4,11 +4,13 @@ import useAuth from '@/src/hooks/useAuth';
 import { BookingStatus } from '@/__generated__/graphql';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '@/src/i18n/i18n-react';
+import useStyles from '@/src/hooks/useStyles';
 
 export default function AboutScreen() {
   const { colors } = useTheme();
   const { user } = useAuth();
   const { LL } = useI18nContext();
+  const styles = useStyles();
   return (
     <View
       style={[
@@ -25,11 +27,3 @@ export default function AboutScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingTop: 50,
-  },
-});

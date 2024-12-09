@@ -32,9 +32,7 @@
       [
         "expo-font",
         {
-          "fonts": [
-            "./assets/fonts/Lato-Bold.ttf"
-          ]
+          "fonts": ["./assets/fonts/Lato-Black.ttf"]
         }
       ],
       "expo-localization"

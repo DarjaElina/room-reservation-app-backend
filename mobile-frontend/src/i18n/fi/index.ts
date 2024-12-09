@@ -1,4 +1,4 @@
-import type { Translation } from '../i18n-types'
+import type { Translation } from '../i18n-types';
 
 const fi: Translation = {
   CONFIRM: 'Vahvista',
@@ -38,7 +38,8 @@ const fi: Translation = {
   GO_BACK_HOME: 'Palaa aloitusnäyttöön!',
   SEARCH_ROOM_TYPES: 'Hae huonetyyppejä...',
   START_DATE_FUTURE: 'Aloituspäivämäärän on oltava tulevaisuudessa.',
-  END_DATE_BEFORE_START: 'Loppupäivämäärä ei voi olla aikaisempi kuin aloituspäivämäärä.',
+  END_DATE_BEFORE_START:
+    'Loppupäivämäärä ei voi olla aikaisempi kuin aloituspäivämäärä.',
   SELECT_START_DATE: 'Valitse ensin aloituspäivämäärä.',
   SELECT_START_AND_END: 'Valitse sekä aloitus- että loppupäivämäärä.',
   RESET_CONFIRM: 'Oletko varma?',
@@ -57,7 +58,7 @@ const fi: Translation = {
   EMPTY_BOOKINGS: ' Tyhjä varaus',
   SELECT_BOOKING_TIME: 'Valitse varausaika.',
   SELECTED_LANGUAGE: 'Valittu kieli',
-  SELECT_LANGUAGE: 'Valitse kieli'
-}
+  SELECT_LANGUAGE: 'Valitse kieli',
+};
 
-export default fi
+export default fi;

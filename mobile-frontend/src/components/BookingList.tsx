@@ -4,6 +4,7 @@ import useBookings from '@/src/hooks/useBookings';
 import QueryResult from './QueryResult';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
+import useStyles from '../hooks/useStyles';
 
 interface BookingListProps {
   queryOptions: {
@@ -20,12 +21,13 @@ export default function BookingList({
 }: BookingListProps) {
   const { loading, bookings, error } = useBookings(queryOptions);
   const { colors } = useTheme();
+  const styles = useStyles();
 
   if (!loading && bookings.length <= 0) {
     return (
       <Text
         style={[
-          styles.message,
+          styles.bookingMessage,
           {
             color: colors.textPrimary,
           },
@@ -63,25 +65,8 @@ export default function BookingList({
             />
           )}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
         />
       </View>
     </QueryResult>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: theme.spacing.large,
-  },
-  message: {
-    fontSize: theme.fontSizes.subheading,
-    textAlign: 'center',
-    marginVertical: theme.spacing.large,
-  },
-  listContent: {
-    gap: theme.spacing.medium,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

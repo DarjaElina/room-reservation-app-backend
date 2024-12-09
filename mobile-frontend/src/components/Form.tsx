@@ -4,6 +4,7 @@ import { Controller, Control, FieldErrors } from 'react-hook-form';
 import { TextInput } from 'react-native-paper';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
+import useStyles from '../hooks/useStyles';
 
 interface FormProps {
   control: Control<any>;
@@ -17,10 +18,11 @@ interface FormProps {
 
 export default function Form({ control, errors, fields }: FormProps) {
   const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <>
       {fields.map((field) => (
-        <View key={field.name} style={styles.inputContainer}>
+        <View key={field.name} style={styles.input}>
           <Controller
             control={control}
             render={({
@@ -65,13 +67,3 @@ export default function Form({ control, errors, fields }: FormProps) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  inputContainer: {
-    marginBottom: theme.spacing.large,
-  },
-  errorText: {
-    marginTop: theme.spacing.small,
-    fontSize: theme.fontSizes.subheading,
-  },
-});

@@ -11,10 +11,11 @@ import { router } from 'expo-router';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
+import useStyles from '../hooks/useStyles';
 
 export default function Login() {
   const { colors } = useTheme();
-  const { LL } = useI18nContext()
+  const { LL } = useI18nContext();
   const [signIn] = useSignIn();
   const userSchema = z.object({
     username: z.string().regex(/^[a-z]{2}\d{5}$/, {
@@ -22,6 +23,7 @@ export default function Login() {
     }),
     password: z.string().min(1, { message: 'Password is required.' }),
   });
+  const styles = useStyles();
 
   type UserFormType = z.infer<typeof userSchema>;
 
@@ -54,13 +56,18 @@ export default function Login() {
       ]}
     >
       <View style={styles.iconContainer}>
-        <FontAwesome5 name="user-circle" size={50} color={colors.textPrimary} />
+        <FontAwesome5
+          name="user-circle"
+          style={styles.userIcon}
+          color={colors.textPrimary}
+        />
       </View>
       <Text
         style={[
           styles.title,
           {
             color: colors.textPrimary,
+            textAlign: 'center',
           },
         ]}
       >
@@ -78,21 +85,3 @@ export default function Login() {
     </KeyboardAwareScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: theme.spacing.medium,
-  },
-  iconContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: theme.fontSizes.heading,
-    fontWeight: 'bold',
-  },
-});

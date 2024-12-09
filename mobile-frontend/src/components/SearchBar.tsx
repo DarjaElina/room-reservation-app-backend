@@ -2,7 +2,7 @@ import { Searchbar } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
-import { useI18nContext } from '../i18n/i18n-react'
+import { useI18nContext } from '../i18n/i18n-react';
 
 interface SearchBarProps {
   searchQuery: string;

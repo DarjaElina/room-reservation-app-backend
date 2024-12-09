@@ -1,6 +1,7 @@
 import theme from '@/src/theme';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
+import useStyles from '../hooks/useStyles';
 
 interface DescriptionProp {
   text: string;
@@ -8,10 +9,11 @@ interface DescriptionProp {
 
 export default function RoomDescription({ text }: DescriptionProp) {
   const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <View
       style={[
-        styles.container,
+        styles.roomDescriptionContainer,
         {
           backgroundColor: colors.backgroundSecondary,
           shadowColor: colors.shadow,
@@ -21,7 +23,7 @@ export default function RoomDescription({ text }: DescriptionProp) {
     >
       <Text
         style={[
-          styles.text,
+          styles.roomDescriptionText,
           {
             color: colors.textPrimary,
           },

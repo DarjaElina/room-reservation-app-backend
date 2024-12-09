@@ -11,6 +11,7 @@ import { router } from 'expo-router';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '@/src/i18n/i18n-react';
+import useStyles from '@/src/hooks/useStyles';
 
 export default function ConfirmBookingCreationScreen() {
   const { bookingStartDate, bookingEndDate } = useBookingContext();
@@ -22,6 +23,7 @@ export default function ConfirmBookingCreationScreen() {
   const [error, setError] = useState<string | null>(null);
   const { colors } = useTheme();
   const { LL } = useI18nContext();
+  const styles = useStyles();
 
   const handleSubmit = async () => {
     try {
@@ -47,7 +49,10 @@ export default function ConfirmBookingCreationScreen() {
       <View
         style={[
           styles.container,
-          { backgroundColor: colors.backgroundPrimary },
+          {
+            backgroundColor: colors.backgroundPrimary,
+            justifyContent: 'center',
+          },
         ]}
       >
         <UserMessage text={userMessage} />
@@ -65,12 +70,3 @@ export default function ConfirmBookingCreationScreen() {
     </QueryResult>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: theme.spacing.large,
-  },
-});

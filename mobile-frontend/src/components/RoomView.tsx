@@ -20,7 +20,8 @@ import QueryResult from './QueryResult';
 import { BookingStatus } from '@/__generated__/graphql';
 import { useTheme } from '@react-navigation/native';
 import { router } from 'expo-router';
-import { useI18nContext } from '../i18n/i18n-react'
+import { useI18nContext } from '../i18n/i18n-react';
+import useStyles from '../hooks/useStyles';
 
 interface RoomProps {
   id: string;
@@ -39,6 +40,7 @@ export default function RoomView({ room }: { room: RoomProps }) {
   const { colors } = useTheme();
   const { user, error, loading } = useAuth();
   const [modalVisible, setModalVisible] = useState(false);
+  const dynamicStyles = useStyles();
   if (!user) {
     return <Redirect href="/sign-in" />;
   }
@@ -48,27 +50,29 @@ export default function RoomView({ room }: { room: RoomProps }) {
   return (
     <QueryResult error={error} loading={loading} data={user}>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: theme.spacing.large }}
+        contentContainerStyle={dynamicStyles.roomViewContentContainer}
         style={[
-          styles.container,
+          dynamicStyles.roomViewContainer,
           { backgroundColor: colors.backgroundPrimary },
         ]}
       >
         <Image
-          style={styles.image}
+          style={dynamicStyles.roomViewImage}
           source="https://nlr.ru/eng/dep/artupload/eng/article/RA2510/NA19217.jpg"
           placeholder={{ blurhash }}
           contentFit="cover"
           transition={1000}
         />
         <View>
-          <View style={styles.headerContainer}>
-            <Text style={[styles.headerText, { color: colors.textPrimary }]}>
+          <View style={dynamicStyles.roomViewHeaderContainer}>
+            <Text
+              style={[dynamicStyles.roomCode, { color: colors.textPrimary }]}
+            >
               {room.code}
             </Text>
             <Pressable
               style={[
-                styles.reserveButton,
+                dynamicStyles.button,
                 { backgroundColor: colors.buttonBackground },
               ]}
               onPress={() =>
@@ -79,18 +83,18 @@ export default function RoomView({ room }: { room: RoomProps }) {
               }
             >
               <Text
-                style={[styles.reserveButtonText, { color: colors.buttonText }]}
+                style={[dynamicStyles.buttonText, { color: colors.buttonText }]}
               >
                 {LL.RESERVE()}
               </Text>
             </Pressable>
           </View>
 
-          <View style={styles.locationContainer}>
+          <View style={dynamicStyles.roomLocationContainer}>
             <Entypo name="location-pin" size={24} color={colors.textPrimary} />
             <Text
               style={[
-                styles.locationText,
+                dynamicStyles.roomLocationText,
                 {
                   color: colors.textPrimary,
                 },
@@ -100,16 +104,23 @@ export default function RoomView({ room }: { room: RoomProps }) {
             </Text>
           </View>
           {room.isFree ? (
-            <View style={styles.statusContainer}>
+            <View style={dynamicStyles.roomStatusContainer}>
               <AntDesign name="checksquare" size={20} color={colors.success} />
-              <Text style={[styles.statusText, { color: colors.success }]}>
+              <Text
+                style={[
+                  dynamicStyles.roomStatusText,
+                  { color: colors.success },
+                ]}
+              >
                 {LL.AVAILABLE()}
               </Text>
             </View>
           ) : (
-            <View style={styles.statusContainer}>
+            <View style={dynamicStyles.roomStatusContainer}>
               <Entypo name="squared-cross" size={20} color={colors.error} />
-              <Text style={[styles.statusText, { color: colors.error }]}>
+              <Text
+                style={[dynamicStyles.roomStatusText, { color: colors.error }]}
+              >
                 {LL.OCCUPIED()}
               </Text>
             </View>
@@ -119,16 +130,17 @@ export default function RoomView({ room }: { room: RoomProps }) {
           <RoomDescription text={room.description} />
           <Pressable
             style={[
-              styles.showReservationsContainer,
-              { backgroundColor: colors.buttonBackground },
+              dynamicStyles.button,
+              {
+                backgroundColor: colors.buttonBackground,
+                width: '70%',
+                alignSelf: 'center',
+              },
             ]}
             onPress={() => setModalVisible(true)}
           >
             <Text
-              style={[
-                styles.showReservationsText,
-                { color: colors.buttonText },
-              ]}
+              style={[dynamicStyles.buttonText, { color: colors.buttonText }]}
             >
               {LL.SHOW_UPCOMING_RESERVATIONS()}
             </Text>
@@ -141,7 +153,7 @@ export default function RoomView({ room }: { room: RoomProps }) {
           >
             <View
               style={[
-                styles.modalContainer,
+                dynamicStyles.modalContainer,
                 { backgroundColor: colors.backgroundPrimary },
               ]}
             >
@@ -157,12 +169,19 @@ export default function RoomView({ room }: { room: RoomProps }) {
               <Pressable
                 onPress={() => setModalVisible(false)}
                 style={[
-                  styles.closeButton,
-                  { backgroundColor: colors.buttonBackground },
+                  dynamicStyles.button,
+                  {
+                    backgroundColor: colors.buttonBackground,
+                    width: '50%',
+                    alignSelf: 'center',
+                  },
                 ]}
               >
                 <Text
-                  style={[styles.closeButtonText, { color: colors.buttonText }]}
+                  style={[
+                    dynamicStyles.buttonText,
+                    { color: colors.buttonText },
+                  ]}
                 >
                   {LL.CLOSE()}
                 </Text>
@@ -174,83 +193,3 @@ export default function RoomView({ room }: { room: RoomProps }) {
     </QueryResult>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderTopLeftRadius: theme.borderRadius.large,
-    borderTopRightRadius: theme.borderRadius.large,
-    padding: theme.spacing.medium,
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    borderTopRightRadius: theme.borderRadius.medium,
-    borderTopLeftRadius: theme.borderRadius.medium,
-    marginBottom: theme.spacing.medium,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: theme.spacing.small,
-    paddingHorizontal: theme.spacing.small,
-  },
-  headerText: {
-    fontSize: theme.fontSizes.heading,
-    fontWeight: 'bold',
-  },
-  reserveButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: theme.borderRadius.medium,
-    paddingVertical: theme.spacing.small,
-    paddingHorizontal: theme.spacing.medium,
-  },
-  reserveButtonText: {
-    fontSize: theme.fontSizes.button,
-  },
-  statusContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.small,
-  },
-  statusText: {
-    fontSize: theme.fontSizes.medium,
-    fontWeight: '600',
-  },
-  locationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: theme.spacing.medium,
-  },
-  locationText: {
-    fontSize: theme.fontSizes.body,
-    marginLeft: theme.spacing.small,
-  },
-  showReservationsContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: theme.borderRadius.medium,
-    paddingVertical: theme.spacing.small,
-    paddingHorizontal: theme.spacing.medium,
-  },
-  showReservationsText: {
-    fontSize: theme.fontSizes.subheading,
-    textAlign: 'center',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  closeButton: {
-    padding: theme.spacing.small,
-    borderRadius: theme.borderRadius.medium,
-    alignItems: 'center',
-    width: '40%',
-    alignSelf: 'center',
-  },
-  closeButtonText: {
-    fontSize: theme.fontSizes.button,
-  },
-});

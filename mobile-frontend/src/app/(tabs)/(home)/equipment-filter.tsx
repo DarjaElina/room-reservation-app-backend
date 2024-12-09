@@ -5,7 +5,7 @@ import SearchBar from '@/src/components/SearchBar';
 import useFilter from '@/src/hooks/useFilter';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import theme from '../../../theme';
+import useStyles from '@/src/hooks/useStyles';
 import QueryResult from '@/src/components/QueryResult';
 import { useTheme } from '@react-navigation/native';
 
@@ -17,6 +17,7 @@ export default function EquipmentFilter() {
     searchKeyword: debouncedSearchQuery,
   });
   const { equipment: selectedEquipment, setEquipment } = useFilter();
+  const styles = useStyles();
 
   const options = equipment.map((b) => {
     return { label: b.name, value: b.id };
@@ -44,10 +45,3 @@ export default function EquipmentFilter() {
     </QueryResult>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-});

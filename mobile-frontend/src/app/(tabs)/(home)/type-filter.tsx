@@ -6,6 +6,7 @@ import { RoomType } from '@/__generated__/graphql';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import { useTheme } from '@react-navigation/native';
+import useStyles from '@/src/hooks/useStyles';
 
 export const RoomTypeLabels: Record<RoomType, string> = {
   [RoomType.AdministrativeSpace]: 'Administrative Space',
@@ -23,6 +24,7 @@ export default function TypeFilter() {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
   const { types, setTypes } = useFilter();
+  const styles = useStyles();
 
   const options = Object.entries(RoomTypeLabels).map(([value, label]) => ({
     label,
@@ -54,21 +56,3 @@ export default function TypeFilter() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  loadingText: {
-    color: '#e3d5f0',
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: '#090623',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    marginTop: 10,
-  },
-});

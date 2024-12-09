@@ -26,12 +26,16 @@ export default function LanguagePicker({ locale, onLocaleSelected, locales }) {
       >
         <Picker.Item label="Choose a language" value="" enabled={false} />
         {locales.map((localeOption) => (
-          <Picker.Item key={localeOption} label={localeOption} value={localeOption} />
+          <Picker.Item
+            key={localeOption}
+            label={localeOption}
+            value={localeOption}
+          />
         ))}
       </Picker>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   pickerContainer: {

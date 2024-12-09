@@ -12,11 +12,11 @@ import { useRef, useEffect, useCallback } from 'react';
 import { BookingStatus } from '@/__generated__/graphql';
 import { router } from 'expo-router';
 import { useTheme } from '@react-navigation/native';
-import { useI18nContext } from '../i18n/i18n-react'
-import type { Locales } from '../i18n/i18n-types'
-import { loadLocaleAsync } from '../i18n/i18n-util.async'
+import { useI18nContext } from '../i18n/i18n-react';
+import type { Locales } from '../i18n/i18n-types';
+import { loadLocaleAsync } from '../i18n/i18n-util.async';
 import { setUserLocale } from '@/src/utils/localeStorage';
-
+import useStyles from '../hooks/useStyles';
 
 interface TimePickerProps {
   startTime?: string;
@@ -41,13 +41,18 @@ export default function TimePicker({
 
   const { colors } = useTheme();
 
-  const { locale, LL, setLocale } = useI18nContext()
+  const { locale, LL, setLocale } = useI18nContext();
+
+  const styles = useStyles();
 
   const onLocaleSelected = useCallback((locale: Locales) => {
-		setUserLocale(locale)
-			.then(async locale => { await loadLocaleAsync(locale); return locale })
-			.then(setLocale)
-	}, [])
+    setUserLocale(locale)
+      .then(async (locale) => {
+        await loadLocaleAsync(locale);
+        return locale;
+      })
+      .then(setLocale);
+  }, []);
 
   const { id } = useLocalSearchParams<{ id: string }>();
 
@@ -221,53 +226,39 @@ export default function TimePicker({
   };
 
   return (
-    <View>
-      <View>
-        <FlatList
-          ref={ref}
-          keyExtractor={(item) => item.value}
-          contentContainerStyle={{ paddingBottom: 100 }}
-          data={timeArray}
-          extraData={selectedTimeValues}
-          renderItem={({ item, index }) => (
-            <TimeSlot
-              index={index}
-              timeSlot={item}
-              onSelect={handleSelect}
-              booking={mappedBookings.find(
-                (b) =>
-                  b.startDate <= item.value &&
-                  b.endDate > item.value &&
-                  b.startDate !== startTime
-              )}
-            />
-          )}
-          onScrollToIndexFailed={(info) => {
-            const wait = new Promise((resolve) => setTimeout(resolve, 500));
-            wait.then(() => {
-              ref.current?.scrollToIndex({ index: info.index, animated: true });
-            });
-          }}
-        />
-        <FAB
-          style={[
-            styles.floatingButton,
-            { backgroundColor: colors.buttonBackground },
-          ]}
-          label={LL.CONFIRM()}
-          onPress={handleSubmit}
-          color={colors.buttonText}
-        />
-        <Separator />
-      </View>
+    <View style={{ flex: 1 }}>
+      <FlatList
+        ref={ref}
+        keyExtractor={(item) => item.value}
+        data={timeArray}
+        extraData={selectedTimeValues}
+        renderItem={({ item, index }) => (
+          <TimeSlot
+            index={index}
+            timeSlot={item}
+            onSelect={handleSelect}
+            booking={mappedBookings.find(
+              (b) =>
+                b.startDate <= item.value &&
+                b.endDate > item.value &&
+                b.startDate !== startTime
+            )}
+          />
+        )}
+        onScrollToIndexFailed={(info) => {
+          const wait = new Promise((resolve) => setTimeout(resolve, 500));
+          wait.then(() => {
+            ref.current?.scrollToIndex({ index: info.index, animated: true });
+          });
+        }}
+      />
+      <FAB
+        style={[styles.fab, { backgroundColor: colors.buttonBackground }]}
+        label={LL.CONFIRM()}
+        onPress={handleSubmit}
+        color={colors.buttonText}
+      />
+      <Separator />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  floatingButton: {
-    position: 'absolute',
-    right: 0,
-    bottom: 150,
-  },
-});

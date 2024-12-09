@@ -4,6 +4,7 @@ import { AntDesign, Entypo } from '@expo/vector-icons';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
+import useStyles from '../hooks/useStyles';
 
 interface RoomProps {
   code: string;
@@ -23,10 +24,11 @@ export default function Room({
 }: RoomProps) {
   const { colors } = useTheme();
   const { LL } = useI18nContext();
+  const styles = useStyles();
   return (
     <View
       style={[
-        styles.container,
+        styles.roomItemContainer,
         {
           backgroundColor: colors.backgroundSecondary,
           shadowColor: colors.shadow,
@@ -35,7 +37,7 @@ export default function Room({
       ]}
     >
       <Image
-        style={styles.image}
+        style={styles.roomItemImage}
         source={pictureUrl}
         placeholder={{ blurhash }}
         contentFit="cover"
@@ -43,7 +45,7 @@ export default function Room({
       />
       <Text
         style={[
-          styles.code,
+          styles.roomCode,
           {
             color: colors.textPrimary,
           },
@@ -51,11 +53,15 @@ export default function Room({
       >
         {code}
       </Text>
-      <View style={styles.locationContainer}>
-        <Entypo name="location-pin" size={18} color={colors.textSecondary} />
+      <View style={styles.roomLocationContainer}>
+        <Entypo
+          name="location-pin"
+          size={styles.roomCode.fontSize * 1}
+          color={colors.textSecondary}
+        />
         <Text
           style={[
-            styles.locationText,
+            styles.roomLocationText,
             {
               color: colors.textSecondary,
             },
@@ -64,18 +70,26 @@ export default function Room({
           {venue}
         </Text>
       </View>
-      <View style={styles.statusContainer}>
+      <View style={styles.roomStatusContainer}>
         {isFree ? (
           <>
-            <AntDesign name="checksquare" size={16} color={colors.success} />
-            <Text style={[styles.statusText, { color: colors.success }]}>
+            <AntDesign
+              name="checksquare"
+              size={styles.roomCode.fontSize * 0.8}
+              color={colors.success}
+            />
+            <Text style={[styles.roomStatusText, { color: colors.success }]}>
               {LL.AVAILABLE()}
             </Text>
           </>
         ) : (
           <>
-            <Entypo name="squared-cross" size={16} color={colors.error} />
-            <Text style={[styles.statusText, { color: colors.error }]}>
+            <Entypo
+              name="squared-cross"
+              size={styles.roomCode.fontSize * 0.6}
+              color={colors.error}
+            />
+            <Text style={[styles.roomStatusText, { color: colors.error }]}>
               {LL.OCCUPIED()}
             </Text>
           </>
@@ -84,41 +98,3 @@ export default function Room({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: 170,
-    minHeight: 200,
-
-    display: 'flex',
-    gap: theme.spacing.small,
-    padding: theme.spacing.small,
-    borderRadius: theme.borderRadius.medium,
-    overflow: 'hidden',
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  image: {
-    width: '100%',
-    height: 100,
-    borderRadius: theme.borderRadius.medium,
-  },
-  code: {
-    fontSize: theme.fontSizes.heading,
-    fontWeight: 'bold',
-  },
-  locationContainer: {
-    flexDirection: 'row',
-  },
-  locationText: {
-    fontSize: theme.fontSizes.small,
-  },
-  statusContainer: {
-    flexDirection: 'row',
-    gap: theme.spacing.small,
-  },
-  statusText: {
-    fontSize: theme.fontSizes.subheading,
-    fontWeight: '600',
-  },
-});

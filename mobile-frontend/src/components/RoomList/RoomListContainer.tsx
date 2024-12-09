@@ -1,16 +1,21 @@
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, useWindowDimensions } from 'react-native';
 import Room from '../RoomItem';
 import { Link } from 'expo-router';
+import useStyles from '@/src/hooks/useStyles';
 
 export default function RoomList({ rooms, onEndReach }) {
+  const styles = useStyles();
+  const { width } = useWindowDimensions();
+  const numColumns = width > 768 ? 4 : 2;
   return (
     <FlatList
-      contentContainerStyle={styles.listContainer}
+      columnWrapperStyle={styles.columnWrapper}
+      contentContainerStyle={styles.roomListContainer}
       onEndReached={onEndReach}
       onEndReachedThreshold={0.5}
       showsVerticalScrollIndicator={false}
       horizontal={false}
-      numColumns={2}
+      numColumns={numColumns}
       data={rooms}
       renderItem={({ item }) => (
         <Link
@@ -27,13 +32,3 @@ export default function RoomList({ rooms, onEndReach }) {
     />
   );
 }
-
-const styles = StyleSheet.create({
-  listContainer: {
-    padding: 5,
-    display: 'flex',
-  },
-  roomLink: {
-    margin: 5,
-  },
-});

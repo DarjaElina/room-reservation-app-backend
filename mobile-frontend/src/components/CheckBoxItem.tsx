@@ -32,13 +32,14 @@ export default function CheckBoxItem({
     <TouchableOpacity
       style={[
         styles.checkBox,
-        isActive && {
-          backgroundColor: colors.checkboxActiveBackground,
-        },
-        {
-          backgroundColor: colors.checkboxInactiveBackground,
-          borderColor: colors.inputBorder,
-        },
+        { borderColor: colors.inputBorder },
+        isActive
+          ? {
+              backgroundColor: colors.checkboxActiveBackground,
+            }
+          : {
+              backgroundColor: colors.checkboxInactiveBackground,
+            },
       ]}
       onPress={handlePress}
     >
@@ -56,7 +57,12 @@ export default function CheckBoxItem({
                   color: colors.checkboxActiveText,
                 },
               ]
-            : styles.text
+            : [
+                styles.text,
+                {
+                  color: colors.checkboxInactiveText,
+                },
+              ]
         }
       >
         {item.label}
@@ -81,5 +87,4 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSizes.body,
     marginLeft: 15,
   },
-  activeText: {},
 });

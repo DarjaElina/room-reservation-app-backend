@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Alert } from 'react-native';
+import { View, StyleSheet, Text, Alert, Platform } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useState } from 'react';
@@ -6,9 +6,9 @@ import Button from '@/src/components/Button';
 import { z, ZodType } from 'zod';
 import useFilter from '@/src/hooks/useFilter';
 import { router } from 'expo-router';
-import theme from '@/src/theme';
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '@/src/i18n/i18n-react';
+import useStyles from '@/src/hooks/useStyles';
 
 type FormData = {
   startDate: Date;
@@ -43,18 +43,16 @@ export default function TimeFilter() {
     useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
   const { LL } = useI18nContext();
+  const styles = useStyles();
 
-  const showStartDatePicker = () => {
-    setStartDatePickerVisibility(true);
-  };
-
-  const hideStartDatePicker = () => {
-    setStartDatePickerVisibility(false);
-  };
+  // Android/iOS Date Pickers
+  const showStartDatePicker = () => setStartDatePickerVisibility(true);
+  const hideStartDatePicker = () => setStartDatePickerVisibility(false);
+  const showEndDatePicker = () => setEndDatePickerVisibility(true);
+  const hideEndDatePicker = () => setEndDatePickerVisibility(false);
 
   const handleStartDateConfirm = (date) => {
     const clonedDate = new Date(date);
-
     if (
       validateDates(
         date,
@@ -64,18 +62,9 @@ export default function TimeFilter() {
       setStartDate(date);
       const endDateTime = new Date(date);
       endDateTime.setHours(date.getHours() + 1);
-
       setEndDate(endDateTime);
       hideStartDatePicker();
     }
-  };
-
-  const showEndDatePicker = () => {
-    setEndDatePickerVisibility(true);
-  };
-
-  const hideEndDatePicker = () => {
-    setEndDatePickerVisibility(false);
   };
 
   const handleEndDateConfirm = (time) => {
@@ -87,7 +76,37 @@ export default function TimeFilter() {
         setEndDate(endDateTime);
         hideEndDatePicker();
       }
-    } else Alert.alert('Please, select start date first.');
+    } else {
+      Alert.alert('Please, select start date first.');
+    }
+  };
+
+  // Web Input Change Handlers
+  const handleStartDateChange = (e) => {
+    const date = new Date(e.target.value);
+    const clonedDate = new Date(date);
+    if (
+      validateDates(
+        date,
+        new Date(clonedDate.setHours(clonedDate.getHours() + 1))
+      )
+    ) {
+      setStartDate(date);
+      const endDateTime = new Date(date);
+      endDateTime.setHours(date.getHours() + 1);
+      setEndDate(endDateTime);
+    }
+  };
+
+  const handleEndDateChange = (e) => {
+    if (startDate) {
+      const date = new Date(e.target.value);
+      if (validateDates(startDate, date)) {
+        setEndDate(date);
+      }
+    } else {
+      Alert.alert('Please select a start date first.');
+    }
   };
 
   const handleSearch = () => {
@@ -119,6 +138,7 @@ export default function TimeFilter() {
         styles.container,
         {
           backgroundColor: colors.backgroundPrimary,
+          justifyContent: 'center',
         },
       ]}
     >
@@ -130,20 +150,36 @@ export default function TimeFilter() {
           },
         ]}
       >
-       {LL.SELECT_TIME_RANGE()}
+        {LL.SELECT_TIME_RANGE()}
       </Text>
-      <TextInput
-        disabled
-        activeUnderlineColor={colors.inputActiveBorder}
-        label="Start Date"
-        value={
-          startDate
-            ? `${startDate.toDateString()}, ${startDate.toLocaleTimeString(undefined, { timeStyle: 'short' })}`
-            : ''
-        }
-        onPressIn={showStartDatePicker}
-        style={[styles.textInput, { backgroundColor: colors.backgroundPrimary }]}
-      />
+      {Platform.OS === 'ios' || Platform.OS === 'android' ? (
+        <TextInput
+          activeUnderlineColor={colors.inputActiveBorder}
+          label="Start Date"
+          value={
+            startDate
+              ? `${startDate.toDateString()}, ${startDate.toLocaleTimeString(undefined, { timeStyle: 'short' })}`
+              : ''
+          }
+          onPressIn={showStartDatePicker}
+          style={[styles.input, { backgroundColor: colors.inputBackground }]}
+          placeholderTextColor={colors.textSecondary}
+          textColor={colors.textPrimary}
+        />
+      ) : (
+        <input
+          type="datetime-local"
+          value={startDate ? startDate.toISOString().slice(0, 16) : ''}
+          onChange={handleStartDateChange}
+          style={{
+            padding: 10,
+            borderRadius: 5,
+            border: '1px solid #ccc',
+            fontSize: 16,
+            margin: 10,
+          }}
+        />
+      )}
       <DateTimePickerModal
         isVisible={isStartDatePickerVisible}
         mode="datetime"
@@ -152,23 +188,34 @@ export default function TimeFilter() {
         minimumDate={new Date()}
         minuteInterval={15}
       />
-      <TextInput
-        disabled
-        activeUnderlineColor={colors.inputActiveBorder}
-        label="End Date"
-        value={
-          endDate
-            ? `${endDate.toDateString()}, ${endDate.toLocaleTimeString(undefined, { timeStyle: 'short' })}`
-            : ''
-        }
-        onPressIn={showEndDatePicker}
-        style={[
-          styles.textInput,
-          {
-            backgroundColor: colors.backgroundPrimary,
-          },
-        ]}
-      />
+      {Platform.OS === 'ios' || Platform.OS === 'android' ? (
+        <TextInput
+          activeUnderlineColor={colors.inputActiveBorder}
+          label="End Date"
+          value={
+            endDate
+              ? `${endDate.toDateString()}, ${endDate.toLocaleTimeString(undefined, { timeStyle: 'short' })}`
+              : ''
+          }
+          onPressIn={showEndDatePicker}
+          style={[styles.input, { backgroundColor: colors.inputBackground }]}
+          placeholderTextColor={colors.textSecondary}
+          textColor={colors.textPrimary}
+        />
+      ) : (
+        <input
+          type="datetime-local"
+          value={endDate ? endDate.toISOString().slice(0, 16) : ''}
+          onChange={handleEndDateChange}
+          style={{
+            padding: 10,
+            borderRadius: 5,
+            border: '1px solid #ccc',
+            fontSize: 16,
+            margin: 10,
+          }}
+        />
+      )}
       <DateTimePickerModal
         isVisible={isEndDatePickerVisible}
         mode="time"
@@ -184,41 +231,10 @@ export default function TimeFilter() {
       {(startDate || endDate) && (
         <Button
           label="Clear Dates"
-          onSubmit={handleReset}
-          style={[
-            styles.button,
-            {
-              backgroundColor: colors.buttonBackground,
-            },
-          ]}
+          onSubmit={Platform.OS === 'web' ? clearSearch : handleReset}
+          style={[styles.button, { backgroundColor: colors.buttonBackground }]}
         />
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  instructionText: {
-    fontSize: theme.fontSizes.body,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  textInput: {
-    marginBottom: 15,
-    width: '100%',
-    borderRadius: 8,
-    padding: 10,
-  },
-  button: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    marginTop: 10,
-  },
-});

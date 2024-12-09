@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import QueryResult from '@/src/components/QueryResult';
 import { useTheme } from '@react-navigation/native';
+import useStyles from '@/src/hooks/useStyles';
 
 export default function BuildingFilter() {
   const { colors } = useTheme();
@@ -16,7 +17,7 @@ export default function BuildingFilter() {
     searchKeyword: debouncedSearchQuery,
   });
   const { buildings: selectedBuildings, setBuildings } = useFilter();
-
+  const styles = useStyles();
   const options = buildings.map((b) => {
     return { label: b.name, value: b.id };
   });
@@ -45,10 +46,3 @@ export default function BuildingFilter() {
     </QueryResult>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-});
