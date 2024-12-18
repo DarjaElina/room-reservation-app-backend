@@ -22,21 +22,30 @@ import { useTheme } from '@react-navigation/native';
 import { router } from 'expo-router';
 import { useI18nContext } from '../i18n/i18n-react';
 import useStyles from '../hooks/useStyles';
+import { Room } from '@/__generated__/graphql';
 
-interface RoomProps {
+interface RoomViewProps {
+  __typename?: "Room";
   id: string;
+  isFree?: boolean | null;
   code: string;
-  isFree: boolean;
-  name: string;
+  pictureUrl?: string | null;
+  isBookable: boolean;
+  size: number;
   description: string;
-  equipment: string[];
+  equipment: Array<{
+      __typename?: "Equipment";
+      name: string;
+      id: string;
+  }>;
   venue: {
-    name: string;
-    id: string;
+      __typename?: "Venue";
+      name: string;
   };
 }
 
-export default function RoomView({ room }: { room: RoomProps }) {
+
+export default function RoomView({ room }: { room: RoomViewProps}) {
   const { colors } = useTheme();
   const { user, error, loading } = useAuth();
   const [modalVisible, setModalVisible] = useState(false);

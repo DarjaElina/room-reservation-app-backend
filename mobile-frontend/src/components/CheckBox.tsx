@@ -1,8 +1,18 @@
 import { View, StyleSheet, FlatList } from 'react-native';
 import { useState } from 'react';
 import CheckBoxItem from './CheckBoxItem';
+import { RoomType } from '@/__generated__/graphql';
 
-export default function CheckBox({ options, checkedValues, onChange }) {
+interface CheckBoxProps {
+  options: {
+    label: string;
+    value: string;
+  }[];
+  checkedValues: string[];
+  onChange: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+export default function CheckBox({ options, checkedValues, onChange }: CheckBoxProps) {
   const [updatedCheckedValues, setUpdatedCheckedValues] = useState([
     ...checkedValues,
   ]);

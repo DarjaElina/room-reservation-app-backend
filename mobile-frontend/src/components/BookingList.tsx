@@ -5,13 +5,10 @@ import QueryResult from './QueryResult';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
 import useStyles from '../hooks/useStyles';
+import { BookingsQueryVariables } from '@/__generated__/graphql';
 
 interface BookingListProps {
-  queryOptions: {
-    roomId?: string;
-    userId?: string;
-    status?: string;
-  };
+  queryOptions: BookingsQueryVariables;
   emptyMessage: string;
 }
 
@@ -39,7 +36,7 @@ export default function BookingList({
   }
 
   const sortedBookings = [...bookings].sort(
-    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    (a, b) => new Date(a.bookingTime[0].value).getTime() - new Date(b.bookingTime[0].value).getTime()
   );
 
   return (
@@ -56,10 +53,10 @@ export default function BookingList({
           data={sortedBookings}
           renderItem={({ item }) => (
             <BookingItem
-              startDate={item.startDate}
-              endDate={item.endDate}
+              startDate={item.bookingTime[0].value}
+              endDate={item.bookingTime[1].value}
               roomCode={item.room.code}
-              title={item.title}
+              title={item.title || ''}
               id={item.id}
               roomId={item.room.id}
             />

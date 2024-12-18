@@ -1,9 +1,10 @@
 import { View, FlatList, StyleSheet } from 'react-native';
 import EquipmentItem from './EquipmentItem';
 import useStyles from '../hooks/useStyles';
+import { Equipment } from '@/__generated__/graphql';
 
 interface EquipmentListProps {
-  equipment: { id: string; name: string }[];
+  equipment: Equipment[];
 }
 
 export default function EquipmentList({ equipment }: EquipmentListProps) {

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   Pressable,
   useColorScheme,
   Alert,
@@ -14,26 +13,21 @@ import { useTheme } from '@react-navigation/native';
 import UserMessage from './UserMessage';
 import { useI18nContext } from '../i18n/i18n-react';
 import useStyles from '../hooks/useStyles';
+import { ApolloError } from '@apollo/client';
 
 interface BookingModificationFormProps {
   initialData: {
-    title: string;
+    title?: string;
     roomId: string;
     startDate: Date;
     endDate: Date;
     id: string;
   };
-  onSubmit: (updatedData: {
-    title: string;
-    start: string;
-    end: string;
-  }) => void;
   onCancel: () => void;
 }
 
 const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
   initialData,
-  onSubmit,
   onCancel,
 }) => {
   const [title, setTitle] = useState(initialData.title);
@@ -57,8 +51,8 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
     try {
       await updateBooking(
         initialData.id,
-        new Date(initialData.startDate).getTime(),
-        new Date(initialData.endDate).getTime(),
+        [new Date(initialData.startDate).getTime(),
+        new Date(initialData.endDate).getTime()],
         initialData.roomId,
         title
       );
@@ -68,9 +62,10 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
         setUserMessage(null);
         router.navigate('/(tabs)/(home)');
       }, 2000);
-    } catch (error) {
-      console.log(error);
-      Alert.alert(error.message);
+    } catch (error: unknown) {
+      if (error instanceof ApolloError)
+        Alert.alert(error.message);
+      console.log(error)
     }
   };
 
@@ -94,7 +89,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
         { backgroundColor: colors.backgroundSecondary },
       ]}
     >
-      <UserMessage text={userMessage} />
+      <UserMessage text={userMessage} type="success"/>
       <TextInput
         mode="flat"
         style={[styles.input, { backgroundColor: colors.inputBackground }]}

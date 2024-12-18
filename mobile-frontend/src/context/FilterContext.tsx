@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import { RoomType } from '@/__generated__/graphql';
 
 interface FilterContextType {
   startDate: Date | null;
@@ -9,8 +10,8 @@ interface FilterContextType {
   setEquipment: React.Dispatch<React.SetStateAction<string[]>>;
   buildings: string[];
   setBuildings: React.Dispatch<React.SetStateAction<string[]>>;
-  types: string[];
-  setTypes: React.Dispatch<React.SetStateAction<string[]>>;
+  types: RoomType[];
+  setTypes: React.Dispatch<React.SetStateAction<RoomType[]>>;
 }
 
 export const FilterContext = createContext<FilterContextType | null>(null);
@@ -20,7 +21,7 @@ export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [equipment, setEquipment] = useState<string[]>([]);
   const [buildings, setBuildings] = useState<string[]>([]);
-  const [types, setTypes] = useState<string[]>([]);
+  const [types, setTypes] = useState<RoomType[]>([]);
 
   const value = {
     startDate,

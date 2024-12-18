@@ -2,6 +2,7 @@ import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
+import { ApolloError } from '@apollo/client';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +19,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const QueryResult = ({ loading, error, data, children }) => {
+interface QueryResultProps {
+  loading: boolean;
+  error: ApolloError | undefined;
+  data: any;
+  children: React.ReactNode
+}
+
+const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
   const { colors } = useTheme();
   const { LL } = useI18nContext();
   if (loading) {
@@ -63,7 +71,7 @@ const QueryResult = ({ loading, error, data, children }) => {
             },
           ]}
         >
-          `{LL.ERROR}: {error.message}`
+          `{LL.ERROR()}: {error.message}`
         </Text>
       </View>
     );

@@ -113,7 +113,7 @@ class Room extends Model<RoomAttributes, RoomCreationAttributes> {
   declare department?: Department;
 
   @BelongsToMany(() => Equipment, () => RoomEquipment)
-  declare equipment?: Array<Equipment & { RoomEquipment: RoomEquipment }>;
+  declare equipment: Array<Equipment & { RoomEquipment: RoomEquipment }>;
 
   @CreatedAt
   @Column({

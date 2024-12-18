@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import Booking from '../models/booking';
-import { Op } from 'sequelize';
-import { BookingStatus } from '../graphql/generated-types';
+import { Op, WhereAttributeHashValue } from 'sequelize';
+import { BookingStatus, BookingTimeItem } from '../graphql/generated-types';
 
 const updateBookingStatuses = async () => {
   try {
@@ -11,7 +11,9 @@ const updateBookingStatuses = async () => {
       {
         where: {
           status: BookingStatus.Active,
-          endDate: { [Op.lt]: now },
+          bookingTime: {
+            [Op.noExtendRight]: [null, now]
+          } as WhereAttributeHashValue<BookingTimeItem[]>,
         },
       }
     );
@@ -29,7 +31,9 @@ const deleteOldBookings = async () => {
     const deletedCount = await Booking.destroy({
       where: {
         status: BookingStatus.Past,
-        endDate: { [Op.lt]: oneWeekAgo },
+        bookingTime: {
+          [Op.noExtendRight]: [null, oneWeekAgo]
+        } as WhereAttributeHashValue<BookingTimeItem[]>,
       },
     });
 

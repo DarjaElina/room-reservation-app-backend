@@ -6,7 +6,7 @@ import { relayStylePagination } from '@apollo/client/utilities';
 const authStorage = new AuthStorage();
 
 const httpLink = createHttpLink({
-  uri: 'http://89.27.30.116:4000',
+  uri: 'http://localhost:4000',
 });
 
 const cache = new InMemoryCache({

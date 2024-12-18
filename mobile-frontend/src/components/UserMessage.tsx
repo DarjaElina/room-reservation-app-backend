@@ -4,9 +4,10 @@ import { useTheme } from '@react-navigation/native';
 
 interface UserNotificationProps {
   text: string | null;
+  type: 'success' | 'error';
 }
 
-export default function UserMessage({ text }: UserNotificationProps) {
+export default function UserMessage({ text, type }: UserNotificationProps) {
   const { colors } = useTheme();
   if (!text) {
     return null;
@@ -17,7 +18,7 @@ export default function UserMessage({ text }: UserNotificationProps) {
         styles.container,
         {
           backgroundColor: colors.backgroundPrimary,
-          borderColor: colors.success,
+          borderColor: type === 'success' ? colors.success : colors.error,
           shadowColor: colors.shadow,
           shadowOpacity: colors.shadowOpacity,
         },

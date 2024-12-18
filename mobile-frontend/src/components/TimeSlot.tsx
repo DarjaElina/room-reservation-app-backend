@@ -3,7 +3,6 @@ import { memo } from 'react';
 import SelectedTimeSlot from './SelectedTimeSlot';
 import BookedTimeSlot from './BookedTimeSlots';
 import useBookingContext from '@/src/hooks/useBookingContext';
-import { useTheme } from '@react-navigation/native';
 
 export interface TimeSlotType {
   hour: number;
@@ -25,7 +24,6 @@ const TimeSlot = memo(function TimeSlotItem({
   booking,
 }: TimeSlotProps) {
   const { selectedTimeValues } = useBookingContext();
-  const { colors } = useTheme();
 
   return (
     <Pressable

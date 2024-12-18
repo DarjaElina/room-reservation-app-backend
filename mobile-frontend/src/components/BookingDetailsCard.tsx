@@ -7,6 +7,18 @@ import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
 import useStyles from '../hooks/useStyles';
 
+interface BookingDetailsCardProps {
+  roomCode?: string | null;
+  bookingStartDate: string;
+  bookingEndDate: string;
+  bookingTitle: string;
+  setBookingTitle: React.Dispatch<React.SetStateAction<string>>;
+  error: string | null;
+  onSubmit: () => void;
+  buttonText: string;
+  loading: boolean;
+}
+
 export default function BookingDetailsCard({
   roomCode,
   bookingStartDate,
@@ -16,9 +28,10 @@ export default function BookingDetailsCard({
   error,
   onSubmit,
   buttonText,
-}) {
+  loading
+}: BookingDetailsCardProps) {
   const { colors } = useTheme();
-  const formatReadableDate = (isoDate) => {
+  const formatReadableDate = (isoDate: string) => {
     const date = new Date(isoDate);
     return date.toLocaleString('en-US', {
       year: 'numeric',
@@ -114,6 +127,7 @@ export default function BookingDetailsCard({
         {formatReadableDate(bookingEndDate)}
       </Text>
       <Pressable
+        disabled={loading}
         onPress={onSubmit}
         style={[
           styles.button,

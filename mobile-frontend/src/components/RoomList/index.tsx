@@ -1,4 +1,4 @@
-import { View, ActivityIndicator, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import useRooms from '@/src/hooks/useRooms';
@@ -30,7 +30,7 @@ export default function RoomListWrapper() {
     fetchMore();
   };
 
-  const roomNodes = rooms.edges ? rooms.edges.map((edge) => edge.node) : [];
+  const roomNodes = rooms.edges ? rooms.edges.map((edge) => edge?.node) : [];
 
   return (
     <PaperProvider>

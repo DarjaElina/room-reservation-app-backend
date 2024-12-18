@@ -7,10 +7,14 @@ enum BookingStatus {
   CANCELLED_LATE
 }
 
+type BookingTimeItem {
+  value: Date!
+  inclusive: Boolean
+}
+
 type Booking {
   id: ID!
-  startDate: Date!
-  endDate: Date!
+  bookingTime: [BookingTimeItem!]!
   room: Room!
   user: User!
   status: BookingStatus!
@@ -28,9 +32,9 @@ type Query {
 }
 
 type Mutation {
-  createBooking(roomId: ID!, startDate: Date!, endDate: Date!, title: String): Booking!
+  createBooking(roomId: ID!, bookingTime: [Date!]!, title: String): Booking!
 
-  updateBooking(bookingId: ID!, startDate: Date!, endDate: Date!, title: String, roomId: ID!): UserResponse!
+  updateBooking(bookingId: ID!, bookingTime: [Date!]!, title: String, roomId: ID!): Booking!
 
   cancelBooking(bookingId: ID!): UserResponse!
 

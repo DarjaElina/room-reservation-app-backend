@@ -5,13 +5,14 @@ import { z } from 'zod';
 import Form from '@/src/components/Form';
 import Button from '@/src/components/Button';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import theme from '../theme';
+import UserMessage from '../components/UserMessage';
 import useSignIn from '@/src/hooks/useSignIn';
 import { router } from 'expo-router';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
 import useStyles from '../hooks/useStyles';
+import { useState } from 'react';
 
 export default function Login() {
   const { colors } = useTheme();
@@ -24,6 +25,7 @@ export default function Login() {
     password: z.string().min(1, { message: 'Password is required.' }),
   });
   const styles = useStyles();
+  const [userMessage, setUserMessage] = useState('');
 
   type UserFormType = z.infer<typeof userSchema>;
 
@@ -41,8 +43,15 @@ export default function Login() {
       console.log('pressed!');
       await signIn(username, password);
       router.replace('/');
-    } catch (error) {
-      console.log(error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setUserMessage(error.message || 'An unexpected error occurred. Please try again.');
+      } else {
+        setUserMessage('An unexpected error occurred. Please try again.');
+      }
+      setTimeout(() => {
+        setUserMessage('');
+      }, 5000);
     }
   };
 
@@ -73,6 +82,7 @@ export default function Login() {
       >
         {LL.LOGIN()}
       </Text>
+      <UserMessage text={userMessage} type="error"/>
       <Form
         control={control}
         errors={errors}

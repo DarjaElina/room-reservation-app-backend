@@ -47,8 +47,8 @@ const roomResolvers: Resolvers = {
       try {
         const normalizedArgs = argsSchema.parse(args);
         const {
-          startsAt = new Date(),
-          endsAt = new Date(new Date().getTime() + 60 * 60 * 1000),
+          startsAt,
+          endsAt,
           venueIds,
           roomTypes,
           equipmentIds,
@@ -76,17 +76,30 @@ const roomResolvers: Resolvers = {
           where.code = { [Op.iLike]: `%${searchKeyword}%` };
         }
 
-        const conflictingBookings = await Booking.findAll({
+        let conflictingRoomIds: string[] = [];
+        if (startsAt && endsAt) {
+          const conflictingBookings = await Booking.findAll({
+            attributes: ['roomId'],
+            where: {
+              bookingTime: {
+                [Op.overlap]: [startsAt, endsAt],
+              },
+            },
+          });
+
+          conflictingRoomIds = conflictingBookings.map((b) => b.roomId);
+          where.id = { [Op.notIn]: conflictingRoomIds };
+        }
+
+        const currentBookings = await Booking.findAll({
           attributes: ['roomId'],
           where: {
-            startDate: { [Op.lte]: endsAt },
-            endDate: { [Op.gte]: startsAt },
+            bookingTime: {
+              [Op.overlap]: [new Date(), new Date(new Date().getTime() + 60 * 60 * 1000)],
+            },
           },
         });
-
-        const conflictingRoomIds = conflictingBookings.map((b) => b.roomId);
-
-        where.id = { [Op.notIn]: conflictingRoomIds };
+        const currentRoomIds = currentBookings.map((b) => b.roomId);
 
         const queryOptions = {
           order: ['code'],
@@ -111,7 +124,7 @@ const roomResolvers: Resolvers = {
         const rooms = await Room.paginate(queryOptions);
         rooms.edges.forEach((e) => {
           const node = e.node as RoomWithIsFree;
-          node.isFree = !conflictingRoomIds.includes(node.id);
+          node.isFree = !currentRoomIds.includes(node.id);
         });
 
         return rooms;
@@ -143,24 +156,27 @@ const roomResolvers: Resolvers = {
         if (!room) {
           throw new GraphQLError('Not found!');
         }
-        const currentDateTime = new Date();
         const currentBooking = await Booking.findOne({
           where: {
             roomId: room.id,
-            startDate: { [Op.lte]: currentDateTime },
-            endDate: { [Op.gte]: currentDateTime },
+            bookingTime: {
+              [Op.overlap]: [new Date(), new Date(new Date().getTime() + 60 * 60 * 1000)]
+            },
           },
         });
         return {
           ...room.dataValues,
           isFree: !currentBooking,
           venue: room.venue,
+          equipment: room.equipment,
         };
       } catch (error) {
         return handleResolverErrors(error);
       }
     },
+
   },
+
 
   Room: {
     venue: (room) => {

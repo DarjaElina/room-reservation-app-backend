@@ -36,7 +36,7 @@ function FilterButtons() {
             ),
             uncheckedColor: colors.textPrimary,
             checkedColor: colors.buttonText,
-            onPress: () => router.navigate('/(home)/time-filter'),
+            onPress: () => router.navigate('/(tabs)/(home)/time-filter'),
           },
           {
             value: 'building',
@@ -52,7 +52,7 @@ function FilterButtons() {
             ),
             uncheckedColor: colors.textPrimary,
             checkedColor: colors.buttonText,
-            onPress: () => router.navigate('/(home)/building-filter'),
+            onPress: () => router.navigate('/(tabs)/(home)/building-filter'),
           },
           {
             value: 'tools',
@@ -68,7 +68,7 @@ function FilterButtons() {
             ),
             uncheckedColor: colors.textPrimary,
             checkedColor: colors.buttonText,
-            onPress: () => router.navigate('/(home)/equipment-filter'),
+            onPress: () => router.navigate('/(tabs)/(home)/equipment-filter'),
           },
           {
             value: 'type',
@@ -84,7 +84,7 @@ function FilterButtons() {
             ),
             uncheckedColor: colors.textPrimary,
             checkedColor: colors.buttonText,
-            onPress: () => router.navigate('/(home)/type-filter'),
+            onPress: () => router.navigate('/(tabs)/(home)/type-filter'),
           },
         ]}
       />

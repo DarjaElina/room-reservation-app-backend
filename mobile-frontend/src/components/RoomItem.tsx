@@ -10,7 +10,7 @@ interface RoomProps {
   code: string;
   venue: string;
   pictureUrl?: string;
-  isFree: boolean;
+  isFree?: boolean | null;
 }
 
 const blurhash =

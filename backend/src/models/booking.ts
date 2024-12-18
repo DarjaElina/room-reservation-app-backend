@@ -8,7 +8,6 @@ import {
   Default,
   ForeignKey,
   BelongsTo,
-  BeforeSave,
   CreatedAt,
   UpdatedAt,
 } from 'sequelize-typescript';
@@ -18,10 +17,14 @@ import { Optional } from 'sequelize';
 import { BookingStatus } from '../types/booking/booking.enums';
 import { bookingStatuses } from '../types/booking/booking.constants';
 
+export interface BookingTimeItem {
+  value: Date;
+  inclusive?: boolean;
+}
+
 export interface BookingAttributes {
   id: string;
-  startDate: Date;
-  endDate: Date;
+  bookingTime: BookingTimeItem[];
   userId: string;
   roomId: string;
   status: BookingStatus;
@@ -47,19 +50,8 @@ class Booking extends Model<BookingAttributes, BookingCreationAttributes> {
   id!: string;
 
   @AllowNull(false)
-  @Column(DataType.DATE)
-  startDate!: Date;
-
-  @AllowNull(false)
-  @Column(DataType.DATE)
-  endDate!: Date;
-
-  @BeforeSave
-  static validateDates(instance: Booking) {
-    if (instance.endDate <= instance.startDate) {
-      throw new Error('endDate must be after startDate');
-    }
-  }
+  @Column(DataType.RANGE(DataType.DATE))
+  bookingTime!: BookingTimeItem[];
 
   @AllowNull(false)
   @Column({

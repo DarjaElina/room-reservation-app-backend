@@ -5,14 +5,14 @@ import { GraphQLError } from 'graphql';
 import { handleResolverErrors } from '../../util/errorHandler';
 import {
   validateSingleBooking,
-  checkOverlappingBookings,
   getTotalBookedHoursForWeek,
   checkBookingLimit,
   checkRoomDepartmentRestriction,
 } from '../../helpers/helpers';
-import { Op, WhereOptions } from 'sequelize';
+import { Op, WhereOptions }from 'sequelize';
 import { z } from 'zod';
 import UserModel from '../../models/user';
+import { sequelize } from '../../util/db';
 
 const argsSchema = z.object({
   roomId: z.string().optional(),
@@ -24,6 +24,18 @@ const argsSchema = z.object({
   endDate: z
     .date()
     .optional(),
+});
+
+const argsCreationSchema = z.object({
+  roomId: z.string(),
+  bookingTime: z.tuple([z.date(), z.date()]), 
+  title: z.string().optional(),
+});
+
+const argsModificationSchema = z.object({
+  bookingTime: z.tuple([z.date(), z.date()]), 
+  title: z.string().optional(),
+  bookingId: z.string()
 });
 
 const bookingResolvers: Resolvers = {
@@ -58,8 +70,9 @@ const bookingResolvers: Resolvers = {
         }
 
         if (startDate && endDate) {
-          where.startDate = { [Op.lt]: endDate };
-          where.endDate = { [Op.gt]: startDate };
+          where.bookingTime = {
+            [Op.overlap]: [startDate, endDate]
+          };
         }
 
         const bookings = await Booking.findAll({
@@ -88,82 +101,117 @@ const bookingResolvers: Resolvers = {
     },
     user: (booking) => {
       return booking.user;
-    },
+    }
   },
 
   Mutation: {
     createBooking: async (
       _,
-      { roomId, startDate, endDate, title },
+      args,
       { user }: { user: User }
     ) => {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
-      validateSingleBooking(user.role, startDate, endDate);
-      await checkOverlappingBookings(roomId, startDate, endDate);
-
-      const totalBookedHours = await getTotalBookedHoursForWeek(user.id);
-
-      const newBookingHours =
-        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60);
-
-      checkBookingLimit(user.role, totalBookedHours, newBookingHours);
-
-      await checkRoomDepartmentRestriction(user, roomId);
-
-      const room = await Room.findByPk(roomId);
-
-      if (!room) {
-        throw new GraphQLError('Room not found!');
-      }
-
-      try {
-        const booking = await Booking.create({
-          userId: user.id,
-          roomId,
-          startDate,
-          endDate,
-          status: BookingStatus.Active,
-          title
-        });
+    
+      const normalizedArgs = argsCreationSchema.parse(args);
+      const {roomId, bookingTime, title} = normalizedArgs;
+      const bookingTimeForDb = [
+        {
+          value: bookingTime[0],
+          inclusive: true
+        },
+        {
+          value: bookingTime[1],
+          inclusive: false
+        }
+      ];
+      return await sequelize.transaction(async (transaction) => {
+        validateSingleBooking(user.role, bookingTime[0], bookingTime[1]);
+    
+    
+       
+       const totalBookedHours = await getTotalBookedHoursForWeek(user.id, transaction);
+    
+       
+        const newBookingHours =
+          (bookingTime[0].getTime() - bookingTime[1].getTime()) / (1000 * 60 * 60);
+        checkBookingLimit(user.role, totalBookedHours, newBookingHours);
+    
+        
+        await checkRoomDepartmentRestriction(user, roomId, transaction);
+    
+       
+        const room = await Room.findByPk(roomId, { transaction });
+        if (!room) {
+          throw new GraphQLError('Room not found!');
+        }
+    
+        
+        const booking = await Booking.create(
+          {
+            userId: user.id,
+            roomId,
+            bookingTime: bookingTimeForDb,
+            status: BookingStatus.Active,
+            title,
+          },
+          { transaction }
+        );
+    
         return { ...booking.dataValues, room, user };
-      } catch (error) {
-        return handleResolverErrors(error);
-      }
+      });
     },
 
     updateBooking: async (
       _,
-      { bookingId, startDate, endDate, title, roomId },
+      args,
       { user }: { user: User }
     ) => {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
-        const booking = await Booking.findByPk(bookingId);
+
+      const normalizedArgs = argsModificationSchema.parse(args);
+      const { bookingTime, title, bookingId } = normalizedArgs;
+    
+      return await sequelize.transaction(async (transaction) => {
+        const booking = await Booking.findByPk(bookingId, { transaction });
         if (!booking) {
           throw new GraphQLError('Booking does not exist');
         }
         if (booking.userId !== user.id) {
           throw new GraphQLError('You can update only your own bookings');
         }
-        validateSingleBooking(user.role, startDate, endDate);
-        await checkOverlappingBookings(roomId, startDate, endDate);
-
-        const totalBookedHours = await getTotalBookedHoursForWeek(user.id);
-
+    
+        validateSingleBooking(user.role, bookingTime[0], bookingTime[1]);
+    
+        const totalBookedHours = await getTotalBookedHoursForWeek(user.id, transaction);
+    
         const newBookingHours =
-        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60);
-
+          (bookingTime[0].getTime() - bookingTime[1].getTime()) / (1000 * 60 * 60);
+    
         checkBookingLimit(user.role, totalBookedHours, newBookingHours);
 
-      try {
-        await booking.update({ startDate, endDate, title });
-        return { success: true, message: 'Booking updated successfully.', id: bookingId };
-      } catch (error) {
-        return handleResolverErrors(error);
-      }
+        const bookingTimeForDb = [
+          {
+            value: bookingTime[0],
+            inclusive: true
+          },
+          {
+            value: bookingTime[1],
+            inclusive: false
+          }
+        ];
+    
+      
+        const updatedBooking = await booking.update(
+          { bookingTime: bookingTimeForDb, title },
+          { transaction }
+        );
+    
+        return updatedBooking;
+      });
     },
 
     cancelBooking: async (_, { bookingId }, { user }: { user: User }) => {
@@ -179,7 +227,7 @@ const bookingResolvers: Resolvers = {
         if (booking.userId !== user.id) {
           throw new GraphQLError('You can delete only your own bookings');
         }
-        const timeBeforeStartDate = Date.now() - booking.startDate.getDate();
+        const timeBeforeStartDate = Date.now() - booking.bookingTime[0].value.getDate();
         if (Math.floor(timeBeforeStartDate / 60000) >= 30) {
           await booking.update({ status: BookingStatus.CancelledLate });
         }

@@ -209,8 +209,16 @@ const userResolvers: Resolvers = {
           });
 
           return { value: token };
-        } else throw new GraphQLError('Incorrect password');
+        } else {
+          throw new GraphQLError('Incorrect password', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              details: 'The provided password is incorrect.',
+            },
+          });
+        }
       } catch (error) {
+        console.log(error);
         return handleResolverErrors(error);
       }
     },

@@ -10,6 +10,10 @@ export default function RoomScreen() {
   const { loading, room, error } = useRoom(id);
   const { colors } = useTheme();
 
+  if (!room) {
+    return null;
+  }
+
   return (
     <QueryResult loading={loading} error={error} data={room}>
       <View style={{ flex: 1, backgroundColor: colors.backgroundPrimary }}>

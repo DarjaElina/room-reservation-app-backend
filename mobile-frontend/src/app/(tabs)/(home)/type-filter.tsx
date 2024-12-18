@@ -51,7 +51,7 @@ export default function TypeFilter() {
       <CheckBox
         options={filteredOptions}
         checkedValues={types}
-        onChange={setTypes}
+        onChange={setTypes as React.Dispatch<React.SetStateAction<string[]>>}
       />
     </View>
   );

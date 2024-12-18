@@ -70,6 +70,15 @@ export const handleResolverErrors = (error: unknown) => {
     });
   }
 
+  if (error instanceof GraphQLError && error.extensions?.code === 'BAD_USER_INPUT') {
+    throw new GraphQLError(error.message, {
+      extensions: {
+        code: error.extensions.code,
+        details: error.extensions.details,
+      },
+    });
+  }
+
   throw new GraphQLError('An internal server error occurred', {
     extensions: {
       code: 'INTERNAL_SERVER_ERROR',

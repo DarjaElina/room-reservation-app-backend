@@ -58,6 +58,7 @@ const useStyles = () => {
       roomCode: {
         fontSize: 10 + vmin * 3,
         fontWeight: 'bold',
+        fontFamily: 'Lato-Black'
       },
       roomLocationContainer: {
         flexDirection: 'row',
@@ -329,6 +330,16 @@ const useStyles = () => {
         width: '100%',
         marginBottom: vmin * 2,
         alignItems: 'center',
+      },
+      pickerContainer: {
+        width: isLargeScreen ? '60%' : '100%',
+        alignSelf: 'center',
+        padding: vmin * 2,
+        marginBottom: vmin * 3,
+      },
+      picker: {
+        width: '100%',
+        fontSize: isLargeScreen ? vmin * 2.5 : vmin * 2,
       },
     });
   }, [height, width]);

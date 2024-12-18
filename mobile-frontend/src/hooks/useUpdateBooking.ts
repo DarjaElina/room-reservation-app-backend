@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client';
 import { UPDATE_BOOKING } from '@/src/graphql/mutations';
+import { Booking } from '@/__generated__/graphql';
 
 const useUpdateBooking = (): [
   (
     bookingId: string,
-    startDate: number,
-    endDate: number,
+    bookingTime: [number, number],
     roomId: string,
     title?: string
   ) => Promise<any>,
@@ -16,14 +16,12 @@ const useUpdateBooking = (): [
       if (!data?.updateBooking) return;
 
       const updatedBooking = data.updateBooking;
-      console.log('updated booking:', updatedBooking);
 
       cache.modify({
         fields: {
           bookings(existingBookings = [], { readField }) {
-            return existingBookings.map((booking) => {
+            return existingBookings.map((booking: Booking) => {
               if (readField('id', booking) === updatedBooking.id) {
-                console.log('we are going to update hehe');
                 return { ...booking, ...updatedBooking };
               }
               return booking;
@@ -36,19 +34,17 @@ const useUpdateBooking = (): [
 
   const updateBooking = async (
     bookingId: string,
-    startDate: number,
-    endDate: number,
+    bookingTime: [number, number],
     roomId: string,
     title?: string
   ) => {
     try {
       const { data } = await mutate({
-        variables: { bookingId, startDate, endDate, title, roomId },
+        variables: { bookingId, bookingTime, title, roomId },
       });
       return data;
     } catch (error) {
       console.log(error);
-      console.log('failed to update booking');
       throw error;
     }
   };

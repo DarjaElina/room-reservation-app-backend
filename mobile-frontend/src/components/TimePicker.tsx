@@ -117,31 +117,35 @@ export default function TimePicker({
     }
   };
 
+
   const mappedBookings = bookings
     .map((b) => {
+      const startDate = b.bookingTime[0].value;
+      const endDate =  b.bookingTime[1].value;
+
       let startHours;
       let endHours;
       let startMinutes;
       let endMinutes;
-      if (new Date(b.startDate).getHours() < 10) {
-        startHours = `0${new Date(b.startDate).getHours()}`;
+      if (new Date(startDate).getHours() < 10) {
+        startHours = `0${new Date(startDate).getHours()}`;
       } else {
-        startHours = new Date(b.startDate).getHours();
+        startHours = new Date(startDate).getHours();
       }
-      if (new Date(b.endDate).getHours() < 10) {
-        endHours = `0${new Date(b.endDate).getHours()}`;
+      if (new Date(endDate).getHours() < 10) {
+        endHours = `0${new Date(endDate).getHours()}`;
       } else {
-        endHours = new Date(b.endDate).getHours();
+        endHours = new Date(endDate).getHours();
       }
-      if (new Date(b.startDate).getMinutes() < 15) {
-        startMinutes = `${new Date(b.startDate).getMinutes()}0`;
+      if (new Date(startDate).getMinutes() < 15) {
+        startMinutes = `${new Date(startDate).getMinutes()}0`;
       } else {
-        startMinutes = new Date(b.startDate).getMinutes();
+        startMinutes = new Date(startDate).getMinutes();
       }
-      if (new Date(b.endDate).getMinutes() < 15) {
-        endMinutes = `${new Date(b.endDate).getMinutes()}0`;
+      if (new Date(endDate).getMinutes() < 15) {
+        endMinutes = `${new Date(endDate).getMinutes()}0`;
       } else {
-        endMinutes = new Date(b.endDate).getMinutes();
+        endMinutes = new Date(endDate).getMinutes();
       }
 
       return {
@@ -151,67 +155,68 @@ export default function TimePicker({
     })
     .filter(
       (b) =>
-        startTime &&
-        endTime &&
-        !(b.startDate >= startTime && b.endDate <= endTime)
-    );
+        {
+          if (startTime && endTime)
+          return !(b.startDate >= startTime && b.endDate <= endTime)
+          else return b;
+        }
+      );
+
 
   const handleSelect = (item: TimeSlotType) => {
     const hour = Number(item.value.slice(0, 2));
-
     const hourBlock = [
       { hour, value: `${hour < 10 ? '0' : ''}${hour}:00:00` },
       { hour, value: `${hour < 10 ? '0' : ''}${hour}:15:00` },
       { hour, value: `${hour < 10 ? '0' : ''}${hour}:30:00` },
       { hour, value: `${hour < 10 ? '0' : ''}${hour}:45:00` },
     ];
-
+  
     const isHourSelected = hourBlock.every((block) =>
       selectedTimeValues.some((selected) => selected.hour === block.hour)
     );
-
+  
     const isValueSelected = selectedTimeValues.some(
       (i) => i.value === item.value
     );
-
+  
     if (isHourSelected && isValueSelected) {
       const currentSelected = selectedTimeValues.find(
         (i) => i.value === item.value
       );
+  
       if (currentSelected) {
         const currentIndex = selectedTimeValues.indexOf(currentSelected);
-
-        setSelectedTimeValues(
-          currentIndex < selectedTimeValues.length / 2
-            ? selectedTimeValues
-                .slice(currentIndex + 1)
-                .filter(
-                  (i) => !mappedBookings.some((b) => b.startDate === i.value)
-                )
-            : selectedTimeValues
-                .slice(0, currentIndex)
-                .filter(
-                  (i) =>
-                    !mappedBookings.some(
-                      (b) => b.startDate <= i.value && b.endDate >= i.value
-                    )
-                )
-        );
+  
+        setSelectedTimeValues((prev) => {
+          const newValues =
+            currentIndex < prev.length / 2
+              ? prev.slice(currentIndex + 1)
+              : prev.slice(0, currentIndex);
+  
+          return newValues.filter(
+            (i) =>
+              !mappedBookings.some(
+                (b) => b.startDate <= i.value && b.endDate >= i.value
+              )
+          );
+        });
       }
     } else if (
       !isHourSelected &&
       (selectedTimeValues.length === 0 ||
-        selectedTimeValues.filter((i) => i.hour === item.hour - 1).length ===
-          4 ||
+        selectedTimeValues.filter((i) => i.hour === item.hour - 1).length === 4 ||
         selectedTimeValues.filter((i) => i.hour === item.hour + 1).length === 4)
     ) {
-      setSelectedTimeValues(
-        [...selectedTimeValues, ...hourBlock].filter(
-          (i) =>
-            !mappedBookings.some(
-              (b) => b.startDate <= i.value && b.endDate >= i.value
-            )
-        )
+      setSelectedTimeValues((prev) =>
+        [...prev, ...hourBlock]
+          .filter(
+            (i) =>
+              !mappedBookings.some(
+                (b) => b.startDate <= i.value && b.endDate >= i.value
+              )
+          )
+          .sort((a, b) => a.hour - b.hour)
       );
     } else {
       setSelectedTimeValues(
@@ -224,7 +229,6 @@ export default function TimePicker({
       );
     }
   };
-
   return (
     <View style={{ flex: 1 }}>
       <FlatList

@@ -2,6 +2,7 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
+import { RoomType } from '@/__generated__/graphql';
 
 interface CheckBoxItemProps {
   item: { value: string; label: string };

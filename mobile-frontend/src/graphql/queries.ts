@@ -83,9 +83,10 @@ export const BOOKINGS = gql(`
   query Bookings($roomId: ID, $userId: ID, $status: BookingStatus, $startDate: Date, $endDate: Date) {
     bookings(roomId: $roomId, userId: $userId, status: $status, startDate: $startDate, endDate: $endDate) {
       title
-      endDate
+      bookingTime {
+        value
+      }
       id
-      startDate
       user {
         familyName
         givenName

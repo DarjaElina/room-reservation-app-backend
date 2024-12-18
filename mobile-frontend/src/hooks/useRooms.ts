@@ -1,7 +1,8 @@
 import { useQuery } from '@apollo/client';
 import { ALL_ROOMS } from '@/src/graphql/queries';
+import { RoomsQueryVariables, RoomConnection, Room } from '@/__generated__/graphql';
 
-const useRooms = (variables) => {
+const useRooms = (variables: RoomsQueryVariables) => {
   const { data, error, loading, fetchMore } = useQuery(ALL_ROOMS, {
     fetchPolicy: 'cache-and-network',
     variables,
@@ -23,7 +24,7 @@ const useRooms = (variables) => {
   };
 
   return {
-    rooms: data ? data.rooms : [],
+    rooms: data ? data.rooms : {edges: []},
     fetchMore: handleFetchMore,
     loading,
     error,

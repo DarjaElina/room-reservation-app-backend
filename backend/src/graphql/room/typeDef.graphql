@@ -2,7 +2,7 @@ scalar Date
 
 type RoomConnection {
   totalCount: Int!
-  edges: [RoomEdge]!
+  edges: [RoomEdge!]!
   pageInfo: PageInfo!
 }
 
@@ -35,7 +35,7 @@ type Room {
   code: String!
   type: RoomType!
   size: Int!
-  equipment: [Equipment]
+  equipment: [Equipment!]!
   pictureUrl: String
   isBookable: Boolean!
   department: Department

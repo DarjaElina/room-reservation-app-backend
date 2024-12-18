@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  StyleSheet,
   Pressable,
   Alert,
   Modal,
@@ -23,7 +22,7 @@ interface BookingItemProps {
   endDate: Date;
   roomCode: string;
   showCode?: boolean;
-  title: string;
+  title?: string;
   id: string;
   roomId: string;
 }
@@ -203,10 +202,6 @@ export default function BookingItem({
                   startDate,
                   endDate,
                   id,
-                }}
-                onSubmit={(updatedData) => {
-                  console.log('Updated booking:', updatedData);
-                  setShowModal(false);
                 }}
                 onCancel={() => setShowModal(false)}
               />

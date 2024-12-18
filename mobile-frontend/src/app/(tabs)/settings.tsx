@@ -8,8 +8,8 @@ import { locales } from '@/src/i18n/i18n-util';
 import { setUserLocale } from '@/src/utils/localeStorage';
 import { loadLocaleAsync } from '@/src/i18n/i18n-util.async';
 import LanguagePicker from '@/src/components/LanguagePicker';
-import theme from '@/src/theme';
 import useStyles from '@/src/hooks/useStyles';
+import { Locales } from '@/src/i18n/i18n-types';
 
 export default function SettingsScreen() {
   const { colors } = useTheme();
@@ -18,7 +18,7 @@ export default function SettingsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const styles = useStyles();
 
-  const onLocaleSelected = useCallback((locale) => {
+  const onLocaleSelected = useCallback((locale: Locales) => {
     setUserLocale(locale)
       .then(async (locale) => {
         await loadLocaleAsync(locale);

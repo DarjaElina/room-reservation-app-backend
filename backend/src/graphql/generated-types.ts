@@ -26,10 +26,9 @@ export type AccessToken = {
 
 export type Booking = {
   __typename?: 'Booking';
-  endDate: Scalars['Date']['output'];
+  bookingTime: Array<BookingTimeItem>;
   id: Scalars['ID']['output'];
   room: Room;
-  startDate: Scalars['Date']['output'];
   status: BookingStatus;
   title?: Maybe<Scalars['String']['output']>;
   user: User;
@@ -41,6 +40,12 @@ export enum BookingStatus {
   CancelledLate = 'CANCELLED_LATE',
   Past = 'PAST'
 }
+
+export type BookingTimeItem = {
+  __typename?: 'BookingTimeItem';
+  inclusive?: Maybe<Scalars['Boolean']['output']>;
+  value: Scalars['Date']['output'];
+};
 
 export type Department = {
   __typename?: 'Department';
@@ -89,7 +94,7 @@ export type Mutation = {
   requestPasswordReset: UserResponse;
   resetPassword: UserResponse;
   setRoomBookableStatus: Room;
-  updateBooking: UserResponse;
+  updateBooking: Booking;
   updateDepartment: Department;
   updateEquipment: Equipment;
   updateFaculty: Faculty;
@@ -148,9 +153,8 @@ export type MutationChangePasswordArgs = {
 
 
 export type MutationCreateBookingArgs = {
-  endDate: Scalars['Date']['input'];
+  bookingTime: Array<Scalars['Date']['input']>;
   roomId: Scalars['ID']['input'];
-  startDate: Scalars['Date']['input'];
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -256,9 +260,8 @@ export type MutationSetRoomBookableStatusArgs = {
 
 export type MutationUpdateBookingArgs = {
   bookingId: Scalars['ID']['input'];
-  endDate: Scalars['Date']['input'];
+  bookingTime: Array<Scalars['Date']['input']>;
   roomId: Scalars['ID']['input'];
-  startDate: Scalars['Date']['input'];
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -463,7 +466,7 @@ export type Room = {
   code: Scalars['String']['output'];
   department?: Maybe<Department>;
   description: Scalars['String']['output'];
-  equipment?: Maybe<Array<Maybe<Equipment>>>;
+  equipment: Array<Equipment>;
   id: Scalars['ID']['output'];
   isBookable: Scalars['Boolean']['output'];
   isFree?: Maybe<Scalars['Boolean']['output']>;
@@ -475,7 +478,7 @@ export type Room = {
 
 export type RoomConnection = {
   __typename?: 'RoomConnection';
-  edges: Array<Maybe<RoomEdge>>;
+  edges: Array<RoomEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
 };
@@ -627,6 +630,7 @@ export type ResolversTypes = {
   AccessToken: ResolverTypeWrapper<AccessToken>;
   Booking: ResolverTypeWrapper<Booking>;
   BookingStatus: BookingStatus;
+  BookingTimeItem: ResolverTypeWrapper<BookingTimeItem>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   Department: ResolverTypeWrapper<Department>;
@@ -655,6 +659,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   AccessToken: AccessToken;
   Booking: Booking;
+  BookingTimeItem: BookingTimeItem;
   Boolean: Scalars['Boolean']['output'];
   Date: Scalars['Date']['output'];
   Department: Department;
@@ -681,13 +686,18 @@ export type AccessTokenResolvers<ContextType = any, ParentType extends Resolvers
 };
 
 export type BookingResolvers<ContextType = any, ParentType extends ResolversParentTypes['Booking'] = ResolversParentTypes['Booking']> = {
-  endDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  bookingTime?: Resolver<Array<ResolversTypes['BookingTimeItem']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   room?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
-  startDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['BookingStatus'], ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type BookingTimeItemResolvers<ContextType = any, ParentType extends ResolversParentTypes['BookingTimeItem'] = ResolversParentTypes['BookingTimeItem']> = {
+  inclusive?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -723,7 +733,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   bulkCreateUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<MutationBulkCreateUsersArgs, 'users'>>;
   cancelBooking?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationCancelBookingArgs, 'bookingId'>>;
   changePassword?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'newPassword' | 'oldPassword'>>;
-  createBooking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'endDate' | 'roomId' | 'startDate'>>;
+  createBooking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'bookingTime' | 'roomId'>>;
   createDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationCreateDepartmentArgs, 'name'>>;
   createEquipment?: Resolver<ResolversTypes['Equipment'], ParentType, ContextType, RequireFields<MutationCreateEquipmentArgs, 'name'>>;
   createFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationCreateFacultyArgs, 'name'>>;
@@ -741,7 +751,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   requestPasswordReset?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationRequestPasswordResetArgs, 'email'>>;
   resetPassword?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'newPassword' | 'oldPassword' | 'token'>>;
   setRoomBookableStatus?: Resolver<ResolversTypes['Room'], ParentType, ContextType, RequireFields<MutationSetRoomBookableStatusArgs, 'isBookable' | 'roomId'>>;
-  updateBooking?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationUpdateBookingArgs, 'bookingId' | 'endDate' | 'roomId' | 'startDate'>>;
+  updateBooking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<MutationUpdateBookingArgs, 'bookingId' | 'bookingTime' | 'roomId'>>;
   updateDepartment?: Resolver<ResolversTypes['Department'], ParentType, ContextType, RequireFields<MutationUpdateDepartmentArgs, 'id'>>;
   updateEquipment?: Resolver<ResolversTypes['Equipment'], ParentType, ContextType, RequireFields<MutationUpdateEquipmentArgs, 'id' | 'name'>>;
   updateFaculty?: Resolver<ResolversTypes['Faculty'], ParentType, ContextType, RequireFields<MutationUpdateFacultyArgs, 'id' | 'name'>>;
@@ -790,7 +800,7 @@ export type RoomResolvers<ContextType = any, ParentType extends ResolversParentT
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   department?: Resolver<Maybe<ResolversTypes['Department']>, ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  equipment?: Resolver<Maybe<Array<Maybe<ResolversTypes['Equipment']>>>, ParentType, ContextType>;
+  equipment?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   isBookable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   isFree?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
@@ -802,7 +812,7 @@ export type RoomResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type RoomConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['RoomConnection'] = ResolversParentTypes['RoomConnection']> = {
-  edges?: Resolver<Array<Maybe<ResolversTypes['RoomEdge']>>, ParentType, ContextType>;
+  edges?: Resolver<Array<ResolversTypes['RoomEdge']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -845,6 +855,7 @@ export type VenueResolvers<ContextType = any, ParentType extends ResolversParent
 export type Resolvers<ContextType = any> = {
   AccessToken?: AccessTokenResolvers<ContextType>;
   Booking?: BookingResolvers<ContextType>;
+  BookingTimeItem?: BookingTimeItemResolvers<ContextType>;
   Date?: GraphQLScalarType;
   Department?: DepartmentResolvers<ContextType>;
   Equipment?: EquipmentResolvers<ContextType>;

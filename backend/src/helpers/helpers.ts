@@ -5,15 +5,15 @@ import { genSaltSync, hashSync } from 'bcryptjs';
 import { UserRole } from '../types/user/user.enums';
 import { GraphQLError } from 'graphql';
 import Booking from '../models/booking';
-import { Op } from 'sequelize';
+import {  Transaction, Op } from 'sequelize';
 import User from '../models/user';
 import { Request } from 'express';
 import { JWT_SECRET } from '../util/config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { BookingStatus } from '../types/booking/booking.enums';
 import { startOfWeek, endOfWeek } from 'date-fns';
-import Sequelize from 'sequelize';
-import { BookingAttributes } from '../models/booking';
+//import Sequelize from 'sequelize';
+//import { BookingAttributes } from '../models/booking';
 import Room from '../models/room';
 import { User as UserType } from '../graphql/generated-types';
 
@@ -53,7 +53,7 @@ export const createPasswordHash = (password: string) => {
 export const validateSingleBooking = (
   userRole: UserRole,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
 ) => {
   const now = new Date();
   if (startDate < now) {
@@ -80,30 +80,6 @@ export const validateSingleBooking = (
 
     default:
       throw new GraphQLError('Invalid user role');
-  }
-};
-
-export const checkOverlappingBookings = async (
-  roomId: string,
-  startDate: Date,
-  endDate: Date,
-  bookingId?: string
-) => {
-  const hasOverlappingBooking = await Booking.findOne({
-    where: {
-      roomId,
-      startDate: { [Op.lt]: endDate },
-      endDate: { [Op.gt]: startDate },
-      status: BookingStatus.Active,
-      id: {
-        [Op.ne]: bookingId, 
-      }
-    },
-  });
-  if (hasOverlappingBooking) {
-    throw new GraphQLError(
-      'This room is already booked for the selected time range'
-    );
   }
 };
 
@@ -139,38 +115,45 @@ export const getUserFromReq = async (
   return { user, isAdmin };
 };
 
-interface BookingWithTotalHours extends BookingAttributes {
-  totalHours: number;
-}
+// interface BookingWithTotalHours extends BookingAttributes {
+//   totalHours: number;
+// }
 
 export const getTotalBookedHoursForWeek = async (
-  userId: string
+  userId: string,
+  transaction: Transaction
 ): Promise<number> => {
   const now = new Date();
   const startOfWeekDate = startOfWeek(now);
   const endOfWeekDate = endOfWeek(now);
-  const result = (await Booking.findOne({
+  const bookings = await Booking.findAll({
     where: {
       userId,
-      startDate: { [Op.between]: [startOfWeekDate, endOfWeekDate] },
+      bookingTime: {
+        [Op.overlap]: [startOfWeekDate, endOfWeekDate],
+      },
       status: {
-        [Op.or]: [BookingStatus.Past, BookingStatus.CancelledLate],
+        [Op.or]: [BookingStatus.Past, BookingStatus.CancelledLate, BookingStatus.Active],
       },
     },
-    attributes: [
-      [
-        Sequelize.fn(
-          'SUM',
-          Sequelize.literal(
-            `(EXTRACT(EPOCH FROM end_date - start_date) / 3600)`
-          )
-        ),
-        'totalHours',
-      ],
-    ],
-  })) as BookingWithTotalHours | null;
+    attributes: ['bookingTime'],
+    transaction,
+  });
+  const totalHours = bookings.reduce((acc, booking) => {
+    const bookingHours = booking.bookingTime.reduce((bookingAcc, _, index) => {
+      if (index < booking.bookingTime.length - 1) {
+        const startTime = new Date(booking.bookingTime[index].value);
+        const endTime = new Date(booking.bookingTime[index + 1].value);
+  
+        const durationInHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+        return bookingAcc + durationInHours;
+      }
+      return bookingAcc;
+    }, 0);
+  
+    return acc + bookingHours;
+  }, 0);
 
-  const totalHours = result?.totalHours || 0;
   return totalHours;
 };
 
@@ -190,9 +173,10 @@ export const checkBookingLimit = (
 
 export const checkRoomDepartmentRestriction = async (
   user: UserType,
-  roomId: string
+  roomId: string,
+  transaction: Transaction
 ): Promise<void> => {
-  const room = await Room.findByPk(roomId);
+  const room = await Room.findByPk(roomId, { transaction});
   if (room?.department && user.department.id !== room.departmentId) {
     throw new GraphQLError(
       `This room can be booked only from students from ${room.department.name}`
@@ -200,19 +184,21 @@ export const checkRoomDepartmentRestriction = async (
   }
 };
 
-export const validateBooking = async (
-  user: User,
-  roomId: string,
-  startDate: Date,
-  endDate: Date
-) => {
-  validateSingleBooking(user.role, startDate, endDate);
-  await checkOverlappingBookings(roomId, startDate, endDate);
 
-  const totalBookedHours = await getTotalBookedHoursForWeek(user.id);
+// export const validateBooking = async (
+//   user: User,
+//   roomId: string,
+//   startDate: Date,
+//   endDate: Date,
+//   transaction: Transaction
+// ) => {
+//   validateSingleBooking(user.role, startDate, endDate);
+//   await checkOverlappingBookings(roomId, startDate, endDate, transaction);
 
-  const newBookingHours =
-    (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60);
+//   const totalBookedHours = await getTotalBookedHoursForWeek(user.id, transaction);
 
-  checkBookingLimit(user.role, totalBookedHours, newBookingHours);
-};
+//   const newBookingHours =
+//     (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60);
+
+//   checkBookingLimit(user.role, totalBookedHours, newBookingHours);
+// };

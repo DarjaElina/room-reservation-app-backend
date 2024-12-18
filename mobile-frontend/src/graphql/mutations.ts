@@ -9,12 +9,13 @@ export const AUTHENTICATE = gql(`
 `);
 
 export const CREATE_BOOKING = gql(`
-  mutation CreateBooking($roomId: ID!, $startDate: Date!, $endDate: Date!, $title: String) {
-    createBooking(roomId: $roomId, startDate: $startDate, endDate: $endDate, title: $title) {
+  mutation CreateBooking($roomId: ID!, $bookingTime: [Date!]!, $title: String) {
+    createBooking(roomId: $roomId, bookingTime: $bookingTime, title: $title) {
       title
       id
-      startDate
-      endDate
+      bookingTime {
+        value
+      }
       user {
         familyName
         givenName
@@ -36,10 +37,12 @@ export const CANCEL_BOOKING = gql(`
 `);
 
 export const UPDATE_BOOKING = gql(`
-  mutation UpdateBooking($bookingId: ID!, $startDate: Date!, $endDate: Date!, $title: String, $roomId: ID!) {
-    updateBooking(bookingId: $bookingId, startDate: $startDate, endDate: $endDate, title: $title, roomId: $roomId) {
+  mutation UpdateBooking($bookingId: ID!, $bookingTime: [Date!]!, $title: String, $roomId: ID!) {
+    updateBooking(bookingId: $bookingId, bookingTime: $bookingTime, title: $title, roomId: $roomId) {
       id
-      message
+      bookingTime {
+        value
+      }
     }
   }
 `);
