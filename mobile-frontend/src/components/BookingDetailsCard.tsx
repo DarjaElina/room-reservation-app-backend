@@ -28,7 +28,7 @@ export default function BookingDetailsCard({
   error,
   onSubmit,
   buttonText,
-  loading
+  loading,
 }: BookingDetailsCardProps) {
   const { colors } = useTheme();
   const formatReadableDate = (isoDate: string) => {

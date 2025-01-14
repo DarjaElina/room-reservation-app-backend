@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { Controller, Control, FieldErrors } from 'react-hook-form';
 import { TextInput } from 'react-native-paper';
-import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
 import useStyles from '../hooks/useStyles';
 
@@ -46,6 +45,7 @@ export default function Form({ control, errors, fields }: FormProps) {
                 }}
                 placeholderTextColor={colors.textSecondary}
                 textColor={colors.textPrimary}
+                accessibilityLabel={field.label}
               />
             )}
             name={field.name}

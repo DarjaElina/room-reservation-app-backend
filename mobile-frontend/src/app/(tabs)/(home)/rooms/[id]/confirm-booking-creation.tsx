@@ -29,8 +29,10 @@ export default function ConfirmBookingCreationScreen() {
     try {
       await createBooking(
         id,
-        [new Date(bookingStartDate).getTime(),
-        new Date(bookingEndDate).getTime()],
+        [
+          new Date(bookingStartDate).getTime(),
+          new Date(bookingEndDate).getTime(),
+        ],
         bookingTitle.trim() || undefined
       );
       setUserMessage(LL.BOOKING_CREATED());
@@ -40,9 +42,8 @@ export default function ConfirmBookingCreationScreen() {
         router.navigate('/(tabs)/(home)');
       }, 2000);
     } catch (error) {
-      if (error instanceof ApolloError)
-        Alert.alert(error.message);
-      console.log(error)
+      if (error instanceof ApolloError) Alert.alert(error.message);
+      console.log(error);
     }
   };
 
@@ -58,18 +59,19 @@ export default function ConfirmBookingCreationScreen() {
         ]}
       >
         <UserMessage text={userMessage} type="success" />
-        {room && <BookingDetailsCard
-          roomCode={room.code}
-          bookingStartDate={bookingStartDate}
-          bookingEndDate={bookingEndDate}
-          bookingTitle={bookingTitle}
-          setBookingTitle={setBookingTitle}
-          error={error}
-          onSubmit={handleSubmit}
-          buttonText={LL.RESERVE()}
-          loading={loading}
-        />
-        }
+        {room && (
+          <BookingDetailsCard
+            roomCode={room.code}
+            bookingStartDate={bookingStartDate}
+            bookingEndDate={bookingEndDate}
+            bookingTitle={bookingTitle}
+            setBookingTitle={setBookingTitle}
+            error={error}
+            onSubmit={handleSubmit}
+            buttonText={LL.RESERVE()}
+            loading={loading}
+          />
+        )}
       </View>
     </QueryResult>
   );

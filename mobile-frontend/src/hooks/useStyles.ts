@@ -58,7 +58,7 @@ const useStyles = () => {
       roomCode: {
         fontSize: 10 + vmin * 3,
         fontWeight: 'bold',
-        fontFamily: 'Lato-Black'
+        fontFamily: 'Lato-Black',
       },
       roomLocationContainer: {
         flexDirection: 'row',

@@ -1,12 +1,11 @@
-import { FlatList, useWindowDimensions } from 'react-native';
+import { FlatList } from 'react-native';
 import RoomItem from '../RoomItem';
 import { Link } from 'expo-router';
 import useStyles from '@/src/hooks/useStyles';
-import { Room } from '@/__generated__/graphql';
 
 interface RoomListProps {
   rooms: {
-    __typename?: "Room";
+    __typename?: 'Room';
     code: string;
     id: string;
     isFree?: boolean | null;
@@ -14,21 +13,22 @@ interface RoomListProps {
     size: number;
     description: string;
     equipment?: Array<{
-        __typename?: "Equipment";
-        name: string;
-        id: string;
+      __typename?: 'Equipment';
+      name: string;
+      id: string;
     } | null> | null;
     venue: {
-        __typename?: "Venue";
-        name: string;
+      __typename?: 'Venue';
+      name: string;
     };
-}[];
-  onEndReach: ((info: {
-    distanceFromEnd: number;
-  }) => void) | null | undefined
+  }[];
+  onEndReach: ((info: { distanceFromEnd: number }) => void) | null | undefined;
 }
 
-export default function RoomList({ rooms, onEndReach }: RoomListProps) {
+export default function RoomListContainer({
+  rooms,
+  onEndReach,
+}: RoomListProps) {
   const styles = useStyles();
   return (
     <FlatList
@@ -40,18 +40,23 @@ export default function RoomList({ rooms, onEndReach }: RoomListProps) {
       horizontal={false}
       numColumns={2}
       data={rooms}
-      renderItem={({ item }) => (
-        item ?
-        <Link
-          style={styles.roomLink}
-          href={{
-            pathname: '/rooms/[id]',
-            params: { id: item.id },
-          }}
-        >
-          <RoomItem code={item.code} venue={item.venue.name} isFree={item.isFree} />
-        </Link> : null
-      )}
+      renderItem={({ item }) =>
+        item ? (
+          <Link
+            style={styles.roomLink}
+            href={{
+              pathname: '/rooms/[id]',
+              params: { id: item.id },
+            }}
+          >
+            <RoomItem
+              code={item.code}
+              venue={item.venue.name}
+              isFree={item.isFree}
+            />
+          </Link>
+        ) : null
+      }
       keyExtractor={(item) => item.id}
     />
   );

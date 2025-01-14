@@ -23,7 +23,7 @@ interface QueryResultProps {
   loading: boolean;
   error: ApolloError | undefined;
   data: any;
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {

@@ -117,11 +117,10 @@ export default function TimePicker({
     }
   };
 
-
   const mappedBookings = bookings
     .map((b) => {
       const startDate = b.bookingTime[0].value;
-      const endDate =  b.bookingTime[1].value;
+      const endDate = b.bookingTime[1].value;
 
       let startHours;
       let endHours;
@@ -153,15 +152,11 @@ export default function TimePicker({
         endDate: `${endHours}:${endMinutes}:00`,
       };
     })
-    .filter(
-      (b) =>
-        {
-          if (startTime && endTime)
-          return !(b.startDate >= startTime && b.endDate <= endTime)
-          else return b;
-        }
-      );
-
+    .filter((b) => {
+      if (startTime && endTime)
+        return !(b.startDate >= startTime && b.endDate <= endTime);
+      else return b;
+    });
 
   const handleSelect = (item: TimeSlotType) => {
     const hour = Number(item.value.slice(0, 2));
@@ -171,29 +166,29 @@ export default function TimePicker({
       { hour, value: `${hour < 10 ? '0' : ''}${hour}:30:00` },
       { hour, value: `${hour < 10 ? '0' : ''}${hour}:45:00` },
     ];
-  
+
     const isHourSelected = hourBlock.every((block) =>
       selectedTimeValues.some((selected) => selected.hour === block.hour)
     );
-  
+
     const isValueSelected = selectedTimeValues.some(
       (i) => i.value === item.value
     );
-  
+
     if (isHourSelected && isValueSelected) {
       const currentSelected = selectedTimeValues.find(
         (i) => i.value === item.value
       );
-  
+
       if (currentSelected) {
         const currentIndex = selectedTimeValues.indexOf(currentSelected);
-  
+
         setSelectedTimeValues((prev) => {
           const newValues =
             currentIndex < prev.length / 2
               ? prev.slice(currentIndex + 1)
               : prev.slice(0, currentIndex);
-  
+
           return newValues.filter(
             (i) =>
               !mappedBookings.some(
@@ -205,7 +200,8 @@ export default function TimePicker({
     } else if (
       !isHourSelected &&
       (selectedTimeValues.length === 0 ||
-        selectedTimeValues.filter((i) => i.hour === item.hour - 1).length === 4 ||
+        selectedTimeValues.filter((i) => i.hour === item.hour - 1).length ===
+          4 ||
         selectedTimeValues.filter((i) => i.hour === item.hour + 1).length === 4)
     ) {
       setSelectedTimeValues((prev) =>

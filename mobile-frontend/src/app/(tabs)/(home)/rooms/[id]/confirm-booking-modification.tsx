@@ -32,8 +32,10 @@ export default function ConfirmBookingModificationScreen() {
     try {
       await updateBooking(
         bookingId,
-        [new Date(bookingStartDate).getTime(),
-        new Date(bookingEndDate).getTime()],
+        [
+          new Date(bookingStartDate).getTime(),
+          new Date(bookingEndDate).getTime(),
+        ],
         id,
         bookingTitle.trim() || undefined
       );
@@ -44,9 +46,8 @@ export default function ConfirmBookingModificationScreen() {
         router.navigate('/(tabs)/(home)');
       }, 2000);
     } catch (error) {
-      if (error instanceof ApolloError)
-        Alert.alert(error.message);
-      console.log(error)
+      if (error instanceof ApolloError) Alert.alert(error.message);
+      console.log(error);
     }
   };
 
@@ -61,18 +62,20 @@ export default function ConfirmBookingModificationScreen() {
           },
         ]}
       >
-        <UserMessage text={userMessage} type="success"/>
-        {room && <BookingDetailsCard
-          roomCode={room.code}
-          bookingStartDate={bookingStartDate}
-          bookingEndDate={bookingEndDate}
-          bookingTitle={bookingTitle}
-          setBookingTitle={setBookingTitle}
-          error={error}
-          onSubmit={handleSubmit}
-          buttonText={LL.SAVE()}
-          loading={loading}
-        />}
+        <UserMessage text={userMessage} type="success" />
+        {room && (
+          <BookingDetailsCard
+            roomCode={room.code}
+            bookingStartDate={bookingStartDate}
+            bookingEndDate={bookingEndDate}
+            bookingTitle={bookingTitle}
+            setBookingTitle={setBookingTitle}
+            error={error}
+            onSubmit={handleSubmit}
+            buttonText={LL.SAVE()}
+            loading={loading}
+          />
+        )}
       </View>
     </QueryResult>
   );

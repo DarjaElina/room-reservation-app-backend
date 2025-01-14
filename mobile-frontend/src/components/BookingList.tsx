@@ -36,7 +36,9 @@ export default function BookingList({
   }
 
   const sortedBookings = [...bookings].sort(
-    (a, b) => new Date(a.bookingTime[0].value).getTime() - new Date(b.bookingTime[0].value).getTime()
+    (a, b) =>
+      new Date(a.bookingTime[0].value).getTime() -
+      new Date(b.bookingTime[0].value).getTime()
   );
 
   return (

@@ -12,7 +12,11 @@ interface CheckBoxProps {
   onChange: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export default function CheckBox({ options, checkedValues, onChange }: CheckBoxProps) {
+export default function CheckBox({
+  options,
+  checkedValues,
+  onChange,
+}: CheckBoxProps) {
   const [updatedCheckedValues, setUpdatedCheckedValues] = useState([
     ...checkedValues,
   ]);

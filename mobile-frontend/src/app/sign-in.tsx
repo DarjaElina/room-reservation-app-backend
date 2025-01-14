@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -40,12 +40,13 @@ export default function Login() {
   const onSubmit: SubmitHandler<UserFormType> = async (data: UserFormType) => {
     const { username, password } = data;
     try {
-      console.log('pressed!');
       await signIn(username, password);
       router.replace('/');
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setUserMessage(error.message || 'An unexpected error occurred. Please try again.');
+        setUserMessage(
+          error.message || 'An unexpected error occurred. Please try again.'
+        );
       } else {
         setUserMessage('An unexpected error occurred. Please try again.');
       }
@@ -82,7 +83,7 @@ export default function Login() {
       >
         {LL.LOGIN()}
       </Text>
-      <UserMessage text={userMessage} type="error"/>
+      <UserMessage text={userMessage} type="error" />
       <Form
         control={control}
         errors={errors}

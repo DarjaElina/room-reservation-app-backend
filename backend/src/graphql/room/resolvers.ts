@@ -10,6 +10,7 @@ import Equipment from '../../models/equipment';
 import { z } from 'zod';
 import { RoomType } from '../../types/room/room.enums';
 import { makePaginate } from 'sequelize-cursor-pagination';
+import { BookingAttributes } from '../../models/booking';
 
 type RoomWithIsFree = Room & { isFree?: boolean };
 
@@ -95,9 +96,9 @@ const roomResolvers: Resolvers = {
           attributes: ['roomId'],
           where: {
             bookingTime: {
-              [Op.overlap]: [new Date(), new Date(new Date().getTime() + 60 * 60 * 1000)],
+              [Op.contains]: new Date(),
             },
-          },
+          } as WhereOptions<BookingAttributes> | undefined,
         });
         const currentRoomIds = currentBookings.map((b) => b.roomId);
 
@@ -160,9 +161,9 @@ const roomResolvers: Resolvers = {
           where: {
             roomId: room.id,
             bookingTime: {
-              [Op.overlap]: [new Date(), new Date(new Date().getTime() + 60 * 60 * 1000)]
-            },
-          },
+              [Op.contains]: new Date()
+            } 
+          } as WhereOptions<BookingAttributes> | undefined,
         });
         return {
           ...room.dataValues,

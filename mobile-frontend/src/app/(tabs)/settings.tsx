@@ -28,8 +28,12 @@ export default function SettingsScreen() {
   }, []);
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background, justifyContent: 'center' }]}>
-
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: colors.background, justifyContent: 'center' },
+      ]}
+    >
       <Pressable style={[styles.settingsLink, { borderColor: colors.border }]}>
         <Text style={[styles.label, { color: colors.text }]}>
           Privacy Policy
@@ -74,16 +78,17 @@ export default function SettingsScreen() {
               { backgroundColor: colors.buttonBackground },
             ]}
           >
-            <Text
-              style={[styles.buttonText, { color: colors.buttonText }]}
-            >
+            <Text style={[styles.buttonText, { color: colors.buttonText }]}>
               {LL.CLOSE()}
             </Text>
           </Pressable>
         </View>
       </Modal>
       <Pressable
-        style={[styles.button, { backgroundColor: colors.primary, flexDirection: 'row' }]}
+        style={[
+          styles.button,
+          { backgroundColor: colors.primary, flexDirection: 'row' },
+        ]}
         onPress={() => signOut()}
       >
         <Ionicons name="log-out-outline" size={24} color={colors.background} />

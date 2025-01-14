@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Pressable,
-  useColorScheme,
-  Alert,
-} from 'react-native';
+import { View, Text, Pressable, useColorScheme, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import useUpdateBooking from '@/src/hooks/useUpdateBooking';
 import { router } from 'expo-router';
@@ -51,8 +45,10 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
     try {
       await updateBooking(
         initialData.id,
-        [new Date(initialData.startDate).getTime(),
-        new Date(initialData.endDate).getTime()],
+        [
+          new Date(initialData.startDate).getTime(),
+          new Date(initialData.endDate).getTime(),
+        ],
         initialData.roomId,
         title
       );
@@ -63,9 +59,8 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
         router.navigate('/(tabs)/(home)');
       }, 2000);
     } catch (error: unknown) {
-      if (error instanceof ApolloError)
-        Alert.alert(error.message);
-      console.log(error)
+      if (error instanceof ApolloError) Alert.alert(error.message);
+      console.log(error);
     }
   };
 
@@ -89,7 +84,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
         { backgroundColor: colors.backgroundSecondary },
       ]}
     >
-      <UserMessage text={userMessage} type="success"/>
+      <UserMessage text={userMessage} type="success" />
       <TextInput
         mode="flat"
         style={[styles.input, { backgroundColor: colors.inputBackground }]}

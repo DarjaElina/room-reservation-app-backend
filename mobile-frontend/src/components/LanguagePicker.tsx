@@ -11,7 +11,11 @@ interface LanguagePickerProps {
   locales: string[];
 }
 
-export default function LanguagePicker({ locale, onLocaleSelected, locales }: LanguagePickerProps) {
+export default function LanguagePicker({
+  locale,
+  onLocaleSelected,
+  locales,
+}: LanguagePickerProps) {
   const { colors } = useTheme();
   const styles = useStyles();
 
@@ -20,17 +24,18 @@ export default function LanguagePicker({ locale, onLocaleSelected, locales }: La
       <Picker
         selectedValue={locale}
         onValueChange={(itemValue) => onLocaleSelected(itemValue as Locales)}
-        style={[
-          styles.picker,
-        ]}
+        style={[styles.picker]}
         itemStyle={{ color: colors.text }}
       >
         <Picker.Item label="Choose a language" value="" enabled={false} />
         {locales.map((localeOption) => (
-          <Picker.Item key={localeOption} label={localeOption} value={localeOption} />
+          <Picker.Item
+            key={localeOption}
+            label={localeOption}
+            value={localeOption}
+          />
         ))}
       </Picker>
     </View>
   );
 }
-

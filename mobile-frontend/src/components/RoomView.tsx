@@ -25,7 +25,7 @@ import useStyles from '../hooks/useStyles';
 import { Room } from '@/__generated__/graphql';
 
 interface RoomViewProps {
-  __typename?: "Room";
+  __typename?: 'Room';
   id: string;
   isFree?: boolean | null;
   code: string;
@@ -34,18 +34,17 @@ interface RoomViewProps {
   size: number;
   description: string;
   equipment: Array<{
-      __typename?: "Equipment";
-      name: string;
-      id: string;
+    __typename?: 'Equipment';
+    name: string;
+    id: string;
   }>;
   venue: {
-      __typename?: "Venue";
-      name: string;
+    __typename?: 'Venue';
+    name: string;
   };
 }
 
-
-export default function RoomView({ room }: { room: RoomViewProps}) {
+export default function RoomView({ room }: { room: RoomViewProps }) {
   const { colors } = useTheme();
   const { user, error, loading } = useAuth();
   const [modalVisible, setModalVisible] = useState(false);
