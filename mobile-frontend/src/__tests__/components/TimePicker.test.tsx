@@ -46,7 +46,7 @@ jest.mock('@react-navigation/native', () => {
   };
 });
 
-describe('Form Component', () => {
+describe('TimePicker Component', () => {
  
 
   it('renders TimePicker with correct initial state', async () => {
