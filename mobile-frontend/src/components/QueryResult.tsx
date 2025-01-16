@@ -39,7 +39,7 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
           },
         ]}
       >
-        <ActivityIndicator size="large" color={colors.textPrimary} />
+        <ActivityIndicator testID="loading-indicator" size="large" color={colors.textPrimary} />
         <Text
           style={[
             styles.text,
@@ -64,6 +64,7 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
         ]}
       >
         <Text
+          testID='error-text'
           style={[
             styles.errorText,
             {

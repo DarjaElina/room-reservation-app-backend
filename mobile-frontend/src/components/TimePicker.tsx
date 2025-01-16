@@ -228,6 +228,7 @@ export default function TimePicker({
   return (
     <View style={{ flex: 1 }}>
       <FlatList
+        testID='time-picker'
         ref={ref}
         keyExtractor={(item) => item.value}
         data={timeArray}

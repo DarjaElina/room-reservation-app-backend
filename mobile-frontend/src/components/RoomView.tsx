@@ -1,13 +1,11 @@
 import {
   View,
   Text,
-  StyleSheet,
   Pressable,
   Modal,
   ScrollView,
 } from 'react-native';
 import RoomDescription from './RoomDescription';
-import theme from '@/src/theme';
 import { Image } from 'expo-image';
 import EquipmentList from './EquipmentList';
 import useAuth from '@/src/hooks/useAuth';
@@ -22,7 +20,6 @@ import { useTheme } from '@react-navigation/native';
 import { router } from 'expo-router';
 import { useI18nContext } from '../i18n/i18n-react';
 import useStyles from '../hooks/useStyles';
-import { Room } from '@/__generated__/graphql';
 
 interface RoomViewProps {
   __typename?: 'Room';

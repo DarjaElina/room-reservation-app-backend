@@ -1,36 +1,52 @@
-import { screen, render } from '@testing-library/react-native';
+import { screen, render, userEvent } from '@testing-library/react-native';
 import RoomListContainer from '@/src/components/RoomList/RoomListContainer';
 import { Room } from '@/__generated__/graphql';
-import { mockUseI18nContext, mockLL } from '@/src/test-utils/mockI18n';
 
 
 jest.mock('expo-router', () => ({
   Link: ({ children }) => <>{children}</>,
 }));
-jest.mock('@react-navigation/native', () => {
+
+const mockNavigation = jest.fn(); jest.mock('@react-navigation/native', () => ({ ...jest.requireActual('@react-navigation/native'), useNavigation: () => { return mockNavigation; }, }));
+
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+  useNavigation: () => {
+    return mockNavigation;
+  },
+  useTheme: () => ({
+    dark: false,
+    colors: {
+      primary: 'blue',
+      background: 'white',
+      card: 'gray',
+      text: 'black',
+      border: 'green',
+    },
+  }),
+}));
+
+jest.mock('@/src/i18n/i18n-react', () => {
   return {
-    useTheme: () => ({
-      dark: false,
-      colors: {
-        primary: 'blue',
-        background: 'white',
-        card: 'gray',
-        text: 'black',
-        border: 'green',
-      },
-    }),
-  };
-});
+    useI18nContext: () => ({
+      LL: {
+        AVAILABLE: () => 'Avaliable',
+        OCCUPIED: () => 'Occupied'
+      }
+    })
+  }
+})
+
+jest.mock("expo-font");
+
+
+
 
 describe('RoomList', () => {
-  beforeEach(() => {
-    mockUseI18nContext.mockClear();
-    mockUseI18nContext.mockReturnValue({ LL: mockLL });
-  });
   describe('RoomListContainer', () => {
     
 
-    it('renders room information correctly', () => {
+    it('renders room information correctly', async () => {
       const rooms = [
         {
           __typename: "Room",
@@ -151,17 +167,21 @@ describe('RoomList', () => {
       ] as Room[];
 
       
-      const { getAllByTestId } = render(<RoomListContainer onEndReach={(info: { distanceFromEnd: number; }) => console.log('reached')} rooms={rooms}/>)
+      const { getAllByTestId, findAllByText } = render(<RoomListContainer onEndReach={(info: { distanceFromEnd: number; }) => console.log('reached')} rooms={rooms}/>)
 
       const roomItems = getAllByTestId('room-item');
-      //screen.debug();
-      const [firstRoomItem, secondRoomItem] = roomItems;
-
-      expect(firstRoomItem).toBeDefined()
-      expect (secondRoomItem).toBeDefined();
+      expect(roomItems).toHaveLength(rooms.length);
+    
+      rooms.forEach((room) => {
+        const roomCode = screen.getByText(room.code);
+        expect(roomCode).toBeDefined();
+      });
+    
+      
+      const rachmaninoffRooms = await findAllByText('Sergei Rachmaninoff Building');
+      expect(rachmaninoffRooms).toHaveLength(3);
     });
 
    
-
   });
 });

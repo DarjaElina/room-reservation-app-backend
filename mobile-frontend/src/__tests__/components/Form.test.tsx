@@ -7,10 +7,8 @@ import {
 } from '@testing-library/react-native';
 import Form from '@/src/components/Form';
 import { renderHook } from '@testing-library/react-native';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 jest.useFakeTimers();
-
-
 
 jest.mock('@react-navigation/native', () => {
   return {

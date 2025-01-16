@@ -1,7 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { Image } from 'expo-image';
 import { AntDesign, Entypo } from '@expo/vector-icons';
-import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
 import useStyles from '../hooks/useStyles';
