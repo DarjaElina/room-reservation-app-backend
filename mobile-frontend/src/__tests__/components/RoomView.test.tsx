@@ -42,7 +42,6 @@ jest.mock('@/src/hooks/useAuth', () => ({
   default: jest.fn(),
 }));
 
-
 jest.mock('@/src/i18n/i18n-react', () => {
   return {
     useI18nContext: () => ({
@@ -63,7 +62,7 @@ jest.mock("expo-font");
 
 describe('RoomView Component', () => {
 
-  it('should redirect to the sign-in page if there is no user', () => {
+  it('should redirect to the sign-in page if there is no user', async () => {
     (useAuth as jest.Mock).mockImplementation(() => ({
       user: null,
       error: null,
@@ -82,7 +81,7 @@ describe('RoomView Component', () => {
     );
   });
  
-  it('should display available if the room is free', () => {
+  it('should display available if the room is free', async () => {
     (useAuth as jest.Mock).mockImplementation(() => ({
       user: {
         __typename: "User",
@@ -96,10 +95,10 @@ describe('RoomView Component', () => {
     render(<MockedProvider>
       <RoomView room={mockRoom}/>
     </MockedProvider>);
-    expect(screen.getByText('Available')).toBeDefined();
+    expect(await screen.findByText('Available')).toBeDefined();
   });
 
-  it('should display occupied if the room is free', () => {
+  it('should display occupied if the room is free', async () => {
     (useAuth as jest.Mock).mockImplementation(() => ({
       user: {
         __typename: "User",
@@ -113,10 +112,10 @@ describe('RoomView Component', () => {
     render(<MockedProvider>
       <RoomView room={mockRoom}/>
     </MockedProvider>)
-    expect(screen.getByText('Available')).toBeDefined();
+    expect(await screen.findByText('Available')).toBeDefined();
   });
 
-  it('should display the room description', () => {
+  it('should display the room description', async () => {
     (useAuth as jest.Mock).mockImplementation(() => ({
       user: { username: 'username', id: '82feaaca-bd4e-4829-9c8c-efe73a24b805' },
       error: null,
@@ -129,10 +128,10 @@ describe('RoomView Component', () => {
       </MockedProvider>
     );
   
-    expect(screen.getByText('A spacious conference room.')).toBeDefined();
+    expect(await screen.findByText('A spacious conference room.')).toBeDefined();
   });
 
-  it('should display room equipment', () => {
+  it('should display room equipment', async () => {
     (useAuth as jest.Mock).mockImplementation(() => ({
       user: { username: 'username', id: '82feaaca-bd4e-4829-9c8c-efe73a24b805' },
       error: null,
@@ -145,11 +144,11 @@ describe('RoomView Component', () => {
       </MockedProvider>
     );
   
-    expect(screen.getByText('Projector')).toBeDefined();
-    expect(screen.getByText('Whiteboard')).toBeDefined();
+    expect(await screen.findByText('Projector')).toBeDefined();
+    expect(await screen.findByText('Whiteboard')).toBeDefined();
   });
 
-  it('should display "Reserve" button', () => {
+  it('should display "Reserve" button', async () => {
     (useAuth as jest.Mock).mockImplementation(() => ({
       user: { username: 'username', id: '82feaaca-bd4e-4829-9c8c-efe73a24b805' },
       error: null,
@@ -162,10 +161,10 @@ describe('RoomView Component', () => {
       </MockedProvider>
     );
   
-    expect(screen.getByText('Reserve')).toBeDefined();
+    expect(await screen.findByText('Reserve')).toBeDefined();
   });
 
-  it('should display the venue name', () => {
+  it('should display the venue name', async () => {
     (useAuth as jest.Mock).mockImplementation(() => ({
       user: { username: 'username', id: '82feaaca-bd4e-4829-9c8c-efe73a24b805' },
       error: null,
@@ -178,10 +177,10 @@ describe('RoomView Component', () => {
       </MockedProvider>
     );
   
-    expect(screen.getByText('Main Venue')).toBeDefined();
+    expect(await screen.findByText('Main Venue')).toBeDefined();
   });
 
-  it('should display loading state when data is loading', () => {
+  it('should display loading state when data is loading', async () => {
     (useAuth as jest.Mock).mockImplementation(() => ({
       user: { username: 'username', id: '82feaaca-bd4e-4829-9c8c-efe73a24b805' },
       error: null,
@@ -194,10 +193,10 @@ describe('RoomView Component', () => {
       </MockedProvider>
     );
   
-    expect(screen.getByTestId('loading-indicator')).toBeDefined();
+    expect(await screen.findByTestId('loading-indicator')).toBeDefined();
   });
 
-  it('should display an error message if there is an error', () => {
+  it('should display an error message if there is an error', async () => {
     (useAuth as jest.Mock).mockImplementation(() => ({
       user: { username: 'username', id: '82feaaca-bd4e-4829-9c8c-efe73a24b805' },
       error: 'An error occurred',
@@ -210,6 +209,6 @@ describe('RoomView Component', () => {
       </MockedProvider>
     );
   
-    expect(screen.getByTestId('error-text')).toBeDefined();
+    expect(await screen.findByTestId('error-text')).toBeDefined();
   });
 });

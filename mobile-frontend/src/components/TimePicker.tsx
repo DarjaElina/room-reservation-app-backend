@@ -1,4 +1,4 @@
-import { FlatList, View, StyleSheet, ActivityIndicator } from 'react-native';
+import { FlatList, View } from 'react-native';
 import useBookingContext from '@/src/hooks/useBookingContext';
 import { FAB } from 'react-native-paper';
 import { Alert } from 'react-native';
@@ -150,6 +150,8 @@ export default function TimePicker({
       return {
         startDate: `${startHours}:${startMinutes}:00`,
         endDate: `${endHours}:${endMinutes}:00`,
+        title: b.title,
+        user: `${b.user.givenName} ${b.user.familyName}`
       };
     })
     .filter((b) => {
@@ -192,7 +194,7 @@ export default function TimePicker({
           return newValues.filter(
             (i) =>
               !mappedBookings.some(
-                (b) => b.startDate <= i.value && b.endDate >= i.value
+                (b) => b.startDate <= i.value && b.endDate > i.value
               )
           );
         });
@@ -209,7 +211,7 @@ export default function TimePicker({
           .filter(
             (i) =>
               !mappedBookings.some(
-                (b) => b.startDate <= i.value && b.endDate >= i.value
+                (b) => b.startDate <= i.value && b.endDate > i.value
               )
           )
           .sort((a, b) => a.hour - b.hour)
@@ -219,7 +221,7 @@ export default function TimePicker({
         hourBlock.filter(
           (i) =>
             !mappedBookings.some(
-              (b) => b.startDate <= i.value && b.endDate >= i.value
+              (b) => b.startDate <= i.value && b.endDate > i.value
             )
         )
       );

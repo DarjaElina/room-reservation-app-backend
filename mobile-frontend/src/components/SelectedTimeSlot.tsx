@@ -3,15 +3,26 @@ import { View, Text, StyleSheet } from 'react-native';
 interface SelectedTimeSlotProps {
   value?: string;
   color: string;
+  bookingInfo?: {
+    title: string | null | undefined;
+    user: string;
+  },
+  displayBookingTitle?: boolean;
+  displayBookingUser?: boolean;
 }
 
 export default function SelectedTimeSlot({
   value,
   color,
+  bookingInfo,
+  displayBookingTitle,
+  displayBookingUser
 }: SelectedTimeSlotProps) {
   return (
     <View style={[styles.container, { backgroundColor: color }]}>
-      <Text style={styles.text}>{value}</Text>
+      {value && <Text style={styles.text}>{value}</Text>}
+      {displayBookingTitle && <Text style={styles.text}>{bookingInfo?.title}</Text>}
+      {displayBookingUser && <Text style={styles.text}>{bookingInfo?.user}</Text>}
     </View>
   );
 }
