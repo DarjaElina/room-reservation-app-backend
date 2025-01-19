@@ -6,7 +6,7 @@ interface SelectedTimeSlotProps {
   bookingInfo?: {
     title: string | null | undefined;
     user: string;
-  },
+  };
   displayBookingTitle?: boolean;
   displayBookingUser?: boolean;
 }
@@ -16,13 +16,17 @@ export default function SelectedTimeSlot({
   color,
   bookingInfo,
   displayBookingTitle,
-  displayBookingUser
+  displayBookingUser,
 }: SelectedTimeSlotProps) {
   return (
     <View style={[styles.container, { backgroundColor: color }]}>
       {value && <Text style={styles.text}>{value}</Text>}
-      {displayBookingTitle && <Text style={styles.text}>{bookingInfo?.title}</Text>}
-      {displayBookingUser && <Text style={styles.text}>{bookingInfo?.user}</Text>}
+      {displayBookingTitle && (
+        <Text style={styles.text}>{bookingInfo?.title}</Text>
+      )}
+      {displayBookingUser && (
+        <Text style={styles.text}>{bookingInfo?.user}</Text>
+      )}
     </View>
   );
 }

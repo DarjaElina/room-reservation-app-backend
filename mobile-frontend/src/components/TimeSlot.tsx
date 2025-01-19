@@ -13,7 +13,14 @@ interface TimeSlotProps {
   onSelect: (timeSlot: TimeSlotType) => void;
   timeSlot: TimeSlotType;
   index: number;
-  booking?: { startDate: string; endDate: string, title: string | null | undefined, user: string; } | undefined;
+  booking?:
+    | {
+        startDate: string;
+        endDate: string;
+        title: string | null | undefined;
+        user: string;
+      }
+    | undefined;
   bookingToModify?: { startDate: string; endDate: string } | undefined;
 }
 
@@ -46,7 +53,11 @@ const TimeSlot = memo(function TimeSlotItem({
           value={timeSlot.value.slice(0, 5)}
         />
       ) : null}
-      <BookedTimeSlot booking={booking} displayBookingTitle={index % 4 === 0} displayBookingUser={index % 4 === 1}/>
+      <BookedTimeSlot
+        booking={booking}
+        displayBookingTitle={index % 4 === 0}
+        displayBookingUser={index % 4 === 1}
+      />
     </Pressable>
   );
 });

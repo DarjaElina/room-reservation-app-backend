@@ -26,7 +26,7 @@ export default function Room({
   const styles = useStyles();
   return (
     <View
-      testID='room-item'
+      testID="room-item"
       style={[
         styles.roomItemContainer,
         {

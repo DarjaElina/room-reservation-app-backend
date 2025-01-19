@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
 import useStyles from '../hooks/useStyles';
@@ -43,6 +42,7 @@ export default function BookingDetailsCard({
   };
   const { LL } = useI18nContext();
   const styles = useStyles();
+
 
   return (
     <View
@@ -90,8 +90,9 @@ export default function BookingDetailsCard({
         value={bookingTitle}
         onChangeText={setBookingTitle}
         placeholder={LL.BOOKING_TITLE()}
-        placeholderTextColor={colors.textPrimary}
         activeUnderlineColor={error ? colors.error : colors.inputActiveBorder}
+        placeholderTextColor={colors.textSecondary}
+        textColor={colors.textPrimary}
       />
       {error && (
         <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>

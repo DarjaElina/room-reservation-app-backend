@@ -43,7 +43,7 @@ export default function RoomListContainer({
       renderItem={({ item }) =>
         item ? (
           <Link
-            testID='room-item-link'
+            testID="room-item-link"
             style={styles.roomLink}
             href={{
               pathname: '/rooms/[id]',

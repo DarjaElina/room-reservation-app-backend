@@ -151,7 +151,7 @@ export default function TimePicker({
         startDate: `${startHours}:${startMinutes}:00`,
         endDate: `${endHours}:${endMinutes}:00`,
         title: b.title,
-        user: `${b.user.givenName} ${b.user.familyName}`
+        user: `${b.user.givenName} ${b.user.familyName}`,
       };
     })
     .filter((b) => {
@@ -230,7 +230,7 @@ export default function TimePicker({
   return (
     <View style={{ flex: 1 }}>
       <FlatList
-        testID='time-picker'
+        testID="time-picker"
         ref={ref}
         keyExtractor={(item) => item.value}
         data={timeArray}

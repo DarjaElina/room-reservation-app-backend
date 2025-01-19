@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  Pressable,
-  Modal,
-  ScrollView,
-} from 'react-native';
+import { View, Text, Pressable, Modal, ScrollView } from 'react-native';
 import RoomDescription from './RoomDescription';
 import { Image } from 'expo-image';
 import EquipmentList from './EquipmentList';
