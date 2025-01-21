@@ -6,7 +6,6 @@ import {
   Modal,
   useColorScheme,
 } from 'react-native';
-import theme from '@/src/theme';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -52,8 +51,6 @@ export default function BookingItem({
     minute: '2-digit',
     hour12: false,
   };
-
-  console.log(new Date(startDate) < new Date());
 
   const handleCancel = async (id: string) => {
     try {

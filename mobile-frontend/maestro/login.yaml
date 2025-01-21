@@ -1,0 +1,12 @@
+appId: ${APP_ID}
+---
+- launchApp
+- assertVisible: 'Log In'
+- tapOn: 'Username'
+- inputText: 'ed10041'
+- tapOn: 'Password'
+- inputText: 'password'
+- tapOn:
+    point: "50%,41%"
+- tapOn:
+    point: "50%,70%"

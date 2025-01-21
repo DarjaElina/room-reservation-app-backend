@@ -21,8 +21,6 @@ export default function CheckBox({
     ...checkedValues,
   ]);
 
-  console.log(updatedCheckedValues);
-
   return (
     <View style={styles.container}>
       <FlatList

@@ -1,8 +1,7 @@
-import { FlatList, Text, View, StyleSheet } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import BookingItem from './BookingItem';
 import useBookings from '@/src/hooks/useBookings';
 import QueryResult from './QueryResult';
-import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
 import useStyles from '../hooks/useStyles';
 import { BookingsQueryVariables } from '@/__generated__/graphql';

@@ -90,7 +90,6 @@ describe('RoomView Component', () => {
       error: null,
       loading: false,
     }));
-    const room = { ...mockRoom };
     render(
       <MockedProvider>
         <RoomView room={mockRoom} />
