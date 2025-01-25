@@ -215,7 +215,7 @@ const useStyles = () => {
         paddingHorizontal: vw * (isLargeScreen ? 10 : 5),
         paddingVertical: vh * (isLargeScreen ? 5 : 2),
       },
-      bookingMessage: {
+      userMessage: {
         fontSize: theme.fontSizes.small + vmin * 2,
         textAlign: 'center',
         marginVertical: vmin * 3.5,

@@ -4,7 +4,7 @@ import { Room } from '@/__generated__/graphql';
 import { ReactNode } from 'react';
 
 jest.mock('expo-router', () => ({
-  Link: ({ children }: {children: ReactNode}) => <>{children}</>,
+  Link: ({ children }: { children: ReactNode }) => <>{children}</>,
 }));
 
 const mockNavigation = jest.fn();

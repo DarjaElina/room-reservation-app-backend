@@ -12,7 +12,7 @@ import { useI18nContext } from '@/src/i18n/i18n-react';
 
 export default function RoomListWrapper() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 2000);
   const { startDate, endDate, buildings, equipment, types } = useFilter();
 
   const { rooms, loading, error, fetchMore } = useRooms({

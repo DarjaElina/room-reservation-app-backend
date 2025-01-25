@@ -1,0 +1,21 @@
+appId: ${APP_ID}
+---
+- runFlow: login.yaml
+- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertNotVisible: 'tane-130  Sergei Taneyev Building  Available'
+- tapOn:
+    id: 'search-bar'
+- inputText: 'tane-130'
+- assertVisible: 'tane-130  Sergei Taneyev Building  Available'
+- tapOn: '󰅖'
+- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- tapOn:
+    id: 'search-bar'
+- inputText: 'NonExistentRoom'
+- assertVisible: 'No rooms found.'
+- tapOn: '󰅖'
+- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertNotVisible: 'tane-130  Sergei Taneyev Building  Available'
+- scrollUntilVisible:
+    element: 'tane-130  Sergei Taneyev Building  Available'
+

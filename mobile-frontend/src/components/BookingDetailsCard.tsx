@@ -43,7 +43,6 @@ export default function BookingDetailsCard({
   const { LL } = useI18nContext();
   const styles = useStyles();
 
-
   return (
     <View
       style={[

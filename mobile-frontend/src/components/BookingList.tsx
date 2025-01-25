@@ -23,7 +23,7 @@ export default function BookingList({
     return (
       <Text
         style={[
-          styles.bookingMessage,
+          styles.userMessage,
           {
             color: colors.textPrimary,
           },

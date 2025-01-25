@@ -186,5 +186,4 @@ describe('TimePicker Component', () => {
     await user.press(slot);
     expect(queryByText('08:00')).toBeNull();
   });
-
 });
