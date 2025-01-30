@@ -1,0 +1,28 @@
+appId: ${APP_ID}
+---
+- runFlow: login.yaml
+- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertVisible: 'Reserve'
+- tapOn: 'Reserve'
+- runScript: ../src/scripts/parseDate.js
+- assertVisible: ${output.result}
+- assertVisible: "06:00:00"
+- scrollUntilVisible:
+    element: '21:00:00'
+- assertVisible: 'Confirm'
+- tapOn: 'Confirm'
+- assertVisible: "Empty booking"
+- tapOn: 'OK'
+- tapOn: "21:00:00"
+- tapOn: 'Confirm'
+- assertVisible: "Booking Details"
+- assertVisible: "Room: rach-100"
+- tapOn: 'Reserve'
+- assertVisible: 'Booking created successfully.'
+- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
+- tapOn: 'Reserve'
+- scrollUntilVisible:
+    element: '21:00:00 Reservation from Booking App'
+- assertVisible: 'Elena Demina'

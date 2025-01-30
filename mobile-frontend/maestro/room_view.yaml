@@ -1,0 +1,16 @@
+appId: ${APP_ID}
+---
+- runFlow: login.yaml
+- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertVisible: 'rach-100'
+- assertVisible: 'Reserve'
+- scrollUntilVisible:
+    element: 'Show Upcoming Reservations'
+- tapOn: 'Show Upcoming Reservations'
+- assertVisible: 'You have no upcoming bookings.'
+- tapOn: 'Close'
+- scrollUntilVisible:
+    element: 'Reserve'
+    direction: UP
+- tapOn: 'Reserve'
