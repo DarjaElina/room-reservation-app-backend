@@ -56,6 +56,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
       setTitle('');
       setTimeout(() => {
         setUserMessage(null);
+        onCancel();
         router.navigate('/(tabs)/(home)');
       }, 2000);
     } catch (error: unknown) {
