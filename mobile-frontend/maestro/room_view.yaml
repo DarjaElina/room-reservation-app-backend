@@ -16,6 +16,8 @@ appId: ${APP_ID}
 - tapOn: 'Reserve'
 - tapOn:
     point: "92%,13%"
+- runScript: ../src/scripts/getTomorrowDate.js
+- assertVisible: ${output.getTomorrowDate.spaceFormat}
 - tapOn: "06:00:00"
 - tapOn: 'Confirm'
 - assertVisible: "Booking Details"
@@ -28,5 +30,5 @@ appId: ${APP_ID}
 - tapOn: 'Show Upcoming Reservations'
 - assertVisible: 'Reservation from Booking App'
 - assertVisible: 'rach-100'
-- assertVisible: '.*6.00.*'
-- assertVisible: '.*7.00.*'
+- assertVisible: "${output.getTomorrowDate.dotFormat} at 6.00 - ${output.getTomorrowDate.dotFormat} at 7.00"
+- tapOn: 'Close'

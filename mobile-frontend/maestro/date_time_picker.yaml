@@ -5,8 +5,8 @@ appId: ${APP_ID}
 - tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
 - assertVisible: 'Reserve'
 - tapOn: 'Reserve'
-- runScript: ../src/scripts/parseDate.js
-- assertVisible: ${output.result}
+- runScript: ../src/scripts/getTodayDate.js
+- assertVisible: ${output.getTodayDate.spaceFormat}
 - assertVisible: "06:00:00"
 - scrollUntilVisible:
     element: '21:00:00'
@@ -18,6 +18,8 @@ appId: ${APP_ID}
 - tapOn: 'Confirm'
 - assertVisible: "Booking Details"
 - assertVisible: "Room: rach-100"
+- assertVisible: "Starts: ${output.getTodayDate.commaFormat} at 9:00 PM"
+- assertVisible: "Ends: ${output.getTodayDate.commaFormat} at 10:00 PM"
 - tapOn: 'Reserve'
 - assertVisible: 'Booking created successfully.'
 - assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
