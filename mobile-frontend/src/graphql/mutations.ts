@@ -39,6 +39,7 @@ export const CANCEL_BOOKING = gql(`
 export const UPDATE_BOOKING = gql(`
   mutation UpdateBooking($bookingId: ID!, $bookingTime: [Date!]!, $title: String, $roomId: ID!) {
     updateBooking(bookingId: $bookingId, bookingTime: $bookingTime, title: $title, roomId: $roomId) {
+      title
       id
       bookingTime {
         value
