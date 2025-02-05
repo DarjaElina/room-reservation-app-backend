@@ -107,7 +107,6 @@ const useStyles = () => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: vmin * 1,
       },
       roomViewHeaderText: {
         fontSize: 12 + vmin * 3.5,

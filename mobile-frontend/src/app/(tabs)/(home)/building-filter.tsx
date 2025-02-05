@@ -12,7 +12,7 @@ import useStyles from '@/src/hooks/useStyles';
 export default function BuildingFilter() {
   const { colors } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
-  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 2000);
   const { buildings, loading, error } = useVenues({
     searchKeyword: debouncedSearchQuery,
   });

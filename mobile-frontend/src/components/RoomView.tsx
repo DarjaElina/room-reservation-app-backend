@@ -9,7 +9,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useState } from 'react';
 import QueryResult from './QueryResult';
-import { BookingStatus } from '@/__generated__/graphql';
+import { BookingStatus, RoomType } from '@/__generated__/graphql';
 import { useTheme } from '@react-navigation/native';
 import { router } from 'expo-router';
 import { useI18nContext } from '../i18n/i18n-react';
@@ -33,6 +33,7 @@ interface RoomViewProps {
     __typename?: 'Venue';
     name: string;
   };
+  type: RoomType;
 }
 
 export default function RoomView({ room }: { room: RoomViewProps }) {
@@ -40,6 +41,12 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
   const { user, error, loading } = useAuth();
   const [modalVisible, setModalVisible] = useState(false);
   const dynamicStyles = useStyles();
+  const formatRoomType = (type: string) => {
+    return type
+    .toLowerCase()
+    .replace(/_/g, ' ')
+    .replace(/^./, (str) => str.toUpperCase());
+  }
   if (!user) {
     return <Redirect href="/sign-in" />;
   }
@@ -69,6 +76,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
             >
               {room.code}
             </Text>
+            <Text style={[dynamicStyles.label, { color: colors.textPrimary }]}>{formatRoomType(room.type)}</Text>
             <Pressable
               style={[
                 dynamicStyles.button,
@@ -88,7 +96,6 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
               </Text>
             </Pressable>
           </View>
-
           <View style={dynamicStyles.roomLocationContainer}>
             <Entypo name="location-pin" size={24} color={colors.textPrimary} />
             <Text

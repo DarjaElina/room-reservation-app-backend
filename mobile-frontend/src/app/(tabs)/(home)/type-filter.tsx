@@ -22,7 +22,7 @@ export const RoomTypeLabels: Record<RoomType, string> = {
 export default function TypeFilter() {
   const { colors } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
-  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 2000);
   const { types, setTypes } = useFilter();
   const styles = useStyles();
 

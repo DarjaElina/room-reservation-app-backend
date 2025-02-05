@@ -12,7 +12,7 @@ import { useTheme } from '@react-navigation/native';
 export default function EquipmentFilter() {
   const { colors } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
-  const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 2000);
   const { equipment, loading, error } = useEquipment({
     searchKeyword: debouncedSearchQuery,
   });

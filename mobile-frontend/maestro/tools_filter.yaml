@@ -1,0 +1,21 @@
+appId: ${APP_ID}
+---
+- runFlow: login.yaml
+- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertNotVisible: 'tane-131  Sergei Taneyev Building  Available'
+- tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertNotVisible: 'Timpani'
+- tapOn: 'Back'
+- scrollUntilVisible:
+    element: 'tane-131  Sergei Taneyev Building  Available'
+- tapOn: 'tane-131  Sergei Taneyev Building  Available'
+- assertVisible: 'Timpani'
+- tapOn: 'Back'
+- tapOn: " Tools"
+- tapOn: "Search"
+- inputText: 'timpani'
+- assertVisible: " Timpani"
+- tapOn: " Timpani"
+- tapOn: 'Back'
+- assertNotVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertVisible: 'tane-131  Sergei Taneyev Building  Available'

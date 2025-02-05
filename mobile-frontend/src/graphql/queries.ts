@@ -56,6 +56,7 @@ export const FIND_ROOM = gql(`
         name
       }
       description
+      type
     }
   }
 `);

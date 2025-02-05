@@ -1,0 +1,22 @@
+appId: ${APP_ID}
+---
+- runFlow: login.yaml
+- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertNotVisible: 'tane-131  Sergei Taneyev Building  Available'
+- tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertVisible: 'Classroom'
+- tapOn: 'Back'
+- scrollUntilVisible:
+    element: 'tane-131  Sergei Taneyev Building  Available'
+- tapOn: 'tane-131  Sergei Taneyev Building  Available'
+- assertVisible: 'Practice room'
+- tapOn: 'Back'
+- tapOn: " Type"
+- tapOn: "Search"
+- inputText: 'practice'
+- hideKeyboard
+- assertVisible: " Practice Room"
+- longPressOn: " Practice Room"
+- tapOn: 'Back'
+- assertNotVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertVisible: 'tane-131  Sergei Taneyev Building  Available'
