@@ -1,0 +1,33 @@
+appId: ${APP_ID}
+---
+- runFlow: login.yaml
+- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
+- tapOn: 'Reserve'
+- tapOn:
+    point: '92%,13%'
+- tapOn: '06:00:00'
+- tapOn: 'Confirm'
+- assertVisible: 'Booking Details'
+- tapOn: 'Reserve'
+- assertVisible: 'Booking created successfully.'
+- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- tapOn: ' Time'
+- assertVisible: 'Select the time range to search for available classrooms.'
+- tapOn: 'Start Date Start Date'
+- assertVisible: 'Today'
+- runScript: ../src/scripts/getCurrentTime.js
+- assertVisible: '${output.getHours.currentHour} o’clock'
+- tapOn:
+    point: '32%,68%'
+- doubleTapOn:
+    point: "59%,63%"
+- inputText: '6'
+- tapOn:
+    point: "73%,63%"
+- inputText: '00'
+- tapOn:
+    point: "50%,20%"
+- tapOn: 'Confirm'
+- tapOn: 'Search Classrooms'
+- assertNotVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
