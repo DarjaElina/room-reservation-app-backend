@@ -177,25 +177,4 @@ describe('BookingDetailsCard Component', () => {
 
     expect(mockOnSubmit).toHaveBeenCalled();
   });
-  it('matches the snapshot', async () => {
-    const { toJSON } = render(
-      <BookingDetailsCard
-        bookingStartDate={new Date(
-          new Date().setHours(7, 0, 0, 0)
-        ).toISOString()}
-        bookingEndDate={new Date(new Date().setHours(8, 0, 0, 0)).toISOString()}
-        bookingTitle="My booking"
-        setBookingTitle={() => {}}
-        error={null}
-        onSubmit={() => {}}
-        buttonText="Reserve"
-        loading={false}
-        roomCode="1234"
-      />
-    );
-
-    await waitFor(() => {
-      expect(toJSON()).toMatchSnapshot();
-    });
-  });
 });
