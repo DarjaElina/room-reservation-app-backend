@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react-native';
 import RoomView from '@/src/components/RoomView';
 import { MockedProvider } from '@apollo/client/testing';
 import useAuth from '@/src/hooks/useAuth';
+import { RoomType } from '@/__generated__/graphql';
 
 jest.mock('@react-navigation/native', () => ({
   ...jest.requireActual('@react-navigation/native'),
@@ -35,6 +36,7 @@ const mockRoom = {
   ],
   venue: { name: 'Main Venue' },
   size: 10,
+  type: RoomType.Classroom
 };
 
 jest.mock('@/src/hooks/useAuth', () => ({
