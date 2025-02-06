@@ -19,7 +19,7 @@ export default function SelectedTimeSlot({
   displayBookingUser,
 }: SelectedTimeSlotProps) {
   return (
-    <View style={[styles.container, { backgroundColor: color }]}>
+    <View testID="selected_time_slot" style={[styles.container, { backgroundColor: color }]}>
       {value && <Text style={styles.text}>{value}</Text>}
       {displayBookingTitle && (
         <Text style={styles.text}>{bookingInfo?.title}</Text>
