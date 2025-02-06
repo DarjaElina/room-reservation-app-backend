@@ -34,6 +34,7 @@ const TimeSlot = memo(function TimeSlotItem({
 
   return (
     <Pressable
+      testID='time_slot_btn'
       disabled={booking ? true : false}
       onPress={() => onSelect(timeSlot)}
       style={{
