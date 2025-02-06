@@ -34,19 +34,3 @@ export default function RoomDescription({ text }: DescriptionProp) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: theme.spacing.medium,
-    borderRadius: theme.borderRadius.medium,
-    marginVertical: theme.spacing.medium,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 3,
-    elevation: 2,
-  },
-  text: {
-    fontSize: theme.fontSizes.subheading,
-    lineHeight: 22,
-    textAlign: 'justify',
-  },
-});

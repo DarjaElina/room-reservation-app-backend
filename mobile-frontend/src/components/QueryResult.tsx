@@ -76,7 +76,7 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
             },
           ]}
         >
-          `{LL.ERROR()}: {error.message}`
+          {LL.ERROR()}: {error.message}
         </Text>
       </View>
     );

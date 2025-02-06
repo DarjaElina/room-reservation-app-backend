@@ -44,8 +44,8 @@ describe('UserMessage Component', () => {
     const { getByText } = render(<UserMessage text="Error message" type="error" />);
     const getHostParent = (element: ReactTestInstance) => {
       let result = element.parent;
-      while (typeof result.type !== 'string') {
-         result = result.parent;
+      while (typeof result?.type !== 'string') {
+         result = result?.parent;
       }
    
       return result;
