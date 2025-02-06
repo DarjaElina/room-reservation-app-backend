@@ -66,9 +66,14 @@ describe('BookingItem Component', () => {
       </MockedProvider>
     );
 
+    const formattedDate = new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(new Date());
     expect(await findByText('r-100')).toBeDefined();
     expect(
-      await findByText('Jan 19, 2025, 09:00 - Jan 19, 2025, 10:00')
+      await findByText(`${formattedDate}, 09:00 - ${formattedDate}, 10:00`)
     ).toBeDefined();
     //screen.debug();
   });
