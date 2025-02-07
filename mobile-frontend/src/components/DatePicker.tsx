@@ -60,6 +60,7 @@ export default function DatePicker({ dateToModify }: DatePickerProps) {
       ]}
     >
       <AntDesign.Button
+        testID="prev_day_button"
         backgroundColor="lightgrey"
         name="caretleft"
         size={24}
@@ -90,6 +91,7 @@ export default function DatePicker({ dateToModify }: DatePickerProps) {
         </Text>
       </TouchableOpacity>
       <DateTimePickerModal
+        testID='date_time_picker_modal'
         isVisible={isDatePickerVisible}
         mode="date"
         onConfirm={handleConfirm}
@@ -97,6 +99,7 @@ export default function DatePicker({ dateToModify }: DatePickerProps) {
         minimumDate={new Date()}
       />
       <AntDesign.Button
+        testID="next_day_button"
         backgroundColor="lightgrey"
         name="caretright"
         size={24}
