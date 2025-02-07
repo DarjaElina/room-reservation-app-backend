@@ -30,8 +30,8 @@ describe('UserMessage Component', () => {
     const { getByText } = render(<UserMessage text="Success message" type="success" />);
     const getHostParent = (element: ReactTestInstance) => {
       let result = element.parent;
-      while (typeof result.type !== 'string') {
-         result = result.parent;
+      while (typeof result?.type !== 'string') {
+         result = result?.parent as ReactTestInstance;
       }
    
       return result;
@@ -45,7 +45,7 @@ describe('UserMessage Component', () => {
     const getHostParent = (element: ReactTestInstance) => {
       let result = element.parent;
       while (typeof result?.type !== 'string') {
-         result = result?.parent;
+         result = result?.parent as ReactTestInstance;;
       }
    
       return result;
