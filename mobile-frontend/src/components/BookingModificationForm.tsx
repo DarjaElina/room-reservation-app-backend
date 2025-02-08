@@ -60,8 +60,11 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
         router.navigate('/(tabs)/(home)');
       }, 2000);
     } catch (error: unknown) {
-      if (error instanceof ApolloError) Alert.alert(error.message);
-      console.log(error);
+      if (error instanceof ApolloError) {
+        const message = error.graphQLErrors?.[0]?.message || "Something went wrong!";
+        Alert.alert("Error", message);
+      }
+      console.log(error)
     }
   };
 
