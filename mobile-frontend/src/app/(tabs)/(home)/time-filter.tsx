@@ -135,7 +135,7 @@ export default function TimeFilter() {
   return (
     <View
       style={[
-        styles.container,
+        styles.flexContainer, styles.scrollContainer,
         {
           backgroundColor: colors.backgroundPrimary,
           justifyContent: 'center',

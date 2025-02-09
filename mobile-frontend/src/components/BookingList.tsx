@@ -44,7 +44,7 @@ export default function BookingList({
     <QueryResult error={error} loading={loading} data={bookings}>
       <View
         style={[
-          styles.container,
+          styles.flexContainer,
           {
             backgroundColor: colors.backgroundPrimary,
           },

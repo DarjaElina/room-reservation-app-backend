@@ -37,7 +37,7 @@ export default function TypeFilter() {
   return (
     <View
       style={[
-        styles.container,
+        styles.scrollContainer, styles.flexContainer,
         {
           backgroundColor: colors.backgroundPrimary,
         },

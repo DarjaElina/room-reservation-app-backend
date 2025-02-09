@@ -86,7 +86,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
       style={[
         styles.itemContainer,
         
-        { backgroundColor: colors.backgroundSecondary, width: '100%' },
+        { backgroundColor: colors.backgroundSecondary, width: '50%', alignSelf: 'center' },
       ]}
     >
       <UserMessage text={userMessage} type="success" />

@@ -30,17 +30,17 @@ export default function SettingsScreen() {
   return (
     <View
       style={[
-        styles.container,
+        styles.flexContainer,styles.scrollContainer,
         { backgroundColor: colors.background, justifyContent: 'center' },
       ]}
     >
       <Pressable style={[styles.settingsLink, { borderColor: colors.border }]}>
-        <Text style={[styles.label, { color: colors.text }]}>
+        <Text style={[styles.mediumText, { color: colors.text }]}>
           Privacy Policy
         </Text>
       </Pressable>
       <Pressable style={[styles.settingsLink, { borderColor: colors.border }]}>
-        <Text style={[styles.label, { color: colors.text }]}>
+        <Text style={[styles.mediumText, { color: colors.text }]}>
           Terms of Service
         </Text>
       </Pressable>
@@ -49,7 +49,7 @@ export default function SettingsScreen() {
         style={[styles.button, { backgroundColor: colors.buttonBackground }]}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={[styles.label, { color: colors.buttonText }]}>
+        <Text style={[styles.mediumText, { color: colors.buttonText }]}>
           {LL.SELECT_LANGUAGE()}
         </Text>
       </Pressable>
@@ -93,7 +93,7 @@ export default function SettingsScreen() {
       >
         <Ionicons name="log-out-outline" size={24} color={colors.background} />
         <Text
-          style={[styles.label, { color: colors.buttonText, marginLeft: 8 }]}
+          style={[styles.mediumText, { color: colors.buttonText, marginLeft: 8 }]}
         >
           {LL.LOGOUT()}
         </Text>

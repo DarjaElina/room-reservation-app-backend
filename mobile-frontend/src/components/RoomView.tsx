@@ -14,6 +14,7 @@ import { useTheme } from '@react-navigation/native';
 import { router } from 'expo-router';
 import { useI18nContext } from '../i18n/i18n-react';
 import useStyles from '../hooks/useStyles';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 interface RoomViewProps {
   __typename?: 'Room';
@@ -40,7 +41,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
   const { colors } = useTheme();
   const { user, error, loading } = useAuth();
   const [modalVisible, setModalVisible] = useState(false);
-  const dynamicStyles = useStyles();
+  const styles = useStyles();
   const formatRoomType = (type: string) => {
     return type
     .toLowerCase()
@@ -55,30 +56,69 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
     '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
   return (
     <QueryResult error={error} loading={loading} data={user}>
+      <View style={[styles.flexContainer]}>
       <ScrollView
-        contentContainerStyle={dynamicStyles.scrollContainer}
+        contentContainerStyle={styles.scrollContainer}
         style={[
           { backgroundColor: colors.backgroundPrimary },
         ]}
       >
         <Image
-          style={dynamicStyles.roomViewImage}
+          style={styles.roomViewImage}
           source="https://nlr.ru/eng/dep/artupload/eng/article/RA2510/NA19217.jpg"
           placeholder={{ blurhash }}
           contentFit="cover"
           transition={1000}
         />
         <View>
-          <View style={dynamicStyles.headerContainer}>
+          <View style={[styles.headerContainer]}>
+            <View style={{display: 'flex', alignItems: 'flex-start', gap: 10}}>
+              <Text
+                style={[styles.boldText, styles.bigText, { color: colors.textSecondary }]}
+              >
+                {room.code}
+              </Text>
+              <Text style={[styles.mediumText, { color: colors.textPrimary }]}>{formatRoomType(room.type)}</Text>
+              <View style={styles.iconTextContainer}>
+            <FontAwesome6 name="location-dot" size={20} color={colors.textPrimary} />
             <Text
-              style={[dynamicStyles.boldText, dynamicStyles.bigText, { color: colors.textPrimary }]}
+              style={[
+                styles.smallText,
+                {
+                  color: colors.textPrimary,
+                },
+              ]}
             >
-              {room.code}
+              {room.venue.name}
             </Text>
-            <Text style={[dynamicStyles.mediumText, { color: colors.textPrimary }]}>{formatRoomType(room.type)}</Text>
+          </View>
+          {room.isFree ? (
+            <View style={styles.iconTextContainer}>
+              <AntDesign name="checksquare" size={20} color={colors.success} />
+              <Text
+                style={[
+                  styles.mediumText,
+                  { color: colors.success },
+                ]}
+              >
+                {LL.AVAILABLE()}
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.iconTextContainer}>
+              <Entypo name="squared-cross" size={20} color={colors.error} />
+              <Text
+                style={[styles.mediumText, { color: colors.error }]}
+              >
+                {LL.OCCUPIED()}
+              </Text>
+            </View>
+          )}
+            </View>
+            
             <Pressable
               style={[
-                dynamicStyles.button,
+                styles.button,
                 { backgroundColor: colors.buttonBackground },
               ]}
               onPress={() =>
@@ -89,67 +129,34 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
               }
             >
               <Text
-                style={[dynamicStyles.buttonText, { color: colors.buttonText }]}
+                style={[styles.buttonText, { color: colors.buttonText }]}
               >
                 {LL.RESERVE()}
               </Text>
             </Pressable>
-          </View>
-          <View style={dynamicStyles.iconTextContainer}>
-            <Entypo name="location-pin" size={24} color={colors.textPrimary} />
-            <Text
-              style={[
-                dynamicStyles.smallText,
-                {
-                  color: colors.textPrimary,
-                },
-              ]}
-            >
-              {room.venue.name}
-            </Text>
-          </View>
-          {room.isFree ? (
-            <View style={dynamicStyles.iconTextContainer}>
-              <AntDesign name="checksquare" size={20} color={colors.success} />
-              <Text
-                style={[
-                  dynamicStyles.mediumText,
-                  { color: colors.success },
-                ]}
-              >
-                {LL.AVAILABLE()}
-              </Text>
-            </View>
-          ) : (
-            <View style={dynamicStyles.iconTextContainer}>
-              <Entypo name="squared-cross" size={20} color={colors.error} />
-              <Text
-                style={[dynamicStyles.mediumText, { color: colors.error }]}
-              >
-                {LL.OCCUPIED()}
-              </Text>
-            </View>
-          )}
-
-          <EquipmentList equipment={room.equipment} />
-          <RoomDescription text={room.description} />
-          <Pressable
+            <Pressable
             style={[
-              dynamicStyles.button,
+              styles.button,
               {
                 backgroundColor: colors.buttonBackground,
-                width: '100%',
                 alignSelf: 'center',
               },
             ]}
             onPress={() => setModalVisible(true)}
           >
             <Text
-              style={[dynamicStyles.buttonText, { color: colors.buttonText }]}
+              style={[styles.buttonText, { color: colors.buttonText }]}
             >
               {LL.SHOW_UPCOMING_RESERVATIONS()}
             </Text>
           </Pressable>
+          </View>
+          
+          
+
+          <EquipmentList equipment={room.equipment} />
+          <RoomDescription text={room.description} />
+       
 
           <Modal
             visible={modalVisible}
@@ -158,7 +165,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
           >
             <View
               style={[
-                dynamicStyles.modalContainer,
+                styles.modalContainer,
                 { backgroundColor: colors.backgroundPrimary },
               ]}
             >
@@ -174,7 +181,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
               <Pressable
                 onPress={() => setModalVisible(false)}
                 style={[
-                  dynamicStyles.button,
+                  styles.button,
                   {
                     backgroundColor: colors.buttonBackground,
                     width: '50%',
@@ -184,7 +191,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
               >
                 <Text
                   style={[
-                    dynamicStyles.buttonText,
+                    styles.buttonText,
                     { color: colors.buttonText },
                   ]}
                 >
@@ -195,6 +202,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
           </Modal>
         </View>
       </ScrollView>
+      </View>
     </QueryResult>
   );
 }

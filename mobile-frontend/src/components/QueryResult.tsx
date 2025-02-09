@@ -3,21 +3,7 @@ import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
 import { ApolloError } from '@apollo/client';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    marginTop: theme.spacing.small,
-    fontSize: theme.fontSizes.subheading,
-  },
-  errorText: {
-    fontSize: theme.fontSizes.subheading,
-  },
-});
+import useStyles from '../hooks/useStyles';
 
 interface QueryResultProps {
   loading: boolean;
@@ -29,11 +15,12 @@ interface QueryResultProps {
 const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
   const { colors } = useTheme();
   const { LL } = useI18nContext();
+  const styles = useStyles();
   if (loading) {
     return (
       <View
         style={[
-          styles.container,
+          styles.flexContainer, styles.scrollContainer,
           {
             backgroundColor: colors.backgroundPrimary,
           },
@@ -46,7 +33,7 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
         />
         <Text
           style={[
-            styles.text,
+            styles.mediumText,
             {
               color: colors.textPrimary,
             },
@@ -61,7 +48,7 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
     return (
       <View
         style={[
-          styles.container,
+          styles.flexContainer, styles.scrollContainer,
           {
             backgroundColor: colors.backgroundPrimary,
           },
@@ -85,7 +72,7 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
     return (
       <View
         style={[
-          styles.container,
+          styles.flexContainer, styles.scrollContainer,
           {
             backgroundColor: colors.backgroundPrimary,
           },
@@ -93,7 +80,7 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
       >
         <Text
           style={[
-            styles.text,
+            styles.mediumText,
             {
               color: colors.textPrimary,
             },

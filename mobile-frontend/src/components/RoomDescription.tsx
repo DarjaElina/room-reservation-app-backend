@@ -13,12 +13,7 @@ export default function RoomDescription({ text }: DescriptionProp) {
   return (
     <View
       style={[
-        styles.roomDescriptionContainer,
-        {
-          backgroundColor: colors.backgroundSecondary,
-          shadowColor: colors.shadow,
-          shadowOpacity: colors.shadowOpacity,
-        },
+        styles.roomDescriptionContainer
       ]}
     >
       <Text

@@ -60,6 +60,7 @@ export default function Login() {
     <KeyboardAwareScrollView
       contentContainerStyle={[
         styles.scrollContainer,
+        styles.flexContainer,
         {
           backgroundColor: colors.backgroundPrimary,
         },

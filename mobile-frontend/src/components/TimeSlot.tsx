@@ -38,7 +38,7 @@ const TimeSlot = memo(function TimeSlotItem({
       testID='time_slot_btn'
       disabled={booking ? true : false}
       onPress={() => onSelect(timeSlot)}
-      style={[styles.timeSlot, {borderColor: index !== 0 && index % 4 === 0 ? 'grey' : 'lightgrey'}]}
+      style={[styles.timeSlot, {borderColor: index !== 0 && index % 4 === 0 ? 'gray' : 'lightgray'}]}
     >
       {index % 4 === 0 ? (
         <Text style={{ padding: 2 }}>{timeSlot.value}</Text>

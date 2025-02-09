@@ -36,7 +36,7 @@ export default function RoomListWrapper() {
   return (
     <PaperProvider>
       <QueryResult loading={loading} error={error} data={rooms}>
-        <View style={styles.container}>
+        <View style={[styles.scrollContainer, styles.flexContainer]}>
           <SearchBar
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}

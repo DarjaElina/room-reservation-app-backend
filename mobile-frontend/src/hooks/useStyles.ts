@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useWindowDimensions, StyleSheet } from 'react-native';
 import theme from '@/src/theme';
+import { SegmentedButtons } from 'react-native-paper';
 
 
 
@@ -40,24 +41,25 @@ const useStyles = () => {
         fontFamily: 'Lato-Regular'
       },
       checkbox: {
-        height: vmin * 12,
-        width: '100%',
+        height: isLargeScreen ? vmin * 7 : vmin * 12,
+        //width: '100%',
         flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: vmin * 2.5,
-        paddingHorizontal: vmin * 3,
+        marginVertical: isLargeScreen ? vmin * 1.5 : vmin * 3,
+        padding: isLargeScreen ? vmin * 1.5 : vmin * 3,
         borderRadius: theme.borderRadius.medium,
         borderWidth: 1,
-        fontFamily: 'Lato-Regular'
+        fontFamily: 'Lato-Regular',
+        width: isLargeScreen ? '70%' : '100%',
+        alignSelf: 'center'
       },
       searchbar: {
-        height: vmin * 12,
-        borderRadius: theme.borderRadius.large,
+        height: isLargeScreen ? vmin * 6 : vmin * 12,
+        borderRadius: theme.borderRadius.medium,
         justifyContent: 'center',
-        borderWidth: 2,
-        ...shadows.light,
+        borderWidth: 1,
         overflow: 'hidden',
-        fontFamily: 'Lato-Regular'
+        width: isLargeScreen ? '70%' : '100%',
+        alignSelf: 'center'
       },
       datePressable: {
         backgroundColor: '#f0f0f0',
@@ -74,17 +76,17 @@ const useStyles = () => {
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: theme.borderRadius.medium,
-        paddingVertical: isLargeScreen ? vh * 1.5 : vmin * 2.5,
-        paddingHorizontal: isLargeScreen ? vw * 4 : vmin * 3.5,
+        paddingVertical: isLargeScreen ?  vmin * 1 : vmin * 2.5,
+        paddingHorizontal: isLargeScreen ?  vmin * 1.5 : vmin * 3.5,
         marginVertical: vmin * 3,
       },
       buttonText: {
         fontSize: isLargeScreen ? 13 + vmin * 1 : 8 + vmin * 2.5,
-        fontFamily: 'Lato-Bold'
+        fontFamily: 'Lato-Regular'
       },
       flexButtonContainer: {
         flexDirection: 'row',
-        justifyContent: 'center',
+        //justifyContent: 'center',
         marginTop: vmin * 2.5,
         gap: vmin * 3,
       },
@@ -94,31 +96,34 @@ const useStyles = () => {
         bottom: vmin * 3.5,
         margin: vmin * 3.5,
       },
+      segmentedButtons: {
+        width: isLargeScreen ? '70%' : '100%',
+        alignSelf: 'center'
+      },
 
       // text
       boldText: {
         fontWeight: 'bold',
-        fontFamily: 'Lato-Bold',
       },
       bigText: {
-        fontSize: 10 + vmin * 3,
-        fontFamily: 'Lato-Regular'
+        fontSize: isLargeScreen ? 10 + vmin * 2 : 10 + vmin * 3.5,
+        fontFamily: 'Lato-Black',
       },
       smallText: {
-        fontSize: 5 + vmin * 2,
-        fontFamily: 'Lato-Light'
-      },
-      mediumText: {
-        fontSize: 7 + vmin * 2,
+        fontSize: isLargeScreen ? 5 + vmin * 1.3 : 5 + vmin * 2.3,
         fontFamily: 'Lato-Thin'
       },
+      mediumText: {
+        fontSize: isLargeScreen ?  7 + vmin * 1.5 : 7 + vmin * 2.5,
+        fontFamily: 'Lato-Regular'
+      },
       errorText: {
-        marginTop: vmin * 1.5,
+        marginTop: isLargeScreen ? 10 + vmin * 1.5 : 10 + vmin * 3.5,
         fontSize: 8 + vmin * 1.8,
         fontFamily: 'Lato-Regular'
       },
       userMessage: {
-        fontSize: theme.fontSizes.small + vmin * 2,
+        fontSize: isLargeScreen ?  7 + vmin * 1.5 : 7 + vmin * 2.5,
         textAlign: 'center',
         marginVertical: vmin * 3.5,
         fontFamily: 'Lato-Regular'
@@ -126,24 +131,25 @@ const useStyles = () => {
 
       // containers
       scrollContainer: {
-        flex: 1,
         justifyContent: 'center',
-        paddingHorizontal: vw * (isLargeScreen ? 8 : 5),
+        paddingHorizontal: vw * (isLargeScreen ? 10 : 4),
         paddingVertical: vh * (isLargeScreen ? 4 : 3),
       },
+      flexContainer: {
+        flex: 1
+      },
       itemContainer: {
-        width: vmin * (isLargeScreen ? 37 : 45),
+        width: vmin * (isLargeScreen ? 35 : 44),
         minHeight: vmin * 30,
         gap: vmin * 1.5,
         padding: vmin * 2.6,
         borderRadius: theme.borderRadius.medium,
         overflow: 'hidden',
-        ...shadows.light
+        //...shadows.light
       },
       iconTextContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: vmin * 1.5,
         gap: vmin * 1.5
       },
       listContainer: {
@@ -152,24 +158,26 @@ const useStyles = () => {
       },
       headerContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-between',
-        padding: vmin * 1.5
+        alignItems: 'center',
+        gap: 10,
+        padding: isLargeScreen ? vmin * 1 : vmin * 1.5,
+        flexWrap: 'wrap'
       },
       equipmentItemContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: vmin * 1.8,
-        paddingHorizontal: vmin * 3,
-        borderRadius: theme.borderRadius.large,
+        paddingVertical: isLargeScreen ? vmin * 1 : vmin * 1.8,
+        paddingHorizontal: isLargeScreen ? vmin * 2.5 : vmin * 3.5,
+        borderRadius: theme.borderRadius.small,
         ...shadows.light,
-        margin: vmin * 2
+        margin: vmin * 1
       },
       roomDescriptionContainer: {
-        padding: vmin * 3,
+        padding: isLargeScreen ? vmin * 3 : vmin * 4.5,
         borderRadius: theme.borderRadius.medium,
-        margin: vmin * 2.8,
-        ...shadows.light
+        margin: vmin * 1.5,
+        //...shadows.light
       },
       modalContainer: {
         flex: 1,
@@ -184,6 +192,8 @@ const useStyles = () => {
         margin: vmin * 4,
         marginHorizontal: isLargeScreen ? vmin * 10 : vmin * 4,
         gap: vmin * 2,
+        width: isLargeScreen ? '40%' : '100%',
+        alignSelf: 'center'
       },
       bookingItemDateContainer: {
         flexDirection: 'row',
@@ -191,11 +201,6 @@ const useStyles = () => {
         gap: vmin * 2,
         marginBottom: vmin * 2,
         maxWidth: '90%',
-      },
-      container: {
-        flex: 1,
-        paddingHorizontal: isLargeScreen ? vw * 10 : vw * 2.5,
-        paddingVertical: isLargeScreen ? vw * 1.5 : vw * 2.5,
       },
       pickerContainer: {
         width: isLargeScreen ? '60%' : '100%',
@@ -225,12 +230,14 @@ const useStyles = () => {
           ? theme.fontSizes.small + vmin * 4
           : theme.fontSizes.medium + vmin * 4,
         fontFamily: 'Lato-Black',
+        marginVertical: isLargeScreen ? vmin * 1 : vmin * 3,
       },
       subheading: {
         fontSize: isLargeScreen
           ? theme.fontSizes.small + vmin * 2
           : theme.fontSizes.medium + vmin * 2,
           fontFamily: 'Lato-Bold',
+          marginVertical: isLargeScreen ? vmin * 1 : vmin * 3,
       },
 
       // images & icons
@@ -246,7 +253,7 @@ const useStyles = () => {
         width: '100%',
         height: vmin * 50,
         borderRadius: theme.borderRadius.medium,
-        marginBottom: vmin * 3.5,
+        marginVertical: isLargeScreen ? vmin * 1 : vmin * 3,
       },
 
       // overlays
@@ -266,15 +273,14 @@ const useStyles = () => {
       bookingDetailsCard: {
         borderRadius: theme.borderRadius.medium,
         padding: isLargeScreen ? vmin * 4 : vmin * 3,
-        width: '100%',
+        margin: isLargeScreen ? vmin * 4 : vmin * 3,
+        //width: '100%',
         ...shadows.medium,
         fontFamily: 'Lato-Regular',
       },
       timeSlot: {
-        height: isLargeScreen ? vmin * 4 : vmin * 7,
-        fontSize: 10,
+        height: 25,
         borderTopWidth: 1,
-        borderColor: 'lightgrey',
         position: 'relative',
         backgroundColor: '#F6F5F5',
       },

@@ -1,6 +1,7 @@
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { useState } from 'react';
 import CheckBoxItem from './CheckBoxItem';
+import useStyles from '../hooks/useStyles';
 
 interface CheckBoxProps {
   options: {
@@ -19,9 +20,10 @@ export default function CheckBox({
   const [updatedCheckedValues, setUpdatedCheckedValues] = useState([
     ...checkedValues,
   ]);
+  const styles = useStyles();
 
   return (
-    <View style={styles.container}>
+    <View style={styles.flexContainer}>
       <FlatList
         data={options}
         renderItem={({ item }) => {
@@ -40,9 +42,3 @@ export default function CheckBox({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
-});

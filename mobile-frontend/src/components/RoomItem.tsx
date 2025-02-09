@@ -5,6 +5,7 @@ import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
 import useStyles from '../hooks/useStyles';
 import React from 'react';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 interface RoomProps {
   code: string;
@@ -49,23 +50,19 @@ export default function Room({
           styles.bigText,
           styles.boldText,
           {
-            color: colors.textPrimary,
+            color: colors.textSecondary,
           },
         ]}
       >
         {code}
       </Text>
       <View style={styles.iconTextContainer}>
-        <Entypo
-          name="location-pin"
-          size={styles.bigText.fontSize * 1}
-          color={colors.textSecondary}
-        />
+      <FontAwesome6 name="location-dot" size={20} color={colors.textPrimary}/>
         <Text
           style={[
             styles.smallText,
             {
-              color: colors.textSecondary,
+              color: colors.textPrimary,
             },
           ]}
         >

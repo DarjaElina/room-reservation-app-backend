@@ -1,17 +1,18 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { SegmentedButtons } from 'react-native-paper';
 import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
-import theme from '@/src/theme';
 import { router } from 'expo-router';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
+import useStyles from '../hooks/useStyles';
 function FilterButtons() {
   const { LL } = useI18nContext();
   const [value, setValue] = React.useState('');
   const { colors } = useTheme();
+  const styles = useStyles();
   return (
-    <View style={styles.container}>
+    <View style={styles.segmentedButtons}>
       <SegmentedButtons
         density="medium"
         value={value}
@@ -91,11 +92,5 @@ function FilterButtons() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: theme.spacing.medium,
-  },
-});
 
 export default React.memo(FilterButtons);

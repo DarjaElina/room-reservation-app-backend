@@ -72,7 +72,7 @@ export default function BookingDetailsCard({
       </View>
       <Text>
         <Text
-          style={[styles.bigText, { color: colors.textPrimary }]}
+          style={[styles.mediumText, { color: colors.textPrimary }]}
         >
           {LL.TITLE()}
         </Text>

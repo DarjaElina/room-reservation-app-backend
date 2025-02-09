@@ -20,7 +20,7 @@ const ru: Translation = {
   ENDS: 'Заканчивается',
   ROOM: 'Класс',
   TITLE: 'Название',
-  SHOW_UPCOMING_RESERVATIONS: 'Показать предстоящие бронирования.',
+  SHOW_UPCOMING_RESERVATIONS: 'Показать предстоящие бронирования',
   LOADING: 'Загрузка...',
   ERROR: 'ОШИБКА',
   NOTHING_TO_SHOW: 'Нечего показать...',

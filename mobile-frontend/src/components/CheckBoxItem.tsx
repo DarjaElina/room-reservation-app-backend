@@ -1,6 +1,5 @@
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
 import useStyles from '../hooks/useStyles';
 
@@ -45,7 +44,8 @@ export default function CheckBoxItem({
       ]}
       onPress={handlePress}
     >
-      <MaterialIcons
+    <View style={[styles.iconTextContainer, {margin: 0}]}>
+    <MaterialIcons
         name={isActive ? 'check-box' : 'check-box-outline-blank'}
         size={24}
         color={isActive ? colors.backgroundPrimary : colors.textSecondary}
@@ -69,6 +69,7 @@ export default function CheckBoxItem({
       >
         {item.label}
       </Text>
+    </View>
     </TouchableOpacity>
   );
 }
