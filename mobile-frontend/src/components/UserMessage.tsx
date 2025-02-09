@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
+import useStyles from '../hooks/useStyles';
 
 interface UserNotificationProps {
   text: string | null;
@@ -9,13 +10,14 @@ interface UserNotificationProps {
 
 export default function UserMessage({ text, type }: UserNotificationProps) {
   const { colors } = useTheme();
+  const styles = useStyles();
   if (!text) {
     return null;
   }
   return (
     <View
       style={[
-        styles.container,
+        styles.userMessageContainer,
         {
           backgroundColor: colors.backgroundPrimary,
           borderColor: type === 'success' ? colors.success : colors.error,
@@ -24,25 +26,7 @@ export default function UserMessage({ text, type }: UserNotificationProps) {
         },
       ]}
     >
-      <Text style={[styles.text, { color: colors.textPrimary }]}>{text}</Text>
+      <Text style={[styles.mediumText, { color: colors.textPrimary }]}>{text}</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    borderWidth: 1,
-    borderRadius: theme.borderRadius.medium,
-    padding: theme.spacing.medium,
-    marginVertical: theme.spacing.small,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  text: {
-    fontWeight: '500',
-    fontSize: theme.fontSizes.body,
-  },
-});

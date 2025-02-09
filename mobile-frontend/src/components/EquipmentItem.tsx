@@ -19,7 +19,7 @@ export default function EquipmentItem({ name }: EquipmentProp) {
         },
       ]}
     >
-      <Text style={[, styles.equipmentItemText, { color: colors.textPrimary }]}>
+      <Text style={[, styles.smallText, { color: colors.textPrimary }]}>
         {name}
       </Text>
     </View>

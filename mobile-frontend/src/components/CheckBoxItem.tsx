@@ -2,6 +2,7 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import theme from '@/src/theme';
 import { useTheme } from '@react-navigation/native';
+import useStyles from '../hooks/useStyles';
 
 interface CheckBoxItemProps {
   item: { value: string; label: string };
@@ -27,11 +28,12 @@ export default function CheckBoxItem({
     setUpdatedCheckedValues(newValues);
     onChange(newValues);
   };
+  const styles = useStyles();
 
   return (
     <TouchableOpacity
       style={[
-        styles.checkBox,
+        styles.checkbox,
         { borderColor: colors.inputBorder },
         isActive
           ? {
@@ -52,13 +54,13 @@ export default function CheckBoxItem({
         style={
           isActive
             ? [
-                styles.text,
+                styles.mediumText,
                 {
                   color: colors.checkboxActiveText,
                 },
               ]
             : [
-                styles.text,
+                styles.mediumText,
                 {
                   color: colors.checkboxInactiveText,
                 },
@@ -70,21 +72,3 @@ export default function CheckBoxItem({
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  checkBox: {
-    height: 60,
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    paddingHorizontal: 15,
-    borderRadius: theme.borderRadius.medium,
-    borderWidth: 1,
-  },
-  activeCheckboxColor: {},
-  text: {
-    fontSize: theme.fontSizes.body,
-    marginLeft: 15,
-  },
-});

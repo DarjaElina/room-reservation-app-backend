@@ -84,8 +84,9 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
   return (
     <View
       style={[
-        styles.bookingModificationFormContainer,
-        { backgroundColor: colors.backgroundSecondary },
+        styles.itemContainer,
+        
+        { backgroundColor: colors.backgroundSecondary, width: '100%' },
       ]}
     >
       <UserMessage text={userMessage} type="success" />
@@ -100,10 +101,10 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
         textColor={colors.textPrimary}
       />
 
-      <View style={styles.dateContainer}>
+      <View style={styles.textContainer}>
         <Text
           style={[
-            styles.dateLabel,
+            styles.mediumText, styles.boldText, styles.textContainer,
             {
               color: colors.textPrimary,
             },
@@ -115,16 +116,16 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
           onPress={() => handleNavigateToDatePicker('start')}
           style={styles.datePressable}
         >
-          <Text style={styles.dateText}>
+          <Text style={styles.mediumText}>
             {formatDate(new Date(initialData.startDate))}
           </Text>
         </Pressable>
       </View>
 
-      <View style={styles.dateContainer}>
+      <View style={styles.textContainer}>
         <Text
           style={[
-            styles.dateLabel,
+            styles.mediumText, styles.boldText, styles.textContainer,
             {
               color: colors.textPrimary,
             },
@@ -136,7 +137,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
           onPress={() => handleNavigateToDatePicker('end')}
           style={styles.datePressable}
         >
-          <Text style={styles.dateText}>
+          <Text style={styles.mediumText}>
             {formatDate(new Date(initialData.endDate))}
           </Text>
         </Pressable>

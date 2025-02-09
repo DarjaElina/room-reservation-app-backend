@@ -10,14 +10,13 @@ interface EquipmentListProps {
 export default function EquipmentList({ equipment }: EquipmentListProps) {
   const styles = useStyles();
   return (
-    <View style={styles.equipmentContainer}>
+    <View>
       <FlatList
         horizontal
         data={equipment}
         renderItem={({ item }) => <EquipmentItem name={item.name} />}
         keyExtractor={(item) => String(item.id)}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.equipmentListContent}
       />
     </View>
   );

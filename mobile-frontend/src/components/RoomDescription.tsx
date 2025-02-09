@@ -23,7 +23,7 @@ export default function RoomDescription({ text }: DescriptionProp) {
     >
       <Text
         style={[
-          styles.roomDescriptionText,
+          styles.mediumText,
           {
             color: colors.textPrimary,
           },

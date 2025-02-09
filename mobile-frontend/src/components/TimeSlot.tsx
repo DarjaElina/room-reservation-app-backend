@@ -1,8 +1,9 @@
 import { Pressable, Text } from 'react-native';
 import { memo } from 'react';
 import SelectedTimeSlot from './SelectedTimeSlot';
-import BookedTimeSlot from './BookedTimeSlots';
+import BookedTimeSlot from './BookedTimeSlot';
 import useBookingContext from '@/src/hooks/useBookingContext';
+import useStyles from '../hooks/useStyles';
 
 export interface TimeSlotType {
   hour: number;
@@ -13,14 +14,13 @@ interface TimeSlotProps {
   onSelect: (timeSlot: TimeSlotType) => void;
   timeSlot: TimeSlotType;
   index: number;
-  booking?:
+  booking:
     | {
         startDate: string;
         endDate: string;
         title: string | null | undefined;
         user: string;
-      }
-    | undefined;
+      } | null;
   bookingToModify?: { startDate: string; endDate: string } | undefined;
 }
 
@@ -31,19 +31,14 @@ const TimeSlot = memo(function TimeSlotItem({
   booking,
 }: TimeSlotProps) {
   const { selectedTimeValues } = useBookingContext();
+  const styles = useStyles();
 
   return (
     <Pressable
       testID='time_slot_btn'
       disabled={booking ? true : false}
       onPress={() => onSelect(timeSlot)}
-      style={{
-        height: 25,
-        borderTopWidth: 1,
-        borderColor: index !== 0 && index % 4 === 0 ? 'grey' : 'lightgrey',
-        position: 'relative',
-        backgroundColor: '#F6F5F5',
-      }}
+      style={[styles.timeSlot, {borderColor: index !== 0 && index % 4 === 0 ? 'grey' : 'lightgrey'}]}
     >
       {index % 4 === 0 ? (
         <Text style={{ padding: 2 }}>{timeSlot.value}</Text>

@@ -36,11 +36,11 @@
         "expo-font",
         {
           "fonts": [
-            "./src/assets/fonts/Lato-Black.ttf",
-            "./src/assets/fonts/Lato-Bold.ttf",
-            "./src/assets/fonts/Lato-Light.ttf",
-            "./src/assets/fonts/Lato-Regular.ttf",
-            "./src/assets/fonts/Lato-Thin.ttf"
+            "./src/assets/fonts/Lato/Lato-Black.ttf",
+            "./src/assets/fonts/Lato/Lato-Bold.ttf",
+            "./src/assets/fonts/Lato/Lato-Light.ttf",
+            "./src/assets/fonts/Lato/Lato-Regular.ttf",
+            "./src/assets/fonts/Lato/Lato-Thin.ttf"
           ]
         }
       ],

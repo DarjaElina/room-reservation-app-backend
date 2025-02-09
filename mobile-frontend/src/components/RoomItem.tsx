@@ -29,7 +29,7 @@ export default function Room({
     <View
       testID="room-item"
       style={[
-        styles.roomItemContainer,
+        styles.itemContainer,
         {
           backgroundColor: colors.backgroundSecondary,
           shadowColor: colors.shadow,
@@ -46,7 +46,8 @@ export default function Room({
       />
       <Text
         style={[
-          styles.roomCode,
+          styles.bigText,
+          styles.boldText,
           {
             color: colors.textPrimary,
           },
@@ -54,15 +55,15 @@ export default function Room({
       >
         {code}
       </Text>
-      <View style={styles.roomLocationContainer}>
+      <View style={styles.iconTextContainer}>
         <Entypo
           name="location-pin"
-          size={styles.roomCode.fontSize * 1}
+          size={styles.bigText.fontSize * 1}
           color={colors.textSecondary}
         />
         <Text
           style={[
-            styles.roomLocationText,
+            styles.smallText,
             {
               color: colors.textSecondary,
             },
@@ -71,15 +72,15 @@ export default function Room({
           {venue}
         </Text>
       </View>
-      <View style={styles.roomStatusContainer}>
+      <View style={styles.iconTextContainer}>
         {isFree ? (
           <>
             <AntDesign
               name="checksquare"
-              size={styles.roomCode.fontSize * 0.8}
+              size={styles.bigText.fontSize * 0.8}
               color={colors.success}
             />
-            <Text style={[styles.roomStatusText, { color: colors.success }]}>
+            <Text style={[styles.mediumText, { color: colors.success }]}>
               {LL.AVAILABLE()}
             </Text>
           </>
@@ -87,10 +88,10 @@ export default function Room({
           <>
             <Entypo
               name="squared-cross"
-              size={styles.roomCode.fontSize * 0.6}
+              size={styles.bigText.fontSize * 0.6}
               color={colors.error}
             />
-            <Text style={[styles.roomStatusText, { color: colors.error }]}>
+            <Text style={[styles.mediumText, { color: colors.error }]}>
               {LL.OCCUPIED()}
             </Text>
           </>

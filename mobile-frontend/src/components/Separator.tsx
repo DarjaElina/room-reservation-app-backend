@@ -1,15 +1,7 @@
-import { View, StyleSheet } from 'react-native';
+import { View} from 'react-native';
+import useStyles from '../hooks/useStyles';
 
 export default function Separator() {
+  const styles = useStyles();
   return <View style={styles.separator}></View>;
 }
-
-const styles = StyleSheet.create({
-  separator: {
-    width: 1,
-    position: 'absolute',
-    backgroundColor: 'grey',
-    left: '20%',
-    height: '100%',
-  },
-});

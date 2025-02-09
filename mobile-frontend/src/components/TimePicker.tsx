@@ -41,18 +41,9 @@ export default function TimePicker({
 
   const { colors } = useTheme();
 
-  const { locale, LL, setLocale } = useI18nContext();
+  const { LL, setLocale } = useI18nContext();
 
   const styles = useStyles();
-
-  const onLocaleSelected = useCallback((locale: Locales) => {
-    setUserLocale(locale)
-      .then(async (locale) => {
-        await loadLocaleAsync(locale);
-        return locale;
-      })
-      .then(setLocale);
-  }, []);
 
   const { id } = useLocalSearchParams<{ id: string }>();
 
@@ -245,7 +236,7 @@ export default function TimePicker({
                 b.startDate <= item.value &&
                 b.endDate > item.value &&
                 b.startDate !== startTime
-            )}
+            ) || null}
           />
         )}
         onScrollToIndexFailed={(info) => {

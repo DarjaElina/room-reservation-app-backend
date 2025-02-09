@@ -34,8 +34,7 @@ export default function RoomListContainer({
   const { colors } = useTheme();
   return rooms.length > 0 ? (
     <FlatList
-      columnWrapperStyle={styles.columnWrapper}
-      contentContainerStyle={styles.roomListContainer}
+      contentContainerStyle={styles.listContainer}
       onEndReached={onEndReach}
       onEndReachedThreshold={0.5}
       showsVerticalScrollIndicator={false}
@@ -46,7 +45,7 @@ export default function RoomListContainer({
         item ? (
           <Link
             testID="room-item-link"
-            style={styles.roomLink}
+            style={styles.roomLinkContainer}
             href={{
               pathname: '/rooms/[id]',
               params: { id: item.id },

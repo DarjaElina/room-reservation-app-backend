@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import useRooms from '@/src/hooks/useRooms';
@@ -9,6 +9,7 @@ import useFilter from '@/src/hooks/useFilter';
 import { PaperProvider } from 'react-native-paper';
 import QueryResult from '../QueryResult';
 import { useI18nContext } from '@/src/i18n/i18n-react';
+import useStyles from '@/src/hooks/useStyles';
 
 export default function RoomListWrapper() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,7 +26,7 @@ export default function RoomListWrapper() {
     roomTypes: types,
   });
   const { LL } = useI18nContext();
-
+  const styles = useStyles();
   const onEndReach = () => {
     fetchMore();
   };
@@ -48,14 +49,3 @@ export default function RoomListWrapper() {
     </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

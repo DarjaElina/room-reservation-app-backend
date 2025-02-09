@@ -56,9 +56,8 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
   return (
     <QueryResult error={error} loading={loading} data={user}>
       <ScrollView
-        contentContainerStyle={dynamicStyles.roomViewContentContainer}
+        contentContainerStyle={dynamicStyles.scrollContainer}
         style={[
-          dynamicStyles.roomViewContainer,
           { backgroundColor: colors.backgroundPrimary },
         ]}
       >
@@ -70,13 +69,13 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
           transition={1000}
         />
         <View>
-          <View style={dynamicStyles.roomViewHeaderContainer}>
+          <View style={dynamicStyles.headerContainer}>
             <Text
-              style={[dynamicStyles.roomCode, { color: colors.textPrimary }]}
+              style={[dynamicStyles.boldText, dynamicStyles.bigText, { color: colors.textPrimary }]}
             >
               {room.code}
             </Text>
-            <Text style={[dynamicStyles.label, { color: colors.textPrimary }]}>{formatRoomType(room.type)}</Text>
+            <Text style={[dynamicStyles.mediumText, { color: colors.textPrimary }]}>{formatRoomType(room.type)}</Text>
             <Pressable
               style={[
                 dynamicStyles.button,
@@ -96,11 +95,11 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
               </Text>
             </Pressable>
           </View>
-          <View style={dynamicStyles.roomLocationContainer}>
+          <View style={dynamicStyles.iconTextContainer}>
             <Entypo name="location-pin" size={24} color={colors.textPrimary} />
             <Text
               style={[
-                dynamicStyles.roomLocationText,
+                dynamicStyles.smallText,
                 {
                   color: colors.textPrimary,
                 },
@@ -110,11 +109,11 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
             </Text>
           </View>
           {room.isFree ? (
-            <View style={dynamicStyles.roomStatusContainer}>
+            <View style={dynamicStyles.iconTextContainer}>
               <AntDesign name="checksquare" size={20} color={colors.success} />
               <Text
                 style={[
-                  dynamicStyles.roomStatusText,
+                  dynamicStyles.mediumText,
                   { color: colors.success },
                 ]}
               >
@@ -122,10 +121,10 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
               </Text>
             </View>
           ) : (
-            <View style={dynamicStyles.roomStatusContainer}>
+            <View style={dynamicStyles.iconTextContainer}>
               <Entypo name="squared-cross" size={20} color={colors.error} />
               <Text
-                style={[dynamicStyles.roomStatusText, { color: colors.error }]}
+                style={[dynamicStyles.mediumText, { color: colors.error }]}
               >
                 {LL.OCCUPIED()}
               </Text>
@@ -139,7 +138,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
               dynamicStyles.button,
               {
                 backgroundColor: colors.buttonBackground,
-                width: '70%',
+                width: '100%',
                 alignSelf: 'center',
               },
             ]}

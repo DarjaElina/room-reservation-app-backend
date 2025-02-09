@@ -65,16 +65,17 @@ export default function Login() {
         },
       ]}
     >
-      <View style={styles.iconContainer}>
+      <View>
         <FontAwesome5
-          name="user-circle"
           style={styles.userIcon}
+          size={50}
+          name="user-circle"
           color={colors.textPrimary}
         />
       </View>
       <Text
         style={[
-          styles.title,
+          styles.heading,
           {
             color: colors.textPrimary,
             textAlign: 'center',

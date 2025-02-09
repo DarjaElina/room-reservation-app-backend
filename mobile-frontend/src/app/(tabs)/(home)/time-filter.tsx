@@ -144,9 +144,11 @@ export default function TimeFilter() {
     >
       <Text
         style={[
-          styles.instructionText,
+          styles.bigText,
+          styles.textContainer,
           {
             color: colors.textPrimary,
+            textAlign: 'center'
           },
         ]}
       >

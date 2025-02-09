@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
+import useStyles from '../hooks/useStyles';
 
 interface SelectedTimeSlotProps {
   value?: string;
@@ -18,31 +19,16 @@ export default function SelectedTimeSlot({
   displayBookingTitle,
   displayBookingUser,
 }: SelectedTimeSlotProps) {
+  const styles = useStyles();
   return (
-    <View testID="selected_time_slot" style={[styles.container, { backgroundColor: color }]}>
-      {value && <Text style={styles.text}>{value}</Text>}
+    <View testID="selected_time_slot" style={[styles.selectedTimeSlot, { backgroundColor: color }]}>
+      {value && <Text style={[, {color: '#fff'}]}>{value}</Text>}
       {displayBookingTitle && (
-        <Text style={styles.text}>{bookingInfo?.title}</Text>
+        <Text style={[{color: '#fff'}]}>{bookingInfo?.title}</Text>
       )}
       {displayBookingUser && (
-        <Text style={styles.text}>{bookingInfo?.user}</Text>
+        <Text style={[{color: '#fff'}]}>{bookingInfo?.user}</Text>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    minHeight: 25,
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    zIndex: 1,
-    width: '80%',
-  },
-  text: {
-    color: '#fff',
-  },
-});

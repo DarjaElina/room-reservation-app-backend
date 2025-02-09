@@ -54,6 +54,7 @@ describe('UserMessage Component', () => {
     const { getByTestId } = render(
       <BookingProvider>
         <TimeSlot
+          booking={null}
           onSelect={() => console.log('selected')}
           index={1}
           timeSlot={{ hour: 10, value: '10:00:00' }}
@@ -104,6 +105,7 @@ describe('UserMessage Component', () => {
     const { getByTestId } = render(
       <BookingProvider>
         <TimeSlot
+          booking={null}
           onSelect={onSelect}
           index={1}
           timeSlot={{ hour: 10, value: '10:00:00' }}
@@ -120,6 +122,7 @@ describe('UserMessage Component', () => {
   it('renders SelectedTimeSlot if time is selected', async () => {
     const { findByText } = render(
       <TimeSlot
+        booking={null}
         onSelect={jest.fn()}
         index={1}
         timeSlot={{ hour: 10, value: '10:00:00' }}

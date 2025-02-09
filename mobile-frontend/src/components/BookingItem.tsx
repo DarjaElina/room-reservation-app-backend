@@ -93,7 +93,8 @@ export default function BookingItem({
     >
       <Text
         style={[
-          styles.bookingTitle,
+          styles.bigText,
+          styles.boldText,
           {
             color: colors.textPrimary,
           },
@@ -103,7 +104,7 @@ export default function BookingItem({
       </Text>
       <Text
         style={[
-          styles.bookingItemCode,
+          styles.bigText,
           {
             color: colors.textSecondary,
           },
@@ -114,12 +115,12 @@ export default function BookingItem({
       <View style={styles.bookingItemDateContainer}>
         <FontAwesome
           name="calendar"
-          size={styles.bookingItemDate.fontSize * 1}
+          size={styles.mediumText.fontSize}
           color={colors.textPrimary}
         />
         <Text
           style={[
-            styles.bookingItemDate,
+            styles.mediumText,
             {
               color: colors.textSecondary,
             },
@@ -130,7 +131,7 @@ export default function BookingItem({
         </Text>
       </View>
       {new Date(startDate) > new Date() ? (
-        <View style={styles.bookingItemButtonContainer}>
+        <View style={styles.flexButtonContainer}>
           <Pressable
             onPress={() => confirmCancel(id)}
             style={[

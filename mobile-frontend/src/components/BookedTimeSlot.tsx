@@ -8,7 +8,7 @@ interface BookedTimeSlotProps {
         title: string | null | undefined;
         user: string;
       }
-    | undefined;
+    | null;
   displayBookingTitle: boolean;
   displayBookingUser: boolean;
 }

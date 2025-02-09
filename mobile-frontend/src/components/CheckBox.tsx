@@ -1,7 +1,6 @@
 import { View, StyleSheet, FlatList } from 'react-native';
 import { useState } from 'react';
 import CheckBoxItem from './CheckBoxItem';
-import { RoomType } from '@/__generated__/graphql';
 
 interface CheckBoxProps {
   options: {
