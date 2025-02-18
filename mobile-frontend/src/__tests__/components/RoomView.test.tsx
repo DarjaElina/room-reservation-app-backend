@@ -36,7 +36,7 @@ const mockRoom = {
   ],
   venue: { name: 'Main Venue' },
   size: 10,
-  type: RoomType.Classroom
+  type: RoomType.Classroom,
 };
 
 jest.mock('@/src/hooks/useAuth', () => ({

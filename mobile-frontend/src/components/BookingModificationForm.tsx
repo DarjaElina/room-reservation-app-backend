@@ -61,10 +61,11 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
       }, 2000);
     } catch (error: unknown) {
       if (error instanceof ApolloError) {
-        const message = error.graphQLErrors?.[0]?.message || "Something went wrong!";
-        Alert.alert("Error", message);
+        const message =
+          error.graphQLErrors?.[0]?.message || 'Something went wrong!';
+        Alert.alert('Error', message);
       }
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -85,8 +86,12 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
     <View
       style={[
         styles.itemContainer,
-        
-        { backgroundColor: colors.backgroundSecondary, width: '50%', alignSelf: 'center' },
+
+        {
+          backgroundColor: colors.backgroundSecondary,
+          width: '50%',
+          alignSelf: 'center',
+        },
       ]}
     >
       <UserMessage text={userMessage} type="success" />
@@ -104,7 +109,9 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
       <View style={styles.textContainer}>
         <Text
           style={[
-            styles.mediumText, styles.boldText, styles.textContainer,
+            styles.mediumText,
+            styles.boldText,
+            styles.textContainer,
             {
               color: colors.textPrimary,
             },
@@ -125,7 +132,9 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
       <View style={styles.textContainer}>
         <Text
           style={[
-            styles.mediumText, styles.boldText, styles.textContainer,
+            styles.mediumText,
+            styles.boldText,
+            styles.textContainer,
             {
               color: colors.textPrimary,
             },

@@ -1,5 +1,5 @@
-import Room from "@/src/components/RoomItem";
-import { render } from "@testing-library/react-native";
+import Room from '@/src/components/RoomItem';
+import { render } from '@testing-library/react-native';
 jest.mock('@react-navigation/native', () => {
   return {
     useTheme: () => ({
@@ -11,7 +11,7 @@ jest.mock('@react-navigation/native', () => {
         text: 'black',
         border: 'green',
         error: 'red',
-        success: 'green'
+        success: 'green',
       },
     }),
   };
@@ -31,19 +31,25 @@ jest.mock('expo-font');
 
 describe('RoomItem Component', () => {
   it('renders room code and venue', async () => {
-    const { findByText } = render(<Room code="R-123" venue="R-Building" isFree={true} />);
+    const { findByText } = render(
+      <Room code="R-123" venue="R-Building" isFree={true} />
+    );
 
-    expect(await findByText("R-123")).toBeDefined();
-    expect(await findByText("R-Building")).toBeDefined();
+    expect(await findByText('R-123')).toBeDefined();
+    expect(await findByText('R-Building')).toBeDefined();
   });
 
-  it("renders available status when isFree is true", async () => {
-    const { findByText } = render(<Room code="R-123" venue="R-Building" isFree={true} />);
-    expect(await findByText("Available")).toBeDefined();
+  it('renders available status when isFree is true', async () => {
+    const { findByText } = render(
+      <Room code="R-123" venue="R-Building" isFree={true} />
+    );
+    expect(await findByText('Available')).toBeDefined();
   });
 
-  it("renders occupied status when isFree is false", async () => {
-    const { findByText } = render(<Room code="R-123" venue="R-Building" isFree={false} />);
-    expect(await findByText("Occupied")).toBeDefined();
+  it('renders occupied status when isFree is false', async () => {
+    const { findByText } = render(
+      <Room code="R-123" venue="R-Building" isFree={false} />
+    );
+    expect(await findByText('Occupied')).toBeDefined();
   });
 });

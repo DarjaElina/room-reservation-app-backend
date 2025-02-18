@@ -18,7 +18,8 @@ export default function AboutScreen() {
   return (
     <View
       style={[
-        styles.flexContainer, styles.scrollContainer,
+        styles.flexContainer,
+        styles.scrollContainer,
         {
           backgroundColor: colors.backgroundPrimary,
         },

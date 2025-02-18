@@ -51,7 +51,8 @@ export default function ConfirmBookingCreationScreen() {
     <QueryResult data={room} loading={roomLoading} error={roomError}>
       <View
         style={[
-          styles.flexContainer, styles.scrollContainer,
+          styles.flexContainer,
+          styles.scrollContainer,
           {
             backgroundColor: colors.backgroundPrimary,
             justifyContent: 'center',

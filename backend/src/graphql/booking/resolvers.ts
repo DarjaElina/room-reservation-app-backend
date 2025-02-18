@@ -9,7 +9,7 @@ import {
   checkBookingLimit,
   checkRoomDepartmentRestriction,
 } from '../../helpers/helpers';
-import { Op, WhereOptions }from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
 import { z } from 'zod';
 import UserModel from '../../models/user';
 import { sequelize } from '../../util/db';
@@ -18,24 +18,20 @@ const argsSchema = z.object({
   roomId: z.string().optional(),
   userId: z.string().optional(),
   status: z.nativeEnum(BookingStatus).optional(),
-  startDate: z
-    .date()
-    .optional(),
-  endDate: z
-    .date()
-    .optional(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
 });
 
 const argsCreationSchema = z.object({
   roomId: z.string(),
-  bookingTime: z.tuple([z.date(), z.date()]), 
+  bookingTime: z.tuple([z.date(), z.date()]),
   title: z.string().optional(),
 });
 
 const argsModificationSchema = z.object({
-  bookingTime: z.tuple([z.date(), z.date()]), 
+  bookingTime: z.tuple([z.date(), z.date()]),
   title: z.string().optional(),
-  bookingId: z.string()
+  bookingId: z.string(),
 });
 
 const bookingResolvers: Resolvers = {
@@ -47,13 +43,7 @@ const bookingResolvers: Resolvers = {
 
       try {
         const normalizedArgs = argsSchema.parse(args);
-        const {
-          roomId,
-          userId,
-          status,
-          startDate,
-          endDate
-        } = normalizedArgs;
+        const { roomId, userId, status, startDate, endDate } = normalizedArgs;
 
         const where: WhereOptions = {};
 
@@ -71,7 +61,7 @@ const bookingResolvers: Resolvers = {
 
         if (startDate && endDate) {
           where.bookingTime = {
-            [Op.overlap]: [startDate, endDate]
+            [Op.overlap]: [startDate, endDate],
           };
         }
 
@@ -83,9 +73,9 @@ const bookingResolvers: Resolvers = {
             },
             {
               model: UserModel,
-            }
+            },
           ],
-          where
+          where,
         });
 
         return bookings;
@@ -101,53 +91,47 @@ const bookingResolvers: Resolvers = {
     },
     user: (booking) => {
       return booking.user;
-    }
+    },
   },
 
   Mutation: {
-    createBooking: async (
-      _,
-      args,
-      { user }: { user: User }
-    ) => {
+    createBooking: async (_, args, { user }: { user: User }) => {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
-    
+
       const normalizedArgs = argsCreationSchema.parse(args);
-      const {roomId, bookingTime, title} = normalizedArgs;
+      const { roomId, bookingTime, title } = normalizedArgs;
       const bookingTimeForDb = [
         {
           value: bookingTime[0],
-          inclusive: true
+          inclusive: true,
         },
         {
           value: bookingTime[1],
-          inclusive: false
-        }
+          inclusive: false,
+        },
       ];
       return await sequelize.transaction(async (transaction) => {
         validateSingleBooking(user.role, bookingTime[0], bookingTime[1]);
-    
-    
-       
-       const totalBookedHours = await getTotalBookedHoursForWeek(user.id, transaction);
-    
-       
+
+        const totalBookedHours = await getTotalBookedHoursForWeek(
+          user.id,
+          transaction
+        );
+
         const newBookingHours =
-          (bookingTime[0].getTime() - bookingTime[1].getTime()) / (1000 * 60 * 60);
+          (bookingTime[0].getTime() - bookingTime[1].getTime()) /
+          (1000 * 60 * 60);
         checkBookingLimit(user.role, totalBookedHours, newBookingHours);
-    
-        
+
         await checkRoomDepartmentRestriction(user, roomId, transaction);
-    
-       
+
         const room = await Room.findByPk(roomId, { transaction });
         if (!room) {
           throw new GraphQLError('Room not found!');
         }
-    
-        
+
         const booking = await Booking.create(
           {
             userId: user.id,
@@ -158,23 +142,19 @@ const bookingResolvers: Resolvers = {
           },
           { transaction }
         );
-    
+
         return { ...booking.dataValues, room, user };
       });
     },
 
-    updateBooking: async (
-      _,
-      args,
-      { user }: { user: User }
-    ) => {
+    updateBooking: async (_, args, { user }: { user: User }) => {
       if (!user) {
         throw new GraphQLError('Not authenticated');
       }
 
       const normalizedArgs = argsModificationSchema.parse(args);
       const { bookingTime, title, bookingId } = normalizedArgs;
-    
+
       return await sequelize.transaction(async (transaction) => {
         const booking = await Booking.findByPk(bookingId, { transaction });
         if (!booking) {
@@ -183,33 +163,36 @@ const bookingResolvers: Resolvers = {
         if (booking.userId !== user.id) {
           throw new GraphQLError('You can update only your own bookings');
         }
-    
+
         validateSingleBooking(user.role, bookingTime[0], bookingTime[1]);
-    
-        const totalBookedHours = await getTotalBookedHoursForWeek(user.id, transaction);
-    
+
+        const totalBookedHours = await getTotalBookedHoursForWeek(
+          user.id,
+          transaction
+        );
+
         const newBookingHours =
-          (bookingTime[0].getTime() - bookingTime[1].getTime()) / (1000 * 60 * 60);
-    
+          (bookingTime[0].getTime() - bookingTime[1].getTime()) /
+          (1000 * 60 * 60);
+
         checkBookingLimit(user.role, totalBookedHours, newBookingHours);
 
         const bookingTimeForDb = [
           {
             value: bookingTime[0],
-            inclusive: true
+            inclusive: true,
           },
           {
             value: bookingTime[1],
-            inclusive: false
-          }
+            inclusive: false,
+          },
         ];
-    
-      
+
         const updatedBooking = await booking.update(
           { bookingTime: bookingTimeForDb, title },
           { transaction }
         );
-    
+
         return updatedBooking;
       });
     },
@@ -227,7 +210,8 @@ const bookingResolvers: Resolvers = {
         if (booking.userId !== user.id) {
           throw new GraphQLError('You can delete only your own bookings');
         }
-        const timeBeforeStartDate = Date.now() - booking.bookingTime[0].value.getDate();
+        const timeBeforeStartDate =
+          Date.now() - booking.bookingTime[0].value.getDate();
         if (Math.floor(timeBeforeStartDate / 60000) >= 30) {
           await booking.update({ status: BookingStatus.CancelledLate });
         }

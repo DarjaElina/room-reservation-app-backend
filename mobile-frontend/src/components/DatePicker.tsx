@@ -93,7 +93,7 @@ export default function DatePicker({ dateToModify }: DatePickerProps) {
         </Text>
       </TouchableOpacity>
       <DateTimePickerModal
-        testID='date_time_picker_modal'
+        testID="date_time_picker_modal"
         isVisible={isDatePickerVisible}
         mode="date"
         onConfirm={handleConfirm}

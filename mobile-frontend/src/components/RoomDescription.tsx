@@ -11,11 +11,7 @@ export default function RoomDescription({ text }: DescriptionProp) {
   const { colors } = useTheme();
   const styles = useStyles();
   return (
-    <View
-      style={[
-        styles.roomDescriptionContainer
-      ]}
-    >
+    <View style={[styles.roomDescriptionContainer]}>
       <Text
         style={[
           styles.mediumText,

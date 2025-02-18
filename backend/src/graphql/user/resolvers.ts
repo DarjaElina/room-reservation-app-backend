@@ -31,6 +31,16 @@ const userResolvers: Resolvers = {
     currentUser: (_, __, { user }: { user: User }) => {
       return user;
     },
+    checkActivationToken: async (_, { activationToken }) => {
+      let isTokenActive = true;
+      const storedToken = await UserToken.findOne({
+        where: { token: activationToken, type: TokenType.Activation },
+      });
+
+      if (!storedToken || new Date() > storedToken.expiresAt)
+        isTokenActive = false;
+      return isTokenActive;
+    },
   },
 
   User: {
@@ -133,7 +143,7 @@ const userResolvers: Resolvers = {
             const token = await createToken(
               user.id,
               TokenType.Activation,
-              new Date(Date.now() + 24 * 60 * 60 * 1000)
+              new Date(Date.now() + 15 * 60 * 1000)
             );
 
             const activationLink = `https://example.com/activate?token=${token}`;
@@ -175,7 +185,7 @@ const userResolvers: Resolvers = {
 
         return {
           success: true,
-          message: 'Account successfully activated, you can now log in',
+          message: `Account successfully activated, you can now log in. Your username is ${user.username}`,
         };
       } catch (error) {
         return handleResolverErrors(error);
@@ -335,6 +345,40 @@ const userResolvers: Resolvers = {
           success: true,
           message: 'Password reset email sent, please check your mailbox',
         };
+      } catch (error) {
+        return handleResolverErrors(error);
+      }
+    },
+
+    signupRequest: async (_, { userInput }: { userInput: UserInput }) => {
+      try {
+        const newUser: UserInput = {
+          givenName: userInput.givenName,
+          middleName: userInput.middleName,
+          familyName: userInput.familyName,
+          email: userInput.email,
+          role: userInput.role,
+          status: userInput.status,
+          departmentId: userInput.departmentId,
+        };
+
+        const createdUser = await User.create(newUser);
+
+        const token = await createToken(
+          createdUser.id,
+          TokenType.Activation,
+          new Date(Date.now() + 24 * 60 * 60 * 1000)
+        );
+
+        const activationLink = `http://localhost:5173/activate/${token}`;
+
+        await sendMail(
+          createdUser.email,
+          'Activate Your Account',
+          `Please click this link to activate your account: ${activationLink}`
+        );
+
+        return { success: true, message: 'Signup link sent!' };
       } catch (error) {
         return handleResolverErrors(error);
       }

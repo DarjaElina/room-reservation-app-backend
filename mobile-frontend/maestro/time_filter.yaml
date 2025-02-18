@@ -21,13 +21,13 @@ appId: ${APP_ID}
 - tapOn:
     point: '32%,68%'
 - doubleTapOn:
-    point: "59%,63%"
+    point: '59%,63%'
 - inputText: '6'
 - tapOn:
-    point: "73%,63%"
+    point: '73%,63%'
 - inputText: '00'
 - tapOn:
-    point: "50%,20%"
+    point: '50%,20%'
 - tapOn: 'Confirm'
 - tapOn: 'Search Classrooms'
 - assertNotVisible: 'rach-100  Sergei Rachmaninoff Building  Available'

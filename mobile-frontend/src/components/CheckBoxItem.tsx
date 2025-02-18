@@ -44,32 +44,32 @@ export default function CheckBoxItem({
       ]}
       onPress={handlePress}
     >
-    <View style={[styles.iconTextContainer, {margin: 0}]}>
-    <MaterialIcons
-        name={isActive ? 'check-box' : 'check-box-outline-blank'}
-        size={24}
-        color={isActive ? colors.backgroundPrimary : colors.textSecondary}
-      />
-      <Text
-        style={
-          isActive
-            ? [
-                styles.mediumText,
-                {
-                  color: colors.checkboxActiveText,
-                },
-              ]
-            : [
-                styles.mediumText,
-                {
-                  color: colors.checkboxInactiveText,
-                },
-              ]
-        }
-      >
-        {item.label}
-      </Text>
-    </View>
+      <View style={[styles.iconTextContainer, { margin: 0 }]}>
+        <MaterialIcons
+          name={isActive ? 'check-box' : 'check-box-outline-blank'}
+          size={24}
+          color={isActive ? colors.backgroundPrimary : colors.textSecondary}
+        />
+        <Text
+          style={
+            isActive
+              ? [
+                  styles.mediumText,
+                  {
+                    color: colors.checkboxActiveText,
+                  },
+                ]
+              : [
+                  styles.mediumText,
+                  {
+                    color: colors.checkboxInactiveText,
+                  },
+                ]
+          }
+        >
+          {item.label}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 }

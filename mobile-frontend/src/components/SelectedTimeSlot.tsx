@@ -21,13 +21,16 @@ export default function SelectedTimeSlot({
 }: SelectedTimeSlotProps) {
   const styles = useStyles();
   return (
-    <View testID="selected_time_slot" style={[styles.selectedTimeSlot, { backgroundColor: color }]}>
-      {value && <Text style={[, {color: '#fff'}]}>{value}</Text>}
+    <View
+      testID="selected_time_slot"
+      style={[styles.selectedTimeSlot, { backgroundColor: color }]}
+    >
+      {value && <Text style={[, { color: '#fff' }]}>{value}</Text>}
       {displayBookingTitle && (
-        <Text style={[{color: '#fff'}]}>{bookingInfo?.title}</Text>
+        <Text style={[{ color: '#fff' }]}>{bookingInfo?.title}</Text>
       )}
       {displayBookingUser && (
-        <Text style={[{color: '#fff'}]}>{bookingInfo?.user}</Text>
+        <Text style={[{ color: '#fff' }]}>{bookingInfo?.user}</Text>
       )}
     </View>
   );

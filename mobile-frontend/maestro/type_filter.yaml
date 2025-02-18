@@ -11,12 +11,12 @@ appId: ${APP_ID}
 - tapOn: 'tane-131  Sergei Taneyev Building  Available'
 - assertVisible: 'Practice room'
 - tapOn: 'Back'
-- tapOn: " Type"
-- tapOn: "Search"
+- tapOn: ' Type'
+- tapOn: 'Search'
 - inputText: 'practice'
 - hideKeyboard
-- assertVisible: " Practice Room"
-- longPressOn: " Practice Room"
+- assertVisible: ' Practice Room'
+- longPressOn: ' Practice Room'
 - tapOn: 'Back'
 - assertNotVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
 - assertVisible: 'tane-131  Sergei Taneyev Building  Available'

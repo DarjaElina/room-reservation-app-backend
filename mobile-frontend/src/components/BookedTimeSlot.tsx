@@ -1,14 +1,12 @@
 import SelectedTimeSlot from './SelectedTimeSlot';
 
 interface BookedTimeSlotProps {
-  booking:
-    | {
-        startDate: string;
-        endDate: string;
-        title: string | null | undefined;
-        user: string;
-      }
-    | null;
+  booking: {
+    startDate: string;
+    endDate: string;
+    title: string | null | undefined;
+    user: string;
+  } | null;
   displayBookingTitle: boolean;
   displayBookingUser: boolean;
 }

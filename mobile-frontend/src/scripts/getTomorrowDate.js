@@ -1,6 +1,17 @@
-const monthsArr = 
-	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthsArr = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 const tomorrowDateObj = new Date();
 tomorrowDateObj.setDate(tomorrowDateObj.getDate() + 1);
 const tomorrowDate = tomorrowDateObj.getDate();

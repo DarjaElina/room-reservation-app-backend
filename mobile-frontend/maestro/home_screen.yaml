@@ -18,4 +18,3 @@ appId: ${APP_ID}
 - assertNotVisible: 'tane-130  Sergei Taneyev Building  Available'
 - scrollUntilVisible:
     element: 'tane-130  Sergei Taneyev Building  Available'
-

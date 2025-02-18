@@ -1,7 +1,7 @@
-import TimeSlot from "@/src/components/TimeSlot";
-import { render, screen, userEvent } from "@testing-library/react-native";
+import TimeSlot from '@/src/components/TimeSlot';
+import { render, screen, userEvent } from '@testing-library/react-native';
 import { BookingProvider } from '@/src/context/BookingContext';
-import useBookingContext from '@/src/hooks/useBookingContext'; 
+import useBookingContext from '@/src/hooks/useBookingContext';
 
 jest.mock('@react-navigation/native', () => {
   return {
@@ -14,7 +14,7 @@ jest.mock('@react-navigation/native', () => {
         text: 'black',
         border: 'green',
         error: 'red',
-        success: 'green'
+        success: 'green',
       },
     }),
   };
@@ -83,7 +83,6 @@ describe('UserMessage Component', () => {
     screen.debug();
   });
 
-
   it('renders booking title for the first slot out of four', async () => {
     const { findByText } = render(
       <BookingProvider>
@@ -114,7 +113,7 @@ describe('UserMessage Component', () => {
     );
 
     const user = userEvent.setup();
-    
+
     await user.press(getByTestId('time_slot_btn'));
     expect(onSelect).toHaveBeenCalled();
   });

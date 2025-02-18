@@ -4,20 +4,20 @@ appId: ${APP_ID}
 - assertVisible: 'My Calendar'
 - tapOn: 'My Calendar'
 - assertVisible: 'You have no upcoming bookings.'
-- tapOn: "Search, tab, 1 of 3"
+- tapOn: 'Search, tab, 1 of 3'
 - tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
 - tapOn: 'Reserve'
 - tapOn:
-    point: "92%,13%"
-- tapOn: "06:00:00"
+    point: '92%,13%'
+- tapOn: '06:00:00'
 - tapOn: 'Confirm'
-- assertVisible: "Booking Details"
+- assertVisible: 'Booking Details'
 - tapOn: 'Reserve'
 - assertVisible: 'Booking created successfully.'
 - assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
 - tapOn: 'My Calendar'
 - assertVisible: 'rach-100'
 - runScript: ../src/scripts/getTomorrowDate.js
-- assertVisible: "${output.getTomorrowDate.dotFormat} at 6.00 - ${output.getTomorrowDate.dotFormat} at 7.00"
-- assertVisible: " Cancel"
-- assertVisible: " Modify"
+- assertVisible: '${output.getTomorrowDate.dotFormat} at 6.00 - ${output.getTomorrowDate.dotFormat} at 7.00'
+- assertVisible: ' Cancel'
+- assertVisible: ' Modify'

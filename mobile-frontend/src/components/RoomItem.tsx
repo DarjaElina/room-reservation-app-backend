@@ -57,7 +57,11 @@ export default function Room({
         {code}
       </Text>
       <View style={styles.iconTextContainer}>
-      <FontAwesome6 name="location-dot" size={20} color={colors.textPrimary}/>
+        <FontAwesome6
+          name="location-dot"
+          size={20}
+          color={colors.textPrimary}
+        />
         <Text
           style={[
             styles.smallText,

@@ -43,6 +43,12 @@ type AccessToken {
   value: String!
 }
 
+type ActivationToken {
+  token: String!
+  expires_at: Date!
+  used: Boolean!
+}
+
 type Query {
   allUsers: [User!]!
   findUser(id: ID!): User
@@ -50,11 +56,12 @@ type Query {
   findUsersByRole(role: UserRole!): [User!]!
   findUsersByDepartment(departmentId: ID!): [User!]!
   currentUser: User
+  checkActivationToken(activationToken: String!): Boolean!
 }
 
 type UserResponse {
   success: Boolean!
-  message: String
+  message: String!
   id: ID
 }
 
@@ -86,4 +93,6 @@ type Mutation {
   ): UserResponse!
   changePassword(oldPassword: String!, newPassword: String!): UserResponse!
   requestPasswordReset(email: String!): UserResponse!
+
+  signupRequest(userInput: UserInput!): UserResponse!
 }

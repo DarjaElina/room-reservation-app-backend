@@ -1,4 +1,4 @@
-import { View} from 'react-native';
+import { View } from 'react-native';
 import useStyles from '../hooks/useStyles';
 
 export default function Separator() {

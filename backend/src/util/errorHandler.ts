@@ -70,7 +70,10 @@ export const handleResolverErrors = (error: unknown) => {
     });
   }
 
-  if (error instanceof GraphQLError && error.extensions?.code === 'BAD_USER_INPUT') {
+  if (
+    error instanceof GraphQLError &&
+    error.extensions?.code === 'BAD_USER_INPUT'
+  ) {
     throw new GraphQLError(error.message, {
       extensions: {
         code: error.extensions.code,

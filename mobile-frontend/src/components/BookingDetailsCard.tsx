@@ -53,7 +53,7 @@ export default function BookingDetailsCard({
         },
       ]}
     >
-      <View style={[styles.iconTextContainer,  {margin: 'auto'}]}>
+      <View style={[styles.iconTextContainer, { margin: 'auto' }]}>
         <FontAwesome5
           name="calendar-check"
           size={24}
@@ -71,9 +71,7 @@ export default function BookingDetailsCard({
         </Text>
       </View>
       <Text>
-        <Text
-          style={[styles.mediumText, { color: colors.textPrimary }]}
-        >
+        <Text style={[styles.mediumText, { color: colors.textPrimary }]}>
           {LL.TITLE()}
         </Text>
       </Text>
@@ -95,33 +93,45 @@ export default function BookingDetailsCard({
       {error && (
         <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
       )}
-        <Text style={[styles.mediumText, styles.textContainer, { color: colors.textPrimary }]}>
-          <Text style={[styles.mediumText, { color: colors.textPrimary }]}>
-            {LL.ROOM()}:
-          </Text>{' '}
-          {roomCode}
-        </Text>
-        <Text style={[styles.mediumText, styles.textContainer, { color: colors.textSecondary }]}>
-          <Text
-            style={{
-                color: colors.textSecondary,
-              }}
-          >
-            {LL.STARTS()}:
-          </Text>{' '}
-          {formatReadableDate(bookingStartDate)}
-        </Text>
+      <Text
+        style={[
+          styles.mediumText,
+          styles.textContainer,
+          { color: colors.textPrimary },
+        ]}
+      >
+        <Text style={[styles.mediumText, { color: colors.textPrimary }]}>
+          {LL.ROOM()}:
+        </Text>{' '}
+        {roomCode}
+      </Text>
+      <Text
+        style={[
+          styles.mediumText,
+          styles.textContainer,
+          { color: colors.textSecondary },
+        ]}
+      >
         <Text
-          style={[
-            styles.mediumText, styles.textContainer,
-            {
-              color: colors.textSecondary,
-            },
-          ]}
+          style={{
+            color: colors.textSecondary,
+          }}
         >
-          <Text>{LL.ENDS()}:</Text>{' '}
-          {formatReadableDate(bookingEndDate)}
-        </Text>
+          {LL.STARTS()}:
+        </Text>{' '}
+        {formatReadableDate(bookingStartDate)}
+      </Text>
+      <Text
+        style={[
+          styles.mediumText,
+          styles.textContainer,
+          {
+            color: colors.textSecondary,
+          },
+        ]}
+      >
+        <Text>{LL.ENDS()}:</Text> {formatReadableDate(bookingEndDate)}
+      </Text>
       <Pressable
         disabled={loading}
         onPress={onSubmit}

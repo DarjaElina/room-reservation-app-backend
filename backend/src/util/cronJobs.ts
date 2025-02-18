@@ -12,7 +12,7 @@ const updateBookingStatuses = async () => {
         where: {
           status: BookingStatus.Active,
           bookingTime: {
-            [Op.noExtendRight]: [null, now]
+            [Op.noExtendRight]: [null, now],
           } as WhereAttributeHashValue<BookingTimeItem[]>,
         },
       }
@@ -32,7 +32,7 @@ const deleteOldBookings = async () => {
       where: {
         status: BookingStatus.Past,
         bookingTime: {
-          [Op.noExtendRight]: [null, oneWeekAgo]
+          [Op.noExtendRight]: [null, oneWeekAgo],
         } as WhereAttributeHashValue<BookingTimeItem[]>,
       },
     });

@@ -161,8 +161,8 @@ const roomResolvers: Resolvers = {
           where: {
             roomId: room.id,
             bookingTime: {
-              [Op.contains]: new Date()
-            } 
+              [Op.contains]: new Date(),
+            },
           } as WhereOptions<BookingAttributes> | undefined,
         });
         return {
@@ -175,9 +175,7 @@ const roomResolvers: Resolvers = {
         return handleResolverErrors(error);
       }
     },
-
   },
-
 
   Room: {
     venue: (room) => {

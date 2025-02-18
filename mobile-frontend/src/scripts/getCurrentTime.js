@@ -1,6 +1,6 @@
 const currentDateObj = new Date();
-const currentHour  = currentDateObj.getHours();
-const nextHour  = currentDateObj.setHours(currentDateObj.getHours() + 1);
+const currentHour = currentDateObj.getHours();
+const nextHour = currentDateObj.setHours(currentDateObj.getHours() + 1);
 
 output.getHours = {
   currentHour: currentHour.toFixed(),

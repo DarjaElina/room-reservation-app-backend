@@ -20,7 +20,8 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
     return (
       <View
         style={[
-          styles.flexContainer, styles.scrollContainer,
+          styles.flexContainer,
+          styles.scrollContainer,
           {
             backgroundColor: colors.backgroundPrimary,
           },
@@ -48,7 +49,8 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
     return (
       <View
         style={[
-          styles.flexContainer, styles.scrollContainer,
+          styles.flexContainer,
+          styles.scrollContainer,
           {
             backgroundColor: colors.backgroundPrimary,
           },
@@ -72,7 +74,8 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
     return (
       <View
         style={[
-          styles.flexContainer, styles.scrollContainer,
+          styles.flexContainer,
+          styles.scrollContainer,
           {
             backgroundColor: colors.backgroundPrimary,
           },

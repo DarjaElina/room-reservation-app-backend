@@ -27,10 +27,10 @@ export default function EquipmentFilter() {
     <QueryResult loading={loading} error={error} data={equipment}>
       <View
         style={[
-          styles.scrollContainer, styles.flexContainer,
-          
-          { backgroundColor: colors.backgroundPrimary},
-          
+          styles.scrollContainer,
+          styles.flexContainer,
+
+          { backgroundColor: colors.backgroundPrimary },
         ]}
       >
         <SearchBar

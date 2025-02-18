@@ -34,7 +34,12 @@ type Query {
 type Mutation {
   createBooking(roomId: ID!, bookingTime: [Date!]!, title: String): Booking!
 
-  updateBooking(bookingId: ID!, bookingTime: [Date!]!, title: String, roomId: ID!): Booking!
+  updateBooking(
+    bookingId: ID!
+    bookingTime: [Date!]!
+    title: String
+    roomId: ID!
+  ): Booking!
 
   cancelBooking(bookingId: ID!): UserResponse!
 

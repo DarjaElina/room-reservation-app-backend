@@ -1,5 +1,5 @@
-import SelectedTimeSlot from "@/src/components/SelectedTimeSlot";
-import { render, screen, userEvent } from "@testing-library/react-native";
+import SelectedTimeSlot from '@/src/components/SelectedTimeSlot';
+import { render, screen, userEvent } from '@testing-library/react-native';
 
 jest.mock('@react-navigation/native', () => {
   return {
@@ -12,70 +12,80 @@ jest.mock('@react-navigation/native', () => {
         text: 'black',
         border: 'green',
         error: 'red',
-        success: 'green'
+        success: 'green',
       },
     }),
   };
 });
 
 describe('SelectedTimeSlot Component', () => {
-  
-
   it('renders the value if provided', async () => {
-    const {findByText} = render(
-      <SelectedTimeSlot color="green" value="10:00"/>
-    )
+    const { findByText } = render(
+      <SelectedTimeSlot color="green" value="10:00" />
+    );
 
-    expect(await findByText("10:00")).toBeDefined()
+    expect(await findByText('10:00')).toBeDefined();
   });
 
   it('does not render the value if not provided', () => {
-    const {queryByText} = render(
-      <SelectedTimeSlot color="green"/>
-    )
+    const { queryByText } = render(<SelectedTimeSlot color="green" />);
 
-    expect(queryByText("10:00")).toBeNull()
+    expect(queryByText('10:00')).toBeNull();
   });
 
-
   it('renders booking title when displayBookingTitle is true', async () => {
-    const {findByText} = render(
-      <SelectedTimeSlot color="green" bookingInfo={{title: 'Booking Title', user: 'Anna Smith'}} displayBookingTitle={true}/>
-    )
+    const { findByText } = render(
+      <SelectedTimeSlot
+        color="green"
+        bookingInfo={{ title: 'Booking Title', user: 'Anna Smith' }}
+        displayBookingTitle={true}
+      />
+    );
 
-    expect(await findByText("Booking Title")).toBeDefined()
+    expect(await findByText('Booking Title')).toBeDefined();
   });
 
   it('does not render booking title when displayBookingTitle is false', () => {
-    const {queryByText} = render(
-      <SelectedTimeSlot color="green" bookingInfo={{title: 'Booking Title', user: 'Anna Smith'}} displayBookingTitle={false}/>
-    )
+    const { queryByText } = render(
+      <SelectedTimeSlot
+        color="green"
+        bookingInfo={{ title: 'Booking Title', user: 'Anna Smith' }}
+        displayBookingTitle={false}
+      />
+    );
 
-    expect(queryByText("Booking Title")).toBeNull()
+    expect(queryByText('Booking Title')).toBeNull();
   });
 
   it('renders user name when displayBookingUser is true', async () => {
-    const {findByText} = render(
-      <SelectedTimeSlot color="green" bookingInfo={{title: 'Booking Title', user: 'Anna Smith'}} displayBookingUser={true}/>
-    )
+    const { findByText } = render(
+      <SelectedTimeSlot
+        color="green"
+        bookingInfo={{ title: 'Booking Title', user: 'Anna Smith' }}
+        displayBookingUser={true}
+      />
+    );
 
-    expect(await findByText("Anna Smith")).toBeDefined()
+    expect(await findByText('Anna Smith')).toBeDefined();
   });
 
   it('does not render user name when displayBookingUser is false', () => {
-    const {queryByText} = render(
-      <SelectedTimeSlot color="green" bookingInfo={{title: 'Booking Title', user: 'Anna Smith'}} displayBookingUser={false}/>
-    )
+    const { queryByText } = render(
+      <SelectedTimeSlot
+        color="green"
+        bookingInfo={{ title: 'Booking Title', user: 'Anna Smith' }}
+        displayBookingUser={false}
+      />
+    );
 
-    expect( queryByText("Anna Smith")).toBeNull()
+    expect(queryByText('Anna Smith')).toBeNull();
   });
 
   it('applies the correct bg color based on color prop', async () => {
-    const {findByTestId} = render(
-      <SelectedTimeSlot color="green"/>
-    )
+    const { findByTestId } = render(<SelectedTimeSlot color="green" />);
 
-    expect(await findByTestId("selected_time_slot")).toHaveStyle({backgroundColor: 'green'})
+    expect(await findByTestId('selected_time_slot')).toHaveStyle({
+      backgroundColor: 'green',
+    });
   });
-
 });

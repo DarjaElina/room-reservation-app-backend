@@ -30,7 +30,8 @@ export default function SettingsScreen() {
   return (
     <View
       style={[
-        styles.flexContainer,styles.scrollContainer,
+        styles.flexContainer,
+        styles.scrollContainer,
         { backgroundColor: colors.background, justifyContent: 'center' },
       ]}
     >
@@ -93,7 +94,10 @@ export default function SettingsScreen() {
       >
         <Ionicons name="log-out-outline" size={24} color={colors.background} />
         <Text
-          style={[styles.mediumText, { color: colors.buttonText, marginLeft: 8 }]}
+          style={[
+            styles.mediumText,
+            { color: colors.buttonText, marginLeft: 8 },
+          ]}
         >
           {LL.LOGOUT()}
         </Text>

@@ -61,6 +61,15 @@ export const connectToDatabase = async () => {
   return null;
 };
 
+// const test = async () => {
+//   const migs = await umzug.executed();
+//   console.log('executed migs are', migs)
+//   await umzug.down({migrations: ['20241008_12_add_user_token_table.ts']});
+
+// };
+
+// void test();
+
 export const rollbackMigration = async () => {
   try {
     await sequelize.authenticate();
@@ -74,5 +83,3 @@ export const rollbackMigration = async () => {
     console.error('Failed to rollback migration', err);
   }
 };
-
-

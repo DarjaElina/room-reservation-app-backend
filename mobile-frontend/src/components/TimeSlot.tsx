@@ -14,13 +14,12 @@ interface TimeSlotProps {
   onSelect: (timeSlot: TimeSlotType) => void;
   timeSlot: TimeSlotType;
   index: number;
-  booking:
-    | {
-        startDate: string;
-        endDate: string;
-        title: string | null | undefined;
-        user: string;
-      } | null;
+  booking: {
+    startDate: string;
+    endDate: string;
+    title: string | null | undefined;
+    user: string;
+  } | null;
   bookingToModify?: { startDate: string; endDate: string } | undefined;
 }
 
@@ -35,10 +34,13 @@ const TimeSlot = memo(function TimeSlotItem({
 
   return (
     <Pressable
-      testID='time_slot_btn'
+      testID="time_slot_btn"
       disabled={booking ? true : false}
       onPress={() => onSelect(timeSlot)}
-      style={[styles.timeSlot, {borderColor: index !== 0 && index % 4 === 0 ? 'gray' : 'lightgray'}]}
+      style={[
+        styles.timeSlot,
+        { borderColor: index !== 0 && index % 4 === 0 ? 'gray' : 'lightgray' },
+      ]}
     >
       {index % 4 === 0 ? (
         <Text style={{ padding: 2 }}>{timeSlot.value}</Text>

@@ -11,11 +11,11 @@ appId: ${APP_ID}
 - tapOn: 'tane-131  Sergei Taneyev Building  Available'
 - assertVisible: 'Timpani'
 - tapOn: 'Back'
-- tapOn: " Tools"
-- tapOn: "Search"
+- tapOn: ' Tools'
+- tapOn: 'Search'
 - inputText: 'timpani'
-- assertVisible: " Timpani"
-- tapOn: " Timpani"
+- assertVisible: ' Timpani'
+- tapOn: ' Timpani'
 - tapOn: 'Back'
 - assertNotVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
 - assertVisible: 'tane-131  Sergei Taneyev Building  Available'

@@ -3,9 +3,9 @@ appId: ${APP_ID}
 - runFlow: login.yaml
 - assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
 - assertNotVisible: 'tane-130  Sergei Taneyev Building  Available'
-- tapOn: " Building"
-- assertVisible: " Sergei Taneyev Building"
-- tapOn: " Sergei Taneyev Building"
-- tapOn: "Back"
+- tapOn: ' Building'
+- assertVisible: ' Sergei Taneyev Building'
+- tapOn: ' Sergei Taneyev Building'
+- tapOn: 'Back'
 - assertVisible: 'tane-130  Sergei Taneyev Building  Available'
 - assertNotVisible: 'rach-100  Sergei Rachmaninoff Building  Available'

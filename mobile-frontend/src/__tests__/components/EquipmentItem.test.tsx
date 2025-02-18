@@ -1,5 +1,5 @@
-import EquipmentItem from "@/src/components/EquipmentItem";
-import { render } from "@testing-library/react-native";
+import EquipmentItem from '@/src/components/EquipmentItem';
+import { render } from '@testing-library/react-native';
 jest.mock('@react-navigation/native', () => {
   return {
     useTheme: () => ({
@@ -11,7 +11,7 @@ jest.mock('@react-navigation/native', () => {
         text: 'black',
         border: 'green',
         error: 'red',
-        success: 'green'
+        success: 'green',
       },
     }),
   };
@@ -19,9 +19,7 @@ jest.mock('@react-navigation/native', () => {
 
 describe('EquipmentItem Component', () => {
   it('renders equipment name correctly', async () => {
-     const { findByText } = render(
-          <EquipmentItem name="violin" />
-      );
-      expect(await findByText('violin')).toBeDefined();
+    const { findByText } = render(<EquipmentItem name="violin" />);
+    expect(await findByText('violin')).toBeDefined();
   });
 });

@@ -26,7 +26,8 @@ export default function BuildingFilter() {
     <QueryResult loading={loading} error={error} data={buildings}>
       <View
         style={[
-          styles.scrollContainer, styles.flexContainer,
+          styles.scrollContainer,
+          styles.flexContainer,
           {
             backgroundColor: colors.backgroundPrimary,
           },

@@ -231,12 +231,14 @@ export default function TimePicker({
             index={index}
             timeSlot={item}
             onSelect={handleSelect}
-            booking={mappedBookings.find(
-              (b) =>
-                b.startDate <= item.value &&
-                b.endDate > item.value &&
-                b.startDate !== startTime
-            ) || null}
+            booking={
+              mappedBookings.find(
+                (b) =>
+                  b.startDate <= item.value &&
+                  b.endDate > item.value &&
+                  b.startDate !== startTime
+              ) || null
+            }
           />
         )}
         onScrollToIndexFailed={(info) => {

@@ -5,7 +5,7 @@ import { genSaltSync, hashSync } from 'bcryptjs';
 import { UserRole } from '../types/user/user.enums';
 import { GraphQLError } from 'graphql';
 import Booking from '../models/booking';
-import {  Transaction, Op } from 'sequelize';
+import { Transaction, Op } from 'sequelize';
 import User from '../models/user';
 import { Request } from 'express';
 import { JWT_SECRET } from '../util/config';
@@ -53,7 +53,7 @@ export const createPasswordHash = (password: string) => {
 export const validateSingleBooking = (
   userRole: UserRole,
   startDate: Date,
-  endDate: Date,
+  endDate: Date
 ) => {
   const now = new Date();
   if (startDate < now) {
@@ -133,7 +133,11 @@ export const getTotalBookedHoursForWeek = async (
         [Op.overlap]: [startOfWeekDate, endOfWeekDate],
       },
       status: {
-        [Op.or]: [BookingStatus.Past, BookingStatus.CancelledLate, BookingStatus.Active],
+        [Op.or]: [
+          BookingStatus.Past,
+          BookingStatus.CancelledLate,
+          BookingStatus.Active,
+        ],
       },
     },
     attributes: ['bookingTime'],
@@ -144,13 +148,14 @@ export const getTotalBookedHoursForWeek = async (
       if (index < booking.bookingTime.length - 1) {
         const startTime = new Date(booking.bookingTime[index].value);
         const endTime = new Date(booking.bookingTime[index + 1].value);
-  
-        const durationInHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+
+        const durationInHours =
+          (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
         return bookingAcc + durationInHours;
       }
       return bookingAcc;
     }, 0);
-  
+
     return acc + bookingHours;
   }, 0);
 
@@ -176,14 +181,13 @@ export const checkRoomDepartmentRestriction = async (
   roomId: string,
   transaction: Transaction
 ): Promise<void> => {
-  const room = await Room.findByPk(roomId, { transaction});
+  const room = await Room.findByPk(roomId, { transaction });
   if (room?.department && user.department.id !== room.departmentId) {
     throw new GraphQLError(
       `This room can be booked only from students from ${room.department.name}`
     );
   }
 };
-
 
 // export const validateBooking = async (
 //   user: User,

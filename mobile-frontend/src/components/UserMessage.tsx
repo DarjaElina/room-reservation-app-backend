@@ -26,7 +26,9 @@ export default function UserMessage({ text, type }: UserNotificationProps) {
         },
       ]}
     >
-      <Text style={[styles.mediumText, { color: colors.textPrimary }]}>{text}</Text>
+      <Text style={[styles.mediumText, { color: colors.textPrimary }]}>
+        {text}
+      </Text>
     </View>
   );
 }

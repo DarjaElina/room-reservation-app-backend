@@ -13,11 +13,11 @@ const mocks = [
     request: {
       variables: {
         bookingId: '1',
-        bookingTime: [1738990800000,1738994400000],
+        bookingTime: [1738990800000, 1738994400000],
         roomId: '1',
         title: 'New Title',
       },
-      query: UPDATE_BOOKING
+      query: UPDATE_BOOKING,
     },
     result: {
       data: {
@@ -25,8 +25,8 @@ const mocks = [
           title: 'New Title',
           id: '1',
           bookingTime: [
-            { value: 1738908000000, __typename:  'BookingTimeItem'},
-            { value: 1738904400000, __typename:  'BookingTimeItem' },
+            { value: 1738908000000, __typename: 'BookingTimeItem' },
+            { value: 1738904400000, __typename: 'BookingTimeItem' },
           ],
           __typename: 'Booking',
         },
@@ -40,11 +40,11 @@ const badMocks = [
     request: {
       variables: {
         bookingId: '1',
-        bookingTime: ['1738990800000','1738994400000'],
+        bookingTime: ['1738990800000', '1738994400000'],
         roomId: '1',
         title: 'New Title',
       },
-      query: UPDATE_BOOKING
+      query: UPDATE_BOOKING,
     },
     result: {
       data: {
@@ -52,8 +52,8 @@ const badMocks = [
           title: 'New Title',
           id: '1',
           bookingTime: [
-            { value: 1738908000000, __typename:  'BookingTimeItem'},
-            { value: 1738904400000, __typename:  'BookingTimeItem' },
+            { value: 1738908000000, __typename: 'BookingTimeItem' },
+            { value: 1738904400000, __typename: 'BookingTimeItem' },
           ],
           __typename: 'Booking',
         },
@@ -61,7 +61,6 @@ const badMocks = [
     },
   },
 ];
-
 
 const mockNavigation = jest.fn();
 jest.mock('@react-navigation/native', () => ({
@@ -90,7 +89,7 @@ jest.mock('@/src/i18n/i18n-react', () => {
         ENDS: () => 'Ends',
         SAVE: () => 'Save',
         CANCEL: () => 'Cancel',
-        BOOKING_UPDATED_SUCCESSFULLY: () => 'Booking updated successfully'
+        BOOKING_UPDATED_SUCCESSFULLY: () => 'Booking updated successfully',
       },
     }),
   };
@@ -98,17 +97,15 @@ jest.mock('@/src/i18n/i18n-react', () => {
 
 jest.mock('expo-font');
 
-
-
 describe('BookingModificationForm Component', () => {
   const onCancel = jest.fn();
   const initialData = {
     title: 'Reservation from Booking App',
     roomId: '1',
-    startDate: new Date(new Date ().setHours(7, 0, 0, 0)),
-    endDate: new Date(new Date ().setHours(8, 0, 0, 0)),
-    id: '1'
-  }
+    startDate: new Date(new Date().setHours(7, 0, 0, 0)),
+    endDate: new Date(new Date().setHours(8, 0, 0, 0)),
+    id: '1',
+  };
   const formatDate = (date: Date): string => {
     return date.toLocaleString('en-GB', {
       day: 'numeric',
@@ -121,25 +118,35 @@ describe('BookingModificationForm Component', () => {
   it('displays initial data correctly', async () => {
     const { findByText, findByPlaceholderText } = render(
       <MockedProvider>
-        <BookingModificationForm onCancel={onCancel} initialData={initialData}/>
+        <BookingModificationForm
+          onCancel={onCancel}
+          initialData={initialData}
+        />
       </MockedProvider>
-    )
+    );
 
     expect(await findByPlaceholderText('Booking title')).toBeDefined();
     expect(await findByText('Cancel')).toBeDefined();
     expect(await findByText('Save')).toBeDefined();
     expect(await findByText('Starts:')).toBeDefined();
     expect(await findByText('Ends:')).toBeDefined();
-    expect(await findByText(formatDate(new Date(new Date ().setHours(7, 0, 0, 0))))).toBeDefined();
-    expect (await findByText(formatDate(new Date(new Date ().setHours(8, 0, 0, 0))))).toBeDefined();
+    expect(
+      await findByText(formatDate(new Date(new Date().setHours(7, 0, 0, 0))))
+    ).toBeDefined();
+    expect(
+      await findByText(formatDate(new Date(new Date().setHours(8, 0, 0, 0))))
+    ).toBeDefined();
   });
 
   it('can update and save title', async () => {
     const { findByText, findByPlaceholderText, findByDisplayValue } = render(
       <MockedProvider mocks={mocks} addTypename={false}>
-        <BookingModificationForm onCancel={onCancel} initialData={initialData}/>
+        <BookingModificationForm
+          onCancel={onCancel}
+          initialData={initialData}
+        />
       </MockedProvider>
-    )
+    );
 
     const user = userEvent.setup();
     const titleInput = await findByPlaceholderText('Booking title');
@@ -149,33 +156,44 @@ describe('BookingModificationForm Component', () => {
     expect(await findByDisplayValue('New Title')).toBeDefined();
     await user.press(saveBtn);
     expect(await findByText('Booking updated successfully'));
-  })
+  });
 
-  test("redirects to date-time picker when user presses date input", async () => {
+  test('redirects to date-time picker when user presses date input', async () => {
     const user = userEvent.setup();
     renderRouter(
       {
-        index: jest.fn(() => <MockedProvider mocks={mocks} addTypename={false}><BookingModificationForm onCancel={onCancel} initialData={{...initialData, title: 'New Title'}}/></MockedProvider>),
-        "(tabs)/(home)/rooms/[id]/modify-booking": jest.fn(() => <View />),
+        index: jest.fn(() => (
+          <MockedProvider mocks={mocks} addTypename={false}>
+            <BookingModificationForm
+              onCancel={onCancel}
+              initialData={{ ...initialData, title: 'New Title' }}
+            />
+          </MockedProvider>
+        )),
+        '(tabs)/(home)/rooms/[id]/modify-booking': jest.fn(() => <View />),
       },
       {
-        initialUrl: "/",
+        initialUrl: '/',
       }
     );
-  
-    const dateInput = await screen.findByText(formatDate(new Date(new Date().setHours(7, 0, 0, 0))));
+
+    const dateInput = await screen.findByText(
+      formatDate(new Date(new Date().setHours(7, 0, 0, 0)))
+    );
     await user.press(dateInput);
-  
-    expect(screen).toHavePathname("/rooms/1/modify-booking");
+
+    expect(screen).toHavePathname('/rooms/1/modify-booking');
   });
 
-
-  test("shows an error message if modification fails", async () => {
+  test('shows an error message if modification fails', async () => {
     const { findByText, findByPlaceholderText, findByDisplayValue } = render(
       <MockedProvider mocks={badMocks} addTypename={false}>
-        <BookingModificationForm onCancel={onCancel} initialData={initialData}/>
+        <BookingModificationForm
+          onCancel={onCancel}
+          initialData={initialData}
+        />
       </MockedProvider>
-    )
+    );
 
     const user = userEvent.setup();
     const titleInput = await findByPlaceholderText('Booking title');
@@ -184,10 +202,7 @@ describe('BookingModificationForm Component', () => {
     await user.type(titleInput, 'New Title');
     expect(await findByDisplayValue('New Title')).toBeDefined();
     await user.press(saveBtn);
-    screen.debug()
-    expect(Alert.alert).toHaveBeenCalledWith(
-      'Error',
-      'Something went wrong!'
-    );
+    screen.debug();
+    expect(Alert.alert).toHaveBeenCalledWith('Error', 'Something went wrong!');
   });
 });

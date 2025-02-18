@@ -7,7 +7,9 @@ const dateScalar = new GraphQLScalarType({
     if (value instanceof Date) {
       return value.getTime(); // Convert outgoing Date to integer for JSON
     }
-    throw Error(`GraphQL Date Scalar serializer expected a 'Date' object and get: ${value}`);
+    throw Error(
+      `GraphQL Date Scalar serializer expected a 'Date' object and get: ${value}`
+    );
   },
   parseValue(value) {
     if (typeof value === 'number') {
