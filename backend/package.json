@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "migration:down": "ts-node src/util/rollback.ts",
     "generate": "graphql-codegen",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "start": "node ./dist/index.js"
   },
   "author": "",
   "license": "ISC",
