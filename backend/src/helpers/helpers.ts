@@ -12,8 +12,6 @@ import { JWT_SECRET } from '../util/config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { BookingStatus } from '../types/booking/booking.enums';
 import { startOfWeek, endOfWeek } from 'date-fns';
-//import Sequelize from 'sequelize';
-//import { BookingAttributes } from '../models/booking';
 import Room from '../models/room';
 import { User as UserType } from '../graphql/generated-types';
 

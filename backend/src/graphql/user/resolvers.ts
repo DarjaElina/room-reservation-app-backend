@@ -41,6 +41,9 @@ const userResolvers: Resolvers = {
         isTokenActive = false;
       return isTokenActive;
     },
+    testQuery: (_, __) => {
+      return 'Everything is working nicely!';
+    }
   },
 
   User: {

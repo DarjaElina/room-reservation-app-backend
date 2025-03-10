@@ -5,6 +5,7 @@ export const up: Migration = async ({ context: queryInterface }) => {
   await queryInterface.sequelize.query(
     'CREATE EXTENSION IF NOT EXISTS btree_gist;'
   );
+
   await queryInterface.addColumn('bookings', 'booking_time', {
     type: DataTypes.RANGE(DataTypes.DATE),
     allowNull: false,
@@ -20,7 +21,7 @@ export const up: Migration = async ({ context: queryInterface }) => {
     ADD CONSTRAINT no_booking_overlap EXCLUDE USING gist (
       room_id WITH =,
       booking_time WITH &&
-    );
+    ) WHERE (status NOT IN ('CANCELLED', 'CANCELLED_LATE', 'PAST'));
   `);
 
   await queryInterface.removeColumn('bookings', 'start_date');

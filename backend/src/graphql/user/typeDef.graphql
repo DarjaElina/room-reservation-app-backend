@@ -57,6 +57,7 @@ type Query {
   findUsersByDepartment(departmentId: ID!): [User!]!
   currentUser: User
   checkActivationToken(activationToken: String!): Boolean!
+  testQuery: String!
 }
 
 type UserResponse {

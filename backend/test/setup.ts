@@ -1,0 +1,20 @@
+import { sequelize } from '../src/util/db';
+import { connectToDatabase } from '../src/util/db';
+
+
+export const connectTestDB = async () => {
+  await connectToDatabase();
+};
+
+export const closeTestDB = async () => {
+  await sequelize.close();
+};
+
+export const clearTestDB = async () => {
+  const models = sequelize.models;
+  for (const model of Object.values(models)) {
+    if (model.name !== 'SequelizeMeta') {
+      await model.destroy({ where: {}, force: true });
+    }
+  };
+};

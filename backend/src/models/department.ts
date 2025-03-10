@@ -21,7 +21,7 @@ import { Departments } from '../types/department/department.constants';
 interface DepartmentAttributes {
   id: number;
   name: string;
-  facultyId: number;
+  facultyId: string;
   created_at: Date;
   updated_at: Date;
 }

@@ -4,6 +4,7 @@ import stylistic from '@stylistic/eslint-plugin';
 import prettier from 'eslint-config-prettier';
 
 export default tseslint.config({
+  files: ['**/*.ts', '**/*'],
   files: ['**/*.ts'],
   extends: [
     eslint.configs.recommended,

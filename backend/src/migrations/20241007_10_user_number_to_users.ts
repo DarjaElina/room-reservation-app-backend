@@ -20,8 +20,8 @@ export const up: Migration = async ({ context: queryInterface }) => {
 };
 
 export const down: Migration = async ({ context: queryInterface }) => {
+  await queryInterface.removeColumn('users', 'user_number');
   await queryInterface.sequelize.query(`
     DROP SEQUENCE IF EXISTS users_user_number_seq;
   `);
-  await queryInterface.removeColumn('users', 'user_number');
 };

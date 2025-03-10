@@ -61,19 +61,10 @@ export const connectToDatabase = async () => {
   return null;
 };
 
-// const test = async () => {
-//   const migs = await umzug.executed();
-//   console.log('executed migs are', migs)
-//   await umzug.down({migrations: ['20241008_12_add_user_token_table.ts']});
-
-// };
-
-// void test();
-
 export const rollbackMigration = async () => {
   try {
     await sequelize.authenticate();
-    const migrations = await umzug.down();
+    const migrations = await umzug.down({to: 0});
     //await umzug.down({step: 2});
     //await umzug.down({to: 0});
     console.log('Rolled back migrations', {
