@@ -28,6 +28,7 @@ export const sequelize = new Sequelize(DATABASE_URL, {
     RoomEquipment,
     UserToken,
   ],
+  logging: false
 });
 
 const migrationConf = {
@@ -36,7 +37,8 @@ const migrationConf = {
   },
   storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
   context: sequelize.getQueryInterface(),
-  logger: console,
+  //logger: console,
+  logger: undefined
 };
 
 const umzug = new Umzug(migrationConf);
@@ -46,12 +48,13 @@ export type Migration = typeof umzug._types.migration;
 export const connectToDatabase = async () => {
   try {
     await sequelize.authenticate();
-    console.log('Connected to the database');
+    //console.log('Connected to the database');
 
-    const migrations = await umzug.up();
-    console.log('Migrations up to date', {
-      files: migrations.map((mig) => mig.name),
-    });
+    //const migrations = 
+    await umzug.up();
+    // console.log('Migrations up to date', {
+    //   files: migrations.map((mig) => mig.name),
+    // });
   } catch (err) {
     console.log('Failed to connect to the database');
     console.error(err);
@@ -64,12 +67,13 @@ export const connectToDatabase = async () => {
 export const rollbackMigration = async () => {
   try {
     await sequelize.authenticate();
-    const migrations = await umzug.down({to: 0});
+    //const migrations = 
+    await umzug.down({to: 0});
     //await umzug.down({step: 2});
     //await umzug.down({to: 0});
-    console.log('Rolled back migrations', {
-      files: migrations.map((mig) => mig.name),
-    });
+    // console.log('Rolled back migrations', {
+    //   files: migrations.map((mig) => mig.name),
+    // });
   } catch (err) {
     console.error('Failed to rollback migration', err);
   }

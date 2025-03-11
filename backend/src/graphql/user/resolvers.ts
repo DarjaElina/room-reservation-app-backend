@@ -199,10 +199,15 @@ const userResolvers: Resolvers = {
       try {
         const user = await User.findOne({ where: { username } });
         if (!user) {
-          throw new GraphQLError('User not found');
+          throw new GraphQLError('Invalid username or password.', {
+            extensions: { 
+              code: 'BAD_USER_INPUT',
+              details: 'The provided credentials are incorrect.',
+            },
+          });
         }
         if (user.status !== UserStatus.Active) {
-          throw new GraphQLError('You need to activate your account first');
+          throw new GraphQLError('You need to activate your account first.');
         }
         if (!user.passwordHash) {
           throw new GraphQLError(
@@ -210,7 +215,7 @@ const userResolvers: Resolvers = {
           );
         }
         if (!JWT_SECRET) {
-          throw new Error('JWT_SECRET is not defined');
+          throw new Error('JWT_SECRET is not defined.');
         }
         const passwordCorrect = compareSync(password, user.passwordHash);
 
@@ -223,10 +228,10 @@ const userResolvers: Resolvers = {
 
           return { value: token };
         } else {
-          throw new GraphQLError('Incorrect password', {
-            extensions: {
+          throw new GraphQLError('Invalid username or password.', {
+            extensions: { 
               code: 'BAD_USER_INPUT',
-              details: 'The provided password is incorrect.',
+              details: 'The provided credentials are incorrect.',
             },
           });
         }
