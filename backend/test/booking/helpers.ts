@@ -10,4 +10,4 @@ export const getNextBookingTimeRange = () => {
     endBookingTime.setHours(15, 0, 0, 0);
     
     return [startBookingTime.getTime(), endBookingTime.getTime()];
-  }
+};

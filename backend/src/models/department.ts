@@ -58,7 +58,7 @@ class Department extends Model<
   @Column(DataType.UUID)
   facultyId!: string;
 
-  @BelongsTo(() => Faculty)
+  @BelongsTo(() => Faculty, {onDelete: 'CASCADE'})
   faculty!: Faculty;
 
   @CreatedAt

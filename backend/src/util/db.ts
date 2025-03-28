@@ -37,8 +37,8 @@ const migrationConf = {
   },
   storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
   context: sequelize.getQueryInterface(),
-  logger: console,
-  // logger: undefined
+  // logger: console,
+  logger: undefined
 };
 
 const umzug = new Umzug(migrationConf);

@@ -19,7 +19,7 @@ export const clearTestDB = async () => {
         console.log('destroyed model is', model.name);
         await model.destroy({ where: {}, force: true });
       } catch (error) {
-        console.log(error);
+        console.log('error in clear test db is', error);
       }
     }
   };
