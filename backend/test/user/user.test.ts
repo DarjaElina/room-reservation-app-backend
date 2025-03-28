@@ -93,8 +93,8 @@ describe('User API', () => {
       .send({ query: AUTHENTICATE, variables });
     const body = response.body as AuthResponse;
   
-    expect(body.data?.authenticate).toBe(null);
-    expect(response.body).toHaveProperty('errors');
+    expect(body).toHaveProperty('errors');
+    expect(body.errors?.[0].message).toBe('Variable "$username" of required type "String!" was not provided.');
   });
   
   it('should return an error when password is missing', async () => {
@@ -104,8 +104,7 @@ describe('User API', () => {
       .post('/')
       .send({ query: AUTHENTICATE, variables });
     const body = response.body as AuthResponse;
-  
-    expect(body.data?.authenticate).toBe(null);
-    expect(response.body).toHaveProperty('errors');
+    expect(body).toHaveProperty('errors');
+    expect(body.errors?.[0].message).toBe('Variable "$password" of required type "String!" was not provided.');
   });
 });
