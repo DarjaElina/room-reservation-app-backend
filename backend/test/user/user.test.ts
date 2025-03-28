@@ -65,7 +65,6 @@ describe('User API', () => {
       .send({ query: AUTHENTICATE, variables });
     
     const body = response.body as AuthResponse;
-
     expect(body).toHaveProperty('errors');
     expect(body.data?.authenticate).toBe(null);
     expect(body.errors?.[0].message).toBe('Invalid username or password.');
@@ -81,33 +80,32 @@ describe('User API', () => {
       .post('/')
       .send({ query: AUTHENTICATE, variables });
     const body = response.body as AuthResponse;
-
     expect(body).toHaveProperty('errors');
     expect(body.data?.authenticate).toBe(null);
     expect(body.errors?.[0].message).toBe('Invalid username or password.');
   });
 
-  // it('should return an error when username is missing', async () => {
-  //   const variables = { password: 'password' };
+  it('should return an error when username is missing', async () => {
+    const variables = { password: 'password' };
   
-  //   const response = await request(app)
-  //     .post('/')
-  //     .send({ query: AUTHENTICATE, variables });
-  //   const body = response.body as AuthResponse;
+    const response = await request(app)
+      .post('/')
+      .send({ query: AUTHENTICATE, variables });
+    const body = response.body as AuthResponse;
   
-  //   expect(body.data?.authenticate).toBe(null);
-  //   expect(response.body).toHaveProperty('errors');
-  // });
+    expect(body.data?.authenticate).toBe(null);
+    expect(response.body).toHaveProperty('errors');
+  });
   
-  // it('should return an error when password is missing', async () => {
-  //   const variables = { username: 'jd10000' };
+  it('should return an error when password is missing', async () => {
+    const variables = { username: 'jd10000' };
   
-  //   const response = await request(app)
-  //     .post('/')
-  //     .send({ query: AUTHENTICATE, variables });
-  //   const body = response.body as AuthResponse;
+    const response = await request(app)
+      .post('/')
+      .send({ query: AUTHENTICATE, variables });
+    const body = response.body as AuthResponse;
   
-  //   expect(body.data?.authenticate).toBe(null);
-  //   expect(response.body).toHaveProperty('errors');
-  // });
+    expect(body.data?.authenticate).toBe(null);
+    expect(response.body).toHaveProperty('errors');
+  });
 });

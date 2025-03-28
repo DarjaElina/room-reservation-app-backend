@@ -38,6 +38,6 @@ export const createApp = async () => {
       },
     })
   );
-
+  console.log('CREATE APP FINISHED EXECUTING');
   return { app, httpServer };
 };

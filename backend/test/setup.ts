@@ -7,6 +7,7 @@ export const connectTestDB = async () => {
 };
 
 export const closeTestDB = async () => {
+  console.log('CLOSETESTDB FINISHED EXECUTING, CONNECTING SUCCESFULLY CLOSED')
   await sequelize.close();
 };
 
@@ -14,7 +15,13 @@ export const clearTestDB = async () => {
   const models = sequelize.models;
   for (const model of Object.values(models)) {
     if (model.name !== 'SequelizeMeta') {
-      await model.destroy({ where: {}, force: true });
+      try {
+        console.log('destroyed model is', model.name);
+        await model.destroy({ where: {}, force: true });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+  console.log('CLEARTESTDB FINISHED EXECUTING')
 };

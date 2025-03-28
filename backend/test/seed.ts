@@ -27,8 +27,11 @@ export async function seedTestDB() {
     passwordHash: hashedPassword
   });
 
-  await Room.create({code: 'T-100', id: '93d14d84-3acd-4a3a-ba1b-81e9a7aa546d', type: RoomType.Classroom, size: 10, venueId: '65059bf7-aa11-4dbb-a675-2ee6d95d8405', isBookable: true, description: 'Test description'})
+  const room = await Room.create({code: 'T-100', type: RoomType.Classroom, size: 10, venueId: '65059bf7-aa11-4dbb-a675-2ee6d95d8405', isBookable: true, description: 'Test description'});
+  console.log(room);
 
+  console.log('SEEDTESTDB FINISHED EXECUTING');
+  console.log(faculty, department);
   return { faculty, department };
 }
 
