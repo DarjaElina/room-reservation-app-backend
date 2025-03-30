@@ -2,6 +2,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import AuthStorage from './authStorage';
 import { relayStylePagination } from '@apollo/client/utilities';
+import { StoreObject } from '@apollo/client/utilities';
 
 const authStorage = new AuthStorage();
 
@@ -20,10 +21,12 @@ const cache = new InMemoryCache({
       fields: {
         equipment: {
           merge(existing = [], incoming: any[], { readField }) {
-            if (readField('id', incoming)) {
-              return [...existing, ...incoming];
-            }
-            return incoming;
+           const incomingObjects = incoming as StoreObject[];
+
+           if (incomingObjects.some(item => readField('id', item))) {
+             return [...existing, ...incomingObjects];
+           }
+           return incomingObjects;
           },
         },
       },
