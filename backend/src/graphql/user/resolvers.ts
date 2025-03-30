@@ -9,14 +9,13 @@ import { GraphQLError } from 'graphql';
 import UserToken from '../../models/user_token';
 import { TokenType } from '../../types/token/token.enums';
 import { compareSync } from 'bcryptjs';
-import { createToken } from '../../helpers/helpers';
+import { createToken, createPasswordHash } from '../../helpers/helpers';
 
 const userResolvers: Resolvers = {
   Query: {
     currentUser: (_, __, { user }: { user: User }) => {
       return user;
     },
-    
     checkActivationToken: async (_, { activationToken }) => {
       let isTokenActive = true;
       const storedToken = await UserToken.findOne({
@@ -36,6 +35,35 @@ const userResolvers: Resolvers = {
   },
 
   Mutation: {
+    activateUser: async (_, { activationToken, newPassword }) => {
+      try {
+        const storedToken = await UserToken.findOne({
+          where: { token: activationToken, type: TokenType.Activation },
+        });
+
+        if (!storedToken || new Date() > storedToken.expiresAt) {
+          throw new GraphQLError('Token is invalid or has expired');
+        }
+
+        const user = await User.findByPk(storedToken.userId);
+        if (!user) {
+          throw new GraphQLError('User not found');
+        }
+
+        const passwordHash = createPasswordHash(newPassword);
+        await user.update({ passwordHash, status: UserStatus.Active });
+
+        await storedToken.destroy();
+
+        return {
+          success: true,
+          message: `Account successfully activated, you can now log in. Your username is ${user.username}`,
+        };
+      } catch (error) {
+        return handleResolverErrors(error);
+      }
+    },
+
     authenticate: async (_, { username, password }) => {
       try {
         const user = await User.findOne({ where: { username } });
