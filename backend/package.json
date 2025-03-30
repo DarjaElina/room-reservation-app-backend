@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc",
+    "build": "tsc",
     "dev": "NODE_ENV=development ts-node-dev src/index.ts",
     "lint": "eslint .",
     "migration:down": "ts-node src/util/rollback.ts",
     "generate": "graphql-codegen",
     "format": "prettier --write .",
-    "start": "NODE_ENV=production node ./dist/index.js",
+    "start": "NODE_ENV=production node dist/index.js",
     "test": "NODE_ENV=test jest"
   },
   "author": "",
@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "@flydotio/dockerfile": "^0.7.9",
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/typescript": "^4.0.9",
     "@graphql-codegen/typescript-resolvers": "^4.2.1",

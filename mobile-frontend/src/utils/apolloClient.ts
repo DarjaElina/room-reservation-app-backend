@@ -6,7 +6,7 @@ import { relayStylePagination } from '@apollo/client/utilities';
 const authStorage = new AuthStorage();
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
+  uri: 'https://backend-rough-wildflower-6075.fly.dev/',
 });
 
 const cache = new InMemoryCache({

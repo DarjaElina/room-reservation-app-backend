@@ -28,9 +28,6 @@ export async function seedTestDB() {
   });
 
   const room = await Room.create({code: 'T-100', type: RoomType.Classroom, size: 10, venueId: '65059bf7-aa11-4dbb-a675-2ee6d95d8405', isBookable: true, description: 'Test description'});
-
-  console.log('SEEDTESTDB FINISHED EXECUTING');
-  console.log(faculty, department);
   return { faculty, department, room };
 }
 

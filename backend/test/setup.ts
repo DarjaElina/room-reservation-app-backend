@@ -1,13 +1,11 @@
 import { sequelize } from '../src/util/db';
 import { connectToDatabase } from '../src/util/db';
 
-
 export const connectTestDB = async () => {
   await connectToDatabase();
 };
 
 export const closeTestDB = async () => {
-  console.log('CLOSETESTDB FINISHED EXECUTING, CONNECTING SUCCESFULLY CLOSED')
   await sequelize.close();
 };
 
@@ -23,5 +21,4 @@ export const clearTestDB = async () => {
       }
     }
   };
-  console.log('CLEARTESTDB FINISHED EXECUTING')
 };

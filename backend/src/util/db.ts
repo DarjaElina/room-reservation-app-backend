@@ -31,14 +31,17 @@ export const sequelize = new Sequelize(DATABASE_URL, {
   logging: false
 });
 
+const isProd = process.env.NODE_ENV === 'production';
+const migrationPath = isProd ? './dist/migrations/*.js' : './src/migrations/*.ts';
+
 const migrationConf = {
   migrations: {
-    glob: './src/migrations/*.ts',
+    glob: migrationPath,
   },
   storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
   context: sequelize.getQueryInterface(),
-  // logger: console,
-  logger: undefined
+  logger: console,
+  // logger: undefined
 };
 
 const umzug = new Umzug(migrationConf);
@@ -48,7 +51,7 @@ export type Migration = typeof umzug._types.migration;
 export const connectToDatabase = async () => {
   try {
     await sequelize.authenticate();
-    //console.log('Connected to the database');
+    console.log('Connected to the database');
 
     const migrations = await umzug.up();
     console.log('Migrations up to date', {
