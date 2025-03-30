@@ -5,12 +5,4 @@ type Equipment {
 
 type Query {
   allEquipment(searchKeyword: String): [Equipment!]!
-  findEquipment(id: ID!): Equipment
-  findEquipmentByName(name: String!): [Equipment!]!
-}
-
-type Mutation {
-  createEquipment(name: String!): Equipment!
-  updateEquipment(id: ID!, name: String!): Equipment!
-  deleteEquipment(id: ID!): Boolean!
 }

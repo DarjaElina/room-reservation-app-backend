@@ -57,31 +57,3 @@ type Query {
     first: Int
   ): RoomConnection!
 }
-
-type Mutation {
-  setRoomBookableStatus(roomId: ID!, isBookable: Boolean!): Room!
-  createRoom(
-    venueId: ID!
-    code: String!
-    type: RoomType!
-    size: Int!
-    equipmentIds: [ID!]!
-    pictureUrl: String
-    isBookable: Boolean!
-    departmentId: ID!
-  ): Room!
-
-  updateRoom(
-    roomId: ID!
-    code: String
-    type: RoomType
-    size: Int
-    equipmentIds: [ID!]
-    pictureUrl: String
-    isBookable: Boolean
-    departmentId: ID
-  ): Room!
-  deleteRoom(roomId: ID!): Boolean!
-  addEquipmentToRoom(roomId: ID!, equipmentIds: [ID!]!): Room!
-  removeEquipmentFromRoom(roomId: ID!, equipmentIds: [ID!]!): Room!
-}

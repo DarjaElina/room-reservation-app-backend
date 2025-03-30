@@ -50,14 +50,8 @@ type ActivationToken {
 }
 
 type Query {
-  allUsers: [User!]!
-  findUser(id: ID!): User
-  findUserByName(name: String!): User
-  findUsersByRole(role: UserRole!): [User!]!
-  findUsersByDepartment(departmentId: ID!): [User!]!
   currentUser: User
   checkActivationToken(activationToken: String!): Boolean!
-  testQuery: String!
 }
 
 type UserResponse {
@@ -67,33 +61,7 @@ type UserResponse {
 }
 
 type Mutation {
-  createUser(userInput: UserInput!): User
-
-  bulkCreateUsers(users: [UserInput!]!): [User]
-
   authenticate(username: String!, password: String!): AccessToken
-
-  updateUser(
-    userId: ID!
-    givenName: String
-    familyName: String
-    middleName: String
-    username: String
-    email: String
-    password: String
-  ): User
-
   activateUser(activationToken: String!, newPassword: String!): UserResponse!
-
-  deleteUser(userId: ID!): UserResponse!
-  updateUserStatus(userId: ID!, status: UserStatus!): User
-  resetPassword(
-    token: String!
-    oldPassword: String!
-    newPassword: String!
-  ): UserResponse!
-  changePassword(oldPassword: String!, newPassword: String!): UserResponse!
-  requestPasswordReset(email: String!): UserResponse!
-
   signupRequest(userInput: UserInput!): UserResponse!
 }

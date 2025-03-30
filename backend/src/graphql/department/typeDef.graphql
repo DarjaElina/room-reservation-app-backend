@@ -2,17 +2,3 @@ type Department {
   id: ID!
   name: String!
 }
-
-type Query {
-  allDepartments: [Department!]!
-  findDepartment(id: ID!): Department
-  findDepartmentByName(name: String!): [Department!]!
-  findDepartmentsByFaculty(facultyId: ID!): [Department!]!
-}
-
-type Mutation {
-  createDepartment(name: String!): Department!
-  updateDepartment(id: ID!, name: String): Department!
-  addUserToDepartment(departmentId: ID!, userId: ID!): Department!
-  removeUserFromDepartment(departmentId: ID!, userId: ID!): Department!
-}

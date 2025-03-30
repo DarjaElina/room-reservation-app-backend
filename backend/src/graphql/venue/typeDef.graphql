@@ -6,13 +6,4 @@ type Venue {
 
 type Query {
   allVenues(searchKeyword: String): [Venue!]!
-  findVenue(id: ID!): Venue
-  findVenueByName(name: String!): [Venue!]!
-  findVenuesByDepartment(departmentId: ID!): [Venue!]!
-}
-
-type Mutation {
-  createVenue(code: String!, name: String!): Venue!
-  updateVenue(id: ID!, code: String, name: String): Venue!
-  deleteVenue(id: ID!): Boolean!
 }

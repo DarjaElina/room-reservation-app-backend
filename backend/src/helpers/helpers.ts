@@ -113,10 +113,6 @@ export const getUserFromReq = async (
   return { user, isAdmin };
 };
 
-// interface BookingWithTotalHours extends BookingAttributes {
-//   totalHours: number;
-// }
-
 export const getTotalBookedHoursForWeek = async (
   userId: string,
   transaction: Transaction
@@ -186,21 +182,3 @@ export const checkRoomDepartmentRestriction = async (
     );
   }
 };
-
-// export const validateBooking = async (
-//   user: User,
-//   roomId: string,
-//   startDate: Date,
-//   endDate: Date,
-//   transaction: Transaction
-// ) => {
-//   validateSingleBooking(user.role, startDate, endDate);
-//   await checkOverlappingBookings(roomId, startDate, endDate, transaction);
-
-//   const totalBookedHours = await getTotalBookedHoursForWeek(user.id, transaction);
-
-//   const newBookingHours =
-//     (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60);
-
-//   checkBookingLimit(user.role, totalBookedHours, newBookingHours);
-// };
