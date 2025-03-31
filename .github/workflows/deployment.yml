@@ -37,12 +37,15 @@ jobs:
         run: npm ci
 
       - name: Run ESLint (root)
+        working-directory: ./backend
         run: npm run lint
 
       - name: Run Prettier
+        working-directory: ./backend
         run: npm run format
 
       - name: Run Jest tests
+        working-directory: ./backend
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
         run: npm test
