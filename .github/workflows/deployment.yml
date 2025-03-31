@@ -48,5 +48,5 @@ jobs:
         working-directory: ./backend
         run: npm test
         env:
-          TEST_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+          TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
         
