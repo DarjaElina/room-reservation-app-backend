@@ -57,7 +57,7 @@ class Venue extends Model<VenueAttributes, VenueCreationAttributes> {
   @Column
   name!: string;
 
-  @HasMany(() => Room, {onDelete: 'CASCADE'})
+  @HasMany(() => Room, { onDelete: 'CASCADE' })
   rooms!: Room[];
 
   @CreatedAt

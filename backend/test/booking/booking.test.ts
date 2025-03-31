@@ -2,7 +2,7 @@
 import request from 'supertest';
 import { createApp } from '../../src/app';
 import { connectTestDB, closeTestDB, clearTestDB } from '../setup';
-import{ Express } from 'express';
+import { Express } from 'express';
 import { seedTestDB } from '../seed';
 import { rollbackMigration } from '../../src/util/db';
 import { sequelize } from '../../src/util/db';
@@ -11,7 +11,14 @@ import { CREATE_BOOKING } from './mutations';
 import Room from '../../src/models/room';
 import { getNextBookingTimeRange } from './helpers';
 import Booking from '../../src/models/booking';
-import { beforeAll, it, describe, beforeEach, afterAll, expect } from '@jest/globals';
+import {
+  beforeAll,
+  it,
+  describe,
+  beforeEach,
+  afterAll,
+  expect,
+} from '@jest/globals';
 let app: Express;
 
 let token: string | undefined;
@@ -29,8 +36,8 @@ interface AuthResponse {
 interface BookingResponse {
   data?: {
     createBooking?: {
-      booking: Booking
-    }
+      booking: Booking;
+    };
   };
   errors?: { message: string }[];
 }
@@ -43,20 +50,22 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await clearTestDB();
-  await sequelize.query('ALTER SEQUENCE users_user_number_seq RESTART WITH 10000');
+  await sequelize.query(
+    'ALTER SEQUENCE users_user_number_seq RESTART WITH 10000'
+  );
   const { room: createdRoom } = await seedTestDB();
   room = createdRoom;
 
   const authVariables = {
     username: 'jd10000',
-    password: 'password'
+    password: 'password',
   };
 
   const authResponse = await request(app)
-      .post('/')
-      .send({ query: AUTHENTICATE, variables: authVariables });
+    .post('/')
+    .send({ query: AUTHENTICATE, variables: authVariables });
 
-      const body = authResponse.body as AuthResponse;
+  const body = authResponse.body as AuthResponse;
   token = body?.data?.authenticate?.value;
 });
 
@@ -68,39 +77,37 @@ afterAll(async () => {
 
 describe('Booking API', () => {
   it('should create a booking when valid auth token is provided', async () => {
-
     const bookingTime = getNextBookingTimeRange();
-    
+
     const variables = {
       bookingTime,
       title: 'Test booking',
-      roomId: room.id
+      roomId: room.id,
     };
 
     const bookingResponse = await request(app)
       .post('/')
       .send({
         query: CREATE_BOOKING,
-        variables
+        variables,
       })
-      .set({ Authorization: `Bearer ${token}`});
+      .set({ Authorization: `Bearer ${token}` });
 
-      const body = bookingResponse.body as BookingResponse;
+    const body = bookingResponse.body as BookingResponse;
 
-      expect(body).toHaveProperty('data');
-      expect(body.data).toHaveProperty('createBooking');
-      expect(body.data?.createBooking).toHaveProperty('title');
-      expect(body.data?.createBooking).toHaveProperty('bookingTime');
-      expect(body.data?.createBooking).toHaveProperty('user');
-      expect(body.data?.createBooking).toHaveProperty('room');
-    
+    expect(body).toHaveProperty('data');
+    expect(body.data).toHaveProperty('createBooking');
+    expect(body.data?.createBooking).toHaveProperty('title');
+    expect(body.data?.createBooking).toHaveProperty('bookingTime');
+    expect(body.data?.createBooking).toHaveProperty('user');
+    expect(body.data?.createBooking).toHaveProperty('room');
   });
   it('should return an error if no token is provided', async () => {
     const bookingTime = getNextBookingTimeRange();
     const variables = {
       bookingTime,
       title: 'Test booking',
-      roomId: room.id
+      roomId: room.id,
     };
 
     const bookingResponse = await request(app)
@@ -119,7 +126,7 @@ describe('Booking API', () => {
     const variables = {
       bookingTime,
       title: 'Test booking',
-      roomId: room.id
+      roomId: room.id,
     };
 
     const bookingResponse = await request(app)
@@ -139,7 +146,7 @@ describe('Booking API', () => {
     const variables = {
       bookingTime,
       title: 'Test booking',
-      roomId: invalidRoomId
+      roomId: invalidRoomId,
     };
 
     const bookingResponse = await request(app)
@@ -158,28 +165,28 @@ describe('Booking API', () => {
     const initialBookingVariables = {
       bookingTime: initialBookingTime,
       title: 'Initial Test booking',
-      roomId: room.id
+      roomId: room.id,
     };
-  
+
     await request(app)
       .post('/')
       .send({ query: CREATE_BOOKING, variables: initialBookingVariables })
       .set({ Authorization: `Bearer ${token}` });
-  
+
     const conflictingBookingTime = initialBookingTime;
     const conflictingBookingVariables = {
       bookingTime: conflictingBookingTime,
       title: 'Conflicting Test booking',
-      roomId: room.id
+      roomId: room.id,
     };
-  
+
     const bookingResponse = await request(app)
       .post('/')
       .send({ query: CREATE_BOOKING, variables: conflictingBookingVariables })
       .set({ Authorization: `Bearer ${token}` });
-  
+
     const body = bookingResponse.body as BookingResponse;
-  
+
     expect(body.errors).toHaveLength(1);
     expect(body.errors?.[0].message).toBe('Exclusion constraint error');
   });
@@ -189,7 +196,7 @@ describe('Booking API', () => {
     const variables = {
       bookingTime: invalidBookingTime,
       title: 'Test booking',
-      roomId: room.id
+      roomId: room.id,
     };
 
     const bookingResponse = await request(app)
@@ -200,13 +207,15 @@ describe('Booking API', () => {
     const body = bookingResponse.body as BookingResponse;
 
     expect(body.errors).toHaveLength(1);
-    expect(body.errors?.[0].message).toBe('Variable "$bookingTime" got invalid value "invalid-time"; Expected type "Date". GraphQL Date Scalar parser expected a `number`');
+    expect(body.errors?.[0].message).toBe(
+      'Variable "$bookingTime" got invalid value "invalid-time"; Expected type "Date". GraphQL Date Scalar parser expected a `number`'
+    );
   });
 
   it('should return an error if required fields are missing', async () => {
     const variables = {
       title: 'Test booking',
-      roomId: room.id
+      roomId: room.id,
     };
 
     const bookingResponse = await request(app)
@@ -217,7 +226,8 @@ describe('Booking API', () => {
     const body = bookingResponse.body as BookingResponse;
 
     expect(body.errors).toHaveLength(1);
-    expect(body.errors?.[0].message).toBe('Variable "$bookingTime" of required type "[Date!]!" was not provided.');
+    expect(body.errors?.[0].message).toBe(
+      'Variable "$bookingTime" of required type "[Date!]!" was not provided.'
+    );
   });
-  
 });

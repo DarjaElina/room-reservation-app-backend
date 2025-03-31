@@ -25,7 +25,7 @@ export const createApp = async () => {
   });
 
   await server.start();
-  
+
   app.use(
     '/',
     cors<cors.CorsRequest>(),

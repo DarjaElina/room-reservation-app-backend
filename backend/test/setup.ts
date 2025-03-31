@@ -20,5 +20,5 @@ export const clearTestDB = async () => {
         console.log('error in clear test db is', error);
       }
     }
-  };
+  }
 };

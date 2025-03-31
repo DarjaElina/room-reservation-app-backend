@@ -15,7 +15,10 @@ export const up: Migration = async ({ context: queryInterface }) => {
     onUpdate: 'CASCADE',
   });
 
-  await queryInterface.removeConstraint('departments', 'departments_faculty_id_fkey');
+  await queryInterface.removeConstraint(
+    'departments',
+    'departments_faculty_id_fkey'
+  );
 
   await queryInterface.addConstraint('departments', {
     fields: ['faculty_id'],
@@ -59,7 +62,10 @@ export const down: Migration = async ({ context: queryInterface }) => {
     onUpdate: 'CASCADE',
   });
 
-  await queryInterface.removeConstraint('departments', 'departments_faculty_id_fkey');
+  await queryInterface.removeConstraint(
+    'departments',
+    'departments_faculty_id_fkey'
+  );
 
   await queryInterface.addConstraint('departments', {
     fields: ['faculty_id'],

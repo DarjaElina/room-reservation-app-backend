@@ -1,4 +1,4 @@
-import Faculty from '../src/models/faculty';;
+import Faculty from '../src/models/faculty';
 import Department from '../src/models/department';
 import User from '../src/models/user';
 import Room from '../src/models/room';
@@ -9,13 +9,23 @@ import { FacultyName } from '../src/types/faculty/faculty.enums';
 import { RoomType } from '../src/types/room/room.enums';
 
 export async function seedTestDB() {
-  const faculty = await Faculty.create({name: FacultyName.Orchestral, id: '3f35f45d-3535-429d-a292-b9f0a4380e31'});
+  const faculty = await Faculty.create({
+    name: FacultyName.Orchestral,
+    id: '3f35f45d-3535-429d-a292-b9f0a4380e31',
+  });
 
-  const department = await Department.create({ name: 'Department of Viola', facultyId: faculty.id });
+  const department = await Department.create({
+    name: 'Department of Viola',
+    facultyId: faculty.id,
+  });
 
-  await Venue.create({name: 'Test Building', code: 'TEST', id: '65059bf7-aa11-4dbb-a675-2ee6d95d8405'});
+  await Venue.create({
+    name: 'Test Building',
+    code: 'TEST',
+    id: '65059bf7-aa11-4dbb-a675-2ee6d95d8405',
+  });
 
-  const password = "password";
+  const password = 'password';
   const hashedPassword = createPasswordHash(password);
   await User.create({
     givenName: 'Jane',
@@ -24,10 +34,16 @@ export async function seedTestDB() {
     role: UserRole.Student,
     status: UserStatus.Active,
     departmentId: department.id,
-    passwordHash: hashedPassword
+    passwordHash: hashedPassword,
   });
 
-  const room = await Room.create({code: 'T-100', type: RoomType.Classroom, size: 10, venueId: '65059bf7-aa11-4dbb-a675-2ee6d95d8405', isBookable: true, description: 'Test description'});
+  const room = await Room.create({
+    code: 'T-100',
+    type: RoomType.Classroom,
+    size: 10,
+    venueId: '65059bf7-aa11-4dbb-a675-2ee6d95d8405',
+    isBookable: true,
+    description: 'Test description',
+  });
   return { faculty, department, room };
 }
-

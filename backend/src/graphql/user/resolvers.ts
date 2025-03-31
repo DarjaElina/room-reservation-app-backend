@@ -69,7 +69,7 @@ const userResolvers: Resolvers = {
         const user = await User.findOne({ where: { username } });
         if (!user) {
           throw new GraphQLError('Invalid username or password.', {
-            extensions: { 
+            extensions: {
               code: 'BAD_USER_INPUT',
               details: 'The provided credentials are incorrect.',
             },
@@ -98,7 +98,7 @@ const userResolvers: Resolvers = {
           return { value: token };
         } else {
           throw new GraphQLError('Invalid username or password.', {
-            extensions: { 
+            extensions: {
               code: 'BAD_USER_INPUT',
               details: 'The provided credentials are incorrect.',
             },

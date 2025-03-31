@@ -28,11 +28,13 @@ export const sequelize = new Sequelize(DATABASE_URL, {
     RoomEquipment,
     UserToken,
   ],
-  logging: false
+  logging: false,
 });
 
 const isProd = process.env.NODE_ENV === 'production';
-const migrationPath = isProd ? './dist/migrations/*.js' : './src/migrations/*.ts';
+const migrationPath = isProd
+  ? './dist/migrations/*.js'
+  : './src/migrations/*.ts';
 
 const migrationConf = {
   migrations: {
@@ -70,7 +72,7 @@ export const connectToDatabase = async () => {
 export const rollbackMigration = async () => {
   try {
     await sequelize.authenticate();
-    const migrations = await umzug.down({to: 0});
+    const migrations = await umzug.down({ to: 0 });
     //await umzug.down({step: 2});
     //await umzug.down({to: 0});
     console.log('Rolled back migrations', {
