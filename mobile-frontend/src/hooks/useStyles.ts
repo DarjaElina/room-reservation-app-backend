@@ -1,7 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo } from 'react';
 import { useWindowDimensions, StyleSheet } from 'react-native';
 import theme from '@/src/theme';
-import { SegmentedButtons } from 'react-native-paper';
 
 const useStyles = () => {
   const { height, width } = useWindowDimensions();
@@ -40,7 +40,6 @@ const useStyles = () => {
       },
       checkbox: {
         height: isLargeScreen ? vmin * 7 : vmin * 12,
-        //width: '100%',
         flexDirection: 'row',
         marginVertical: isLargeScreen ? vmin * 1.5 : vmin * 3,
         padding: isLargeScreen ? vmin * 1.5 : vmin * 3,
@@ -84,7 +83,6 @@ const useStyles = () => {
       },
       flexButtonContainer: {
         flexDirection: 'row',
-        //justifyContent: 'center',
         marginTop: vmin * 2.5,
         gap: vmin * 3,
       },
@@ -143,7 +141,6 @@ const useStyles = () => {
         padding: vmin * 2.6,
         borderRadius: theme.borderRadius.medium,
         overflow: 'hidden',
-        //...shadows.light
       },
       iconTextContainer: {
         flexDirection: 'row',
@@ -175,7 +172,6 @@ const useStyles = () => {
         padding: isLargeScreen ? vmin * 3 : vmin * 4.5,
         borderRadius: theme.borderRadius.medium,
         margin: vmin * 1.5,
-        //...shadows.light
       },
       modalContainer: {
         flex: 1,
@@ -272,7 +268,6 @@ const useStyles = () => {
         borderRadius: theme.borderRadius.medium,
         padding: isLargeScreen ? vmin * 4 : vmin * 3,
         margin: isLargeScreen ? vmin * 4 : vmin * 3,
-        //width: '100%',
         ...shadows.medium,
         fontFamily: 'Lato-Regular',
       },

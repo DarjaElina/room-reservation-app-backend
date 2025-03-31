@@ -155,7 +155,7 @@ describe('BookingModificationForm Component', () => {
     await user.type(titleInput, 'New Title');
     expect(await findByDisplayValue('New Title')).toBeDefined();
     await user.press(saveBtn);
-    expect(await findByText('Booking updated successfully'));
+    expect(await findByText('Booking updated successfully')).toBeDefined();
   });
 
   test('redirects to date-time picker when user presses date input', async () => {

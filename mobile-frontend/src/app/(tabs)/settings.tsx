@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Text, View, StyleSheet, Modal, Pressable } from 'react-native';
+import { Text, View, Modal, Pressable } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import useSignOut from '@/src/hooks/useSignOut';

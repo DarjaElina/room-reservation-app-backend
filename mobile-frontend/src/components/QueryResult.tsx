@@ -1,5 +1,4 @@
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import theme from '@/src/theme';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
 import { ApolloError } from '@apollo/client';
@@ -8,7 +7,7 @@ import useStyles from '../hooks/useStyles';
 interface QueryResultProps {
   loading: boolean;
   error: ApolloError | undefined;
-  data: any;
+  data: unknown;
   children: React.ReactNode;
 }
 

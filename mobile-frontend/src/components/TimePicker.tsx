@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FlatList, View } from 'react-native';
 import useBookingContext from '@/src/hooks/useBookingContext';
 import { FAB } from 'react-native-paper';
@@ -8,14 +9,11 @@ import { timeArray } from '@/src/constants/TimeArray';
 import TimeSlot from './TimeSlot';
 import { TimeSlotType } from './TimeSlot';
 import useBookings from '@/src/hooks/useBookings';
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect } from 'react';
 import { BookingStatus } from '@/__generated__/graphql';
 import { router } from 'expo-router';
 import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
-import type { Locales } from '../i18n/i18n-types';
-import { loadLocaleAsync } from '../i18n/i18n-util.async';
-import { setUserLocale } from '@/src/utils/localeStorage';
 import useStyles from '../hooks/useStyles';
 
 interface TimePickerProps {
@@ -41,13 +39,13 @@ export default function TimePicker({
 
   const { colors } = useTheme();
 
-  const { LL, setLocale } = useI18nContext();
+  const { LL } = useI18nContext();
 
   const styles = useStyles();
 
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  const { bookings, loading, error } = useBookings({
+  const { bookings } = useBookings({
     roomId: id,
     startDate: new Date(date).setHours(6, 0, 0, 0),
     endDate: new Date(date).setHours(23, 0, 0, 0),

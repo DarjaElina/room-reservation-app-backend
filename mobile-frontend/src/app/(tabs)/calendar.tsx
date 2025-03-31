@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import BookingList from '@/src/components/BookingList';
 import useAuth from '@/src/hooks/useAuth';
 import { BookingStatus } from '@/__generated__/graphql';

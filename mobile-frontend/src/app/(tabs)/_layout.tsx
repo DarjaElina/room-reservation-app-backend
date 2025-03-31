@@ -10,7 +10,7 @@ import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '@/src/i18n/i18n-react';
 
 export default function TabLayout() {
-  const { loading, error, data } = useQuery(CURRENT_USER);
+  const { loading, data } = useQuery(CURRENT_USER);
   const { colors } = useTheme();
   const { LL } = useI18nContext();
   if (loading) {

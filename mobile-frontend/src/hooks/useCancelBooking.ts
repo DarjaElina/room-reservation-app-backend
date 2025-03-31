@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import { CANCEL_BOOKING } from '@/src/graphql/mutations';
 
 const useCancelBooking = (): [
-  (bookingId: string) => Promise<any>,
+  (bookingId: string) => Promise<unknown>,
   { loading: boolean },
 ] => {
   const [mutate, { loading }] = useMutation(CANCEL_BOOKING, {

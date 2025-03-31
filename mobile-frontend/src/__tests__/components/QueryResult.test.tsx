@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import QueryResult from '@/src/components/QueryResult';
 import { render, screen } from '@testing-library/react-native';
 import { ApolloError } from '@apollo/client';

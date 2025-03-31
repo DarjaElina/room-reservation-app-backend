@@ -76,6 +76,7 @@ describe('RoomView Component', () => {
       </MockedProvider>
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     expect(require('expo-router').Redirect).toHaveBeenCalledWith(
       expect.objectContaining({ href: '/sign-in' }),
       expect.any(Object)
@@ -110,7 +111,6 @@ describe('RoomView Component', () => {
       error: null,
       loading: false,
     }));
-    const room = { ...mockRoom, isFree: false };
     render(
       <MockedProvider>
         <RoomView room={mockRoom} />

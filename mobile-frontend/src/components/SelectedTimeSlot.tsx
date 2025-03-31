@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import useStyles from '../hooks/useStyles';
 
 interface SelectedTimeSlotProps {
@@ -25,7 +25,7 @@ export default function SelectedTimeSlot({
       testID="selected_time_slot"
       style={[styles.selectedTimeSlot, { backgroundColor: color }]}
     >
-      {value && <Text style={[, { color: '#fff' }]}>{value}</Text>}
+      {value && <Text style={[{ color: '#fff' }]}>{value}</Text>}
       {displayBookingTitle && (
         <Text style={[{ color: '#fff' }]}>{bookingInfo?.title}</Text>
       )}

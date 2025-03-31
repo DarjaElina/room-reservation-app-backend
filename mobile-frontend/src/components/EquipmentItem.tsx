@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import useStyles from '../hooks/useStyles';
 
@@ -19,7 +19,7 @@ export default function EquipmentItem({ name }: EquipmentProp) {
         },
       ]}
     >
-      <Text style={[, styles.smallText, { color: colors.textPrimary }]}>
+      <Text style={[styles.smallText, { color: colors.textPrimary }]}>
         {name}
       </Text>
     </View>

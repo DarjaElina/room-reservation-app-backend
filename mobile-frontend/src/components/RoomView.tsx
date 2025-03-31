@@ -25,11 +25,11 @@ interface RoomViewProps {
   isBookable: boolean;
   size: number;
   description: string;
-  equipment: Array<{
+  equipment: {
     __typename?: 'Equipment';
     name: string;
     id: string;
-  }>;
+  }[];
   venue: {
     __typename?: 'Venue';
     name: string;
@@ -48,10 +48,10 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
       .replace(/_/g, ' ')
       .replace(/^./, (str) => str.toUpperCase());
   };
+  const { LL } = useI18nContext();
   if (!user) {
     return <Redirect href="/sign-in" />;
   }
-  const { LL } = useI18nContext();
   const blurhash =
     '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
   return (

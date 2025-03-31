@@ -8,7 +8,7 @@ const useUpdateBooking = (): [
     bookingTime: [number, number],
     roomId: string,
     title?: string
-  ) => Promise<any>,
+  ) => Promise<unknown>,
   { loading: boolean },
 ] => {
   const [mutate, { loading }] = useMutation(UPDATE_BOOKING, {

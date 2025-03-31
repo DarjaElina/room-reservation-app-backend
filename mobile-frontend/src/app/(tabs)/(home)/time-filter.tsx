@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Alert, Platform } from 'react-native';
+import { View, Text, Alert, Platform } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useState } from 'react';
@@ -51,7 +51,7 @@ export default function TimeFilter() {
   const showEndDatePicker = () => setEndDatePickerVisibility(true);
   const hideEndDatePicker = () => setEndDatePickerVisibility(false);
 
-  const handleStartDateConfirm = (date) => {
+  const handleStartDateConfirm = (date: Date) => {
     const clonedDate = new Date(date);
     if (
       validateDates(
@@ -67,7 +67,10 @@ export default function TimeFilter() {
     }
   };
 
-  const handleEndDateConfirm = (time) => {
+  const handleEndDateConfirm = (time: {
+    getHours: () => number;
+    getMinutes: () => number;
+  }) => {
     if (startDate) {
       const endDateTime = new Date(startDate);
       endDateTime.setHours(time.getHours());
@@ -82,7 +85,9 @@ export default function TimeFilter() {
   };
 
   // Web Input Change Handlers
-  const handleStartDateChange = (e) => {
+  const handleStartDateChange = (e: {
+    target: { value: string | number | Date };
+  }) => {
     const date = new Date(e.target.value);
     const clonedDate = new Date(date);
     if (
@@ -98,7 +103,9 @@ export default function TimeFilter() {
     }
   };
 
-  const handleEndDateChange = (e) => {
+  const handleEndDateChange = (e: {
+    target: { value: string | number | Date };
+  }) => {
     if (startDate) {
       const date = new Date(e.target.value);
       if (validateDates(startDate, date)) {
@@ -111,7 +118,7 @@ export default function TimeFilter() {
 
   const handleSearch = () => {
     if (startDate && endDate) {
-      router.replace('/(home)');
+      router.replace('/(tabs)/(home)');
     } else {
       Alert.alert('Please select both start and end dates.');
     }

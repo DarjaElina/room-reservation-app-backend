@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import useRoom from '@/src/hooks/useRoom';
 import RoomView from '@/src/components/RoomView';
 import QueryResult from '@/src/components/QueryResult';

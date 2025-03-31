@@ -1,0 +1,16 @@
+ios/
+__generated__
+.eslintrc.js 21ms
+.prettierrc
+.typesafe-i18n.json
+app.json
+babel.config.js
+codegen.ts
+eas.json
+maestro
+README.md
+.eslintrc.js
+globals.d.ts
+package-lock.json
+package.json
+expo-env.d.ts

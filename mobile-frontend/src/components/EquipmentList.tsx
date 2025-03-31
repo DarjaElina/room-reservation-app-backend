@@ -1,6 +1,5 @@
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList } from 'react-native';
 import EquipmentItem from './EquipmentItem';
-import useStyles from '../hooks/useStyles';
 import { Equipment } from '@/__generated__/graphql';
 
 interface EquipmentListProps {
@@ -8,7 +7,6 @@ interface EquipmentListProps {
 }
 
 export default function EquipmentList({ equipment }: EquipmentListProps) {
-  const styles = useStyles();
   return (
     <View>
       <FlatList

@@ -35,7 +35,6 @@ const useBooking = (): [
       return data;
     } catch (error) {
       console.log(error);
-      //console.error('Booking creation failed:', error);
       throw error;
     }
   };

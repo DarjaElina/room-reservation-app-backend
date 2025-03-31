@@ -9,7 +9,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { BookingProvider } from '@/src/context/BookingContext';
 import { ThemeProvider } from '@react-navigation/native';
 import { customLightTheme, customDarkTheme } from '@/src/constants/ColorTheme';
-const authStorage = new AuthStorage();
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
 import TypesafeI18n from '@/src/i18n/i18n-react';
@@ -18,6 +17,7 @@ import { isLocale } from '@/src/i18n/i18n-util';
 import { loadLocaleAsync } from '@/src/i18n/i18n-util.async';
 import { getUserLocale } from '@/src/utils/localeStorage';
 import '@/src/polyfill/Intl';
+const authStorage = new AuthStorage();
 
 const DEFAULT_LOCALE =
   Localization.getLocales()

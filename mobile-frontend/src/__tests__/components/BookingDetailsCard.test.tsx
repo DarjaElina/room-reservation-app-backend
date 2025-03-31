@@ -1,7 +1,7 @@
 import BookingDetailsCard from '@/src/components/BookingDetailsCard';
-import { render, userEvent, waitFor } from '@testing-library/react-native';
-jest.useFakeTimers();
+import { render, userEvent } from '@testing-library/react-native';
 import { useState } from 'react';
+jest.useFakeTimers();
 
 jest.mock('@react-navigation/native', () => {
   return {

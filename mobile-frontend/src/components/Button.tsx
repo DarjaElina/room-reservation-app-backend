@@ -6,7 +6,7 @@ type Props = {
   isSmall?: boolean;
   label: string;
   onSubmit: () => void;
-  style?: {};
+  style?: object;
 };
 
 export default function Button({

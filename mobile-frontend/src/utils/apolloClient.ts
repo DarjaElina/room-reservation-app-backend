@@ -20,7 +20,7 @@ const cache = new InMemoryCache({
     Room: {
       fields: {
         equipment: {
-          merge(existing = [], incoming: any[], { readField }) {
+          merge(existing = [], incoming: unknown[], { readField }) {
             const incomingObjects = incoming as StoreObject[];
 
             if (incomingObjects.some((item) => readField('id', item))) {

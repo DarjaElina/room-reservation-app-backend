@@ -1,4 +1,4 @@
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
 import QueryResult from '@/src/components/QueryResult';
 import BookingDetailsCard from '@/src/components/BookingDetailsCard';
 import UserMessage from '@/src/components/UserMessage';
@@ -23,7 +23,7 @@ export default function ConfirmBookingModificationScreen() {
   const [updateBooking, { loading }] = useUpdateBooking();
   const [userMessage, setUserMessage] = useState<string | null>('');
   const [bookingTitle, setBookingTitle] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
   const { colors } = useTheme();
   const { LL } = useI18nContext();
   const styles = useStyles();

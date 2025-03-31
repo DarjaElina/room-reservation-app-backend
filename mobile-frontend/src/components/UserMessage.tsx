@@ -1,5 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
-import theme from '@/src/theme';
+import { View, Text } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import useStyles from '../hooks/useStyles';
 
