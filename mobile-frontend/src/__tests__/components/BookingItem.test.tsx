@@ -1,5 +1,5 @@
 import BookingItem from '@/src/components/BookingItem';
-import { render, screen, userEvent } from '@testing-library/react-native';
+import { render, userEvent } from '@testing-library/react-native';
 import { MockedProvider } from '@apollo/client/testing';
 import { Alert } from 'react-native';
 

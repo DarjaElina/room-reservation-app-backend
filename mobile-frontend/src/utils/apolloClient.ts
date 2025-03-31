@@ -21,12 +21,12 @@ const cache = new InMemoryCache({
       fields: {
         equipment: {
           merge(existing = [], incoming: any[], { readField }) {
-           const incomingObjects = incoming as StoreObject[];
+            const incomingObjects = incoming as StoreObject[];
 
-           if (incomingObjects.some(item => readField('id', item))) {
-             return [...existing, ...incomingObjects];
-           }
-           return incomingObjects;
+            if (incomingObjects.some((item) => readField('id', item))) {
+              return [...existing, ...incomingObjects];
+            }
+            return incomingObjects;
           },
         },
       },

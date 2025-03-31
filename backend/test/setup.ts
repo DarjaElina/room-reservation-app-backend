@@ -14,7 +14,6 @@ export const clearTestDB = async () => {
   for (const model of Object.values(models)) {
     if (model.name !== 'SequelizeMeta') {
       try {
-        console.log('destroyed model is', model.name);
         await model.destroy({ where: {}, force: true });
       } catch (error) {
         console.log('error in clear test db is', error);

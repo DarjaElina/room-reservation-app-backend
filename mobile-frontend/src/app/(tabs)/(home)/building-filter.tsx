@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import useVenues from '@/src/hooks/useVenues';
 import CheckBox from '@/src/components/CheckBox';
 import SearchBar from '@/src/components/SearchBar';

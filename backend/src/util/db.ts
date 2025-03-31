@@ -42,8 +42,8 @@ const migrationConf = {
   },
   storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
   context: sequelize.getQueryInterface(),
-  logger: console,
-  // logger: undefined
+  // logger: console,
+  logger: undefined
 };
 
 const umzug = new Umzug(migrationConf);
@@ -73,12 +73,9 @@ export const rollbackMigration = async () => {
   try {
     await sequelize.authenticate();
     const migrations = await umzug.down({ to: 0 });
-    //await umzug.down({step: 2});
-    //await umzug.down({to: 0});
     console.log('Rolled back migrations', {
       files: migrations.map((mig) => mig.name),
     });
-    console.log('ROLLBACK MIGRATIONS FINISHED EXECUTING');
   } catch (err) {
     console.error('Failed to rollback migration', err);
   }

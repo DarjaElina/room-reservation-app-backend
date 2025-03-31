@@ -1,5 +1,5 @@
 import EquipmentList from '@/src/components/EquipmentList';
-import { render, screen } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 jest.mock('@react-navigation/native', () => {
   return {
     useTheme: () => ({

@@ -1,5 +1,5 @@
 import SelectedTimeSlot from '@/src/components/SelectedTimeSlot';
-import { render, screen, userEvent } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 
 jest.mock('@react-navigation/native', () => {
   return {

@@ -40,11 +40,11 @@ jobs:
         working-directory: ./backend
         run: npm ci
 
-      - name: Run ESLint (root)
+      - name: Run ESLint (backend)
         working-directory: ./backend
         run: npm run lint
 
-      - name: Run Prettier
+      - name: Run Prettier (backend)
         working-directory: ./backend
         run: npm run format
 
@@ -54,4 +54,3 @@ jobs:
         env:
           TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        

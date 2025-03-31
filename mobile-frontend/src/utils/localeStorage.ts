@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { rejects } from 'assert';
 import { Locales } from '../i18n/i18n-types';
 import { isLocale } from '../i18n/i18n-util';
 

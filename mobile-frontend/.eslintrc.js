@@ -27,7 +27,6 @@ module.exports = {
   },
   env: {
     jest: true,
-    'react-native/react-native': true,
   },
   settings: {
     react: {

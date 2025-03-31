@@ -4,7 +4,6 @@ import {
   screen,
   userEvent,
   waitFor,
-  act,
 } from '@testing-library/react-native';
 jest.mock('@react-navigation/native', () => {
   return {
