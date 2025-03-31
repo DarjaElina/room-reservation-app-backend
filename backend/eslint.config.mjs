@@ -4,7 +4,6 @@ import stylistic from '@stylistic/eslint-plugin';
 import prettier from 'eslint-config-prettier';
 
 export default tseslint.config({
-  files: ['**/*.ts', '**/*'],
   files: ['**/*.ts'],
   extends: [
     eslint.configs.recommended,
@@ -17,11 +16,11 @@ export default tseslint.config({
       tsconfigRootDir: import.meta.dirname,
     },
   },
+  ignores: ["dist", "src/graphql/generated-types.ts"],
   plugins: {
     '@stylistic': stylistic,
     prettier: prettier,
   },
-  ignores: ["build/*"],
   rules: {
     '@stylistic/semi': 'error',
     '@typescript-eslint/no-unsafe-assignment': 'error',
