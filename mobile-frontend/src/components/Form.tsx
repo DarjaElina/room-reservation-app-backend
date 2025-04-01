@@ -6,6 +6,7 @@ import { useTheme } from '@react-navigation/native';
 import useStyles from '../hooks/useStyles';
 
 interface FormProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
   errors: FieldErrors;
   fields: {

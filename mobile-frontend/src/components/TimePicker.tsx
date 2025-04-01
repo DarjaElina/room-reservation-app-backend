@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { FlatList, View } from 'react-native';
 import useBookingContext from '@/src/hooks/useBookingContext';
 import { FAB } from 'react-native-paper';

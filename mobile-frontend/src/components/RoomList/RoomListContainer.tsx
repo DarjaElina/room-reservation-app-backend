@@ -13,11 +13,13 @@ interface RoomListProps {
     pictureUrl?: string | null;
     size: number;
     description: string;
-    equipment?: Array<{
-      __typename?: 'Equipment';
-      name: string;
-      id: string;
-    } | null> | null;
+    equipment?:
+      | ({
+          __typename?: 'Equipment';
+          name: string;
+          id: string;
+        } | null)[]
+      | null;
     venue: {
       __typename?: 'Venue';
       name: string;
