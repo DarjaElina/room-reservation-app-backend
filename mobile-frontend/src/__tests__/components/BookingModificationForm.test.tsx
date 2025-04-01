@@ -13,7 +13,10 @@ const mocks = [
     request: {
       variables: {
         bookingId: '1',
-        bookingTime: [1738990800000, 1738994400000],
+        bookingTime: [
+          new Date(new Date().setHours(7, 0, 0, 0)).getTime(),
+          new Date(new Date().setHours(8, 0, 0, 0)).getTime(),
+        ],
         roomId: '1',
         title: 'New Title',
       },
@@ -25,8 +28,14 @@ const mocks = [
           title: 'New Title',
           id: '1',
           bookingTime: [
-            { value: 1738908000000, __typename: 'BookingTimeItem' },
-            { value: 1738904400000, __typename: 'BookingTimeItem' },
+            {
+              value: new Date(new Date().setHours(7, 0, 0, 0)).getTime(),
+              __typename: 'BookingTimeItem',
+            },
+            {
+              value: new Date(new Date().setHours(8, 0, 0, 0)).getTime(),
+              __typename: 'BookingTimeItem',
+            },
           ],
           __typename: 'Booking',
         },
@@ -40,20 +49,29 @@ const badMocks = [
     request: {
       variables: {
         bookingId: '1',
-        bookingTime: ['1738990800000', '1738994400000'],
+        bookingTime: [
+          new Date(new Date().setHours(7, 0, 0, 0)).getTime(),
+          new Date(new Date().setHours(8, 0, 0, 0)).getTime(),
+        ],
         roomId: '1',
-        title: 'New Title',
+        title: 'Bad Title',
       },
       query: UPDATE_BOOKING,
     },
     result: {
       data: {
         updateBooking: {
-          title: 'New Title',
+          title: 'Bad Title',
           id: '1',
           bookingTime: [
-            { value: 1738908000000, __typename: 'BookingTimeItem' },
-            { value: 1738904400000, __typename: 'BookingTimeItem' },
+            {
+              value: new Date(new Date().setHours(7, 0, 0, 0)).getTime(),
+              __typename: 'BookingTimeItem',
+            },
+            {
+              value: new Date(new Date().setHours(8, 0, 0, 0)).getTime(),
+              __typename: 'BookingTimeItem',
+            },
           ],
           __typename: 'Booking',
         },
