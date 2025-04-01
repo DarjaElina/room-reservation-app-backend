@@ -66,3 +66,8 @@ jobs:
       - name: Run Prettier (frontend)
         working-directory: ./mobile-frontend
         run: npm run format
+      
+      - name: Run Jest tests (frontend)
+        working-directory: ./mobile-frontend
+        run: npm run test
+
