@@ -56,13 +56,13 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
       - name: Install dependencies (frontend)
-        working-directory: .frontend
+        working-directory: ./mobile-frontend
         run: npm ci
 
       - name: Run ESLint (frontend)
-        working-directory: .frontend
+        working-directory: ./mobile-frontend
         run: npm run lint
 
       - name: Run Prettier (frontend)
-        working-directory: .frontend
+        working-directory: ./mobile-frontend
         run: npm run format
