@@ -26,7 +26,13 @@ export default function Room({
   const { LL } = useI18nContext();
   const styles = useStyles();
   return (
-    <View testID="room-item" style={[styles.itemContainer, { borderWidth: 1 }]}>
+    <View
+      testID="room-item"
+      style={[
+        styles.itemContainer,
+        { boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' },
+      ]}
+    >
       <Image
         style={styles.roomItemImage}
         source={pictureUrl}
@@ -57,7 +63,7 @@ export default function Room({
       </Text>
       <View style={styles.iconTextContainer}>
         {isFree ? (
-          <>
+          <Text>
             <AntDesign
               name="checksquare"
               size={styles.bigText.fontSize * 0.8}
@@ -73,7 +79,7 @@ export default function Room({
             >
               {LL.AVAILABLE()}
             </Text>
-          </>
+          </Text>
         ) : (
           <>
             <Entypo

@@ -9,7 +9,6 @@ import useUpdateBooking from '@/src/hooks/useUpdateBooking';
 import { useState } from 'react';
 import { router } from 'expo-router';
 import { ApolloError } from '@apollo/client';
-import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '@/src/i18n/i18n-react';
 import useStyles from '@/src/hooks/useStyles';
 
@@ -24,7 +23,6 @@ export default function ConfirmBookingModificationScreen() {
   const [userMessage, setUserMessage] = useState<string | null>('');
   const [bookingTitle, setBookingTitle] = useState<string>('');
   const [error] = useState<string | null>(null);
-  const { colors } = useTheme();
   const { LL } = useI18nContext();
   const styles = useStyles();
 
@@ -58,7 +56,6 @@ export default function ConfirmBookingModificationScreen() {
           styles.flexContainer,
           styles.scrollContainer,
           {
-            backgroundColor: colors.backgroundPrimary,
             justifyContent: 'center',
           },
         ]}

@@ -3,12 +3,10 @@ import { View } from 'react-native';
 import useRoom from '@/src/hooks/useRoom';
 import RoomView from '@/src/components/RoomView';
 import QueryResult from '@/src/components/QueryResult';
-import { useTheme } from '@react-navigation/native';
 
 export default function RoomScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { loading, room, error } = useRoom(id);
-  const { colors } = useTheme();
 
   if (!room) {
     return null;
@@ -16,7 +14,7 @@ export default function RoomScreen() {
 
   return (
     <QueryResult loading={loading} error={error} data={room}>
-      <View style={{ flex: 1, backgroundColor: colors.backgroundPrimary }}>
+      <View style={{ flex: 1 }}>
         <RoomView room={room} />
       </View>
     </QueryResult>

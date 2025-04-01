@@ -15,20 +15,13 @@ export default function TabLayout() {
   const { LL } = useI18nContext();
   if (loading) {
     return (
-      <View
-        style={[
-          styles.container,
-          {
-            backgroundColor: colors.backgroundPrimary,
-          },
-        ]}
-      >
-        <ActivityIndicator size="large" color={colors.textPrimary} />
+      <View style={[styles.container]}>
+        <ActivityIndicator size="large" color={colors.primary} />
         <Text
           style={[
             styles.text,
             {
-              color: colors.textPrimary,
+              color: colors.text,
             },
           ]}
         >
@@ -45,10 +38,6 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.buttonBackground,
-        tabBarStyle: {
-          backgroundColor: colors.backgroundPrimary,
-        },
       }}
     >
       <Tabs.Screen

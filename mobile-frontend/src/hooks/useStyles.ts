@@ -36,7 +36,7 @@ const useStyles = () => {
         backgroundColor: 'transparent',
         paddingVertical: vmin * 0.5,
         marginBottom: vmin * 4.5,
-        fontFamily: 'Lato-Regular',
+        fontFamily: 'Nunito-Regular',
       },
       checkbox: {
         height: isLargeScreen ? vmin * 7 : vmin * 12,
@@ -45,7 +45,7 @@ const useStyles = () => {
         padding: isLargeScreen ? vmin * 1.5 : vmin * 3,
         borderRadius: theme.borderRadius.medium,
         borderWidth: 1,
-        fontFamily: 'Lato-Regular',
+        fontFamily: 'Nunito-Regular',
         width: isLargeScreen ? '70%' : '100%',
         alignSelf: 'center',
       },
@@ -64,7 +64,7 @@ const useStyles = () => {
         borderRadius: 8,
         shadowColor: '#000',
         ...shadows.light,
-        fontFamily: 'Lato-Regular',
+        fontFamily: 'Nunito-Regular',
       },
 
       // buttons
@@ -78,7 +78,7 @@ const useStyles = () => {
       },
       buttonText: {
         fontSize: isLargeScreen ? 13 + vmin * 1 : 8 + vmin * 2.5,
-        fontFamily: 'Lato-Regular',
+        fontFamily: 'Nunito-Regular',
       },
       flexButtonContainer: {
         flexDirection: 'row',
@@ -222,14 +222,14 @@ const useStyles = () => {
         fontSize: isLargeScreen
           ? theme.fontSizes.small + vmin * 4
           : theme.fontSizes.medium + vmin * 4,
-        fontFamily: 'Lato-Black',
+        fontFamily: 'Nunito-Black',
         marginVertical: isLargeScreen ? vmin * 1 : vmin * 3,
       },
       subheading: {
         fontSize: isLargeScreen
           ? theme.fontSizes.small + vmin * 2
           : theme.fontSizes.medium + vmin * 2,
-        fontFamily: 'Lato-Bold',
+        fontFamily: 'Nunito-Bold',
         marginVertical: isLargeScreen ? vmin * 1 : vmin * 3,
       },
 
@@ -268,7 +268,7 @@ const useStyles = () => {
         padding: isLargeScreen ? vmin * 4 : vmin * 3,
         margin: isLargeScreen ? vmin * 4 : vmin * 3,
         ...shadows.medium,
-        fontFamily: 'Lato-Regular',
+        fontFamily: 'Nunito-Regular',
       },
       timeSlot: {
         height: 25,
@@ -286,7 +286,7 @@ const useStyles = () => {
         zIndex: 1,
         width: '80%',
         padding: vmin * 0.7,
-        fontFamily: 'Lato-Regular',
+        fontFamily: 'Nunito-Regular',
       },
       separator: {
         width: 1,
@@ -303,14 +303,14 @@ const useStyles = () => {
         width: '100%',
         marginBottom: vmin * 2,
         alignItems: 'center',
-        fontFamily: 'Lato-Regular',
+        fontFamily: 'Nunito-Regular',
       },
 
       // pickers
       picker: {
         width: '100%',
         fontSize: isLargeScreen ? vmin * 2.5 : vmin * 2,
-        fontFamily: 'Lato-Regular',
+        fontFamily: 'Nunito-Regular',
       },
     });
   }, [height, width]);
