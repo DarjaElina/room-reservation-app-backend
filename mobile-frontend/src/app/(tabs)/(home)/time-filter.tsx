@@ -145,7 +145,7 @@ export default function TimeFilter() {
         styles.flexContainer,
         styles.scrollContainer,
         {
-          backgroundColor: colors.backgroundPrimary,
+          backgroundColor: colors.background,
           justifyContent: 'center',
         },
       ]}
@@ -155,7 +155,7 @@ export default function TimeFilter() {
           styles.bigText,
           styles.textContainer,
           {
-            color: colors.textPrimary,
+            color: colors.text,
             textAlign: 'center',
           },
         ]}
@@ -164,7 +164,7 @@ export default function TimeFilter() {
       </Text>
       {Platform.OS === 'ios' || Platform.OS === 'android' ? (
         <TextInput
-          activeUnderlineColor={colors.inputActiveBorder}
+          activeUnderlineColor={colors.primary}
           label="Start Date"
           value={
             startDate
@@ -172,9 +172,9 @@ export default function TimeFilter() {
               : ''
           }
           onPressIn={showStartDatePicker}
-          style={[styles.input, { backgroundColor: colors.inputBackground }]}
-          placeholderTextColor={colors.textSecondary}
-          textColor={colors.textPrimary}
+          style={[styles.input]}
+          placeholderTextColor={colors.text}
+          textColor={colors.text}
         />
       ) : (
         <input
@@ -200,7 +200,7 @@ export default function TimeFilter() {
       />
       {Platform.OS === 'ios' || Platform.OS === 'android' ? (
         <TextInput
-          activeUnderlineColor={colors.inputActiveBorder}
+          activeUnderlineColor={colors.primary}
           label="End Date"
           value={
             endDate
@@ -208,9 +208,9 @@ export default function TimeFilter() {
               : ''
           }
           onPressIn={showEndDatePicker}
-          style={[styles.input, { backgroundColor: colors.inputBackground }]}
-          placeholderTextColor={colors.textSecondary}
-          textColor={colors.textPrimary}
+          style={[styles.input]}
+          placeholderTextColor={colors.text}
+          textColor={colors.text}
         />
       ) : (
         <input
@@ -234,7 +234,7 @@ export default function TimeFilter() {
         minuteInterval={15}
       />
       <Button
-        label="Search Classrooms"
+        label="Search classrooms"
         onSubmit={handleSearch}
         style={styles.button}
       />
@@ -242,7 +242,7 @@ export default function TimeFilter() {
         <Button
           label="Clear Dates"
           onSubmit={Platform.OS === 'web' ? clearSearch : handleReset}
-          style={[styles.button, { backgroundColor: colors.buttonBackground }]}
+          style={[styles.button, { backgroundColor: colors.primary }]}
         />
       )}
     </View>

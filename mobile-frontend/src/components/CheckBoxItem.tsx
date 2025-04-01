@@ -31,41 +31,22 @@ export default function CheckBoxItem({
 
   return (
     <TouchableOpacity
-      style={[
-        styles.checkbox,
-        { borderColor: colors.inputBorder },
-        isActive
-          ? {
-              backgroundColor: colors.checkboxActiveBackground,
-            }
-          : {
-              backgroundColor: colors.checkboxInactiveBackground,
-            },
-      ]}
+      style={[styles.checkbox, { borderColor: colors.text }]}
       onPress={handlePress}
     >
       <View style={[styles.iconTextContainer, { margin: 0 }]}>
         <MaterialIcons
           name={isActive ? 'check-box' : 'check-box-outline-blank'}
           size={24}
-          color={isActive ? colors.backgroundPrimary : colors.textSecondary}
+          color={isActive ? colors.primary : colors.text}
         />
         <Text
-          style={
-            isActive
-              ? [
-                  styles.mediumText,
-                  {
-                    color: colors.checkboxActiveText,
-                  },
-                ]
-              : [
-                  styles.mediumText,
-                  {
-                    color: colors.checkboxInactiveText,
-                  },
-                ]
-          }
+          style={[
+            styles.mediumText,
+            {
+              color: colors.text,
+            },
+          ]}
         >
           {item.label}
         </Text>

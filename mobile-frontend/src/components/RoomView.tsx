@@ -14,7 +14,6 @@ import { useTheme } from '@react-navigation/native';
 import { router } from 'expo-router';
 import { useI18nContext } from '../i18n/i18n-react';
 import useStyles from '../hooks/useStyles';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 interface RoomViewProps {
   __typename?: 'Room';
@@ -59,7 +58,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
       <View style={[styles.flexContainer]}>
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
-          style={[{ backgroundColor: colors.backgroundPrimary }]}
+          style={[{ backgroundColor: colors.background }]}
         >
           <Image
             style={styles.roomViewImage}
@@ -77,33 +76,24 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
                   style={[
                     styles.boldText,
                     styles.bigText,
-                    { color: colors.textSecondary },
+                    { color: colors.text },
                   ]}
                 >
                   {room.code}
                 </Text>
-                <Text
-                  style={[styles.mediumText, { color: colors.textPrimary }]}
-                >
+                <Text style={[styles.mediumText, { color: colors.text }]}>
                   {formatRoomType(room.type)}
                 </Text>
-                <View style={styles.iconTextContainer}>
-                  <FontAwesome6
-                    name="location-dot"
-                    size={20}
-                    color={colors.textPrimary}
-                  />
-                  <Text
-                    style={[
-                      styles.smallText,
-                      {
-                        color: colors.textPrimary,
-                      },
-                    ]}
-                  >
-                    {room.venue.name}
-                  </Text>
-                </View>
+                <Text
+                  style={[
+                    styles.smallText,
+                    {
+                      color: colors.text,
+                    },
+                  ]}
+                >
+                  {room.venue.name}
+                </Text>
                 {room.isFree ? (
                   <View style={styles.iconTextContainer}>
                     <AntDesign
@@ -111,9 +101,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
                       size={20}
                       color={colors.success}
                     />
-                    <Text
-                      style={[styles.mediumText, { color: colors.success }]}
-                    >
+                    <Text style={[styles.mediumText, { color: colors.text }]}>
                       {LL.AVAILABLE()}
                     </Text>
                   </View>
@@ -124,7 +112,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
                       size={20}
                       color={colors.error}
                     />
-                    <Text style={[styles.mediumText, { color: colors.error }]}>
+                    <Text style={[styles.mediumText, { color: colors.text }]}>
                       {LL.OCCUPIED()}
                     </Text>
                   </View>
@@ -132,10 +120,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
               </View>
 
               <Pressable
-                style={[
-                  styles.button,
-                  { backgroundColor: colors.buttonBackground },
-                ]}
+                style={[styles.button, { backgroundColor: colors.border }]}
                 onPress={() =>
                   router.push({
                     pathname: '/(tabs)/(home)/rooms/[id]/create-booking',
@@ -143,24 +128,19 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
                   })
                 }
               >
-                <Text style={[styles.buttonText, { color: colors.buttonText }]}>
-                  {LL.RESERVE()}
-                </Text>
+                <Text style={[styles.buttonText]}>{LL.RESERVE()}</Text>
               </Pressable>
-              <Pressable
+              <Text
+                onPress={() => setModalVisible(true)}
                 style={[
-                  styles.button,
+                  styles.buttonText,
                   {
-                    backgroundColor: colors.buttonBackground,
-                    alignSelf: 'center',
+                    textDecorationLine: 'underline',
                   },
                 ]}
-                onPress={() => setModalVisible(true)}
               >
-                <Text style={[styles.buttonText, { color: colors.buttonText }]}>
-                  {LL.SHOW_UPCOMING_RESERVATIONS()}
-                </Text>
-              </Pressable>
+                {LL.SHOW_UPCOMING_RESERVATIONS()}
+              </Text>
             </View>
 
             <EquipmentList equipment={room.equipment} />
@@ -174,7 +154,7 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
               <View
                 style={[
                   styles.modalContainer,
-                  { backgroundColor: colors.backgroundPrimary },
+                  { backgroundColor: colors.card },
                 ]}
               >
                 <BookingList
@@ -191,14 +171,14 @@ export default function RoomView({ room }: { room: RoomViewProps }) {
                   style={[
                     styles.button,
                     {
-                      backgroundColor: colors.buttonBackground,
+                      backgroundColor: colors.primary,
                       width: '50%',
                       alignSelf: 'center',
                     },
                   ]}
                 >
                   <Text
-                    style={[styles.buttonText, { color: colors.buttonText }]}
+                    style={[styles.buttonText, { color: colors.background }]}
                   >
                     {LL.CLOSE()}
                   </Text>

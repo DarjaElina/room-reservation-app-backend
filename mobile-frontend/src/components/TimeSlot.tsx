@@ -4,6 +4,7 @@ import SelectedTimeSlot from './SelectedTimeSlot';
 import BookedTimeSlot from './BookedTimeSlot';
 import useBookingContext from '@/src/hooks/useBookingContext';
 import useStyles from '../hooks/useStyles';
+import { useTheme } from '@react-navigation/native';
 
 export interface TimeSlotType {
   hour: number;
@@ -31,6 +32,7 @@ const TimeSlot = memo(function TimeSlotItem({
 }: TimeSlotProps) {
   const { selectedTimeValues } = useBookingContext();
   const styles = useStyles();
+  const { colors } = useTheme();
 
   return (
     <Pressable
@@ -47,7 +49,7 @@ const TimeSlot = memo(function TimeSlotItem({
       ) : null}
       {selectedTimeValues.find((i) => i.value === timeSlot.value) ? (
         <SelectedTimeSlot
-          color="darkgreen"
+          color={colors.success}
           value={timeSlot.value.slice(0, 5)}
         />
       ) : null}

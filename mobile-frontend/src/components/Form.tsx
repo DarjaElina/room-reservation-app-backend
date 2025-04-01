@@ -37,15 +37,13 @@ export default function Form({ control, errors, fields }: FormProps) {
                 onChangeText={onChange}
                 value={value}
                 autoCapitalize="none"
-                activeUnderlineColor={
-                  error ? colors.error : colors.inputActiveBorder
-                }
+                activeUnderlineColor={error ? colors.error : colors.primary}
                 style={{
                   backgroundColor: 'transparent',
-                  color: colors.textPrimary,
+                  color: colors.text,
                 }}
-                placeholderTextColor={colors.textSecondary}
-                textColor={colors.textPrimary}
+                placeholderTextColor={colors.text}
+                textColor={colors.text}
                 accessibilityLabel={field.label}
               />
             )}

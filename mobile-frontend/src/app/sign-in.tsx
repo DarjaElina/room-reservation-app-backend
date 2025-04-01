@@ -62,7 +62,7 @@ export default function Login() {
         styles.scrollContainer,
         styles.flexContainer,
         {
-          backgroundColor: colors.backgroundPrimary,
+          backgroundColor: colors.background,
         },
       ]}
     >
@@ -71,14 +71,14 @@ export default function Login() {
           style={styles.userIcon}
           size={50}
           name="user-circle"
-          color={colors.textPrimary}
+          color={colors.text}
         />
       </View>
       <Text
         style={[
           styles.heading,
           {
-            color: colors.textPrimary,
+            color: colors.text,
             textAlign: 'center',
           },
         ]}

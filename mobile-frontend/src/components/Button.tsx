@@ -21,7 +21,7 @@ export default function Button({
     [
       styles.button,
       {
-        backgroundColor: colors.buttonBackground,
+        backgroundColor: colors.primary,
       },
     ],
     isBig && styles.bigButton,
@@ -35,7 +35,7 @@ export default function Button({
         style={[
           styles.buttonLabel,
           {
-            color: colors.buttonText,
+            color: 'rgb(21, 26, 31)',
           },
         ]}
       >

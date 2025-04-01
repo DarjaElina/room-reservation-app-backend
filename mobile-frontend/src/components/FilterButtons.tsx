@@ -19,7 +19,7 @@ function FilterButtons() {
         onValueChange={setValue}
         theme={{
           colors: {
-            secondaryContainer: colors.buttonBackground,
+            secondaryContainer: colors.primary,
           },
         }}
         buttons={[
@@ -30,13 +30,11 @@ function FilterButtons() {
               <Ionicons
                 name="time"
                 size={15}
-                color={
-                  value === 'time' ? colors.buttonText : colors.textPrimary
-                }
+                color={value === 'time' ? colors.background : colors.text}
               />
             ),
-            uncheckedColor: colors.textPrimary,
-            checkedColor: colors.buttonText,
+            uncheckedColor: colors.text,
+            checkedColor: colors.background,
             onPress: () => router.navigate('/(tabs)/(home)/time-filter'),
           },
           {
@@ -46,13 +44,11 @@ function FilterButtons() {
               <Ionicons
                 name="location"
                 size={15}
-                color={
-                  value === 'building' ? colors.buttonText : colors.textPrimary
-                }
+                color={value === 'building' ? colors.background : colors.text}
               />
             ),
-            uncheckedColor: colors.textPrimary,
-            checkedColor: colors.buttonText,
+            uncheckedColor: colors.text,
+            checkedColor: colors.background,
             onPress: () => router.navigate('/(tabs)/(home)/building-filter'),
           },
           {
@@ -62,13 +58,11 @@ function FilterButtons() {
               <FontAwesome5
                 name="guitar"
                 size={15}
-                color={
-                  value === 'tools' ? colors.buttonText : colors.textPrimary
-                }
+                color={value === 'tools' ? colors.background : colors.text}
               />
             ),
-            uncheckedColor: colors.textPrimary,
-            checkedColor: colors.buttonText,
+            uncheckedColor: colors.text,
+            checkedColor: colors.background,
             onPress: () => router.navigate('/(tabs)/(home)/equipment-filter'),
           },
           {
@@ -78,13 +72,11 @@ function FilterButtons() {
               <MaterialIcons
                 name="class"
                 size={15}
-                color={
-                  value === 'type' ? colors.buttonText : colors.textPrimary
-                }
+                color={value === 'type' ? colors.background : colors.text}
               />
             ),
-            uncheckedColor: colors.textPrimary,
-            checkedColor: colors.buttonText,
+            uncheckedColor: colors.text,
+            checkedColor: colors.background,
             onPress: () => router.navigate('/(tabs)/(home)/type-filter'),
           },
         ]}

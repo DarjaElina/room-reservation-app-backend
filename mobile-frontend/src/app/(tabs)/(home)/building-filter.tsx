@@ -6,11 +6,9 @@ import useFilter from '@/src/hooks/useFilter';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import QueryResult from '@/src/components/QueryResult';
-import { useTheme } from '@react-navigation/native';
 import useStyles from '@/src/hooks/useStyles';
 
 export default function BuildingFilter() {
-  const { colors } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery] = useDebounce(searchQuery, 2000);
   const { buildings, loading, error } = useVenues({
@@ -24,15 +22,7 @@ export default function BuildingFilter() {
 
   return (
     <QueryResult loading={loading} error={error} data={buildings}>
-      <View
-        style={[
-          styles.scrollContainer,
-          styles.flexContainer,
-          {
-            backgroundColor: colors.backgroundPrimary,
-          },
-        ]}
-      >
+      <View style={[styles.scrollContainer, styles.flexContainer]}>
         <SearchBar
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}

@@ -246,10 +246,10 @@ export default function TimePicker({
         }}
       />
       <FAB
-        style={[styles.fab, { backgroundColor: colors.buttonBackground }]}
+        style={[styles.fab, { backgroundColor: colors.primary }]}
         label={LL.CONFIRM()}
         onPress={handleSubmit}
-        color={colors.buttonText}
+        color="rgb(21, 26, 31)"
       />
       <Separator />
     </View>

@@ -18,16 +18,12 @@ export default function UserMessage({ text, type }: UserNotificationProps) {
       style={[
         styles.userMessageContainer,
         {
-          backgroundColor: colors.backgroundPrimary,
+          backgroundColor: colors.background,
           borderColor: type === 'success' ? colors.success : colors.error,
-          shadowColor: colors.shadow,
-          shadowOpacity: colors.shadowOpacity,
         },
       ]}
     >
-      <Text style={[styles.mediumText, { color: colors.textPrimary }]}>
-        {text}
-      </Text>
+      <Text style={[styles.mediumText, { color: colors.text }]}>{text}</Text>
     </View>
   );
 }

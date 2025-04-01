@@ -25,7 +25,7 @@ export default function BookingList({
         style={[
           styles.userMessage,
           {
-            color: colors.textPrimary,
+            color: colors.text,
           },
         ]}
       >
@@ -46,7 +46,7 @@ export default function BookingList({
         style={[
           styles.flexContainer,
           {
-            backgroundColor: colors.backgroundPrimary,
+            backgroundColor: colors.background,
           },
         ]}
       >

@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Text, View, Modal, Pressable } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
 import useSignOut from '@/src/hooks/useSignOut';
 import { useI18nContext } from '@/src/i18n/i18n-react';
 import { locales } from '@/src/i18n/i18n-util';
@@ -47,12 +46,10 @@ export default function SettingsScreen() {
       </Pressable>
 
       <Pressable
-        style={[styles.button, { backgroundColor: colors.buttonBackground }]}
+        style={[styles.button, { backgroundColor: colors.primary }]}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={[styles.mediumText, { color: colors.buttonText }]}>
-          {LL.SELECT_LANGUAGE()}
-        </Text>
+        <Text style={[styles.mediumText]}>{LL.SELECT_LANGUAGE()}</Text>
       </Pressable>
 
       <Modal
@@ -60,12 +57,7 @@ export default function SettingsScreen() {
         animationType="slide"
         onRequestClose={() => setModalVisible(false)}
       >
-        <View
-          style={[
-            styles.modalContainer,
-            { backgroundColor: colors.backgroundPrimary },
-          ]}
-        >
+        <View style={[styles.modalContainer, { backgroundColor: colors.card }]}>
           <LanguagePicker
             locale={locale}
             onLocaleSelected={onLocaleSelected}
@@ -74,14 +66,9 @@ export default function SettingsScreen() {
 
           <Pressable
             onPress={() => setModalVisible(false)}
-            style={[
-              styles.button,
-              { backgroundColor: colors.buttonBackground },
-            ]}
+            style={[styles.button]}
           >
-            <Text style={[styles.buttonText, { color: colors.buttonText }]}>
-              {LL.CLOSE()}
-            </Text>
+            <Text style={[styles.buttonText]}>{LL.CLOSE()}</Text>
           </Pressable>
         </View>
       </Modal>
@@ -92,15 +79,7 @@ export default function SettingsScreen() {
         ]}
         onPress={() => signOut()}
       >
-        <Ionicons name="log-out-outline" size={24} color={colors.background} />
-        <Text
-          style={[
-            styles.mediumText,
-            { color: colors.buttonText, marginLeft: 8 },
-          ]}
-        >
-          {LL.LOGOUT()}
-        </Text>
+        <Text style={[styles.mediumText]}>{LL.LOGOUT()}</Text>
       </Pressable>
     </View>
   );

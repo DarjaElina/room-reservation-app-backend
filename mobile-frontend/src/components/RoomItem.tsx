@@ -5,7 +5,6 @@ import { useTheme } from '@react-navigation/native';
 import { useI18nContext } from '../i18n/i18n-react';
 import useStyles from '../hooks/useStyles';
 import React from 'react';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 interface RoomProps {
   code: string;
@@ -27,17 +26,7 @@ export default function Room({
   const { LL } = useI18nContext();
   const styles = useStyles();
   return (
-    <View
-      testID="room-item"
-      style={[
-        styles.itemContainer,
-        {
-          backgroundColor: colors.backgroundSecondary,
-          shadowColor: colors.shadow,
-          shadowOpacity: colors.shadowOpacity,
-        },
-      ]}
-    >
+    <View testID="room-item" style={[styles.itemContainer, { borderWidth: 1 }]}>
       <Image
         style={styles.roomItemImage}
         source={pictureUrl}
@@ -50,29 +39,22 @@ export default function Room({
           styles.bigText,
           styles.boldText,
           {
-            color: colors.textSecondary,
+            color: colors.text,
           },
         ]}
       >
         {code}
       </Text>
-      <View style={styles.iconTextContainer}>
-        <FontAwesome6
-          name="location-dot"
-          size={20}
-          color={colors.textPrimary}
-        />
-        <Text
-          style={[
-            styles.smallText,
-            {
-              color: colors.textPrimary,
-            },
-          ]}
-        >
-          {venue}
-        </Text>
-      </View>
+      <Text
+        style={[
+          styles.mediumText,
+          {
+            color: colors.text,
+          },
+        ]}
+      >
+        {venue}
+      </Text>
       <View style={styles.iconTextContainer}>
         {isFree ? (
           <>
@@ -81,7 +63,14 @@ export default function Room({
               size={styles.bigText.fontSize * 0.8}
               color={colors.success}
             />
-            <Text style={[styles.mediumText, { color: colors.success }]}>
+            <Text
+              style={[
+                styles.mediumText,
+                {
+                  color: colors.text,
+                },
+              ]}
+            >
               {LL.AVAILABLE()}
             </Text>
           </>
@@ -92,7 +81,14 @@ export default function Room({
               size={styles.bigText.fontSize * 0.6}
               color={colors.error}
             />
-            <Text style={[styles.mediumText, { color: colors.error }]}>
+            <Text
+              style={[
+                styles.mediumText,
+                {
+                  color: colors.text,
+                },
+              ]}
+            >
               {LL.OCCUPIED()}
             </Text>
           </>

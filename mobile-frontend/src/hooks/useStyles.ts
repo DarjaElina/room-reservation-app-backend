@@ -59,7 +59,6 @@ const useStyles = () => {
         alignSelf: 'center',
       },
       datePressable: {
-        backgroundColor: '#f0f0f0',
         paddingVertical: vmin * 2,
         paddingHorizontal: vmin * 3,
         borderRadius: 8,
@@ -102,27 +101,27 @@ const useStyles = () => {
         fontWeight: 'bold',
       },
       bigText: {
-        fontSize: isLargeScreen ? 10 + vmin * 2 : 10 + vmin * 3.5,
-        fontFamily: 'Lato-Black',
+        fontSize: isLargeScreen ? 10 + vmin * 2 : 10 + vmin * 3,
+        fontFamily: 'Nunito-Black',
       },
       smallText: {
         fontSize: isLargeScreen ? 5 + vmin * 1.3 : 5 + vmin * 2.3,
-        fontFamily: 'Lato-Thin',
+        fontFamily: 'Nunito-Thin',
       },
       mediumText: {
-        fontSize: isLargeScreen ? 7 + vmin * 1.5 : 7 + vmin * 2.5,
-        fontFamily: 'Lato-Regular',
+        fontSize: isLargeScreen ? 7 + vmin * 1.5 : 7 + vmin * 2.3,
+        fontFamily: 'Nunito-Regular',
       },
       errorText: {
         marginTop: isLargeScreen ? 10 + vmin * 1.5 : 10 + vmin * 3.5,
         fontSize: 8 + vmin * 1.8,
-        fontFamily: 'Lato-Regular',
+        fontFamily: 'Nunito-Regular',
       },
       userMessage: {
         fontSize: isLargeScreen ? 7 + vmin * 1.5 : 7 + vmin * 2.5,
         textAlign: 'center',
         marginVertical: vmin * 3.5,
-        fontFamily: 'Lato-Regular',
+        fontFamily: 'Nunito-Regular',
       },
 
       // containers

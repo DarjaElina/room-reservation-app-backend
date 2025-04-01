@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  Pressable,
-  Alert,
-  Modal,
-  useColorScheme,
-} from 'react-native';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import Entypo from '@expo/vector-icons/Entypo';
+import { View, Text, Pressable, Alert, Modal } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import useCancelBooking from '@/src/hooks/useCancelBooking';
 import BookingModificationForm from './BookingModificationForm';
@@ -39,7 +30,6 @@ export default function BookingItem({
   const formattedEndDate = new Date(endDate);
   const [showModal, setShowModal] = useState(false);
   const { colors } = useTheme();
-  const scheme = useColorScheme();
   const { LL } = useI18nContext();
   const styles = useStyles();
 
@@ -85,8 +75,7 @@ export default function BookingItem({
       style={[
         styles.bookingItemContainer,
         {
-          backgroundColor: colors.backgroundSecondary,
-          shadowColor: colors.shadow,
+          backgroundColor: colors.card,
           shadowOpacity: colors.shadowOpacity,
         },
       ]}
@@ -96,7 +85,7 @@ export default function BookingItem({
           styles.bigText,
           styles.boldText,
           {
-            color: colors.textPrimary,
+            color: colors.text,
           },
         ]}
       >
@@ -106,7 +95,7 @@ export default function BookingItem({
         style={[
           styles.bigText,
           {
-            color: colors.textSecondary,
+            color: colors.text,
           },
         ]}
       >
@@ -116,13 +105,13 @@ export default function BookingItem({
         <FontAwesome
           name="calendar"
           size={styles.mediumText.fontSize}
-          color={colors.textPrimary}
+          color={colors.text}
         />
         <Text
           style={[
             styles.mediumText,
             {
-              color: colors.textSecondary,
+              color: colors.text,
             },
           ]}
         >
@@ -139,17 +128,11 @@ export default function BookingItem({
               { backgroundColor: colors.error, flexDirection: 'row' },
             ]}
           >
-            <MaterialIcons
-              name="delete-forever"
-              size={styles.buttonText.fontSize * 1.5}
-              color={scheme === 'light' ? 'white' : 'black'}
-            />
             <Text
               style={[
                 styles.buttonText,
                 {
                   backgroundColor: colors.error,
-                  color: colors.buttonText,
                 },
               ]}
             >
@@ -160,25 +143,10 @@ export default function BookingItem({
             onPress={() => setShowModal(true)}
             style={[
               styles.button,
-              { backgroundColor: colors.success, flexDirection: 'row' },
+              { backgroundColor: colors.primary, flexDirection: 'row' },
             ]}
           >
-            <Entypo
-              name="pencil"
-              size={styles.buttonText.fontSize * 1.5}
-              color={scheme === 'light' ? 'white' : 'black'}
-            />
-            <Text
-              style={[
-                styles.buttonText,
-                {
-                  backgroundColor: colors.success,
-                  color: colors.buttonText,
-                },
-              ]}
-            >
-              {LL.MODIFY()}
-            </Text>
+            <Text style={[styles.buttonText]}>{LL.MODIFY()}</Text>
           </Pressable>
           <Modal
             visible={showModal}
@@ -189,7 +157,7 @@ export default function BookingItem({
               style={[
                 styles.modalContainer,
                 {
-                  backgroundColor: colors.backgroundPrimary,
+                  backgroundColor: colors.background,
                 },
               ]}
             >

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable, useColorScheme, Alert } from 'react-native';
+import { View, Text, Pressable, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import useUpdateBooking from '@/src/hooks/useUpdateBooking';
 import { router } from 'expo-router';
@@ -26,7 +26,6 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
 }) => {
   const [title, setTitle] = useState(initialData.title);
   const { colors } = useTheme();
-  const schema = useColorScheme();
   const [updateBooking] = useUpdateBooking();
   const [userMessage, setUserMessage] = useState<string | null>('');
   const { LL } = useI18nContext();
@@ -88,34 +87,24 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
         styles.itemContainer,
 
         {
-          backgroundColor: colors.backgroundSecondary,
-          width: '50%',
-          alignSelf: 'center',
+          backgroundColor: colors.background,
+          width: '100%',
         },
       ]}
     >
       <UserMessage text={userMessage} type="success" />
       <TextInput
         mode="flat"
-        style={[styles.input, { backgroundColor: colors.inputBackground }]}
+        style={[styles.input, { backgroundColor: '#ffffff' }]}
         value={title}
         onChangeText={setTitle}
         placeholder={LL.BOOKING_TITLE()}
-        activeUnderlineColor={colors.textPrimary}
-        placeholderTextColor={colors.textSecondary}
-        textColor={colors.textPrimary}
+        activeUnderlineColor={colors.primary}
       />
 
       <View style={styles.textContainer}>
         <Text
-          style={[
-            styles.mediumText,
-            styles.boldText,
-            styles.textContainer,
-            {
-              color: colors.textPrimary,
-            },
-          ]}
+          style={[styles.mediumText, styles.boldText, styles.textContainer]}
         >
           {LL.STARTS()}:
         </Text>
@@ -135,9 +124,7 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
             styles.mediumText,
             styles.boldText,
             styles.textContainer,
-            {
-              color: colors.textPrimary,
-            },
+            { color: colors.text },
           ]}
         >
           {LL.ENDS()}:
@@ -158,31 +145,17 @@ const BookingModificationForm: React.FC<BookingModificationFormProps> = ({
           style={[
             styles.button,
             {
-              backgroundColor: colors.success,
+              backgroundColor: colors.primary,
             },
           ]}
         >
-          <Text
-            style={[
-              styles.buttonText,
-              { color: schema === 'dark' ? 'black' : 'white' },
-            ]}
-          >
-            {LL.SAVE()}
-          </Text>
+          <Text style={[styles.buttonText]}>{LL.SAVE()}</Text>
         </Pressable>
         <Pressable
           onPress={onCancel}
           style={[styles.button, { backgroundColor: colors.error }]}
         >
-          <Text
-            style={[
-              styles.buttonText,
-              { color: schema === 'dark' ? 'black' : 'white' },
-            ]}
-          >
-            {LL.CANCEL()}
-          </Text>
+          <Text style={[styles.buttonText]}>{LL.CANCEL()}</Text>
         </Pressable>
       </View>
     </View>

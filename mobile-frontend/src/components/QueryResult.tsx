@@ -17,25 +17,18 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
   const styles = useStyles();
   if (loading) {
     return (
-      <View
-        style={[
-          styles.flexContainer,
-          styles.scrollContainer,
-          {
-            backgroundColor: colors.backgroundPrimary,
-          },
-        ]}
-      >
+      <View style={[styles.flexContainer, styles.scrollContainer]}>
         <ActivityIndicator
           testID="loading-indicator"
           size="large"
-          color={colors.textPrimary}
+          color={colors.primary}
         />
         <Text
           style={[
             styles.mediumText,
             {
-              color: colors.textPrimary,
+              color: colors.text,
+              textAlign: 'center',
             },
           ]}
         >
@@ -46,15 +39,7 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
   }
   if (error) {
     return (
-      <View
-        style={[
-          styles.flexContainer,
-          styles.scrollContainer,
-          {
-            backgroundColor: colors.backgroundPrimary,
-          },
-        ]}
-      >
+      <View style={[styles.flexContainer, styles.scrollContainer]}>
         <Text
           testID="error-text"
           style={[
@@ -71,20 +56,13 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
   }
   if (!data) {
     return (
-      <View
-        style={[
-          styles.flexContainer,
-          styles.scrollContainer,
-          {
-            backgroundColor: colors.backgroundPrimary,
-          },
-        ]}
-      >
+      <View style={[styles.flexContainer, styles.scrollContainer]}>
         <Text
           style={[
             styles.mediumText,
             {
-              color: colors.textPrimary,
+              color: colors.text,
+              textAlign: 'center',
             },
           ]}
         >

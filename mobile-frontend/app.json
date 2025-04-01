@@ -36,11 +36,11 @@
         "expo-font",
         {
           "fonts": [
-            "./src/assets/fonts/Lato/Lato-Black.ttf",
-            "./src/assets/fonts/Lato/Lato-Bold.ttf",
-            "./src/assets/fonts/Lato/Lato-Light.ttf",
-            "./src/assets/fonts/Lato/Lato-Regular.ttf",
-            "./src/assets/fonts/Lato/Lato-Thin.ttf"
+            "./src/assets/fonts/Lato/Nunito-Black.ttf",
+            "./src/assets/fonts/Lato/Nunito-Bold.ttf",
+            "./src/assets/fonts/Lato/Nunito-Light.ttf",
+            "./src/assets/fonts/Lato/Nunito-Regular.ttf",
+            "./src/assets/fonts/Lato/Nunito-Thin.ttf"
           ]
         }
       ],

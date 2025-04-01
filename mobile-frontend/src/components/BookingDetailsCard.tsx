@@ -48,22 +48,17 @@ export default function BookingDetailsCard({
       style={[
         styles.bookingDetailsCard,
         {
-          backgroundColor: colors.backgroundSecondary,
-          shadowColor: colors.shadow,
+          backgroundColor: colors.card,
         },
       ]}
     >
       <View style={[styles.iconTextContainer, { margin: 'auto' }]}>
-        <FontAwesome5
-          name="calendar-check"
-          size={24}
-          color={colors.textPrimary}
-        />
+        <FontAwesome5 name="calendar-check" size={24} color={colors.text} />
         <Text
           style={[
             styles.subheading,
             {
-              color: colors.textPrimary,
+              color: colors.text,
             },
           ]}
         >
@@ -71,7 +66,7 @@ export default function BookingDetailsCard({
         </Text>
       </View>
       <Text>
-        <Text style={[styles.mediumText, { color: colors.textPrimary }]}>
+        <Text style={[styles.mediumText, { color: colors.text }]}>
           {LL.TITLE()}
         </Text>
       </Text>
@@ -80,15 +75,15 @@ export default function BookingDetailsCard({
         style={[
           styles.input,
           {
-            color: colors.textPrimary,
+            color: colors.text,
           },
         ]}
         value={bookingTitle}
         onChangeText={setBookingTitle}
         placeholder={LL.BOOKING_TITLE()}
-        activeUnderlineColor={error ? colors.error : colors.inputActiveBorder}
-        placeholderTextColor={colors.textSecondary}
-        textColor={colors.textPrimary}
+        activeUnderlineColor={error ? colors.error : colors.primary}
+        placeholderTextColor={colors.text}
+        textColor={colors.text}
       />
       {error && (
         <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
@@ -97,10 +92,10 @@ export default function BookingDetailsCard({
         style={[
           styles.mediumText,
           styles.textContainer,
-          { color: colors.textPrimary },
+          { color: colors.text },
         ]}
       >
-        <Text style={[styles.mediumText, { color: colors.textPrimary }]}>
+        <Text style={[styles.mediumText, { color: colors.text }]}>
           {LL.ROOM()}:
         </Text>{' '}
         {roomCode}
@@ -109,12 +104,12 @@ export default function BookingDetailsCard({
         style={[
           styles.mediumText,
           styles.textContainer,
-          { color: colors.textSecondary },
+          { color: colors.text },
         ]}
       >
         <Text
           style={{
-            color: colors.textSecondary,
+            color: colors.text,
           }}
         >
           {LL.STARTS()}:
@@ -126,7 +121,7 @@ export default function BookingDetailsCard({
           styles.mediumText,
           styles.textContainer,
           {
-            color: colors.textSecondary,
+            color: colors.text,
           },
         ]}
       >
@@ -138,20 +133,11 @@ export default function BookingDetailsCard({
         style={[
           styles.button,
           {
-            backgroundColor: colors.buttonBackground,
+            backgroundColor: colors.primary,
           },
         ]}
       >
-        <Text
-          style={[
-            styles.buttonText,
-            {
-              color: colors.buttonText,
-            },
-          ]}
-        >
-          {buttonText}
-        </Text>
+        <Text style={[styles.buttonText]}>{buttonText}</Text>
       </Pressable>
     </View>
   );

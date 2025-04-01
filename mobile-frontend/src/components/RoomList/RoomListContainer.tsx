@@ -68,7 +68,7 @@ export default function RoomListContainer({
       style={[
         styles.userMessage,
         {
-          color: colors.textPrimary,
+          color: colors.text,
         },
       ]}
     >
