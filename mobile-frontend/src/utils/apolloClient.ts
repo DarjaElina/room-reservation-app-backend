@@ -6,8 +6,12 @@ import { StoreObject } from '@apollo/client/utilities';
 
 const authStorage = new AuthStorage();
 
+const BACKEND_URL = __DEV__
+  ? process.env.EXPO_PUBLIC_BACKEND_URL_DEV
+  : process.env.EXPO_PUBLIC_BACKEND_URL;
+
 const httpLink = createHttpLink({
-  uri: 'https://backend-rough-wildflower-6075.fly.dev/',
+  uri: BACKEND_URL,
 });
 
 const cache = new InMemoryCache({

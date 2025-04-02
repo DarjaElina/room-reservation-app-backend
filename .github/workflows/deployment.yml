@@ -70,4 +70,9 @@ jobs:
       - name: Run Jest tests (frontend)
         working-directory: ./mobile-frontend
         run: npm run test
+      
+      - name: Run backend in development mode
+        working-directory: ./backend
+        run: npm run dev
+
 

@@ -46,7 +46,18 @@ const migrationConf = {
   logger: undefined
 };
 
+const seedConf = {
+  migrations: {
+    glob: "./src/seeders/*.ts",
+  },
+  storage: new SequelizeStorage({ sequelize, tableName: "seeders" }),
+  context: sequelize.getQueryInterface(),
+  logger: undefined,
+};
+
 const umzug = new Umzug(migrationConf);
+
+const seedUmzug = new Umzug(seedConf);
 
 export type Migration = typeof umzug._types.migration;
 
@@ -56,6 +67,12 @@ export const connectToDatabase = async () => {
     console.log('Connected to the database');
 
     const migrations = await umzug.up();
+    if (process.env.NODE_ENV === 'development') {
+      const seeds = await seedUmzug.up();
+      console.log('Seeders up to date', {
+        files: seeds.map((seed) => seed.name),
+      });
+    }
     console.log('Migrations up to date', {
       files: migrations.map((mig) => mig.name),
     });
@@ -73,6 +90,7 @@ export const rollbackMigration = async () => {
   try {
     await sequelize.authenticate();
     const migrations = await umzug.down({ to: 0 });
+    await seedUmzug.down();
     console.log('Rolled back migrations', {
       files: migrations.map((mig) => mig.name),
     });
