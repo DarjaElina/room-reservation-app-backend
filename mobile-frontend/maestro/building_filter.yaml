@@ -1,11 +1,11 @@
-appId: ${APP_ID}
+appId: com.daria111.mobilefrontend
 ---
-- runFlow: login.yaml
-- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
-- assertNotVisible: 'tane-130  Sergei Taneyev Building  Available'
+- launchApp
+- assertVisible: 'MY-100 Myaskovsky Building Available'
+- assertNotVisible: 'TA-101 Taneyev Building Available'
 - tapOn: ' Building'
-- assertVisible: ' Sergei Taneyev Building'
-- tapOn: ' Sergei Taneyev Building'
+- assertVisible: ' Taneyev Building'
+- tapOn: ' Taneyev Building'
 - tapOn: 'Back'
-- assertVisible: 'tane-130  Sergei Taneyev Building  Available'
-- assertNotVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertVisible: 'TA-101 Taneyev Building Available'
+- assertNotVisible: 'MY-100 Myaskovsky Building Available'

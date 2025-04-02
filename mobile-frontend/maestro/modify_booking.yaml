@@ -1,7 +1,7 @@
-appId: ${APP_ID}
+appId: com.daria111.mobilefrontend
 ---
-- runFlow: login.yaml
-- tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
+- launchApp
+- tapOn: 'MY-100 Myaskovsky Building Available'
 - tapOn: 'Reserve'
 - tapOn:
     point: '92%,13%'
@@ -10,13 +10,13 @@ appId: ${APP_ID}
 - assertVisible: 'Booking Details'
 - tapOn: 'Reserve'
 - assertVisible: 'Booking created successfully.'
-- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
-- tapOn: 'My Calendar'
-- assertVisible: 'rach-100'
+- assertVisible: 'MY-100 Myaskovsky Building Available'
+- tapOn: "My Calendar, tab, 2 of 3"
+- assertVisible: 'MY-100'
 - runScript: ../src/scripts/getTomorrowDate.js
-- assertVisible: '${output.getTomorrowDate.dotFormat} at 6.00 - ${output.getTomorrowDate.dotFormat} at 7.00'
-- assertVisible: ' Modify'
-- tapOn: ' Modify'
+- assertVisible: '${output.getTomorrowDate.commaFormat} at 06.00 - ${output.getTomorrowDate.commaFormat} at 07.00'
+- assertVisible: 'Modify'
+- tapOn: 'Modify'
 - assertVisible: 'Reservation from Booking App'
 - longPressOn:
     point: '70%,33%'
@@ -26,10 +26,10 @@ appId: ${APP_ID}
 - hideKeyboard
 - tapOn: 'Save'
 - assertVisible: 'Booking updated successfully.'
-- assertVisible: 'My Calendar'
-- tapOn: 'My Calendar'
+- tapOn: "My Calendar, tab, 2 of 3"
+- tapOn: "My Calendar, tab, 2 of 3"
 - assertVisible: 'New Title'
-- tapOn: ' Modify'
+- tapOn: 'Modify'
 - tapOn: '${output.getTomorrowDate.spaceFormat} at 06:00'
 - assertVisible: ${output.getTomorrowDate.spaceFormat}
 - tapOn: 09:00:00
@@ -38,6 +38,7 @@ appId: ${APP_ID}
 - assertVisible: 'Ends: ${output.getTomorrowDate.commaFormat} at 10:00 AM'
 - tapOn: 'Save'
 - assertVisible: 'Booking updated successfully.'
-- assertVisible: 'My Calendar'
-- tapOn: 'My Calendar'
-- assertVisible: '${output.getTomorrowDate.dotFormat} at 9.00 - ${output.getTomorrowDate.dotFormat} at 10.00'
+- tapOn: "My Calendar, tab, 2 of 3"
+- tapOn: "My Calendar, tab, 2 of 3"
+- assertVisible: '${output.getTomorrowDate.dotFormat} at 09.00 - ${output.getTomorrowDate.dotFormat} at 10.00'
+- runFlow: reset_state.yaml

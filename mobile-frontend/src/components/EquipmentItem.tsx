@@ -14,14 +14,11 @@ export default function EquipmentItem({ name }: EquipmentProp) {
       style={[
         styles.equipmentItemContainer,
         {
-          backgroundColor: colors.backgroundSecondary,
-          shadowColor: colors.shadow || '#000',
+          backgroundColor: colors.card,
         },
       ]}
     >
-      <Text style={[styles.smallText, { color: colors.textPrimary }]}>
-        {name}
-      </Text>
+      <Text style={styles.smallText}>{name}</Text>
     </View>
   );
 }

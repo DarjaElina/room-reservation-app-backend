@@ -1,20 +1,21 @@
-appId: ${APP_ID}
+appId: dev.daria111.mobilefrontend
 ---
-- runFlow: login.yaml
-- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
-- assertNotVisible: 'tane-130  Sergei Taneyev Building  Available'
+- launchApp
+- assertVisible: 'MY-100 Myaskovsky Building Available'
+- assertNotVisible: 'TA-100 Taneyev Building Available'
 - tapOn:
     id: 'search-bar'
-- inputText: 'tane-130'
-- assertVisible: 'tane-130  Sergei Taneyev Building  Available'
+- inputText: 'TA-100'
+- assertVisible: 'TA-100 Taneyev Building Available'
 - tapOn: '󰅖'
-- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertVisible: 'MY-100 Myaskovsky Building Available'
 - tapOn:
     id: 'search-bar'
 - inputText: 'NonExistentRoom'
 - assertVisible: 'No rooms found.'
 - tapOn: '󰅖'
-- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
-- assertNotVisible: 'tane-130  Sergei Taneyev Building  Available'
+- assertVisible: 'MY-100 Myaskovsky Building Available'
+- assertNotVisible: 'TA-100 Taneyev Building Available'
 - scrollUntilVisible:
-    element: 'tane-130  Sergei Taneyev Building  Available'
+    element: 'TA-100 Taneyev Building Available'
+- clearState

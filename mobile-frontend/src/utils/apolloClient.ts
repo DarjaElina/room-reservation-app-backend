@@ -3,6 +3,7 @@ import { setContext } from '@apollo/client/link/context';
 import AuthStorage from './authStorage';
 import { relayStylePagination } from '@apollo/client/utilities';
 import { StoreObject } from '@apollo/client/utilities';
+import { Reference } from '@apollo/client/utilities';
 
 const authStorage = new AuthStorage();
 
@@ -24,13 +25,17 @@ const cache = new InMemoryCache({
     Room: {
       fields: {
         equipment: {
-          merge(existing = [], incoming: unknown[], { readField }) {
-            const incomingObjects = incoming as StoreObject[];
-
-            if (incomingObjects.some((item) => readField('id', item))) {
-              return [...existing, ...incomingObjects];
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          merge(existing = [], incoming: any[], { readField }) {
+            if (
+              readField(
+                'id',
+                incoming as unknown as Reference | StoreObject | undefined
+              )
+            ) {
+              return [...existing, ...incoming];
             }
-            return incomingObjects;
+            return incoming;
           },
         },
       },

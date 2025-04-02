@@ -2,7 +2,7 @@ import type { Migration } from '../util/db';
 import { Sequelize } from 'sequelize-typescript';
 export const up: Migration = async ({ context: queryInterface }) => {
   await queryInterface.bulkInsert('rooms', [
-    { id: Sequelize.literal('gen_random_uuid()'), code: 'TA-100', type: 'CLASSROOM', size: 28, venue_id: '2e4bf800-0124-4ccb-8840-0e83eabae1ee', is_bookable: true, created_at: new Date(), updated_at: new Date(), description: 'A classroom designed for chamber music instruction.' },
+    { id: 'cdf0365d-eb1d-4953-8f36-1292a6953f8d', code: 'TA-100', type: 'CLASSROOM', size: 28, venue_id: '2e4bf800-0124-4ccb-8840-0e83eabae1ee', is_bookable: true, created_at: new Date(), updated_at: new Date(), description: 'A classroom designed for chamber music instruction.' },
     { id: Sequelize.literal('gen_random_uuid()'), code: 'TA-101', type: 'PRACTICE_ROOM', size: 12, venue_id: '2e4bf800-0124-4ccb-8840-0e83eabae1ee', is_bookable: true, created_at: new Date(), updated_at: new Date(), description: 'A practice room with excellent sound insulation.' },
     { id: Sequelize.literal('gen_random_uuid()'), code: 'TA-102', type: 'STUDIO', size: 45, venue_id: '2e4bf800-0124-4ccb-8840-0e83eabae1ee', is_bookable: true, created_at: new Date(), updated_at: new Date(), description: 'A well-equipped recording studio for students.' },
     { id: Sequelize.literal('gen_random_uuid()'), code: 'TA-103', type: 'CONCERT_HALL', size: 400, venue_id: '2e4bf800-0124-4ccb-8840-0e83eabae1ee', is_bookable: false, created_at: new Date(), updated_at: new Date(), description: 'A grand concert hall used for student recitals.' },

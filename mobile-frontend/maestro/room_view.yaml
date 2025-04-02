@@ -1,13 +1,12 @@
-appId: ${APP_ID}
+appId: com.daria111.mobilefrontend
 ---
-- runFlow: login.yaml
-- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
-- tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
-- assertVisible: 'rach-100'
+- assertVisible: 'MY-100 Myaskovsky Building Available'
+- tapOn: 'MY-100 Myaskovsky Building Available'
+- assertVisible: 'MY-100'
 - assertVisible: 'Reserve'
 - scrollUntilVisible:
-    element: 'Show Upcoming Reservations'
-- tapOn: 'Show Upcoming Reservations'
+    element: 'Show upcoming reservations'
+- tapOn: 'Show upcoming reservations'
 - assertVisible: 'You have no upcoming bookings.'
 - tapOn: 'Close'
 - scrollUntilVisible:
@@ -23,12 +22,13 @@ appId: ${APP_ID}
 - assertVisible: 'Booking Details'
 - tapOn: 'Reserve'
 - assertVisible: 'Booking created successfully.'
-- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
-- tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertVisible: 'MY-100 Myaskovsky Building Available'
+- tapOn: 'MY-100 Myaskovsky Building Available'
 - scrollUntilVisible:
-    element: 'Show Upcoming Reservations'
-- tapOn: 'Show Upcoming Reservations'
+    element: 'Show upcoming reservations'
+- tapOn: 'Show upcoming reservations'
 - assertVisible: 'Reservation from Booking App'
-- assertVisible: 'rach-100'
-- assertVisible: '${output.getTomorrowDate.dotFormat} at 6.00 - ${output.getTomorrowDate.dotFormat} at 7.00'
+- assertVisible: 'MY-100'
+- assertVisible: '${output.getTomorrowDate.dotFormat} at 06.00 - ${output.getTomorrowDate.dotFormat} at 07.00'
 - tapOn: 'Close'
+- runFlow: reset_state.yaml

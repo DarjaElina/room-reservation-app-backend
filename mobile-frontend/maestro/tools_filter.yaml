@@ -1,21 +1,23 @@
-appId: ${APP_ID}
+appId: com.daria111.mobilefrontend
 ---
-- runFlow: login.yaml
-- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
-- assertNotVisible: 'tane-131  Sergei Taneyev Building  Available'
-- tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
-- assertNotVisible: 'Timpani'
+- assertVisible: 'MY-100 Myaskovsky Building Available'
+- assertNotVisible: 'TA-100 Taneyev Building Available'
+- tapOn: 'MY-100 Myaskovsky Building Available'
+- assertNotVisible: 'Music stands'
 - tapOn: 'Back'
 - scrollUntilVisible:
-    element: 'tane-131  Sergei Taneyev Building  Available'
-- tapOn: 'tane-131  Sergei Taneyev Building  Available'
-- assertVisible: 'Timpani'
+    element: 'TA-100 Taneyev Building Available'
+- tapOn: 'TA-100 Taneyev Building Available'
+- assertVisible: 'Music stands'
 - tapOn: 'Back'
+- scrollUntilVisible:
+    element: 'MY-100 Myaskovsky Building Available'
+    direction: 'UP'
 - tapOn: ' Tools'
-- tapOn: 'Search'
-- inputText: 'timpani'
-- assertVisible: ' Timpani'
-- tapOn: ' Timpani'
+- assertVisible: ' Music stands'
+- tapOn: ' Music stands'
 - tapOn: 'Back'
-- assertNotVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
-- assertVisible: 'tane-131  Sergei Taneyev Building  Available'
+- assertNotVisible: 'MY-100 Myaskovsky Building Available'
+- assertVisible: 'TA-100 Taneyev Building Available'
+- clearState 
+

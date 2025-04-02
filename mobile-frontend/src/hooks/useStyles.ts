@@ -164,7 +164,7 @@ const useStyles = () => {
         paddingVertical: isLargeScreen ? vmin * 1 : vmin * 1.8,
         paddingHorizontal: isLargeScreen ? vmin * 2.5 : vmin * 3.5,
         borderRadius: theme.borderRadius.small,
-        ...shadows.light,
+        ...shadows.medium,
         margin: vmin * 1,
       },
       roomDescriptionContainer: {

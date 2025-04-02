@@ -1,9 +1,9 @@
-appId: ${APP_ID}
+appId: com.daria111.mobilefrontend
 ---
 - runFlow: login.yaml
-- assertVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertVisible: 'MY-100 Myaskovsky Building Available'
 - assertNotVisible: 'tane-131  Sergei Taneyev Building  Available'
-- tapOn: 'rach-100  Sergei Rachmaninoff Building  Available'
+- tapOn: 'MY-100 Myaskovsky Building Available'
 - assertVisible: 'Classroom'
 - tapOn: 'Back'
 - scrollUntilVisible:
@@ -18,5 +18,5 @@ appId: ${APP_ID}
 - assertVisible: ' Practice Room'
 - longPressOn: ' Practice Room'
 - tapOn: 'Back'
-- assertNotVisible: 'rach-100  Sergei Rachmaninoff Building  Available'
+- assertNotVisible: 'MY-100 Myaskovsky Building Available'
 - assertVisible: 'tane-131  Sergei Taneyev Building  Available'
