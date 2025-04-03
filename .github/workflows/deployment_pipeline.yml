@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  test_and_lint:
+  test_and_lint_backend:
     runs-on: ubuntu-20.04
 
     services:
@@ -21,19 +21,6 @@ jobs:
           POSTGRES_DB: postgres
         ports:
         - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      postgres-test:
-        image: postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: testdb
-        ports:
-        - 5433:5433
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -62,46 +49,66 @@ jobs:
         working-directory: ./backend
         run: npm test
         env:
-          TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5433/testdb
+          TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
-      - name: Install dependencies (frontend)
-        working-directory: ./mobile-frontend
-        run: npm ci
-
-      - name: Run ESLint (frontend)
-        working-directory: ./mobile-frontend
-        run: npm run lint
-
-      - name: Run Prettier (frontend)
-        working-directory: ./mobile-frontend
-        run: npm run format
       
-      - name: Run Jest tests (frontend)
-        working-directory: ./mobile-frontend
-        run: npm run test
 
-      - name: Build backend
-        working-directory: ./mobile-frontend
-        run: npm run build
+  test_and_lint_frontend:
+      needs: [test_and_lint]
+      runs-on: ubuntu-20.04
 
-      - name: Start backend
-        working-directory: ./backend
-        run: npm start
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      services:
+        postgres:
+          image: postgres
+          env:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: postgres
+          ports:
+          - 5432:5432
+          options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-node@v4
+          with:
+            node-version: '20'
+        
+        - name: Install dependencies (backend)
+          working-directory: ./backend
+          run: npm ci
+        
+        - name: Build backend
+          working-directory: ./backend
+          run: npm run build
 
-      - name: Setup EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
+        - name: Start backend
+          working-directory: ./backend
+          run: npm run dev
+          env:
+            DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+            JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        
+        - name: Install dependencies (frontend)
+          working-directory: ./mobile-frontend
+          run: npm ci
 
-      - name: Install dependencies (frontend)
-        working-directory: ./mobile-frontend
-        run: npm ci
+        - name: Run ESLint (frontend)
+          working-directory: ./mobile-frontend
+          run: npm run lint
 
-      - name: Send build request
-        run: eas build --platform all --non-interactive --no-wait --profile development-simulator
-        shell: bash
+        - name: Run Prettier (frontend)
+          working-directory: ./mobile-frontend
+          run: npm run format
+        
+        - name: Run Jest tests (frontend)
+          working-directory: ./mobile-frontend
+          run: npm run test
+
+        - name: 🚀 Send build request
+          run: eas build --platform all --non-interactive --no-wait --profile development-sim
+          shell: bash
