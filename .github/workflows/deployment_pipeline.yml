@@ -1,4 +1,4 @@
-name: Test & Lint pipeline
+name: Deployment pipeline
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  test_and_lint_pipeline:
+  test_and_lint:
     runs-on: ubuntu-20.04
 
     services:
@@ -67,3 +67,34 @@ jobs:
       - name: Run Jest tests (frontend)
         working-directory: ./mobile-frontend
         run: npm run test
+
+  maestro_and_build:
+      needs: [test_and_lint]
+      runs-on: ubuntu-20.04
+
+      services:
+        postgres:
+          image: postgres
+          env:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: postgres
+          ports:
+          - 5432:5432
+          options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-node@v4
+          with:
+            node-version: '20'
+
+        - name: Run backend in dev mode
+          working-directory: ./backend
+          run: npm run dev
+          env:
+            DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+            JWT_SECRET: ${{ secrets.JWT_SECRET }}

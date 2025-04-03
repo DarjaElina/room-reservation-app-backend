@@ -31,5 +31,4 @@ appId: com.daria111.mobilefrontend
 - assertVisible: 'MY-100'
 - assertVisible: '${output.getTomorrowDate.dotFormat} at 06.00 - ${output.getTomorrowDate.dotFormat} at 07.00'
 - tapOn: 'Close'
-- runFlow: reset_state.yaml
 - clearState
