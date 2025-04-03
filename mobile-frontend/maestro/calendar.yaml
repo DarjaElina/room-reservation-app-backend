@@ -19,4 +19,4 @@ appId: com.daria111.mobilefrontend
 - assertVisible: 'MY-100'
 - runScript: ../src/scripts/getTomorrowDate.js
 - assertVisible: '${output.getTomorrowDate.commaFormat} at 06.00 - ${output.getTomorrowDate.commaFormat} at 07.00'
-- runFlow: reset_state.yaml
+- clearState

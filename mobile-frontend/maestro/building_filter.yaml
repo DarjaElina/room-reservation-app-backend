@@ -9,3 +9,4 @@ appId: com.daria111.mobilefrontend
 - tapOn: 'Back'
 - assertVisible: 'TA-101 Taneyev Building Available'
 - assertNotVisible: 'MY-100 Myaskovsky Building Available'
+- clearState

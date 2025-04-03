@@ -1,6 +1,5 @@
 appId: com.daria111.mobilefrontend
 ---
-- runFlow: login.yaml
 - assertVisible: 'MY-100 Myaskovsky Building Available'
 - assertNotVisible: 'tane-131  Sergei Taneyev Building  Available'
 - tapOn: 'MY-100 Myaskovsky Building Available'
@@ -20,3 +19,4 @@ appId: com.daria111.mobilefrontend
 - tapOn: 'Back'
 - assertNotVisible: 'MY-100 Myaskovsky Building Available'
 - assertVisible: 'tane-131  Sergei Taneyev Building  Available'
+- clearState

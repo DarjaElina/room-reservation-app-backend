@@ -80,7 +80,7 @@ export const connectToDatabase = async () => {
   } catch (err) {
     console.log('Failed to connect to the database');
     console.error('ERROR IS', err);
-    // return process.exit(1);
+    return process.exit(1);
   }
 
   return null;

@@ -11,3 +11,4 @@ tags: ["login"]
     point: '50%,41%'
 - tapOn:
     point: '50%,70%'
+- clearState

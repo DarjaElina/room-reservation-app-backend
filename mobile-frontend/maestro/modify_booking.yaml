@@ -42,3 +42,4 @@ appId: com.daria111.mobilefrontend
 - tapOn: "My Calendar, tab, 2 of 3"
 - assertVisible: '${output.getTomorrowDate.dotFormat} at 09.00 - ${output.getTomorrowDate.dotFormat} at 10.00'
 - runFlow: reset_state.yaml
+- clearState

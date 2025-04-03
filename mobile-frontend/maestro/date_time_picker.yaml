@@ -31,4 +31,4 @@ appId: com.daria111.mobilefrontend
 - scrollUntilVisible:
     element: '21:00:00 Reservation from Booking App'
 - assertVisible: 'Jane Doe'
-- runFlow: reset_state.yaml
+- clearState
