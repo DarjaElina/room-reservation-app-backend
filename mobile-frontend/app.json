@@ -51,6 +51,7 @@
     "experiments": {
       "typedRoutes": true
     },
+    "owner": "daria111",
     "extra": {
       "router": {
         "origin": false
