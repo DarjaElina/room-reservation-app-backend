@@ -1,7 +1,0 @@
-# .easignore
-backend/pgdata
-backend/node_modules
-**/.git
-**/node_modules
-**/build
-**/dist
