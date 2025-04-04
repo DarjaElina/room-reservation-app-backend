@@ -45,7 +45,7 @@ jobs:
         working-directory: ./backend
         run: npm run format
 
-      - name: Run Jest tests
+      - name: Run Jest tests (backend)
         working-directory: ./backend
         run: npm test
         env:
@@ -88,7 +88,7 @@ jobs:
 
         - name: Start backend
           working-directory: ./backend
-          run: npm run dev
+          run: npm start
           env:
             DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
             JWT_SECRET: ${{ secrets.JWT_SECRET }}
@@ -109,6 +109,6 @@ jobs:
           working-directory: ./mobile-frontend
           run: npm run test
 
-        - name: 🚀 Send build request
-          run: eas build --platform all --non-interactive --no-wait --profile development-sim
-          shell: bash
+        # - name: 🚀 Send build request
+        #   run: eas build --platform all --non-interactive --no-wait --profile development-simulator
+        #   shell: bash
