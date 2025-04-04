@@ -9,8 +9,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-pgdata
-data
+./backend/pgdata
+./backend/data
 
 # macOS
 .DS_Store
