@@ -96,6 +96,14 @@ jobs:
           working-directory: ./backend
           run: docker compose -f docker-compose.dev.yml up -d
 
-        # - name: 🚀 Send build request
-        #   run: eas build --platform all --non-interactive --no-wait --profile development-simulator
-        #   shell: bash
+        - name: 🏗 Setup EAS
+          uses: expo/expo-github-action@v8
+          with:
+            eas-version: latest
+            token: ${{ secrets.EXPO_TOKEN }}
+
+        - name: Send EAS build request
+          run: eas build --platform ios --non-interactive --no-wait --profile development-simulator
+          shell: bash
+
+        
