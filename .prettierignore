@@ -1,0 +1,16 @@
+# Ignore artifacts
+build
+dist
+
+# Ignore generated files
+codegen.ts
+
+# TypeScript declaration files
+*.d.ts
+
+# Ignore lock and configuration files
+package-lock.json
+tsconfig.json
+eslint.config.mjs
+
+/data

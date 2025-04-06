@@ -1,5 +1,8 @@
 name: Deployment pipeline
 
+env:
+  DEPLOY: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
+
 on:
   push:
     branches:
@@ -9,7 +12,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  test_and_lint:
+ deployment_pipeline:
     runs-on: ubuntu-20.04
 
     services:
@@ -47,5 +50,14 @@ jobs:
         env:
           TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+      - name: Set up Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+  
+      - name: Deploy app
+        if: ${{ env.DEPLOY == 'true' }}
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
         

@@ -35,7 +35,9 @@ const isProd = process.env.NODE_ENV === 'production';
 const migrationPath = isProd
   ? './dist/migrations/*.js'
   : './src/migrations/*.ts';
-
+const seedersPath = isProd
+  ? './dist/seeders/*.js'
+  : './src/seeders/*.ts';
 const migrationConf = {
   migrations: {
     glob: migrationPath,
@@ -48,7 +50,7 @@ const migrationConf = {
 
 const seedConf = {
   migrations: {
-    glob: "./src/seeders/*.ts",
+    glob: seedersPath,
   },
   storage: new SequelizeStorage({ sequelize, tableName: "seeders" }),
   context: sequelize.getQueryInterface(),
@@ -67,12 +69,12 @@ export const connectToDatabase = async () => {
     console.log('Connected to the database');
 
     const migrations = await umzug.up();
-    if (process.env.NODE_ENV === 'development') {
+    // if (process.env.NODE_ENV === 'development') {
       const seeds = await seedUmzug.up();
       console.log('Seeders up to date', {
         files: seeds.map((seed) => seed.name),
       });
-    }
+    // }
     console.log('Migrations up to date', {
       files: migrations.map((mig) => mig.name),
     });
