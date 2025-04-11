@@ -44,7 +44,7 @@ const migrationConf = {
   },
   storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
   context: sequelize.getQueryInterface(),
-  logger: undefined
+  logger: console
 };
 
 const seedConf = {
@@ -53,7 +53,7 @@ const seedConf = {
   },
   storage: new SequelizeStorage({ sequelize, tableName: "seeders" }),
   context: sequelize.getQueryInterface(),
-  logger: undefined,
+  logger: console,
 };
 
 const umzug = new Umzug(migrationConf);
@@ -67,7 +67,9 @@ export const connectToDatabase = async () => {
     await sequelize.authenticate();
 
     await umzug.up();
-    await seedUmzug.up();
+    if (process.env.NODE_ENV !== 'test') {
+      await seedUmzug.up();
+    }
   } catch (err) {
     console.error('ERROR IS', err);
     return process.exit(1);

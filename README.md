@@ -13,8 +13,9 @@ JWT authentication
 Zod for validation
 Dockerized development environment
 Sequelize-typescript for managing Postgres stuff
-GitHub actions for CI/CD
 NodeMailer for sending acount activation emails
+Testing with Jest
+GitHub actions for CI/CD
 - Deployment to prod
 - Deployment to staging
 
