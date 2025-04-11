@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { RoomType } from '../../types/room/room.enums';
 import { makePaginate } from 'sequelize-cursor-pagination';
 import { BookingAttributes } from '../../models/booking';
+import { BookingStatus } from '../../types/booking/booking.enums';
 
 type RoomWithIsFree = Room & { isFree?: boolean };
 
@@ -98,6 +99,7 @@ const roomResolvers: Resolvers = {
             bookingTime: {
               [Op.contains]: new Date(),
             },
+            status: BookingStatus.Active
           } as WhereOptions<BookingAttributes> | undefined,
         });
         const currentRoomIds = currentBookings.map((b) => b.roomId);

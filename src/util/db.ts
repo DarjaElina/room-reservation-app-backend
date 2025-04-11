@@ -44,7 +44,6 @@ const migrationConf = {
   },
   storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
   context: sequelize.getQueryInterface(),
-  // logger: console,
   logger: undefined
 };
 
@@ -66,21 +65,10 @@ export type Migration = typeof umzug._types.migration;
 export const connectToDatabase = async () => {
   try {
     await sequelize.authenticate();
-    console.log('Connected to the database');
 
-    const migrations = await umzug.up();
-    // if (process.env.NODE_ENV === 'development') {
-      const seeds = await seedUmzug.up();
-      console.log('Seeders up to date', {
-        files: seeds.map((seed) => seed.name),
-      });
-    // }
-    console.log('Migrations up to date', {
-      files: migrations.map((mig) => mig.name),
-    });
-    console.log('CONNECT TO DB FINISHED EXECUTING');
+    await umzug.up();
+    await seedUmzug.up();
   } catch (err) {
-    console.log('Failed to connect to the database');
     console.error('ERROR IS', err);
     return process.exit(1);
   }
@@ -91,11 +79,8 @@ export const connectToDatabase = async () => {
 export const rollbackMigration = async () => {
   try {
     await sequelize.authenticate();
-    const migrations = await umzug.down({ to: 0 });
+    await umzug.down({ to: 0 });
     await seedUmzug.down();
-    console.log('Rolled back migrations', {
-      files: migrations.map((mig) => mig.name),
-    });
   } catch (err) {
     console.error('Failed to rollback migration', err);
   }

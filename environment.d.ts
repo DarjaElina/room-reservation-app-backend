@@ -1,4 +1,4 @@
-import { Secret } from 'jwt-promisify';
+import { Secret } from 'jsonwebtoken';
 
 declare namespace NodeJS {
   interface ProcessEnv {

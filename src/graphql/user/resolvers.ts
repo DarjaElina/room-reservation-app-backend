@@ -105,7 +105,6 @@ const userResolvers: Resolvers = {
           });
         }
       } catch (error) {
-        console.log(error);
         return handleResolverErrors(error);
       }
     },

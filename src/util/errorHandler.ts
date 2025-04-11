@@ -8,7 +8,6 @@ import {
 } from 'sequelize';
 
 export const handleResolverErrors = (error: unknown) => {
-  console.log(error);
   if (error instanceof UniqueConstraintError) {
     const violatedFields = error.errors.map((e) => e.path);
     throw new GraphQLError(

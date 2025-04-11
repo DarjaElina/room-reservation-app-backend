@@ -15,16 +15,14 @@ export const sendMail = async (
   text: string
 ) => {
   try {
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
       from: MAIL_USERNAME,
       to,
       subject,
       text,
     });
 
-    console.log('Message sent: %s', info.messageId);
-  } catch (error) {
-    console.error('Error sending email:', error);
-    throw new Error('Could not send email');
+  } catch (error: unknown) {
+    throw new Error(`Could not send email, error: ${error}`);
   }
 };

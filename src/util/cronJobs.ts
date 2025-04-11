@@ -6,7 +6,7 @@ import { BookingStatus, BookingTimeItem } from '../graphql/generated-types';
 const updateBookingStatuses = async () => {
   try {
     const now = new Date();
-    const [updatedCount] = await Booking.update(
+    await Booking.update(
       { status: BookingStatus.Past },
       {
         where: {
@@ -17,7 +17,6 @@ const updateBookingStatuses = async () => {
         },
       }
     );
-    console.log(`${updatedCount} bookings updated to 'Past' status`);
   } catch (error) {
     console.error('Error updating bookings:', error);
   }
@@ -28,7 +27,7 @@ const deleteOldBookings = async () => {
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-    const deletedCount = await Booking.destroy({
+    await Booking.destroy({
       where: {
         status: BookingStatus.Past,
         bookingTime: {
@@ -36,8 +35,6 @@ const deleteOldBookings = async () => {
         } as WhereAttributeHashValue<BookingTimeItem[]>,
       },
     });
-
-    console.log(`${deletedCount} old bookings deleted`);
   } catch (error) {
     console.error('Error deleting old bookings:', error);
   }
