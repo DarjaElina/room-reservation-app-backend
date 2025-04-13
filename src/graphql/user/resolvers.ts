@@ -57,7 +57,7 @@ const userResolvers: Resolvers = {
 
         return {
           success: true,
-          message: `Account successfully activated, you can now log in. Your username is ${user.username}`,
+          message: `🎉 Account successfully activated! Your username is ${user.username}`,
         };
       } catch (error) {
         return handleResolverErrors(error);
@@ -111,6 +111,25 @@ const userResolvers: Resolvers = {
 
     signupRequest: async (_, { userInput }: { userInput: UserInput }) => {
       try {
+        const activationLinkBase = `https://account-activation-page.vercel.app/activate/`;
+
+        const existingUser = await User.findOne({ where: { email: userInput.email }});
+
+        if (existingUser && existingUser.status === UserStatus.Pending) {
+          const newToken = await createToken(
+            existingUser.id,
+            TokenType.Activation,
+            new Date(Date.now() + 24 * 60 * 60 * 1000)
+          );
+
+          await sendMail(
+            existingUser.email,
+            'Activate Your Account',
+            `Please click this link to activate your account: ${activationLinkBase}/${newToken}`
+          );
+  
+          return { success: true, message: 'Signup link sent!' };
+        }
         const newUser: UserInput = {
           givenName: userInput.givenName,
           middleName: userInput.middleName,
@@ -129,12 +148,10 @@ const userResolvers: Resolvers = {
           new Date(Date.now() + 24 * 60 * 60 * 1000)
         );
 
-        const activationLink = `http://localhost:5173/activate/${token}`;
-
         await sendMail(
           createdUser.email,
           'Activate Your Account',
-          `Please click this link to activate your account: ${activationLink}`
+          `Please click this link to activate your account: ${activationLinkBase}/${token}`
         );
 
         return { success: true, message: 'Signup link sent!' };
