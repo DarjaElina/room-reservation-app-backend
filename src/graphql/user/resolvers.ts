@@ -112,24 +112,33 @@ const userResolvers: Resolvers = {
     signupRequest: async (_, { userInput }: { userInput: UserInput }) => {
       try {
         const activationLinkBase = `https://account-activation-page.vercel.app/activate/`;
+        let token;
 
         const existingUser = await User.findOne({ where: { email: userInput.email }});
+        
 
         if (existingUser && existingUser.status === UserStatus.Pending) {
-          const newToken = await createToken(
-            existingUser.id,
-            TokenType.Activation,
-            new Date(Date.now() + 24 * 60 * 60 * 1000)
-          );
-
+          const existingToken = await UserToken.findOne({where: {userId: existingUser.id}});
+          if (existingToken && new Date() < existingToken.expiresAt) {
+            token = existingToken.token;
+          } else {
+            await existingToken?.destroy();
+            token = await createToken(
+              existingUser.id,
+              TokenType.Activation,
+              new Date(Date.now() + 24 * 60 * 60 * 1000)
+            );
+          }
+          
           await sendMail(
             existingUser.email,
             'Activate Your Account',
-            `Please click this link to activate your account: ${activationLinkBase}/${newToken}`
+            `Please click this link to activate your account: ${activationLinkBase}/${token}`
           );
   
           return { success: true, message: 'Signup link sent!' };
         }
+        
         const newUser: UserInput = {
           givenName: userInput.givenName,
           middleName: userInput.middleName,
@@ -142,7 +151,7 @@ const userResolvers: Resolvers = {
 
         const createdUser = await User.create(newUser);
 
-        const token = await createToken(
+        token = await createToken(
           createdUser.id,
           TokenType.Activation,
           new Date(Date.now() + 24 * 60 * 60 * 1000)
