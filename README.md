@@ -31,4 +31,5 @@ Steps to open the project:
 1) Clone the repo
 2) Navigate to project dir
 3) npm install
-4) open the localhost:4000
+4) npm run dev
+5) open the localhost:4000
