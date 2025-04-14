@@ -26,7 +26,8 @@ export const handleResolverErrors = (error: unknown) => {
   }
 
   if (error instanceof ValidationError) {
-    throw new GraphQLError('Validation error', {
+    const violatedFields = error.errors.map((e) => e.path);
+    throw new GraphQLError(`Validation error: ${violatedFields.join(', ')}`, {
       extensions: {
         code: 'BAD_USER_INPUT',
         details: error.errors.map((e) => ({
