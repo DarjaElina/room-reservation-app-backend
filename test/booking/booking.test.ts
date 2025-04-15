@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import request from 'supertest';
 import { createApp } from '../../src/app';
 import { connectTestDB, closeTestDB, clearTestDB } from '../setup';
