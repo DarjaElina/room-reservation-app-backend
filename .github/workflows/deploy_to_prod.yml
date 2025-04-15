@@ -56,30 +56,32 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Set up Flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@master
+    - uses: actions/checkout@v4
 
-      - name: Deploy app
-        if: ${{ env.DEPLOY == 'true' }}
-        run: flyctl deploy -a winter-water-9193 --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    - name: Set up Flyctl
+      uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: Build Success
-        if: ${{ success() && env.DEPLOY == 'true' }}
-        run: |
-          curl -H "Content-Type: application/json" \
-                -X POST \
-                -d '{"content": "A new version of Booking app backend deployed to production"}' \
-                ${{ secrets.DISCORD_WEBHOOK }}
+    - name: Deploy app
+      if: ${{ env.DEPLOY == 'true' }}
+      run: flyctl deploy --remote-only
+      env:
+        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
-      - name: Build Fail
-        if: ${{ failure() }}
-        run: |
-          curl -H "Content-Type: application/json" \
-                -X POST \
-                -d '{"content": "commit https://github.com/${{ github.repository }}/commit/${{ github.sha }} by ${{ github.actor }} broke the build"}' \
+    - name: Build Success
+      if: ${{ success() && env.DEPLOY == 'true' }}
+      run: |
+        curl -H "Content-Type: application/json" \
+              -X POST \
+              -d '{"content": "A new version of Booking app backend deployed to production"}' \
               ${{ secrets.DISCORD_WEBHOOK }}
+
+    - name: Build Fail
+      if: ${{ failure() }}
+      run: |
+        curl -H "Content-Type: application/json" \
+              -X POST \
+              -d '{"content": "commit https://github.com/${{ github.repository }}/commit/${{ github.sha }} by ${{ github.actor }} broke the build"}' \
+            ${{ secrets.DISCORD_WEBHOOK }}
   
   tags_release:
     needs: [deploy_to_prod]
