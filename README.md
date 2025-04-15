@@ -16,8 +16,6 @@ Sequelize-typescript for managing Postgres stuff
 NodeMailer for sending acount activation emails
 Testing with Jest
 GitHub actions for CI/CD
-- Deployment to prod
-- Deployment to staging
 
 Steps to open the project:
 ### Using Docker
