@@ -82,4 +82,16 @@ jobs:
               -X POST \
               -d '{"content": "commit https://github.com/${{ github.repository }}/commit/${{ github.sha }} by ${{ github.actor }} broke the build"}' \
             ${{ secrets.DISCORD_WEBHOOK }}
+          
+  tags_release:
+    needs: [deploy_to_prod]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        if: ${{ env.DEPLOY == 'true' }}
+        uses: anothrNick/github-tag-action@777684df761b882a3f4f70db16ac70d8cc78d0ea
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
         
