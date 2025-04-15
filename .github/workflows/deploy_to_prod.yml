@@ -58,6 +58,9 @@ jobs:
     steps:
       - name: Set up Flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
+      
+      - name: Print folder content
+        run: ls -la
 
       - name: Deploy app
         if: ${{ env.DEPLOY == 'true' }}
