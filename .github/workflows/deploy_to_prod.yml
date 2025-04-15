@@ -61,7 +61,7 @@ jobs:
 
       - name: Deploy app
         if: ${{ env.DEPLOY == 'true' }}
-        run: flyctl deploy  --dockerfile ./Dockerfile --config ./fly.toml -a winter-water-919 --remote-only
+        run: flyctl deploy  --dockerfile ./Dockerfile --config ./fly.toml -a winter-water-9193 --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
