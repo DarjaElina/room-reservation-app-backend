@@ -1,4 +1,4 @@
-name: Deploy to prod
+name: Deploy to staging
 
 env:
   DEPLOY: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
@@ -6,7 +6,7 @@ env:
 on:
   push:
     branches:
-      - main
+      - dev
   pull_request:
     branches: [main]
     types: [opened, synchronize]
@@ -63,9 +63,9 @@ jobs:
 
     - name: Deploy app
       if: ${{ env.DEPLOY == 'true' }}
-      run: flyctl deploy --remote-only
+      run: flyctl deploy  --dockerfile ./Dockerfile --config ./fly.staging.toml --remote-only
       env:
-        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_STAGING }}
 
     - name: Build Success
       if: ${{ success() && env.DEPLOY == 'true' }}
@@ -82,4 +82,15 @@ jobs:
               -X POST \
               -d '{"content": "commit https://github.com/${{ github.repository }}/commit/${{ github.sha }} by ${{ github.actor }} broke the build"}' \
             ${{ secrets.DISCORD_WEBHOOK }}
-        
+
+  tags_release:
+    needs: [deploy_to_prod]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        if: ${{ env.DEPLOY == 'true' }}
+        uses: anothrNick/github-tag-action@777684df761b882a3f4f70db16ac70d8cc78d0ea
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
