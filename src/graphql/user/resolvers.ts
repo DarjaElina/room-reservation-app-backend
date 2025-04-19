@@ -2,29 +2,16 @@ import User from '../../models/user';
 import { Resolvers, UserInput } from '../generated-types';
 import { handleResolverErrors } from '../../util/errorHandler';
 import { sendMail } from '../../util/mailService';
-import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '../../util/config';
-import { UserRole, UserStatus } from '../../types/user/user.enums';
+import { UserStatus } from '../../types/user/user.enums';
 import { GraphQLError } from 'graphql';
 import UserToken from '../../models/user_token';
 import { TokenType } from '../../types/token/token.enums';
-import { compareSync } from 'bcryptjs';
 import { createToken, createPasswordHash } from '../../helpers/helpers';
 
 const userResolvers: Resolvers = {
   Query: {
     currentUser: (_, __, { user }: { user: User }) => {
       return user;
-    },
-    checkActivationToken: async (_, { activationToken }) => {
-      let isTokenActive = true;
-      const storedToken = await UserToken.findOne({
-        where: { token: activationToken, type: TokenType.Activation },
-      });
-
-      if (!storedToken || new Date() > storedToken.expiresAt)
-        isTokenActive = false;
-      return isTokenActive;
     },
   },
 
@@ -59,51 +46,6 @@ const userResolvers: Resolvers = {
           success: true,
           message: `🎉 Account successfully activated! Your username is ${user.username}`,
         };
-      } catch (error) {
-        return handleResolverErrors(error);
-      }
-    },
-
-    authenticate: async (_, { username, password }) => {
-      try {
-        const user = await User.findOne({ where: { username } });
-        if (!user) {
-          throw new GraphQLError('Invalid username or password.', {
-            extensions: {
-              code: 'BAD_USER_INPUT',
-              details: 'The provided credentials are incorrect.',
-            },
-          });
-        }
-        if (user.status !== UserStatus.Active) {
-          throw new GraphQLError('You need to activate your account first.');
-        }
-        if (!user.passwordHash) {
-          throw new GraphQLError(
-            'Password not set. Please reset your password.'
-          );
-        }
-        if (!JWT_SECRET) {
-          throw new Error('JWT_SECRET is not defined.');
-        }
-        const passwordCorrect = compareSync(password, user.passwordHash);
-
-        const isAdmin = user.role === UserRole.Admin;
-
-        if (passwordCorrect) {
-          const token = jwt.sign({ userId: user.id, isAdmin }, JWT_SECRET, {
-            expiresIn: '1h',
-          });
-
-          return { value: token };
-        } else {
-          throw new GraphQLError('Invalid username or password.', {
-            extensions: {
-              code: 'BAD_USER_INPUT',
-              details: 'The provided credentials are incorrect.',
-            },
-          });
-        }
       } catch (error) {
         return handleResolverErrors(error);
       }

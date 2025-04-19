@@ -32,8 +32,8 @@ export const createApp = async () => {
     express.json(),
     expressMiddleware(server, {
       context: async ({ req }) => {
-        const { user, isAdmin } = await getUserFromReq(req);
-        return { user, isAdmin };
+        const { user } = await getUserFromReq(req);
+        return { user };
       },
     })
   );

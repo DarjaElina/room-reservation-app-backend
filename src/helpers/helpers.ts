@@ -81,9 +81,9 @@ export const validateSingleBooking = (
   }
 };
 
-interface IJwtPayload extends JwtPayload {
+export interface IJwtPayload extends JwtPayload {
   userId: string;
-  isAdmin: boolean;
+  isAdmin?: boolean;
 }
 
 export const getUserFromReq = async (
