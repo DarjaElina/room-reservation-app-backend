@@ -219,12 +219,6 @@ export enum RoomType {
   Theater = 'THEATER'
 }
 
-export enum TokenType {
-  Activation = 'ACTIVATION',
-  PasswordReset = 'PASSWORD_RESET',
-  Refresh = 'REFRESH'
-}
-
 export type User = {
   __typename?: 'User';
   department: Department;
@@ -366,7 +360,6 @@ export type ResolversTypes = {
   RoomEdge: ResolverTypeWrapper<RoomEdge>;
   RoomType: RoomType;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  TokenType: TokenType;
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
   UserResponse: ResolverTypeWrapper<UserResponse>;

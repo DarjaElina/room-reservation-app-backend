@@ -11,6 +11,14 @@ import { createToken, createPasswordHash } from '../../helpers/helpers';
 const userResolvers: Resolvers = {
   Query: {
     currentUser: (_, __, { user }: { user: User }) => {
+      if (!user)
+        throw new GraphQLError('User is not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+            http: { status: 401 },
+          }
+      });
+
       return user;
     },
   },

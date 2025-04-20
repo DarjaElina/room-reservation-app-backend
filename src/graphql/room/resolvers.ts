@@ -42,9 +42,13 @@ Room.paginate = makePaginate(Room);
 const roomResolvers: Resolvers = {
   Query: {
     rooms: async (_, args, { user }: { user: User }) => {
-      if (!user) {
-        throw new GraphQLError('Unauthenticated');
-      }
+      if (!user)
+        throw new GraphQLError('User is not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+            http: { status: 401 },
+          }
+      });
 
       try {
         const normalizedArgs = argsSchema.parse(args);
@@ -137,10 +141,14 @@ const roomResolvers: Resolvers = {
     },
 
     findRoom: async (_, { roomId }, { user }) => {
-      try {
-        if (!user) {
-          throw new GraphQLError('Unauthenticated');
-        }
+        if (!user)
+          throw new GraphQLError('User is not authenticated', {
+            extensions: {
+              code: 'UNAUTHENTICATED',
+              http: { status: 401 },
+            }
+        });
+        try {
         const room = await Room.findByPk(roomId, {
           include: [
             {

@@ -37,9 +37,13 @@ const argsModificationSchema = z.object({
 const bookingResolvers: Resolvers = {
   Query: {
     bookings: async (_, args, { user }: { user: User }) => {
-      if (!user) {
-        throw new GraphQLError('Unauthenticated');
-      }
+      if (!user)
+        throw new GraphQLError('User is not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+            http: { status: 401 },
+          }
+      });
 
       try {
         const normalizedArgs = argsSchema.parse(args);
@@ -96,9 +100,13 @@ const bookingResolvers: Resolvers = {
 
   Mutation: {
     createBooking: async (_, args, { user }: { user: User }) => {
-      if (!user) {
-        throw new GraphQLError('Not authenticated');
-      }
+      if (!user)
+        throw new GraphQLError('User is not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+            http: { status: 401 },
+          }
+      });
 
       const normalizedArgs = argsCreationSchema.parse(args);
       const { roomId, bookingTime, title } = normalizedArgs;
@@ -148,9 +156,13 @@ const bookingResolvers: Resolvers = {
     },
 
     updateBooking: async (_, args, { user }: { user: User }) => {
-      if (!user) {
-        throw new GraphQLError('Not authenticated');
-      }
+      if (!user)
+        throw new GraphQLError('User is not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+            http: { status: 401 },
+          }
+      });
 
       const normalizedArgs = argsModificationSchema.parse(args);
       const { bookingTime, title, bookingId } = normalizedArgs;
@@ -198,9 +210,13 @@ const bookingResolvers: Resolvers = {
     },
 
     cancelBooking: async (_, { bookingId }, { user }: { user: User }) => {
-      if (!user) {
-        throw new GraphQLError('Not authenticated');
-      }
+      if (!user)
+        throw new GraphQLError('User is not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+            http: { status: 401 },
+          }
+      });
 
       try {
         const booking = await Booking.findByPk(bookingId);

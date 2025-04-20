@@ -51,7 +51,7 @@ const tokenResolvers: Resolvers = {
 
         if (passwordCorrect) {
           const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
-            expiresIn: '1h',
+            expiresIn: '15m',
           });
 
           const refreshToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
@@ -86,13 +86,16 @@ const tokenResolvers: Resolvers = {
         }
     
         const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
-          expiresIn: '1h',
+          expiresIn: '15m',
         });
-    
         return { accessToken };
-      } catch (error) {
-        console.log('Refresh token error:', error);
-        throw new GraphQLError('Invalid or expired refresh token.');
+      } catch {
+        throw new GraphQLError('User is not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+            http: { status: 401 },
+          },
+        });
       }
     }
   },

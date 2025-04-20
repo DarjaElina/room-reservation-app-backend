@@ -8,7 +8,6 @@ import cors from 'cors';
 import { typeDefs, resolvers } from './graphql/schema';
 import { getUserFromReq } from './helpers/helpers';
 import User from './models/user';
-
 interface UserContext {
   user: User | null;
 }
