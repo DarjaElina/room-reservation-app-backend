@@ -1,0 +1,17 @@
+type AuthResponse {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type RefreshTokenResponse {
+  accessToken: String!
+}
+
+type Query {
+  checkActivationToken(activationToken: String!): Boolean!
+}
+
+type Mutation {
+  authenticate(username: String!, password: String!): AuthResponse!
+  refreshToken(token: String!): RefreshTokenResponse!
+}

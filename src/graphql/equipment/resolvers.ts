@@ -13,9 +13,13 @@ const argsSchema = z.object({
 const equipmentResolvers: Resolvers = {
   Query: {
     allEquipment: async (_, args, { user }: { user: User }) => {
-      if (!user) {
-        throw new GraphQLError('Unauthenticated');
-      }
+      if (!user)
+        throw new GraphQLError('User is not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+            http: { status: 401 },
+          }
+      });
       const normalizedArgs = argsSchema.parse(args);
       const { searchKeyword } = normalizedArgs;
       const where: WhereOptions = {};

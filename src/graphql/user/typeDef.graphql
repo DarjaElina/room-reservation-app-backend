@@ -34,24 +34,8 @@ input UserInput {
   departmentId: ID!
 }
 
-enum TokenType {
-  ACTIVATION
-  PASSWORD_RESET
-}
-
-type AccessToken {
-  value: String!
-}
-
-type ActivationToken {
-  token: String!
-  expires_at: Date!
-  used: Boolean!
-}
-
 type Query {
   currentUser: User
-  checkActivationToken(activationToken: String!): Boolean!
 }
 
 type UserResponse {
@@ -61,7 +45,6 @@ type UserResponse {
 }
 
 type Mutation {
-  authenticate(username: String!, password: String!): AccessToken
   activateUser(activationToken: String!, newPassword: String!): UserResponse!
   signupRequest(userInput: UserInput!): UserResponse!
 }
