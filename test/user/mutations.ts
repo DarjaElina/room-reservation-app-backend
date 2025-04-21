@@ -1,7 +1,8 @@
 export const AUTHENTICATE = `
   mutation Authenticate($username: String!, $password: String!) {
     authenticate(username: $username, password: $password) {
-      value
+      accessToken
+      refreshToken
     }
   }
 `;

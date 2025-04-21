@@ -26,7 +26,8 @@ let room: Room;
 interface AuthResponse {
   data?: {
     authenticate?: {
-      value: string;
+      accessToken: string;
+      refreshToken: string;
     };
   };
   errors?: { message: string }[];
@@ -65,7 +66,7 @@ beforeEach(async () => {
     .send({ query: AUTHENTICATE, variables: authVariables });
 
   const body = authResponse.body as AuthResponse;
-  token = body?.data?.authenticate?.value;
+  token = body?.data?.authenticate?.accessToken;
 });
 
 afterAll(async () => {
@@ -116,7 +117,7 @@ describe('Booking API', () => {
     const body = bookingResponse.body as BookingResponse;
 
     expect(body.errors).toHaveLength(1);
-    expect(body.errors?.[0].message).toBe('Not authenticated');
+    expect(body.errors?.[0].message).toBe('User is not authenticated');
   });
 
   it('should return an error if the token is invalid', async () => {
@@ -136,7 +137,7 @@ describe('Booking API', () => {
     const body = bookingResponse.body as BookingResponse;
 
     expect(body.errors).toHaveLength(1);
-    expect(body.errors?.[0].message).toBe('Not authenticated');
+    expect(body.errors?.[0].message).toBe('User is not authenticated');
   });
 
   it('should return an error if the room ID is invalid', async () => {

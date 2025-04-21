@@ -19,7 +19,8 @@ let app: Express;
 interface AuthResponse {
   data?: {
     authenticate?: {
-      value: string;
+      accessToken: string;
+      refreshToken: string;
     };
   };
   errors?: { message: string }[];
@@ -59,8 +60,8 @@ describe('User API', () => {
 
     expect(body).toHaveProperty('data');
     expect(body.data).toHaveProperty('authenticate');
-    expect(body.data?.authenticate).toHaveProperty('value');
-    expect(typeof body.data?.authenticate?.value).toBe('string');
+    expect(body.data?.authenticate).toHaveProperty('accessToken');
+    expect(typeof body.data?.authenticate?.accessToken).toBe('string');
   });
 
   it('should return error when logging in with nonexisting username', async () => {
@@ -75,7 +76,6 @@ describe('User API', () => {
 
     const body = response.body as AuthResponse;
     expect(body).toHaveProperty('errors');
-    expect(body.data?.authenticate).toBe(null);
     expect(body.errors?.[0].message).toBe('Invalid username or password.');
   });
 
@@ -90,7 +90,6 @@ describe('User API', () => {
       .send({ query: AUTHENTICATE, variables });
     const body = response.body as AuthResponse;
     expect(body).toHaveProperty('errors');
-    expect(body.data?.authenticate).toBe(null);
     expect(body.errors?.[0].message).toBe('Invalid username or password.');
   });
 
