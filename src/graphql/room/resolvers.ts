@@ -5,6 +5,7 @@ import { GraphQLError } from 'graphql';
 import User from '../../models/user';
 import Venue from '../../models/venue';
 import Booking from '../../models/booking';
+import FavoriteRoom from '../../models/favorite_rooms';
 import { Op, WhereOptions } from 'sequelize';
 import Equipment from '../../models/equipment';
 import { z } from 'zod';
@@ -35,6 +36,7 @@ const argsSchema = z.object({
   searchKeyword: z.string().optional(),
   after: z.string().optional(),
   first: z.number().min(1).max(30).default(30).optional(),
+  showFavorites: z.boolean().optional(),
 });
 
 Room.paginate = makePaginate(Room);
@@ -62,6 +64,7 @@ const roomResolvers: Resolvers = {
           searchKeyword,
           after,
           first,
+          showFavorites
         } = normalizedArgs;
 
         const where: WhereOptions = {};
@@ -82,6 +85,16 @@ const roomResolvers: Resolvers = {
           where.code = { [Op.iLike]: `%${searchKeyword}%` };
         }
 
+        const favoriteRooms = await FavoriteRoom.findAll({
+          where: {
+            userId: user.id
+          }
+        });
+
+        if (showFavorites) {
+          where.id = { [Op.in]: favoriteRooms.map(r => r.dataValues.roomId) };
+        }
+
         let conflictingRoomIds: string[] = [];
         if (startsAt && endsAt) {
           const conflictingBookings = await Booking.findAll({
@@ -94,9 +107,10 @@ const roomResolvers: Resolvers = {
           });
 
           conflictingRoomIds = conflictingBookings.map((b) => b.roomId);
-          where.id = { [Op.notIn]: conflictingRoomIds };
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          where.id = where.id ? { ...where.id, [Op.notIn]: conflictingRoomIds } : { [Op.notIn]: conflictingRoomIds };
         }
-
+        
         const currentBookings = await Booking.findAll({
           attributes: ['roomId'],
           where: {
@@ -136,11 +150,12 @@ const roomResolvers: Resolvers = {
 
         return rooms;
       } catch (error) {
+        console.log(error);
         return handleResolverErrors(error);
       }
     },
 
-    findRoom: async (_, { roomId }, { user }) => {
+    findRoom: async (_, { roomId }, { user }: {user: User}) => {
         if (!user)
           throw new GraphQLError('User is not authenticated', {
             extensions: {
@@ -167,6 +182,12 @@ const roomResolvers: Resolvers = {
         if (!room) {
           throw new GraphQLError('Not found!');
         }
+        const favoriteRoom = await FavoriteRoom.findOne({
+          where: {
+            roomId: room.id,
+            userId: user.id
+          }
+        });
         const currentBooking = await Booking.findOne({
           where: {
             roomId: room.id,
@@ -178,6 +199,7 @@ const roomResolvers: Resolvers = {
         return {
           ...room.dataValues,
           isFree: !currentBooking,
+          isFavorite: !!favoriteRoom,
           venue: room.venue,
           equipment: room.equipment,
         };
@@ -195,6 +217,50 @@ const roomResolvers: Resolvers = {
       return room.equipment || [];
     },
   },
+
+  Mutation: {
+    toggleFavorite: async (_, { roomId }: { roomId: string }, { user }: { user: User}) => {
+      if (!user)
+        throw new GraphQLError('User is not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+            http: { status: 401 },
+          }
+      });
+      try {
+        const room = await Room.findByPk(roomId);
+        if (!room) {
+          throw new GraphQLError('Room not found');
+        }
+        
+        const favoriteRoom = await FavoriteRoom.findOne({where: {roomId, userId: user.id}});
+
+        if (!favoriteRoom) {
+          await FavoriteRoom.create({userId: user.id, roomId});
+          return {
+            success: true,
+            message: `Room ${room.code} successfully added to favorite 🧡`,
+            isFavoriteNow: true,
+            id: room.id
+          };
+        }
+
+        else {
+          await favoriteRoom.destroy();
+          return {
+            success: true,
+            isFavoriteNow: false,
+            message: `Room ${room.code} successfully deleted from favorite.`,
+            id: room.id,
+          };
+        }
+        
+      } catch (error) {
+        console.log(error);
+        return handleResolverErrors(error);
+      }
+    },
+  }
 };
 
 export default roomResolvers;

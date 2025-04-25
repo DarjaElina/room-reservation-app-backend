@@ -68,6 +68,7 @@ export type Mutation = {
   createBooking: Booking;
   refreshToken: RefreshTokenResponse;
   signupRequest: UserResponse;
+  toggleFavorite: RoomResponse;
   updateBooking: Booking;
   updatePastBookings: UserResponse;
 };
@@ -104,6 +105,11 @@ export type MutationRefreshTokenArgs = {
 
 export type MutationSignupRequestArgs = {
   userInput: UserInput;
+};
+
+
+export type MutationToggleFavoriteArgs = {
+  roomId: Scalars['ID']['input'];
 };
 
 
@@ -171,6 +177,7 @@ export type QueryRoomsArgs = {
   isBookable?: InputMaybe<Scalars['Boolean']['input']>;
   roomTypes?: InputMaybe<Array<RoomType>>;
   searchKeyword?: InputMaybe<Scalars['String']['input']>;
+  showFavorites?: InputMaybe<Scalars['Boolean']['input']>;
   startsAt?: InputMaybe<Scalars['Date']['input']>;
   venueIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
@@ -188,6 +195,7 @@ export type Room = {
   equipment: Array<Equipment>;
   id: Scalars['ID']['output'];
   isBookable: Scalars['Boolean']['output'];
+  isFavorite?: Maybe<Scalars['Boolean']['output']>;
   isFree?: Maybe<Scalars['Boolean']['output']>;
   pictureUrl?: Maybe<Scalars['String']['output']>;
   size: Scalars['Int']['output'];
@@ -206,6 +214,14 @@ export type RoomEdge = {
   __typename?: 'RoomEdge';
   cursor: Scalars['String']['output'];
   node: Room;
+};
+
+export type RoomResponse = {
+  __typename?: 'RoomResponse';
+  id?: Maybe<Scalars['ID']['output']>;
+  isFavoriteNow?: Maybe<Scalars['Boolean']['output']>;
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
 };
 
 export enum RoomType {
@@ -358,6 +374,7 @@ export type ResolversTypes = {
   Room: ResolverTypeWrapper<Room>;
   RoomConnection: ResolverTypeWrapper<Omit<RoomConnection, 'pageInfo'> & { pageInfo: ResolversTypes['PageInfo'] }>;
   RoomEdge: ResolverTypeWrapper<RoomEdge>;
+  RoomResponse: ResolverTypeWrapper<RoomResponse>;
   RoomType: RoomType;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<User>;
@@ -386,6 +403,7 @@ export type ResolversParentTypes = {
   Room: Room;
   RoomConnection: Omit<RoomConnection, 'pageInfo'> & { pageInfo: ResolversParentTypes['PageInfo'] };
   RoomEdge: RoomEdge;
+  RoomResponse: RoomResponse;
   String: Scalars['String']['output'];
   User: User;
   UserInput: UserInput;
@@ -438,6 +456,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createBooking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<MutationCreateBookingArgs, 'bookingTime' | 'roomId'>>;
   refreshToken?: Resolver<ResolversTypes['RefreshTokenResponse'], ParentType, ContextType, RequireFields<MutationRefreshTokenArgs, 'token'>>;
   signupRequest?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationSignupRequestArgs, 'userInput'>>;
+  toggleFavorite?: Resolver<ResolversTypes['RoomResponse'], ParentType, ContextType, RequireFields<MutationToggleFavoriteArgs, 'roomId'>>;
   updateBooking?: Resolver<ResolversTypes['Booking'], ParentType, ContextType, RequireFields<MutationUpdateBookingArgs, 'bookingId' | 'bookingTime' | 'roomId'>>;
   updatePastBookings?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>;
 };
@@ -472,6 +491,7 @@ export type RoomResolvers<ContextType = any, ParentType extends ResolversParentT
   equipment?: Resolver<Array<ResolversTypes['Equipment']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   isBookable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isFavorite?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   isFree?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   pictureUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   size?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -490,6 +510,14 @@ export type RoomConnectionResolvers<ContextType = any, ParentType extends Resolv
 export type RoomEdgeResolvers<ContextType = any, ParentType extends ResolversParentTypes['RoomEdge'] = ResolversParentTypes['RoomEdge']> = {
   cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   node?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type RoomResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['RoomResponse'] = ResolversParentTypes['RoomResponse']> = {
+  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  isFavoriteNow?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -535,6 +563,7 @@ export type Resolvers<ContextType = any> = {
   Room?: RoomResolvers<ContextType>;
   RoomConnection?: RoomConnectionResolvers<ContextType>;
   RoomEdge?: RoomEdgeResolvers<ContextType>;
+  RoomResponse?: RoomResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserResponse?: UserResponseResolvers<ContextType>;
   Venue?: VenueResolvers<ContextType>;

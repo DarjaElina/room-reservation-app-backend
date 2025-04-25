@@ -9,6 +9,7 @@ import Faculty from '../models/faculty';
 import Equipment from '../models/equipment';
 import RoomEquipment from '../models/room_equipment';
 import UserToken from '../models/user_token';
+import FavoriteRoom from '../models/favorite_rooms';
 
 import { Umzug, SequelizeStorage } from 'umzug';
 
@@ -27,6 +28,7 @@ export const sequelize = new Sequelize(DATABASE_URL, {
     Equipment,
     RoomEquipment,
     UserToken,
+    FavoriteRoom
   ],
   logging: false,
 });
