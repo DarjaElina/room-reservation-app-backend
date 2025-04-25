@@ -10,7 +10,7 @@
     "generate": "graphql-codegen",
     "format": "prettier --write .",
     "start": "NODE_ENV=production node dist/index.js",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest --runInBand"
   },
   "author": "",
   "license": "ISC",

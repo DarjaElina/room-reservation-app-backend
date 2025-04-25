@@ -9,6 +9,7 @@ import Faculty from '../models/faculty';
 import Equipment from '../models/equipment';
 import RoomEquipment from '../models/room_equipment';
 import UserToken from '../models/user_token';
+import FavoriteRoom from '../models/favorite_rooms';
 
 import { Umzug, SequelizeStorage } from 'umzug';
 
@@ -27,6 +28,7 @@ export const sequelize = new Sequelize(DATABASE_URL, {
     Equipment,
     RoomEquipment,
     UserToken,
+    FavoriteRoom
   ],
   logging: false,
 });
@@ -44,7 +46,8 @@ const migrationConf = {
   },
   storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
   context: sequelize.getQueryInterface(),
-  logger: console
+  //logger: console
+  logger: undefined
 };
 
 const seedConf = {
@@ -82,7 +85,9 @@ export const rollbackMigration = async () => {
   try {
     await sequelize.authenticate();
     await umzug.down({ to: 0 });
-    await seedUmzug.down();
+    if (process.env.NODE_ENV !== 'test') {
+      await seedUmzug.down();
+    }
   } catch (err) {
     console.error('Failed to rollback migration', err);
   }

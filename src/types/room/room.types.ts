@@ -10,4 +10,5 @@ export interface Room {
   equipment: string[];
   pictureUrl: string;
   isBookable: boolean;
+  isFavorite: boolean;
 }

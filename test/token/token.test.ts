@@ -3,10 +3,11 @@ import { createApp } from '../../src/app';
 import { connectTestDB, closeTestDB, clearTestDB } from '../setup';
 import { Express } from 'express';
 import { REFRESH_TOKEN } from './mutations';
-import { AUTHENTICATE } from '../user/mutations';
 import { seedTestDB } from '../seed';
 import { rollbackMigration } from '../../src/util/db';
 import { sequelize } from '../../src/util/db';
+import { getTestAuthTokens } from '../getTestAuthTokens';
+import { RefreshTokenResponse } from '../responseTypes';
 
 import {
   beforeAll,
@@ -21,29 +22,7 @@ let app: Express;
 let accessToken: string | undefined;
 let refreshToken: string | undefined;
 
-interface AuthResponse {
-  data?: {
-    authenticate?: {
-      accessToken: string;
-      refreshToken: string;
-    };
-  };
-  errors?: { message: string }[];
-}
 
-interface RefreshTokenResponse {
-  data?: {
-    refreshToken?: {
-      accessToken: string;
-    };
-  };
-  errors?: {
-    message: string,
-    extensions: {
-      code: string
-    }
-  }[];
-}
 
 beforeAll(async () => {
   await connectTestDB();
@@ -59,23 +38,16 @@ beforeEach(async () => {
 
   await seedTestDB();
 
-  const authVariables = {
-    username: 'jd10000',
-    password: 'password',
-  };
+ const {testAccessToken, testRefreshToken} = await getTestAuthTokens(app);
 
-  const authResponse = await request(app)
-    .post('/')
-    .send({ query: AUTHENTICATE, variables: authVariables });
-
-  const body = authResponse.body as AuthResponse;
-  accessToken = body?.data?.authenticate?.accessToken;
-  refreshToken = body?.data?.authenticate?.refreshToken;
+ accessToken = testAccessToken;
+ refreshToken = testRefreshToken;
+ 
 });
 
 afterAll(async () => {
-  await clearTestDB();
   await rollbackMigration();
+  await sequelize.query('DROP TABLE IF EXISTS migrations;');
   await closeTestDB();
 });
 

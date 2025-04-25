@@ -41,6 +41,14 @@ type Room {
   department: Department
   isFree: Boolean
   description: String!
+  isFavorite: Boolean
+}
+
+type RoomResponse {
+  success: Boolean!
+  message: String!
+  isFavoriteNow: Boolean
+  id: ID
 }
 
 type Query {
@@ -55,5 +63,10 @@ type Query {
     searchKeyword: String
     after: String
     first: Int
+    showFavorites: Boolean
   ): RoomConnection!
+}
+
+type Mutation {
+  toggleFavorite(roomId: ID!): RoomResponse!
 }

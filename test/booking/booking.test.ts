@@ -5,11 +5,11 @@ import { Express } from 'express';
 import { seedTestDB } from '../seed';
 import { rollbackMigration } from '../../src/util/db';
 import { sequelize } from '../../src/util/db';
-import { AUTHENTICATE } from '../user/mutations';
 import { CREATE_BOOKING } from './mutations';
 import Room from '../../src/models/room';
 import { getNextBookingTimeRange } from './helpers';
-import Booking from '../../src/models/booking';
+import { getTestAuthTokens } from '../getTestAuthTokens';
+import { BookingResponse } from '../responseTypes';
 import {
   beforeAll,
   it,
@@ -23,24 +23,6 @@ let app: Express;
 let token: string | undefined;
 let room: Room;
 
-interface AuthResponse {
-  data?: {
-    authenticate?: {
-      accessToken: string;
-      refreshToken: string;
-    };
-  };
-  errors?: { message: string }[];
-}
-
-interface BookingResponse {
-  data?: {
-    createBooking?: {
-      booking: Booking;
-    };
-  };
-  errors?: { message: string }[];
-}
 
 beforeAll(async () => {
   await connectTestDB();
@@ -56,22 +38,23 @@ beforeEach(async () => {
   const { room: createdRoom } = await seedTestDB();
   room = createdRoom;
 
-  const authVariables = {
-    username: 'jd10000',
-    password: 'password',
-  };
+  const {testAccessToken} = await getTestAuthTokens(app);
 
-  const authResponse = await request(app)
-    .post('/')
-    .send({ query: AUTHENTICATE, variables: authVariables });
-
-  const body = authResponse.body as AuthResponse;
-  token = body?.data?.authenticate?.accessToken;
+  token = testAccessToken;
 });
 
 afterAll(async () => {
-  await clearTestDB();
   await rollbackMigration();
+  const models = sequelize.models;
+    for (const model of Object.values(models)) {
+      if (model.name == 'SequelizeMeta') {
+        try {
+          await model.destroy({ where: {}, force: true });
+        } catch {
+          console.log('ooops');
+        }
+      }
+    }
   await closeTestDB();
 });
 
