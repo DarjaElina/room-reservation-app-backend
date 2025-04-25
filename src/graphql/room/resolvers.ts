@@ -180,7 +180,11 @@ const roomResolvers: Resolvers = {
           ],
         });
         if (!room) {
-          throw new GraphQLError('Not found!');
+          throw new GraphQLError('Room not found', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+            },
+          });
         }
         const favoriteRoom = await FavoriteRoom.findOne({
           where: {

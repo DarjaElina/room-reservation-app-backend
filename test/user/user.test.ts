@@ -41,8 +41,9 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await rollbackMigration();
-  await closeTestDB();
+    await rollbackMigration();
+    await sequelize.query('DROP TABLE IF EXISTS migrations;');
+    await closeTestDB();
 });
 
 describe('User API', () => {

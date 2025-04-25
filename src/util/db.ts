@@ -46,7 +46,8 @@ const migrationConf = {
   },
   storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
   context: sequelize.getQueryInterface(),
-  logger: console
+  //logger: console
+  logger: undefined
 };
 
 const seedConf = {
@@ -84,7 +85,9 @@ export const rollbackMigration = async () => {
   try {
     await sequelize.authenticate();
     await umzug.down({ to: 0 });
-    await seedUmzug.down();
+    if (process.env.NODE_ENV !== 'test') {
+      await seedUmzug.down();
+    }
   } catch (err) {
     console.error('Failed to rollback migration', err);
   }
