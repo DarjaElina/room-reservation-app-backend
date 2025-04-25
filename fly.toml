@@ -1,4 +1,4 @@
-app = 'backend-rough-wildflower-6075'
+app = 'room-reservation-app'
 primary_region = 'arn'
 
 [build]
