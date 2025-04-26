@@ -11,7 +11,7 @@ import { Request } from 'express';
 import { JWT_SECRET } from '../util/config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { BookingStatus } from '../types/booking/booking.enums';
-import { startOfWeek, endOfWeek } from 'date-fns';
+import { previousMonday, nextSunday, isSunday, endOfToday, startOfToday, differenceInMinutes } from 'date-fns';
 import Room from '../models/room';
 import { User as UserType } from '../graphql/generated-types';
 
@@ -112,13 +112,14 @@ export const getUserFromReq = async (
   return { user, isAdmin };
 };
 
-export const getTotalBookedHoursForWeek = async (
+export const getTotalBookedMinutesForWeek = async (
   userId: string,
   transaction: Transaction
 ): Promise<number> => {
   const now = new Date();
-  const startOfWeekDate = startOfWeek(now);
-  const endOfWeekDate = endOfWeek(now);
+  const startOfWeekDate = previousMonday(startOfToday());
+  const endOfWeekDate = isSunday(now) ? endOfToday() : nextSunday(endOfToday());
+  console.log(startOfWeekDate, endOfWeekDate);
   const bookings = await Booking.findAll({
     where: {
       userId,
@@ -136,35 +137,27 @@ export const getTotalBookedHoursForWeek = async (
     attributes: ['bookingTime'],
     transaction,
   });
-  const totalHours = bookings.reduce((acc, booking) => {
-    const bookingHours = booking.bookingTime.reduce((bookingAcc, _, index) => {
-      if (index < booking.bookingTime.length - 1) {
-        const startTime = new Date(booking.bookingTime[index].value);
-        const endTime = new Date(booking.bookingTime[index + 1].value);
 
-        const durationInHours =
-          (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
-        return bookingAcc + durationInHours;
-      }
-      return bookingAcc;
-    }, 0);
+  const minutesArray = bookings.map(b => differenceInMinutes(b.dataValues.bookingTime[1].value, b.dataValues.bookingTime[0].value));
 
-    return acc + bookingHours;
+  const totalMinutes = minutesArray.reduce((acc, curr) => {
+    return acc + curr;
   }, 0);
 
-  return totalHours;
+
+  return totalMinutes;
 };
 
 export const checkBookingLimit = (
   userRole: UserRole,
-  totalBookedHours: number,
-  newBookingHours: number
+  totalBookedMinutes: number,
+  newBookingMinutes: number
 ) => {
-  const maxLimit = userRole === UserRole.Student ? 12 : 30;
+  const maxLimit = userRole === UserRole.Student ? 720 : 1800;
 
-  if (totalBookedHours + newBookingHours > maxLimit) {
+  if (totalBookedMinutes + newBookingMinutes > maxLimit) {
     throw new GraphQLError(
-      `You cannot make more bookings this week. Limit of ${maxLimit} hours exceeded.`
+      `You cannot make more bookings this week. Limit of ${maxLimit / 60} hours exceeded.`
     );
   }
 };

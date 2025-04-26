@@ -5,7 +5,7 @@ import { GraphQLError } from 'graphql';
 import { handleResolverErrors } from '../../util/errorHandler';
 import {
   validateSingleBooking,
-  getTotalBookedHoursForWeek,
+  getTotalBookedMinutesForWeek,
   checkBookingLimit,
   checkRoomDepartmentRestriction,
 } from '../../helpers/helpers';
@@ -13,6 +13,7 @@ import { Op, WhereOptions } from 'sequelize';
 import { z } from 'zod';
 import UserModel from '../../models/user';
 import { sequelize } from '../../util/db';
+import { differenceInMinutes } from 'date-fns';
 
 const argsSchema = z.object({
   roomId: z.string().optional(),
@@ -123,15 +124,20 @@ const bookingResolvers: Resolvers = {
       return await sequelize.transaction(async (transaction) => {
         validateSingleBooking(user.role, bookingTime[0], bookingTime[1]);
 
-        const totalBookedHours = await getTotalBookedHoursForWeek(
+        const totalBookedMinutes = await getTotalBookedMinutesForWeek(
           user.id,
           transaction
         );
 
-        const newBookingHours =
-          (bookingTime[0].getTime() - bookingTime[1].getTime()) /
-          (1000 * 60 * 60);
-        checkBookingLimit(user.role, totalBookedHours, newBookingHours);
+        console.log(totalBookedMinutes);
+        const newBookingMinutes = differenceInMinutes(bookingTime[1], bookingTime[0]);
+
+        console.log('new booking minutes is', newBookingMinutes);
+
+        checkBookingLimit(user.role, totalBookedMinutes, newBookingMinutes);
+
+        // console.log('total hours', totalBookedHours)
+        // console.log('new hours', newBookingHours)
 
         await checkRoomDepartmentRestriction(user, roomId, transaction);
 
@@ -178,16 +184,19 @@ const bookingResolvers: Resolvers = {
 
         validateSingleBooking(user.role, bookingTime[0], bookingTime[1]);
 
-        const totalBookedHours = await getTotalBookedHoursForWeek(
-          user.id,
-          transaction
-        );
+        // const totalBookedHours = await getTotalBookedHoursForWeek(
+        //   user.id,
+        //   transaction
+        // );
 
-        const newBookingHours =
-          (bookingTime[0].getTime() - bookingTime[1].getTime()) /
-          (1000 * 60 * 60);
+        // const newBookingHours =
+        //   (bookingTime[0].getTime() - bookingTime[1].getTime()) /
+        //   (1000 * 60 * 60);
 
-        checkBookingLimit(user.role, totalBookedHours, newBookingHours);
+        // checkBookingLimit(user.role, totalBookedHours, newBookingHours);
+
+        // console.log('total hours', totalBookedHours)
+        // console.log('new hours', newBookingHours)
 
         const bookingTimeForDb = [
           {
