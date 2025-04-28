@@ -27,7 +27,7 @@ export async function seedTestDB() {
 
   const password = 'password';
   const hashedPassword = createPasswordHash(password);
-  await User.create({
+  const user = await User.create({
     givenName: 'Jane',
     familyName: 'Doe',
     email: 'jane.doe@example.com',
@@ -45,5 +45,5 @@ export async function seedTestDB() {
     isBookable: true,
     description: 'Test description',
   });
-  return { faculty, department, room };
+  return { faculty, department, room, user };
 }

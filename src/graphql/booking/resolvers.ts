@@ -126,18 +126,12 @@ const bookingResolvers: Resolvers = {
 
         const totalBookedMinutes = await getTotalBookedMinutesForWeek(
           user.id,
-          transaction
+          transaction,
+          bookingTime[0]
         );
-
-        console.log(totalBookedMinutes);
         const newBookingMinutes = differenceInMinutes(bookingTime[1], bookingTime[0]);
 
-        console.log('new booking minutes is', newBookingMinutes);
-
         checkBookingLimit(user.role, totalBookedMinutes, newBookingMinutes);
-
-        // console.log('total hours', totalBookedHours)
-        // console.log('new hours', newBookingHours)
 
         await checkRoomDepartmentRestriction(user, roomId, transaction);
 

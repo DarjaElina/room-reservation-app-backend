@@ -11,7 +11,7 @@ import { Request } from 'express';
 import { JWT_SECRET } from '../util/config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { BookingStatus } from '../types/booking/booking.enums';
-import { previousMonday, nextSunday, isSunday, endOfToday, startOfToday, differenceInMinutes } from 'date-fns';
+import { previousMonday, nextSunday, isSunday, differenceInMinutes, endOfDay } from 'date-fns';
 import Room from '../models/room';
 import { User as UserType } from '../graphql/generated-types';
 
@@ -114,12 +114,12 @@ export const getUserFromReq = async (
 
 export const getTotalBookedMinutesForWeek = async (
   userId: string,
-  transaction: Transaction
+  transaction: Transaction,
+  weekOf: Date
 ): Promise<number> => {
-  const now = new Date();
-  const startOfWeekDate = previousMonday(startOfToday());
-  const endOfWeekDate = isSunday(now) ? endOfToday() : nextSunday(endOfToday());
-  console.log(startOfWeekDate, endOfWeekDate);
+  const startOfWeekDate = previousMonday(weekOf);
+  const endOfWeekDate = isSunday(weekOf) ? endOfDay(weekOf) : nextSunday(endOfDay(weekOf));
+
   const bookings = await Booking.findAll({
     where: {
       userId,
@@ -138,15 +138,18 @@ export const getTotalBookedMinutesForWeek = async (
     transaction,
   });
 
-  const minutesArray = bookings.map(b => differenceInMinutes(b.dataValues.bookingTime[1].value, b.dataValues.bookingTime[0].value));
+  const minutesArray = bookings.map(b => 
+    differenceInMinutes(
+      b.dataValues.bookingTime[1].value, 
+      b.dataValues.bookingTime[0].value
+    )
+  );
 
-  const totalMinutes = minutesArray.reduce((acc, curr) => {
-    return acc + curr;
-  }, 0);
-
+  const totalMinutes = minutesArray.reduce((acc, curr) => acc + curr, 0);
 
   return totalMinutes;
 };
+
 
 export const checkBookingLimit = (
   userRole: UserRole,

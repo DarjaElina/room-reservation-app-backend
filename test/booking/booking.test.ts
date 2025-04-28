@@ -7,9 +7,11 @@ import { rollbackMigration } from '../../src/util/db';
 import { sequelize } from '../../src/util/db';
 import { CREATE_BOOKING } from './mutations';
 import Room from '../../src/models/room';
-import { getNextBookingTimeRange } from './helpers';
+import { getNextBookingTimeRange, getBookingTimeForDb } from './helpers';
 import { getTestAuthTokens } from '../getTestAuthTokens';
 import { BookingResponse } from '../responseTypes';
+import Booking from '../../src/models/booking';
+import User from '../../src/models/user';
 import {
   beforeAll,
   it,
@@ -18,10 +20,12 @@ import {
   afterAll,
   expect,
 } from '@jest/globals';
+import { BookingStatus } from '../../src/types/booking/booking.enums';
 let app: Express;
 
 let token: string | undefined;
 let room: Room;
+let user: User;
 
 
 beforeAll(async () => {
@@ -35,8 +39,11 @@ beforeEach(async () => {
   await sequelize.query(
     'ALTER SEQUENCE users_user_number_seq RESTART WITH 10000'
   );
-  const { room: createdRoom } = await seedTestDB();
+  const { room: createdRoom, user: createdUser } = await seedTestDB();
   room = createdRoom;
+  user = createdUser;
+
+
 
   const {testAccessToken} = await getTestAuthTokens(app);
 
@@ -44,6 +51,7 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
+  await clearTestDB();
   await rollbackMigration();
   const models = sequelize.models;
     for (const model of Object.values(models)) {
@@ -213,4 +221,77 @@ describe('Booking API', () => {
       'Variable "$bookingTime" of required type "[Date!]!" was not provided.'
     );
   });
+
+  it('does not allow to create single booking exceeding 3 hours for students', async () => {
+    const tooLongBooking = getNextBookingTimeRange(14, 4);
+    const variables = {
+      bookingTime: tooLongBooking,
+      title: 'Test booking',
+      roomId: room.id,
+    };
+
+    const bookingResponse = await request(app)
+      .post('/')
+      .send({ query: CREATE_BOOKING, variables })
+      .set({ Authorization: `Bearer ${token}` });
+
+    const body = bookingResponse.body as BookingResponse;
+
+    expect(body.errors).toHaveLength(1);
+    expect(body.errors?.[0].message).toBe(
+      'Single booking cannot exceed 3 hours'
+    );
+  });
+
+  it('does not allow to book more that 12 hours/week for students', async () => {
+    const variables = {
+      bookingTime: getNextBookingTimeRange(18, 3),
+      title: 'Test booking',
+      roomId: room.id,
+    };
+
+    console.log(getBookingTimeForDb(getNextBookingTimeRange(6, 3)));
+
+    //creating for this week 12 hours
+    await Booking.bulkCreate([
+      {
+        userId: user.id,
+        roomId: room.id,
+        status: BookingStatus.Active,
+        bookingTime: getBookingTimeForDb(getNextBookingTimeRange(6, 3))
+      },
+      {
+        userId: user.id,
+        roomId: room.id,
+        status: BookingStatus.Active,
+        bookingTime: getBookingTimeForDb(getNextBookingTimeRange(9, 3))
+      },
+      {
+        userId: user.id,
+        roomId: room.id,
+        status: BookingStatus.Active,
+        bookingTime: getBookingTimeForDb(getNextBookingTimeRange(12, 3))
+      },
+      {
+        userId: user.id,
+        roomId: room.id,
+        status: BookingStatus.Active,
+        bookingTime: getBookingTimeForDb(getNextBookingTimeRange(15, 3))
+      },
+    ]);
+
+    const bookingResponse = await request(app)
+      .post('/')
+      .send({ query: CREATE_BOOKING, variables })
+      .set({ Authorization: `Bearer ${token}` });
+
+    const body = bookingResponse.body as BookingResponse;
+
+      expect(body.errors).toHaveLength(1);
+      expect(body.errors?.[0].message).toBe(
+      'You cannot make more bookings this week. Limit of 12 hours exceeded.'
+      );
+    });
+  
+  
 });
