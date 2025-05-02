@@ -6,12 +6,12 @@ This project is a full-stack application designed for music school students and 
 
 This repository contains the backend part of the application, developed with TypeScript, Node.js, GraphQL, and PostgreSQL.
 
-#### Links to other parts of the project:
+### Links to other parts of the project:
 
 - Frontend repo: https://github.com/DarjaElina/room-reservation-app
 - Account activation page repo: https://github.com/DarjaElina/account-activation-page
 
-#### ⏰ Work hours 
+### ⏰ Work hours 
 
 [Link to work hours listing](https://github.com/DarjaElina/room-reservation-app-backend/blob/main/workHours.md)
 
