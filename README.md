@@ -11,6 +11,10 @@ This repository contains the backend part of the application, developed with Typ
 - Frontend repo: https://github.com/DarjaElina/room-reservation-app
 - Account activation page repo: https://github.com/DarjaElina/account-activation-page
 
+#### ⏰ Work hours 
+
+[Link to work hours listing](https://github.com/DarjaElina/room-reservation-app-backend/blob/main/workHours.md)
+
 ### ✨ Features
 
 - [JWT](https://www.npmjs.com/package/jsonwebtoken) authentication (access and refresh tokens)
@@ -47,11 +51,6 @@ App will be available at: http://localhost:4000 (Apollo Sandbox 🌠)
 
 - The deployed production backend lives at https://room-reservation-app.fly.dev/
 - Staging backend: used for automated testing during CI — deployed separately to simplify testing setup in GitHub Actions
-
-### 💻 Work Hours
-
-Total hours: ~240h
-> (It’s hard to estimate precisely, but I’ve been working consistently on the project since September 2024, and I hope that commit history is clear and can confirm the total working hours amount.)
 
 ### 🧡 Acknoledgments
 
