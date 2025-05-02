@@ -13,15 +13,15 @@ This repository contains the backend part of the application, developed with Typ
 
 ### ✨ Features
 
-- JWT authentication (access and refresh tokens)
-- Email account activation via NodeMailer
-- Zod-based schema validation
-- Sequelize + sequelize-typescript for PostgreSQL ORM
-- Database migrations and seeders via Umzug
-- CI/CD with GitHub Actions
-- Testing with Jest
-- Dockerized development environment
-- Fly.io for deployment
+- [JWT](https://www.npmjs.com/package/jsonwebtoken) authentication (access and refresh tokens)
+- Email account activation via [NodeMailer](https://www.nodemailer.com/)
+- [Zod-based](https://zod.dev/) schema validation
+- [Sequelize](https://sequelize.org/) + [sequelize-typescript](https://www.npmjs.com/package/sequelize-typescript) for PostgreSQL ORM
+- Database migrations and seeders via [Umzug](https://www.npmjs.com/package/umzug/v/3.0.0-beta.6)
+- CI/CD with [GitHub Actions](https://github.com/features/actions)
+- Testing with [Jest](https://jestjs.io/)
+- [Dockerized](https://www.docker.com/) development environment
+- [Fly.io](https://fly.io/) for deployment
 
 ### 🏁 Getting Started
 
